@@ -57,3 +57,4 @@ android/key.properties
 *.jks
 *.keystore
 /core/crates/*/Cargo.lock
+.metadata
