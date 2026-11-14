@@ -2,7 +2,29 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
-## [Belum dirilis] — 0.1.0
+## [Belum dirilis]
+
+### Ditambahkan
+- Hero Beranda berkategori dan berputar otomatis: rating tertinggi minggu ini, terbaru, baru saja tamat, baru saja comeback, dan sedang ramai; tiap slide punya sinopsis singkat dan sampul yang tajam.
+- Tombol pengaturan di pemutar: resolusi, subtitle, suara (sub atau dub), dan kecepatan dalam satu tempat.
+- Pertanyaan "Lanjut dari menit sekian atau mulai dari awal" saat episode punya progres.
+- Zoom cubit di pembaca komik.
+- Semua sheet bawah bisa ditutup dengan menggeser ke bawah.
+- Koleksi: pengalih Anime/Komik penuh lebar, riwayat dalam kotak sendiri yang bisa digulir, dan riwayat langsung membuka episode atau chapter itu. Data Koleksi disegarkan setiap tab dibuka.
+- Filter Anime/Komik di baris Lanjutkan pada Beranda.
+- Cache: gambar disimpan di perangkat, jawaban katalog disimpan beberapa menit (juga dipakai saat offline), dan detail, daftar episode, serta tautan video diingat di memori sehingga kembali ke layar yang sama tidak memuat ulang.
+
+### Diubah
+- Istilah "manga" di layar menjadi "komik"; satuan komik ditulis "chapter".
+- Skeleton kartu menggantikan spinner saat hasil pencarian dimuat.
+- Pencarian sumber ikut memakai judul sinonim, jadi lebih banyak komik dan anime yang ditemukan.
+- Pesan "Chapter tidak ditemukan" atau "Episode tidak ditemukan" menggantikan pesan error umum.
+
+### Diperbaiki
+- Ikon pengaturan di Koleksi berpindah ke tab Pengaturan, tidak lagi menumpuk halaman di dalam Koleksi.
+- Skeleton halaman detail, pratinjau subtitle, dan deretan titik warna subtitle tampil benar.
+
+## [0.1.0] — 2026-11-14
 
 Penulisan ulang total: antarmuka Flutter dengan inti Rust.
 
