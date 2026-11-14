@@ -53,7 +53,7 @@ void main() {
         ),
       ),
     );
-    await decoded(tester);
+    await decoded(tester, until: () => reported != null);
     expect(find.byType(RawImage), findsOneWidget);
     expect(tester.getSize(find.byType(PageImage)).height, 200);
     expect(reported, 1.0);
