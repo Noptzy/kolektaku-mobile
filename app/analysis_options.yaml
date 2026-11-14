@@ -14,7 +14,6 @@ analyzer:
     - build/**
     - android/**
 
-    - core/rust_builder/cargokit/**
   errors:
     # shadcn_ui 0.59.0's ShadApp.router still types `themeMode` as the
     # flutter/material.dart ThemeMode, not material_ui's; no workaround
