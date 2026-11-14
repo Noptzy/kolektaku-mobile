@@ -1,20 +1,11 @@
-pub struct AppInfo {
-    pub name: String,
-}
+pub mod app_info;
+pub mod error;
+pub mod library;
+pub mod matching;
+pub mod media;
+pub mod scene;
+pub mod settings;
+pub mod source;
+pub mod stream;
 
-impl AppInfo {
-    pub fn new(name: impl Into<String>) -> Self {
-        Self { name: name.into() }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn new_menyimpan_nama_apa_adanya() {
-        let info = AppInfo::new("Kolektaku");
-        assert_eq!(info.name, "Kolektaku");
-    }
-}
+pub use app_info::AppInfo;
