@@ -1,19 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../core/theme/kolektaku_text.dart';
 import '../core/theme/kolektaku_tokens.dart';
-import 'hero_backdrop.dart';
+import 'hero_art.dart';
 import 'hero_slide.dart';
-import 'poster.dart';
-import 'score_badge.dart';
+import 'hero_slide_content.dart';
 
-const heroSynopsisLines = 4;
-const _posterShare = 0.3;
-const _posterMaxWidth = 130.0;
-
-double heroPosterWidth(double screenWidth) =>
-    (screenWidth * _posterShare).clamp(0.0, _posterMaxWidth);
+const _scrimStops = [0.0, 0.4, 0.72, 1.0];
+const _scrimAlphas = [0.0, 0.0, 0.8, 0.97];
 
 class HeroSlideView extends StatelessWidget {
   const HeroSlideView({
@@ -33,161 +27,52 @@ class HeroSlideView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final screen = MediaQuery.sizeOf(context);
+    final scheme = ShadTheme.of(context).colorScheme;
     final inset = MediaQuery.paddingOf(context).top;
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        HeroBackdrop(url: slide.imageUrl),
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            Spacing.screenGutter,
-            inset + Spacing.lg,
-            Spacing.screenGutter,
-            Spacing.lg,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: heroPosterWidth(screen.width),
-                    child: _poster(),
-                  ),
-                  const SizedBox(width: Spacing.md),
-                  Expanded(child: _headline(theme)),
-                ],
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        Spacing.screenGutter,
+        inset + Spacing.md,
+        Spacing.screenGutter,
+        Spacing.md,
+      ),
+      child: ClipRRect(
+        key: const Key('hero-card'),
+        borderRadius: BorderRadius.circular(Radii.hero),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ColoredBox(color: scheme.card),
+            HeroArt(url: slide.imageUrl),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: _scrimStops,
+                  colors: [
+                    for (final alpha in _scrimAlphas)
+                      scheme.background.withValues(alpha: alpha),
+                  ],
+                ),
               ),
-              ..._synopsis(theme),
-              const Spacer(),
-              _actions(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _poster() {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Radii.poster),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x99000000),
-            blurRadius: 24,
-            offset: Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Poster(url: slide.imageUrl),
-    );
-  }
-
-  Widget _headline(ShadThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ..._label(theme),
-        Text(
-          slide.title,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.heroTitle,
-        ),
-        const SizedBox(height: Spacing.sm),
-        _infoRow(theme),
-      ],
-    );
-  }
-
-  List<Widget> _label(ShadThemeData theme) {
-    final text = slide.label;
-    if (text == null || text.isEmpty) return const [];
-    return [
-      Text(
-        text,
-        key: const Key('hero-label'),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: theme.textTheme.small.copyWith(
-          color: theme.colorScheme.primary,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      const SizedBox(height: Spacing.xs),
-    ];
-  }
-
-  List<Widget> _synopsis(ShadThemeData theme) {
-    final text = slide.synopsis;
-    if (text == null || text.isEmpty) return const [];
-    return [
-      const SizedBox(height: Spacing.md),
-      Flexible(
-        child: ClipRect(
-          child: Text(
-            text,
-            key: const Key('hero-synopsis'),
-            maxLines: heroSynopsisLines,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.small.copyWith(
-              color: theme.colorScheme.foreground.withValues(alpha: 0.78),
-              height: 1.4,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(Spacing.lg),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: HeroSlideContent(
+                  slide: slide,
+                  watchLabel: watchLabel,
+                  onWatch: onWatch,
+                  onSave: onSave,
+                  onTrailer: onTrailer,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    ];
-  }
-
-  Widget _infoRow(ShadThemeData theme) {
-    final score = slide.score;
-    return Row(
-      children: [
-        if (score != null) ...[
-          ScoreBadge(score: score),
-          const SizedBox(width: Spacing.sm),
-        ],
-        Flexible(
-          child: Text(
-            slide.meta,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.small.copyWith(
-              color: theme.colorScheme.mutedForeground,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _actions() {
-    return Wrap(
-      spacing: Spacing.sm,
-      runSpacing: Spacing.sm,
-      children: [
-        ShadButton(
-          onPressed: onWatch,
-          leading: const Icon(LucideIcons.play, size: 16),
-          child: Text(watchLabel),
-        ),
-        ShadButton.outline(
-          onPressed: onSave,
-          leading: const Icon(LucideIcons.plus, size: 16),
-          child: const Text('Simpan'),
-        ),
-        if (slide.hasTrailer)
-          ShadButton.outline(
-            onPressed: onTrailer,
-            child: const Text('Trailer'),
-          ),
-      ],
     );
   }
 }

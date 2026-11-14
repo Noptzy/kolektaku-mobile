@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../core/theme/kolektaku_text.dart';
 import '../core/theme/kolektaku_tokens.dart';
+import 'hero_counter.dart';
 import 'hero_slide.dart';
 import 'hero_slide_view.dart';
 
-const _actionsHeight = 40.0;
 const _turnDuration = Duration(milliseconds: 450);
 const _loops = 500;
 
@@ -35,25 +33,17 @@ class HeroCarousel extends StatefulWidget {
     return '${two(index + 1)} / ${two(total)}';
   }
 
-  static double heightFor(
-    Size screen, {
-    double inset = 0,
-    TextScaler scaler = TextScaler.noScaling,
-  }) {
-    final poster = heroPosterWidth(screen.width) / Sizes.posterAspect;
-    final synopsis = scaler.scale(heroSynopsisLines * 13 * 1.4);
+  static double cardHeightFor(Size screen, {double inset = 0}) {
+    final margins = inset + Spacing.md * 2;
     final natural =
-        inset +
-        Spacing.lg +
-        poster +
-        Spacing.md +
-        synopsis.ceilToDouble() +
-        Spacing.md +
-        _actionsHeight +
-        Spacing.lg;
-    final cap = screen.height * Sizes.heroMaxHeightFraction;
-    return natural < cap ? natural : cap;
+        (screen.width - Spacing.screenGutter * 2) / Sizes.heroCardAspect;
+    final cap = screen.height * Sizes.heroMaxHeightFraction - margins;
+    final room = natural < cap ? natural : cap;
+    return room < 0 ? 0 : room;
   }
+
+  static double heightFor(Size screen, {double inset = 0}) =>
+      inset + Spacing.md * 2 + cardHeightFor(screen, inset: inset);
 
   @override
   State<HeroCarousel> createState() => _HeroCarouselState();
@@ -108,15 +98,10 @@ class _HeroCarouselState extends State<HeroCarousel> {
   @override
   Widget build(BuildContext context) {
     if (widget.slides.isEmpty) return const SizedBox.shrink();
-    final theme = ShadTheme.of(context);
     final total = widget.slides.length;
     final inset = MediaQuery.paddingOf(context).top;
     return SizedBox(
-      height: HeroCarousel.heightFor(
-        MediaQuery.sizeOf(context),
-        inset: inset,
-        scaler: MediaQuery.textScalerOf(context),
-      ),
+      height: HeroCarousel.heightFor(MediaQuery.sizeOf(context), inset: inset),
       child: Listener(
         onPointerDown: (_) => _timer?.cancel(),
         onPointerUp: (_) => _arm(),
@@ -145,14 +130,9 @@ class _HeroCarouselState extends State<HeroCarousel> {
               },
             ),
             Positioned(
-              top: inset + Spacing.lg,
-              right: Spacing.screenGutter,
-              child: Text(
-                HeroCarousel.counter(_index, total),
-                style: theme.textTheme.badge.copyWith(
-                  color: theme.colorScheme.foreground,
-                ),
-              ),
+              top: inset + Spacing.md + Spacing.md,
+              right: Spacing.screenGutter + Spacing.md,
+              child: HeroCounter(text: HeroCarousel.counter(_index, total)),
             ),
           ],
         ),

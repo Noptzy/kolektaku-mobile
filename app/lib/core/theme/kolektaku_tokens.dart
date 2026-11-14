@@ -15,6 +15,7 @@ abstract final class Radii {
   static const double card = 16;
   static const double chip = 999;
   static const double sheet = 20;
+  static const double hero = 20;
 
   static BorderRadius get posterShape => BorderRadius.circular(poster);
   static BorderRadius get cardShape => BorderRadius.circular(card);
@@ -25,6 +26,7 @@ abstract final class Sizes {
   static const double touchTarget = 48;
   static const double posterAspect = 2 / 3;
   static const double heroMaxHeightFraction = 0.55;
+  static const double heroCardAspect = 4 / 5;
   static const double railPosterWidth = 112;
   static const double bottomBarHeight = 64;
 }
