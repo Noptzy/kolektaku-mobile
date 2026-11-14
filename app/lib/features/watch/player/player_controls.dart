@@ -4,7 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'clock_format.dart';
 import 'playback_engine.dart';
 import 'player_session.dart';
-import 'player_settings.dart';
+import 'player_settings_button.dart';
 import 'seek_bar.dart';
 
 class PlayerControls extends StatelessWidget {
