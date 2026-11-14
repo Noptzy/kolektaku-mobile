@@ -16,14 +16,8 @@ import 'history_launch.dart';
 import 'collection_actions.dart';
 import 'collection_sections.dart';
 
-typedef NowSecs = int Function();
-
-int systemNowSecs() => DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
 class CollectionScreen extends ConsumerStatefulWidget {
-  const CollectionScreen({super.key, this.now = systemNowSecs});
-
-  final NowSecs now;
+  const CollectionScreen({super.key});
 
   @override
   ConsumerState<CollectionScreen> createState() => _CollectionScreenState();
@@ -95,7 +89,6 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
             data: (items) => historySection(
               _kind,
               items,
-              widget.now(),
               _openHistory,
               actions.removeHistory,
               actions.clearHistory,

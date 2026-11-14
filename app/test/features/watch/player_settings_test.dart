@@ -1,22 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/watch/player/player_settings.dart';
-import 'package:kolektaku/features/watch/player/video_quality.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'player_extras_ui_support.dart';
+import 'player_settings_support.dart';
 
 const _openers = ['speed', 'subtitles', 'quality'];
-
-Future<void> openSettings(WidgetTester tester) async {
-  await tester.tap(find.byKey(const Key('player-settings')));
-  await tester.pumpAndSettle();
-}
-
-const adaptive = [
-  VideoQuality(id: 'a', height: 1080, label: '1080p'),
-  VideoQuality(id: 'b', height: 720, label: '720p'),
-];
 
 void main() {
   group('the button', () {
@@ -78,7 +68,7 @@ void main() {
       await show(
         tester,
         qualities: adaptive,
-        onAudio: () {},
+        audioPage: stubPage,
         audioLabel: 'Server 1 · Dub · audio Inggris',
       );
       await openSettings(tester);
@@ -96,60 +86,43 @@ void main() {
       }
     });
 
-    testWidgets('a long value is cut instead of pushing the label away', (
+    testWidgets('a long value is cut on one line and the label stays whole', (
       tester,
     ) async {
       await show(
         tester,
-        onAudio: () {},
+        audioPage: stubPage,
         audioLabel: 'Server 12 · Dub · audio bahasa Inggris Amerika Serikat',
       );
       await openSettings(tester);
+      final row = find.byKey(const Key('settings-row-audio'));
       final value = find.descendant(
-        of: find.byKey(const Key('settings-row-audio')),
+        of: row,
         matching: find.textContaining('Server 12'),
       );
-      expect(tester.getSize(value).width, lessThanOrEqualTo(150));
+      final label = find.descendant(of: row, matching: find.text('Suara'));
+      expect(tester.getSize(value).height, lessThan(20));
+      expect(tester.getSize(label).height, lessThan(24));
+      expect(tester.getSize(row).height, lessThan(60));
     });
 
-    testWidgets('closes the sheet before opening the chosen picker', (
-      tester,
-    ) async {
-      await show(tester);
+    testWidgets('no row wraps onto a second line', (tester) async {
+      await show(
+        tester,
+        subtitles: [sub('Indonesian', 'id')],
+        qualities: adaptive,
+        audioPage: stubPage,
+        audioLabel: 'Server 1 · Sub · audio Jepang',
+      );
       await openSettings(tester);
-      await tester.tap(find.byKey(const Key('settings-row-speed')));
-      await tester.pumpAndSettle();
-      expect(find.text('Pengaturan pemutar'), findsNothing);
-      expect(find.byKey(const Key('option-1.5x')), findsOneWidget);
-    });
-  });
-
-  group('the audio row', () {
-    testWidgets('is there only when the screen can change servers', (
-      tester,
-    ) async {
-      await show(tester, onAudio: () {}, audioLabel: 'Server 1 · Dub');
-      await openSettings(tester);
-      expect(find.byKey(const Key('settings-row-audio')), findsOneWidget);
-      expect(find.text('Server 1 · Dub'), findsOneWidget);
-    });
-
-    testWidgets('runs the server change after the sheet closes', (
-      tester,
-    ) async {
-      var opened = 0;
-      await show(tester, onAudio: () => opened++, audioLabel: 'Server 1');
-      await openSettings(tester);
-      await tester.tap(find.byKey(const Key('settings-row-audio')));
-      await tester.pumpAndSettle();
-      expect(opened, 1);
-      expect(find.text('Pengaturan pemutar'), findsNothing);
-    });
-
-    testWidgets('falls back to a plain word without a label', (tester) async {
-      await show(tester, onAudio: () {});
-      await openSettings(tester);
-      expect(find.text('Server'), findsOneWidget);
+      for (final id in ['quality', 'subtitle', 'audio', 'speed']) {
+        final row = find.byKey(Key('settings-row-$id'));
+        for (final text in tester.widgetList<Text>(
+          find.descendant(of: row, matching: find.byType(Text)),
+        )) {
+          expect(text.maxLines, 1, reason: id);
+        }
+      }
     });
   });
 

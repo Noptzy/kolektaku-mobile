@@ -10,6 +10,7 @@ import 'player_overlays.dart';
 import 'player_session.dart';
 import 'skip_button.dart';
 import 'subtitle_overlay.dart';
+import 'player_settings.dart';
 
 class WatchPlayerView extends StatelessWidget {
   const WatchPlayerView({
@@ -24,7 +25,7 @@ class WatchPlayerView extends StatelessWidget {
     required this.onFullscreen,
     required this.onBack,
     this.onEpisodes,
-    this.onAudio,
+    this.audioPage,
     this.audioLabel,
     this.showChrome = true,
     this.settings = defaultSettings,
@@ -40,7 +41,7 @@ class WatchPlayerView extends StatelessWidget {
   final VoidCallback onFullscreen;
   final VoidCallback onBack;
   final VoidCallback? onEpisodes;
-  final VoidCallback? onAudio;
+  final SettingPage? audioPage;
   final String? audioLabel;
   final bool showChrome;
   final SettingsDto settings;
@@ -90,7 +91,7 @@ class WatchPlayerView extends StatelessWidget {
             onBack: onBack,
             onInteract: onInteract,
             onEpisodes: onEpisodes,
-            onAudio: onAudio,
+            audioPage: audioPage,
             audioLabel: audioLabel,
           ),
         ),

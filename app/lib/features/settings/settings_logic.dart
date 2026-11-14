@@ -39,9 +39,3 @@ bool allOff(List<SourceEntry> entries) =>
 String versionLabel(String? version) => version == null || version.isEmpty
     ? 'Versi tidak diketahui'
     : 'Versi $version';
-
-const aboutLines = [
-  'Katalog, skor, dan data karakter dari AniList.',
-  'Judul episode dari MyAnimeList.',
-  'Pencarian dari gambar oleh trace.moe.',
-];

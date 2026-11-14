@@ -79,11 +79,4 @@ void main() {
     expect(versionLabel(null), 'Versi tidak diketahui');
     expect(versionLabel(''), 'Versi tidak diketahui');
   });
-
-  test('the credits name the data providers', () {
-    final text = aboutLines.join(' ');
-    expect(text, contains('AniList'));
-    expect(text, contains('MyAnimeList'));
-    expect(text, contains('trace.moe'));
-  });
 }

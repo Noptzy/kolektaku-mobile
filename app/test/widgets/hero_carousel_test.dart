@@ -4,7 +4,7 @@ import 'package:kolektaku/features/dev/gallery/sample_media.dart';
 import 'package:kolektaku/src/rust/dto/cards.dart';
 import 'package:kolektaku/widgets/hero_carousel.dart';
 import 'package:kolektaku/widgets/hero_slide.dart';
-import 'package:kolektaku/widgets/hero_slide_view.dart';
+import 'package:kolektaku/widgets/hero_slide_content.dart';
 
 import 'widget_harness.dart';
 
@@ -28,39 +28,33 @@ void main() {
       expect(HeroCarousel.heightFor(phoneSmall), lessThanOrEqualTo(780 * 0.55));
     });
 
-    test('the height makes room for the poster, synopsis and buttons', () {
-      expect(HeroCarousel.heightFor(phoneLarge), closeTo(345, 2));
+    test('a tall screen keeps the card at four to five', () {
+      expect(
+        HeroCarousel.cardHeightFor(const Size(390, 2000)),
+        closeTo((390 - 32) / 0.8, 0.01),
+      );
     });
 
-    test('the status bar inset is added on top', () {
-      final plain = HeroCarousel.heightFor(phoneLarge);
-      expect(HeroCarousel.heightFor(phoneLarge, inset: 30) - plain, 30);
+    test('a phone fills the hero up to the cap', () {
+      expect(HeroCarousel.heightFor(phoneLarge), closeTo(844 * 0.55, 0.01));
+    });
+
+    test('the status bar inset shrinks the card, not the hero', () {
+      final plain = HeroCarousel.cardHeightFor(phoneLarge);
+      final inset = HeroCarousel.cardHeightFor(phoneLarge, inset: 30);
+      expect(inset, lessThan(plain));
+      expect(
+        HeroCarousel.heightFor(phoneLarge, inset: 30),
+        lessThanOrEqualTo(844 * 0.55),
+      );
     });
 
     test('a short screen caps the height at 55 percent', () {
       expect(HeroCarousel.heightFor(const Size(390, 400)), 400 * 0.55);
     });
 
-    test('a wide screen stops growing the poster', () {
-      expect(
-        HeroCarousel.heightFor(const Size(1000, 4000)),
-        HeroCarousel.heightFor(const Size(2000, 4000)),
-      );
-    });
-
-    test('bigger system text asks for more room until the cap', () {
-      final plain = HeroCarousel.heightFor(phoneLarge);
-      final large = HeroCarousel.heightFor(
-        phoneLarge,
-        scaler: const TextScaler.linear(1.5),
-      );
-      expect(large, greaterThan(plain));
-      expect(large, lessThanOrEqualTo(844 * 0.55));
-    });
-
-    test('the poster is a third of the width but never wider than 130', () {
-      expect(heroPosterWidth(390), closeTo(117, 0.01));
-      expect(heroPosterWidth(2000), 130);
+    test('a tiny screen never gives the card a negative height', () {
+      expect(HeroCarousel.cardHeightFor(const Size(390, 20)), 0);
     });
   });
 
@@ -148,6 +142,14 @@ void main() {
       await tester.tap(find.text('Simpan'));
       expect(watched, [1]);
       expect(saved, [1]);
+    });
+
+    testWidgets('each slide is an inset rounded card without a blur layer', (
+      tester,
+    ) async {
+      await pumpAtSize(tester, HeroCarousel(slides: slides(3)));
+      expect(tester.getSize(find.byKey(const Key('hero-card'))).width, 358);
+      expect(find.byType(ImageFiltered), findsNothing);
     });
 
     testWidgets('each slide shows its short synopsis', (tester) async {

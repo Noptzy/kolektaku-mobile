@@ -12,16 +12,24 @@ class HomeSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = HeroCarousel.heightFor(
+    final inset = MediaQuery.paddingOf(context).top;
+    final height = HeroCarousel.cardHeightFor(
       MediaQuery.sizeOf(context),
-      inset: MediaQuery.paddingOf(context).top,
-      scaler: MediaQuery.textScalerOf(context),
+      inset: inset,
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: Spacing.xl,
       children: [
-        Skeleton(height: height, radius: 0, animate: animate),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            Spacing.screenGutter,
+            inset + Spacing.md,
+            Spacing.screenGutter,
+            0,
+          ),
+          child: Skeleton(height: height, radius: Radii.hero, animate: animate),
+        ),
         _row(),
         _row(),
       ],

@@ -2,6 +2,17 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.2.2] — 2026-11-15
+
+### Diubah
+- Hero Beranda didesain ulang ala billboard: kartu poster bersudut bulat dengan sampul tajam, gradasi gelap di bawah, teks dan tombol di atas gambar, dan penghitung di pojok kartu. Lapisan blur dihapus karena menimbulkan garis di sebagian ponsel.
+- Riwayat di Koleksi memakai kartu poster yang sama dengan Favorit dan ikut menggulir halaman, tidak lagi dalam kotak sendiri.
+- Pengaturan pemutar: Resolusi, Subtitle, Suara, dan Kecepatan membuka daftar pilihannya di sheet yang sama dengan tombol kembali; teks lebih kecil dan selalu satu baris. Tombol kembali sistem kembali ke menu dulu sebelum menutup sheet.
+- Halaman Tentang memuat catatan versi terpasang dan sumber data.
+
+### Dihapus
+- Kotak riwayat yang menggulir sendiri, serta keterangan persen tonton dan "x jam lalu" di baris riwayat.
+
 ## [0.2.1] — 2026-11-14
 
 ### Ditambahkan

@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/data/providers/settings_providers.dart';
 import 'package:kolektaku/features/watch/player/player_session.dart';
@@ -9,6 +8,7 @@ import 'package:kolektaku/src/rust/dto/cues.dart';
 import 'package:kolektaku/src/rust/dto/settings.dart';
 import 'package:kolektaku/src/rust/dto/stream.dart';
 import 'package:kolektaku/src/rust/dto/stream_extras.dart';
+import 'package:kolektaku/features/watch/player/player_settings.dart';
 
 import '../../widgets/widget_harness.dart';
 import 'fake_engine.dart';
@@ -53,7 +53,7 @@ Future<(FakeEngine, PlayerSession)> show(
   SettingsDto? settings,
   bool controlsVisible = true,
   List<VideoQuality> qualities = const [],
-  VoidCallback? onAudio,
+  SettingPage? audioPage,
   String? audioLabel,
 }) async {
   final engine = FakeEngine()..qualityList = qualities;
@@ -84,7 +84,7 @@ Future<(FakeEngine, PlayerSession)> show(
       onInteract: () {},
       onFullscreen: () {},
       onBack: () {},
-      onAudio: onAudio,
+      audioPage: audioPage,
       audioLabel: audioLabel,
       settings: settings ?? defaultSettings,
     ),

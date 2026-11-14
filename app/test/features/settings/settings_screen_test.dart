@@ -120,6 +120,7 @@ void main() {
     expect(find.text('Versi 2.0.0-rc1'), findsOneWidget);
     expect(find.textContaining('AniList'), findsOneWidget);
     expect(find.textContaining('trace.moe'), findsOneWidget);
+    expect(find.text('Yang baru'), findsNothing);
   });
 
   testWidgets('without any source the page still opens', (tester) async {

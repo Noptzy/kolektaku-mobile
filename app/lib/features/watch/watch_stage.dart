@@ -11,6 +11,7 @@ import 'watch_controller.dart';
 import 'watch_failure.dart';
 import 'watch_labels.dart';
 import 'watch_request.dart';
+import 'player/player_settings.dart';
 
 class WatchStage extends StatelessWidget {
   const WatchStage({
@@ -24,7 +25,7 @@ class WatchStage extends StatelessWidget {
     required this.onFullscreen,
     required this.onBack,
     required this.onEpisodes,
-    this.onAudio,
+    this.audioPage,
   });
 
   final WatchController controller;
@@ -36,7 +37,7 @@ class WatchStage extends StatelessWidget {
   final VoidCallback onFullscreen;
   final VoidCallback onBack;
   final VoidCallback onEpisodes;
-  final VoidCallback? onAudio;
+  final SettingPage? audioPage;
 
   Widget _standby(String message, {String? detail, VoidCallback? onRetry}) {
     return StandbyPanel(
@@ -77,7 +78,7 @@ class WatchStage extends StatelessWidget {
           onInteract: controls.interacted,
           onFullscreen: onFullscreen,
           onBack: onBack,
-          onAudio: onAudio,
+          audioPage: audioPage,
           audioLabel: currentAudioLabel(controller),
           settings: settings,
         ),

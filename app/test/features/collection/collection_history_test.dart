@@ -1,8 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/core/routes.dart';
-import 'package:kolektaku/features/collection/history_box.dart';
-import 'package:kolektaku/features/collection/history_row.dart';
+import 'package:kolektaku/widgets/media_card.dart';
 import 'package:kolektaku/features/reader/read_request.dart';
 import 'package:kolektaku/features/watch/watch_request.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
@@ -52,23 +51,33 @@ void main() {
     expect((visit.extra! as ReadRequest).chapter, 7);
   });
 
-  testWidgets('a long history scrolls inside its own box', (tester) async {
+  testWidgets('history uses the same poster cards as favorites', (
+    tester,
+  ) async {
     await open(
       tester,
-      history: [for (var i = 1; i <= 12; i++) progress(i, title: 'Judul $i')],
+      history: [progress(1, title: 'Satu')],
+      favorites: [favorite(2, title: 'Dua')],
     );
-    final box = tester.getSize(find.byKey(const Key('history-box')));
-    expect(box.height, historyVisibleRows * historyRowHeight);
-    expect(find.text('Judul 12'), findsNothing);
+    expect(find.byType(MediaCard), findsNWidgets(2));
+    expect(find.text('Episode 2'), findsOneWidget);
   });
 
-  testWidgets('a short history needs no inner scrolling', (tester) async {
+  testWidgets('a long history is one page that scrolls, not a box', (
+    tester,
+  ) async {
     await open(
       tester,
-      history: [for (var i = 1; i <= 3; i++) progress(i, title: 'Judul $i')],
+      history: [for (var i = 1; i <= 30; i++) progress(i, title: 'Judul $i')],
     );
-    final box = tester.getSize(find.byKey(const Key('history-box')));
-    expect(box.height, 3 * historyRowHeight);
+    expect(find.byKey(const Key('history-box')), findsNothing);
+    expect(find.text('Judul 30'), findsNothing);
+    await tester.scrollUntilVisible(
+      find.text('Judul 30'),
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Judul 30'), findsOneWidget);
   });
 
   testWidgets('the settings button moves to the settings tab', (tester) async {

@@ -5,12 +5,15 @@ import 'player_menus.dart';
 import 'player_session.dart';
 import 'subtitle_logic.dart';
 
+typedef SettingPage = Widget Function(VoidCallback close);
+
 typedef SettingChoice = ({
   String id,
   IconData icon,
   String label,
+  String title,
   String value,
-  VoidCallback open,
+  SettingPage page,
 });
 
 String resolutionValue(PlayerSession session) {
@@ -27,11 +30,10 @@ String resolutionValue(PlayerSession session) {
 bool hasResolutions(PlayerSession session) =>
     session.sources.length > 1 || session.extras.tracks.value.length > 1;
 
-List<SettingChoice> settingChoices(
-  BuildContext context, {
+List<SettingChoice> settingChoices({
   required PlayerSession session,
   required VoidCallback onInteract,
-  VoidCallback? onAudio,
+  SettingPage? audioPage,
   String? audioLabel,
 }) {
   final speed = session.engine.snapshot.value.speed;
@@ -41,44 +43,48 @@ List<SettingChoice> settingChoices(
         id: 'quality',
         icon: LucideIcons.monitorPlay,
         label: 'Resolusi',
+        title: 'Resolusi',
         value: resolutionValue(session),
-        open: () => _openResolution(context, session, onInteract),
+        page: (close) => _resolutionPage(session, onInteract, close),
       ),
     if (session.extras.hasSubtitles)
       (
         id: 'subtitle',
         icon: LucideIcons.captions,
         label: 'Subtitle',
+        title: 'Subtitle',
         value: _subtitleValue(session),
-        open: () => pickSubtitle(
-          context,
+        page: (close) => subtitleOptions(
           tracks: session.extras.available,
           current: session.extras.subtitle.value,
           onPicked: (track) {
             session.extras.selectSubtitle(track);
             onInteract();
+            close();
           },
         ),
       ),
-    if (onAudio != null)
+    if (audioPage != null)
       (
         id: 'audio',
         icon: LucideIcons.audioLines,
-        label: 'Suara (sub atau dub)',
+        label: 'Suara',
+        title: 'Suara (sub atau dub)',
         value: audioLabel ?? 'Server',
-        open: onAudio,
+        page: audioPage,
       ),
     (
       id: 'speed',
       icon: LucideIcons.gauge,
       label: 'Kecepatan',
+      title: 'Kecepatan',
       value: speedLabel(speed),
-      open: () => pickSpeed(
-        context,
+      page: (close) => speedOptions(
         current: speed,
         onPicked: (next) {
           session.setSpeed(next);
           onInteract();
+          close();
         },
       ),
     ),
@@ -90,29 +96,29 @@ String _subtitleValue(PlayerSession session) {
   return current == null ? 'Mati' : subtitleTitle(current);
 }
 
-Future<void> _openResolution(
-  BuildContext context,
+Widget _resolutionPage(
   PlayerSession session,
   VoidCallback onInteract,
+  VoidCallback close,
 ) {
   if (session.sources.length > 1) {
-    return pickQuality(
-      context,
+    return qualityOptions(
       sources: session.sources,
       current: session.quality.value,
       onPicked: (index) {
         session.selectQuality(index);
         onInteract();
+        close();
       },
     );
   }
-  return pickTrack(
-    context,
+  return trackOptions(
     tracks: session.extras.tracks.value,
     current: session.extras.trackId.value,
     onPicked: (id) {
       session.extras.selectTrack(id);
       onInteract();
+      close();
     },
   );
 }

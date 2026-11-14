@@ -11,7 +11,6 @@ import '../../widgets/skeleton.dart';
 import '../home/home_sections.dart';
 import '../home/resume_card.dart';
 import 'collection_logic.dart';
-import 'history_box.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({super.key, required this.text, this.trailing});
@@ -116,11 +115,11 @@ List<Widget> favoritesSection(
 List<Widget> historySection(
   MediaKindDto kind,
   List<ProgressDto> items,
-  int nowSecs,
   ValueChanged<ProgressDto> onOpen,
   ValueChanged<ProgressDto> onRemove,
   VoidCallback onClear,
 ) {
+  final cards = [for (final item in items) resumeCard(item)];
   return [
     SliverToBoxAdapter(
       child: SectionTitle(
@@ -138,13 +137,12 @@ List<Widget> historySection(
     if (items.isEmpty)
       SliverToBoxAdapter(child: EmptyNote(text: emptyHistory(kind)))
     else
-      SliverToBoxAdapter(
-        child: HistoryBox(
-          items: items,
-          nowSecs: nowSecs,
-          onOpen: onOpen,
-          onRemove: onRemove,
-        ),
+      MediaGridSliver(
+        cards: cards,
+        unitLabel: unitLabelFor(kind),
+        progressOf: (card) => historyFraction(items[cards.indexOf(card)]),
+        onTap: (card) => onOpen(items[cards.indexOf(card)]),
+        onRemove: (card) => onRemove(items[cards.indexOf(card)]),
       ),
   ];
 }
