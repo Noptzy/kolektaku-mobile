@@ -6,15 +6,12 @@ import 'package:kolektaku/src/rust/dto/media.dart';
 import '../../support/screen_harness.dart';
 import '../detail/detail_support.dart' show ref;
 
-const now = 2000000;
-
 ProgressDto progress(
   int id, {
   MediaKindDto kind = MediaKindDto.anime,
   double unit = 2,
   String? title,
   bool completed = false,
-  int savedAgo = 7200,
   double position = 600,
 }) {
   return ProgressDto(
@@ -24,7 +21,7 @@ ProgressDto progress(
     title: title ?? 'Judul $id',
     position: position,
     length: 1200,
-    updatedAtSecs: BigInt.from(now - savedAgo),
+    updatedAtSecs: BigInt.zero,
     completed: completed,
   );
 }
@@ -52,6 +49,6 @@ Future<ScreenHarness> open(
   harness.library.historyResult = history;
   harness.library.continueResult = resumable;
   harness.library.favoriteResult = favorites;
-  await harness.pump(tester, CollectionScreen(now: () => now));
+  await harness.pump(tester, const CollectionScreen());
   return harness;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:kolektaku/features/detail/detail_request.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
 
@@ -31,8 +32,7 @@ void main() {
     expect(find.text('Lanjutan Dua'), findsOneWidget);
     expect(find.text('Favorit Tiga'), findsOneWidget);
     expect(find.text('Riwayat Satu'), findsOneWidget);
-    expect(find.text('Episode 2 · 50%'), findsOneWidget);
-    expect(find.text('2 jam lalu'), findsOneWidget);
+    expect(find.text('Episode 2'), findsNWidgets(2));
   });
 
   testWidgets('the kind switch shows the other kind only', (tester) async {
@@ -52,7 +52,7 @@ void main() {
     expect(find.text('Komik Fav'), findsOneWidget);
     expect(find.text('Tontonan'), findsNothing);
     expect(find.text('Belum ada yang dibaca.'), findsNothing);
-    expect(find.text('Chapter 2 · Hal. 600 dari 1200'), findsOneWidget);
+    expect(find.text('Chapter 2'), findsOneWidget);
   });
 
   testWidgets('a favorite opens its detail too', (tester) async {
@@ -66,7 +66,7 @@ void main() {
     tester,
   ) async {
     final harness = await open(tester, history: [progress(1, title: 'Hapus')]);
-    await tester.tap(find.byKey(Key('remove-history-${ref(1).id}|2.0')));
+    await tester.tap(find.byKey(const Key('remove-card')));
     await tester.pumpAndSettle();
     expect(find.text('Hapus'), findsNothing);
     expect(find.text('Dihapus dari riwayat.'), findsOneWidget);
@@ -78,7 +78,7 @@ void main() {
       tester,
       history: [progress(1, title: 'Kembali')],
     );
-    await tester.tap(find.byKey(Key('remove-history-${ref(1).id}|2.0')));
+    await tester.tap(find.byKey(const Key('remove-card')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('undo')));
     await tester.pumpAndSettle();
@@ -138,6 +138,7 @@ void main() {
 
   testWidgets('a finished item shows no progress bar', (tester) async {
     await open(tester, history: [progress(1, completed: true)]);
-    expect(find.text('Episode 2 · Selesai'), findsOneWidget);
+    expect(find.text('Episode 2'), findsOneWidget);
+    expect(find.byType(ShadProgress), findsNothing);
   });
 }

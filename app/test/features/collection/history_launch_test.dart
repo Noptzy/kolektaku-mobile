@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/core/routes.dart';
-import 'package:kolektaku/features/collection/history_box.dart';
 import 'package:kolektaku/features/collection/history_launch.dart';
-import 'package:kolektaku/features/collection/history_row.dart';
 import 'package:kolektaku/features/reader/read_request.dart';
 import 'package:kolektaku/features/watch/watch_request.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
@@ -11,20 +9,6 @@ import '../detail/detail_support.dart' show ref;
 import 'collection_support.dart';
 
 void main() {
-  group('historyBoxHeight', () {
-    test('a short history is as tall as its rows', () {
-      expect(historyBoxHeight(0), 0);
-      expect(historyBoxHeight(4), 4 * historyRowHeight);
-      expect(historyBoxHeight(historyInlineLimit), 10 * historyRowHeight);
-    });
-
-    test('past ten rows the box stops growing and scrolls', () {
-      final fixed = historyVisibleRows * historyRowHeight;
-      expect(historyBoxHeight(historyInlineLimit + 1), fixed);
-      expect(historyBoxHeight(500), fixed);
-    });
-  });
-
   group('history launch', () {
     test('anime goes to the player and comics to the reader', () {
       expect(historyRoute(progress(1)), Routes.watch);
