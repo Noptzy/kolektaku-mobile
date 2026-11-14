@@ -5,3 +5,8 @@ edition = "2024"
 
 [dependencies]
 domain = { path = "../domain" }
+tokio = { version = "1.54.1", features = ["rt", "sync", "macros"] }
+unicode-normalization = "0.1.26"
+
+[features]
+testing = []
