@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -7,6 +9,8 @@ import 'hero_slide.dart';
 import 'hero_slide_view.dart';
 
 const _actionsHeight = 40.0;
+const _turnDuration = Duration(milliseconds: 450);
+const _loops = 500;
 
 class HeroCarousel extends StatefulWidget {
   const HeroCarousel({
@@ -16,6 +20,7 @@ class HeroCarousel extends StatefulWidget {
     this.onSave,
     this.onTrailer,
     this.watchLabel = 'Tonton',
+    this.autoPlay,
   });
 
   final String watchLabel;
@@ -23,6 +28,7 @@ class HeroCarousel extends StatefulWidget {
   final ValueChanged<int>? onWatch;
   final ValueChanged<int>? onSave;
   final ValueChanged<int>? onTrailer;
+  final Duration? autoPlay;
 
   static String counter(int index, int total) {
     String two(int value) => value.toString().padLeft(2, '0');
@@ -54,7 +60,50 @@ class HeroCarousel extends StatefulWidget {
 }
 
 class _HeroCarouselState extends State<HeroCarousel> {
+  late final PageController _pages = PageController(
+    initialPage: widget.slides.length * _loops,
+  );
+  Timer? _timer;
   int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _page = _pages.initialPage;
+    _arm();
+  }
+
+  @override
+  void didUpdateWidget(HeroCarousel old) {
+    super.didUpdateWidget(old);
+    if (old.autoPlay != widget.autoPlay ||
+        old.slides.length != widget.slides.length) {
+      _arm();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pages.dispose();
+    super.dispose();
+  }
+
+  void _arm() {
+    _timer?.cancel();
+    _timer = null;
+    final every = widget.autoPlay;
+    if (every == null || widget.slides.length < 2) return;
+    _timer = Timer.periodic(every, (_) => _turn());
+  }
+
+  void _turn() {
+    if (!mounted || !TickerMode.of(context) || !_pages.hasClients) return;
+    if (MediaQuery.disableAnimationsOf(context)) return;
+    _pages.nextPage(duration: _turnDuration, curve: Curves.easeOutCubic);
+  }
+
+  int get _index => _page % widget.slides.length;
 
   @override
   Widget build(BuildContext context) {
@@ -68,36 +117,45 @@ class _HeroCarouselState extends State<HeroCarousel> {
         inset: inset,
         scaler: MediaQuery.textScalerOf(context),
       ),
-      child: Stack(
-        children: [
-          PageView.builder(
-            itemCount: total,
-            onPageChanged: (page) => setState(() => _page = page),
-            itemBuilder: (context, index) => HeroSlideView(
-              slide: widget.slides[index],
-              watchLabel: widget.slides[index].actionLabel ?? widget.watchLabel,
-              onWatch: widget.onWatch == null
-                  ? null
-                  : () => widget.onWatch!(index),
-              onSave: widget.onSave == null
-                  ? null
-                  : () => widget.onSave!(index),
-              onTrailer: widget.onTrailer == null
-                  ? null
-                  : () => widget.onTrailer!(index),
+      child: Listener(
+        onPointerDown: (_) => _timer?.cancel(),
+        onPointerUp: (_) => _arm(),
+        onPointerCancel: (_) => _arm(),
+        child: Stack(
+          children: [
+            PageView.builder(
+              controller: _pages,
+              onPageChanged: (page) => setState(() => _page = page),
+              itemBuilder: (context, position) {
+                final index = position % total;
+                final slide = widget.slides[index];
+                return HeroSlideView(
+                  slide: slide,
+                  watchLabel: slide.actionLabel ?? widget.watchLabel,
+                  onWatch: widget.onWatch == null
+                      ? null
+                      : () => widget.onWatch!(index),
+                  onSave: widget.onSave == null
+                      ? null
+                      : () => widget.onSave!(index),
+                  onTrailer: widget.onTrailer == null
+                      ? null
+                      : () => widget.onTrailer!(index),
+                );
+              },
             ),
-          ),
-          Positioned(
-            top: inset + Spacing.lg,
-            right: Spacing.screenGutter,
-            child: Text(
-              HeroCarousel.counter(_page, total),
-              style: theme.textTheme.badge.copyWith(
-                color: theme.colorScheme.foreground,
+            Positioned(
+              top: inset + Spacing.lg,
+              right: Spacing.screenGutter,
+              child: Text(
+                HeroCarousel.counter(_index, total),
+                style: theme.textTheme.badge.copyWith(
+                  color: theme.colorScheme.foreground,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

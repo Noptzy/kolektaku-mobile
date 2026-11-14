@@ -92,6 +92,7 @@ class HeroSlideView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
+        ..._label(theme),
         Text(
           slide.title,
           maxLines: 3,
@@ -102,6 +103,24 @@ class HeroSlideView extends StatelessWidget {
         _infoRow(theme),
       ],
     );
+  }
+
+  List<Widget> _label(ShadThemeData theme) {
+    final text = slide.label;
+    if (text == null || text.isEmpty) return const [];
+    return [
+      Text(
+        text,
+        key: const Key('hero-label'),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.small.copyWith(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      const SizedBox(height: Spacing.xs),
+    ];
   }
 
   List<Widget> _synopsis(ShadThemeData theme) {

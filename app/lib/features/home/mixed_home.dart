@@ -27,6 +27,7 @@ class MixedHome extends StatelessWidget {
     required this.genres,
     required this.covers,
     required this.actions,
+    this.heroAutoPlay,
   });
 
   final HomeDto? anime;
@@ -36,6 +37,7 @@ class MixedHome extends StatelessWidget {
   final Map<MediaKindDto, List<GenreDto>> genres;
   final Map<MediaKindDto, Map<String, String>> covers;
   final HomeActions actions;
+  final Duration? heroAutoPlay;
 
   HomeDto? _home(MediaKindDto kind) =>
       kind == MediaKindDto.anime ? anime : manga;
@@ -107,11 +109,13 @@ class MixedHome extends StatelessWidget {
         if (notices.isNotEmpty) HomeNotice(notices: notices),
         if (hero.isNotEmpty)
           HeroCarousel(
+            autoPlay: heroAutoPlay,
             slides: [
               for (final item in hero)
                 HeroSlide.fromCard(
                   item.card,
                   actionLabel: actionLabelFor(item.kind),
+                  label: item.label,
                 ),
             ],
             onWatch: (index) =>

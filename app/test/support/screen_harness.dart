@@ -8,6 +8,7 @@ import 'package:kolektaku/app_scope.dart';
 import 'package:kolektaku/core/routes.dart';
 import 'package:kolektaku/core/theme/kolektaku_theme.dart';
 import 'package:kolektaku/data/providers/gateway_providers.dart';
+import 'package:kolektaku/features/home/hero_auto_play.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'fake_catalog_gateway.dart';
@@ -57,6 +58,7 @@ class ScreenHarness {
     libraryGatewayProvider.overrideWithValue(library),
     sourceGatewayProvider.overrideWithValue(sources),
     settingsGatewayProvider.overrideWithValue(settings),
+    heroAutoPlayProvider.overrideWithValue(null),
   ];
 
   ProviderContainer container() => ProviderContainer(overrides: overrides);

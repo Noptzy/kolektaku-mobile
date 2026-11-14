@@ -25,8 +25,10 @@ void main() {
 
   testWidgets('the hero mixes anime and manga', (tester) async {
     await openHome(tester);
-    expect(find.text('01 / 08'), findsOneWidget);
+    expect(find.text('01 / 07'), findsOneWidget);
     expect(find.text('Tonton'), findsOneWidget);
+    expect(find.byKey(const Key('hero-label')), findsOneWidget);
+    expect(find.text('Rating tertinggi minggu ini'), findsOneWidget);
   });
 
   testWidgets('both kinds get their own rails', (tester) async {
@@ -69,7 +71,7 @@ void main() {
   testWidgets('the hero starts with the favored kind', (tester) async {
     await openHome(tester);
     expect(find.text('Tonton'), findsOneWidget);
-    expect(find.text('01 / 08'), findsOneWidget);
+    expect(find.text('01 / 07'), findsOneWidget);
   });
 
   testWidgets('the genre grid follows the favored kind', (tester) async {

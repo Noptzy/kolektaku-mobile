@@ -16,6 +16,7 @@ import '../../widgets/error_state_view.dart';
 import '../../widgets/refresh_on_visible.dart';
 import '../../widgets/state_view.dart';
 import '../detail/detail_request.dart';
+import 'hero_auto_play.dart';
 import 'home_actions.dart';
 import 'home_mix.dart';
 import 'home_skeleton.dart';
@@ -120,6 +121,7 @@ class HomeScreen extends ConsumerWidget {
           kind: ref.watch(genreCoversProvider(kind)).value ?? const {},
       },
       actions: _actions(context, ref),
+      heroAutoPlay: ref.watch(heroAutoPlayProvider),
     );
   }
 

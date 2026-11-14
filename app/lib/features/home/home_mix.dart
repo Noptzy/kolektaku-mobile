@@ -1,11 +1,19 @@
 import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
+import '../../widgets/kind_switch.dart';
 import 'home_sections.dart';
 
-typedef KindCard = ({MediaKindDto kind, MediaCardDto card});
+typedef HeroEntry = ({MediaKindDto kind, MediaCardDto card, String label});
 
-const heroSlots = [true, true, false, true, true, false, true, true];
+const heroCategories = [
+  ('top_rated', 'Rating tertinggi minggu ini'),
+  ('new_week', 'Terbaru minggu ini'),
+  ('finished_week', 'Baru saja tamat minggu ini'),
+  ('returning', 'Baru saja comeback'),
+  ('trending', 'Sedang ramai minggu ini'),
+];
+const otherKindCategories = ['top_rated', 'new_week'];
 const resumeLimit = 12;
 
 MediaKindDto otherKind(MediaKindDto kind) =>
@@ -14,37 +22,72 @@ MediaKindDto otherKind(MediaKindDto kind) =>
 MediaKindDto favoredKind({required bool prefersAnime}) =>
     prefersAnime ? MediaKindDto.anime : MediaKindDto.manga;
 
-List<KindCard> _trending(MediaKindDto kind, HomeDto? home) {
-  if (home == null) return [];
-  return [
-    for (final card in cardsOf(home, 'trending')) (kind: kind, card: card),
-  ];
+String heroLabelOf(String sectionId) {
+  for (final (id, label) in heroCategories) {
+    if (id == sectionId) return label;
+  }
+  return sectionId;
 }
 
-List<KindCard> mixHero({
+List<HeroEntry> _entries(
+  MediaKindDto kind,
+  HomeDto? home,
+  Iterable<String> sections,
+  Set<String> seen, {
+  required bool prefixed,
+}) {
+  if (home == null) return const [];
+  final found = <HeroEntry>[];
+  for (final id in sections) {
+    for (final card in cardsOf(home, id)) {
+      final key = '${kind.name}:${card.reference.id}';
+      if (!seen.add(key)) continue;
+      final label = heroLabelOf(id);
+      found.add((
+        kind: kind,
+        card: card,
+        label: prefixed ? '${kindSwitchLabel(kind)} · $label' : label,
+      ));
+      break;
+    }
+  }
+  return found;
+}
+
+List<HeroEntry> mixHero({
   required HomeDto? anime,
   required HomeDto? manga,
   required bool prefersAnime,
 }) {
   final favored = favoredKind(prefersAnime: prefersAnime);
-  final primary = _trending(
-    favored,
-    favored == MediaKindDto.anime ? anime : manga,
-  );
   final other = otherKind(favored);
-  final secondary = _trending(
-    other,
-    other == MediaKindDto.anime ? anime : manga,
+  HomeDto? homeOf(MediaKindDto kind) =>
+      kind == MediaKindDto.anime ? anime : manga;
+  final seen = <String>{};
+  final primary = _entries(
+    favored,
+    homeOf(favored),
+    heroCategories.map((entry) => entry.$1),
+    seen,
+    prefixed: false,
   );
-  final mixed = <KindCard>[];
-  for (final wantPrimary in heroSlots) {
-    final first = wantPrimary ? primary : secondary;
-    final second = wantPrimary ? secondary : primary;
-    final source = first.isNotEmpty ? first : second;
-    if (source.isEmpty) break;
-    mixed.add(source.removeAt(0));
+  final secondary = _entries(
+    other,
+    homeOf(other),
+    otherKindCategories,
+    seen,
+    prefixed: true,
+  );
+  if (primary.isEmpty) {
+    return _entries(
+      other,
+      homeOf(other),
+      heroCategories.map((entry) => entry.$1),
+      <String>{},
+      prefixed: false,
+    );
   }
-  return mixed;
+  return [...primary, ...secondary];
 }
 
 List<ProgressDto> mergeResume(

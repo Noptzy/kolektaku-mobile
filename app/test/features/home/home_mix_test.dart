@@ -1,70 +1,132 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kolektaku/features/dev/gallery/sample_media.dart';
 import 'package:kolektaku/features/home/home_mix.dart';
+import 'package:kolektaku/src/rust/dto/cards.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
 
 import 'home_support.dart';
 
-String titles(List<KindCard> mixed) =>
+String titles(List<HeroEntry> mixed) =>
     mixed.map((item) => item.card.title).join('|');
+
+String labels(List<HeroEntry> mixed) =>
+    mixed.map((item) => item.label).join('|');
 
 void main() {
   group('mixHero', () {
-    test('a favored kind fills most slots and the other kind the rest', () {
-      final mixed = mixHero(
-        anime: homeOf('A'),
-        manga: homeOf('M'),
-        prefersAnime: true,
+    test(
+      'each category of the favored kind gets a slide, then two of the other',
+      () {
+        final mixed = mixHero(
+          anime: homeOf('A'),
+          manga: homeOf('M'),
+          prefersAnime: true,
+        );
+        expect(
+          titles(mixed),
+          'A rating 1|A terbaru 1|A tamat 1|A comeback 1|A top 1|M rating 1|M terbaru 1',
+        );
+        expect(mixed.first.kind, MediaKindDto.anime);
+        expect(mixed.last.kind, MediaKindDto.manga);
+      },
+    );
+
+    test(
+      'every slide keeps its category label and the other kind is named',
+      () {
+        final mixed = mixHero(
+          anime: homeOf('A'),
+          manga: homeOf('M'),
+          prefersAnime: true,
+        );
+        expect(
+          labels(mixed),
+          'Rating tertinggi minggu ini|Terbaru minggu ini|Baru saja tamat minggu ini|'
+          'Baru saja comeback|Sedang ramai minggu ini|'
+          'Komik · Rating tertinggi minggu ini|Komik · Terbaru minggu ini',
+        );
+      },
+    );
+
+    test(
+      'preferring comics puts their categories first and names anime last',
+      () {
+        final mixed = mixHero(
+          anime: homeOf('A'),
+          manga: homeOf('M'),
+          prefersAnime: false,
+        );
+        expect(mixed.first.kind, MediaKindDto.manga);
+        expect(mixed.first.label, 'Rating tertinggi minggu ini');
+        expect(mixed.last.label, 'Anime · Terbaru minggu ini');
+      },
+    );
+
+    test('an empty category is skipped and the others keep their labels', () {
+      final home = HomeDto(
+        sections: [
+          HomeSectionDto(id: 'top_rated', cards: const []),
+          ...homeOf('A', weekly: false).sections,
+        ],
+        notices: const [],
       );
-      expect(mixed.length, 8);
-      expect(mixed.where((item) => item.kind == MediaKindDto.anime).length, 6);
-      expect(mixed.where((item) => item.kind == MediaKindDto.manga).length, 2);
-      expect(mixed.first.kind, MediaKindDto.anime);
+      final mixed = mixHero(anime: home, manga: null, prefersAnime: true);
+      expect(labels(mixed), 'Sedang ramai minggu ini');
+      expect(titles(mixed), 'A top 1');
     });
 
-    test('preferring manga flips the proportions', () {
-      final mixed = mixHero(
-        anime: homeOf('A'),
-        manga: homeOf('M'),
-        prefersAnime: false,
+    test('a title that tops two categories shows up only once', () {
+      final shared = sampleCard(5, title: 'Dobel');
+      final home = HomeDto(
+        sections: [
+          HomeSectionDto(id: 'top_rated', cards: [shared]),
+          HomeSectionDto(
+            id: 'new_week',
+            cards: [
+              shared,
+              sampleCard(6, title: 'Lain'),
+            ],
+          ),
+        ],
+        notices: const [],
       );
-      expect(mixed.where((item) => item.kind == MediaKindDto.manga).length, 6);
-      expect(mixed.first.kind, MediaKindDto.manga);
+      final mixed = mixHero(anime: home, manga: null, prefersAnime: true);
+      expect(titles(mixed), 'Dobel|Lain');
     });
 
-    test('the secondary kind sits in every third slot', () {
-      final mixed = mixHero(
-        anime: homeOf('A'),
-        manga: homeOf('M'),
-        prefersAnime: true,
-      );
-      expect(
-        titles(mixed),
-        'A top 1|A top 2|M top 1|A top 3|A top 4|M top 2|A top 5|A top 6',
-      );
-    });
+    test(
+      'a missing favored kind is replaced by the other one without a prefix',
+      () {
+        final mixed = mixHero(
+          anime: homeOf('A'),
+          manga: null,
+          prefersAnime: false,
+        );
+        expect(mixed.every((item) => item.kind == MediaKindDto.anime), isTrue);
+        expect(mixed.first.label, 'Rating tertinggi minggu ini');
+        expect(mixed.length, 5);
+      },
+    );
 
-    test('a missing kind is replaced by the other one', () {
+    test('a home with only trending still gets a slide', () {
       final mixed = mixHero(
-        anime: homeOf('A'),
+        anime: homeOf('A', weekly: false),
         manga: null,
-        prefersAnime: false,
-      );
-      expect(mixed.length, 8);
-      expect(mixed.every((item) => item.kind == MediaKindDto.anime), isTrue);
-    });
-
-    test('a short favored list is topped up from the other kind', () {
-      final mixed = mixHero(
-        anime: homeOf('A', trending: 2),
-        manga: homeOf('M'),
         prefersAnime: true,
       );
-      expect(mixed.length, 8);
-      expect(mixed.where((item) => item.kind == MediaKindDto.anime).length, 2);
+      expect(mixed.length, 1);
     });
 
     test('nothing loaded means no hero', () {
       expect(mixHero(anime: null, manga: null, prefersAnime: true), isEmpty);
+    });
+  });
+
+  group('heroLabelOf', () {
+    test('known sections have their wording and unknown ones fall back', () {
+      expect(heroLabelOf('top_rated'), 'Rating tertinggi minggu ini');
+      expect(heroLabelOf('returning'), 'Baru saja comeback');
+      expect(heroLabelOf('whatever'), 'whatever');
     });
   });
 
