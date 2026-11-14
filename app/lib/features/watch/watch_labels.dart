@@ -1,7 +1,7 @@
 import '../detail/episode_info_map.dart';
 import 'episode_loader.dart';
 import 'episodes_sheet.dart';
-import 'server_sheet.dart';
+import 'server_choice.dart';
 import 'watch_request.dart';
 
 String watchTitle(WatchRequest request, double current) {

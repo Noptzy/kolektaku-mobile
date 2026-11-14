@@ -121,12 +121,15 @@ class _WatchScreenState extends State<WatchScreen> {
     );
   }
 
-  Future<void> _changeServer() => changeServer(
-    context,
+  Widget _audioPage(VoidCallback close) => serverPage(
     _controller,
     linkedSources: widget.linkedSources,
     sourceNames: widget.sourceNames,
     sourceSummaries: widget.sourceSummaries,
+    onChoice: (choice) {
+      close();
+      applyServerChoice(_controller, choice);
+    },
   );
 
   Future<void> _setFullscreen(bool on) async {
@@ -191,7 +194,7 @@ class _WatchScreenState extends State<WatchScreen> {
       onFullscreen: () => _setFullscreen(!_fullscreen),
       onBack: _goBack,
       onEpisodes: _showEpisodes,
-      onAudio: _changeServer,
+      audioPage: _audioPage,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'playback_engine.dart';
 import 'player_session.dart';
 import 'player_settings_button.dart';
 import 'seek_bar.dart';
+import 'player_settings.dart';
 
 class PlayerControls extends StatelessWidget {
   const PlayerControls({
@@ -18,7 +19,7 @@ class PlayerControls extends StatelessWidget {
     required this.onBack,
     required this.onInteract,
     this.onEpisodes,
-    this.onAudio,
+    this.audioPage,
     this.audioLabel,
   });
 
@@ -30,7 +31,7 @@ class PlayerControls extends StatelessWidget {
   final VoidCallback onBack;
   final VoidCallback onInteract;
   final VoidCallback? onEpisodes;
-  final VoidCallback? onAudio;
+  final SettingPage? audioPage;
   final String? audioLabel;
 
   @override
@@ -151,7 +152,7 @@ class PlayerControls extends StatelessWidget {
           PlayerSettingsButton(
             session: session,
             onInteract: onInteract,
-            onAudio: onAudio,
+            audioPage: audioPage,
             audioLabel: audioLabel,
           ),
           ShadIconButton.ghost(

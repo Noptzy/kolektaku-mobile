@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/watch/episode_loader.dart';
-import 'package:kolektaku/features/watch/server_sheet.dart';
+import 'package:kolektaku/features/watch/server_choice.dart';
 import 'package:kolektaku/features/watch/watch_labels.dart';
 import 'package:kolektaku/src/rust/dto/stream.dart';
 
