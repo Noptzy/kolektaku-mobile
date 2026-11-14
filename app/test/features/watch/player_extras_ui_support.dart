@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/data/providers/settings_providers.dart';
 import 'package:kolektaku/features/watch/player/player_session.dart';
@@ -52,6 +53,8 @@ Future<(FakeEngine, PlayerSession)> show(
   SettingsDto? settings,
   bool controlsVisible = true,
   List<VideoQuality> qualities = const [],
+  VoidCallback? onAudio,
+  String? audioLabel,
 }) async {
   final engine = FakeEngine()..qualityList = qualities;
   final session = PlayerSession(
@@ -81,6 +84,8 @@ Future<(FakeEngine, PlayerSession)> show(
       onInteract: () {},
       onFullscreen: () {},
       onBack: () {},
+      onAudio: onAudio,
+      audioLabel: audioLabel,
       settings: settings ?? defaultSettings,
     ),
   );

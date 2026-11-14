@@ -5,11 +5,13 @@ import 'package:kolektaku/features/watch/player/video_quality.dart';
 import 'player_extras_ui_support.dart';
 
 void main() {
-  testWidgets('a stream without subtitles has no subtitle button', (
+  testWidgets('a stream without subtitles has no subtitle setting', (
     tester,
   ) async {
     await show(tester);
-    expect(find.byKey(const Key('subtitles')), findsNothing);
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('settings-row-subtitle')), findsNothing);
   });
 
   testWidgets('the skip button shows inside the intro and jumps to its end', (
@@ -45,21 +47,27 @@ void main() {
         VideoQuality(id: 'b', height: 720, label: '720p'),
       ],
     );
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
     expect(find.text('Otomatis'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('quality')));
+    await tester.tap(find.byKey(const Key('settings-row-quality')));
     await tester.pumpAndSettle();
     expect(find.text('Otomatis  •'), findsOneWidget);
     await tester.tap(find.byKey(const Key('option-720p')));
     await tester.pumpAndSettle();
     expect(engine.selectedQualities, ['b']);
     expect(session.extras.trackId.value, 'b');
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
     expect(find.text('720p'), findsOneWidget);
   });
 
-  testWidgets('a stream with a single resolution shows no resolution button', (
+  testWidgets('a stream with a single resolution shows no resolution setting', (
     tester,
   ) async {
     await show(tester);
-    expect(find.byKey(const Key('quality')), findsNothing);
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('settings-row-quality')), findsNothing);
   });
 }

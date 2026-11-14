@@ -14,6 +14,7 @@ import 'player/fullscreen_mode.dart';
 import 'player/playback_engine.dart';
 import 'player/player_extras.dart';
 import 'player/video_player_engine.dart';
+import 'server_flow.dart';
 import 'watch_controller.dart';
 import 'watch_details.dart';
 import 'watch_progress.dart';
@@ -122,6 +123,14 @@ class _WatchScreenState extends State<WatchScreen> {
     );
   }
 
+  Future<void> _changeServer() => changeServer(
+    context,
+    _controller,
+    linkedSources: widget.linkedSources,
+    sourceNames: widget.sourceNames,
+    sourceSummaries: widget.sourceSummaries,
+  );
+
   Future<void> _setFullscreen(bool on) async {
     setState(() => _fullscreen = on);
     await (on ? widget.fullscreen.enter() : widget.fullscreen.exit());
@@ -184,6 +193,7 @@ class _WatchScreenState extends State<WatchScreen> {
       onFullscreen: () => _setFullscreen(!_fullscreen),
       onBack: _goBack,
       onEpisodes: _showEpisodes,
+      onAudio: _changeServer,
     );
   }
 }
