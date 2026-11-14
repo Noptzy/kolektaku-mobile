@@ -23,3 +23,4 @@ key.properties
 *.keystore
 
 /dist/
+/app/test/**/failures/
