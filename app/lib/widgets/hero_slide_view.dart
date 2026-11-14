@@ -1,12 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../core/theme/kolektaku_color_scheme.dart';
 import '../core/theme/kolektaku_text.dart';
 import '../core/theme/kolektaku_tokens.dart';
+import 'hero_backdrop.dart';
 import 'hero_slide.dart';
 import 'poster.dart';
 import 'score_badge.dart';
+
+const heroSynopsisLines = 6;
+const _posterShare = 0.3;
+const _posterMaxWidth = 130.0;
+
+double heroPosterWidth(double screenWidth) =>
+    (screenWidth * _posterShare).clamp(0.0, _posterMaxWidth);
 
 class HeroSlideView extends StatelessWidget {
   const HeroSlideView({
@@ -27,50 +34,96 @@ class HeroSlideView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final screen = MediaQuery.sizeOf(context);
+    final inset = MediaQuery.paddingOf(context).top;
     return Stack(
       fit: StackFit.expand,
       children: [
-        Poster(url: slide.imageUrl, aspectRatio: 1, radius: 0),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: const [0.3, 0.75, 1],
-              colors: [
-                const Color(0x00000000),
-                theme.colorScheme.scrim,
-                theme.colorScheme.background,
-              ],
-            ),
-          ),
-        ),
+        HeroBackdrop(url: slide.imageUrl),
         Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             Spacing.screenGutter,
-            0,
+            inset + Spacing.lg,
             Spacing.screenGutter,
             Spacing.lg,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                slide.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.heroTitle,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: heroPosterWidth(screen.width),
+                    child: _poster(),
+                  ),
+                  const SizedBox(width: Spacing.md),
+                  Expanded(child: _headline(theme)),
+                ],
               ),
-              const SizedBox(height: Spacing.sm),
-              _infoRow(theme),
-              const SizedBox(height: Spacing.md),
+              ..._synopsis(theme),
+              const Spacer(),
               _actions(),
             ],
           ),
         ),
       ],
     );
+  }
+
+  Widget _poster() {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Radii.poster),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x99000000),
+            blurRadius: 24,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Poster(url: slide.imageUrl),
+    );
+  }
+
+  Widget _headline(ShadThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          slide.title,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.heroTitle,
+        ),
+        const SizedBox(height: Spacing.sm),
+        _infoRow(theme),
+      ],
+    );
+  }
+
+  List<Widget> _synopsis(ShadThemeData theme) {
+    final text = slide.synopsis;
+    if (text == null || text.isEmpty) return const [];
+    return [
+      const SizedBox(height: Spacing.md),
+      Flexible(
+        child: ClipRect(
+          child: Text(
+            text,
+            key: const Key('hero-synopsis'),
+            maxLines: heroSynopsisLines,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.small.copyWith(
+              color: theme.colorScheme.foreground.withValues(alpha: 0.78),
+              height: 1.4,
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 
   Widget _infoRow(ShadThemeData theme) {

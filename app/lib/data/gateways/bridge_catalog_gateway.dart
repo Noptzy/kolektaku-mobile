@@ -16,6 +16,9 @@ class BridgeCatalogGateway implements CatalogGateway {
   const BridgeCatalogGateway();
 
   @override
+  Future<void> clearCache() => browse.clearCatalogCache();
+
+  @override
   Future<HomeDto> home(MediaKindDto kind) => browse.home(kind: kind);
 
   @override

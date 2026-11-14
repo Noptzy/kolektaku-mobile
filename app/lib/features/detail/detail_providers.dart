@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/keep_for.dart';
 import '../../data/providers/gateway_providers.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/sources.dart';
@@ -8,17 +9,22 @@ import 'detail_request.dart';
 typedef UnitsArgs = ({DetailRequest request, String? source});
 
 final detailProvider = FutureProvider.autoDispose
-    .family<DetailViewDto, DetailRequest>(
-      (ref, request) => ref
+    .family<DetailViewDto, DetailRequest>((ref, request) {
+      ref.keepFor(detailKeepAlive);
+      return ref
           .watch(catalogGatewayProvider)
-          .detail(request.kind, request.reference),
-    );
+          .detail(request.kind, request.reference);
+    });
 
-final unitsProvider = FutureProvider.autoDispose.family<UnitsDto, UnitsArgs>(
-  (ref, args) => ref
+final unitsProvider = FutureProvider.autoDispose.family<UnitsDto, UnitsArgs>((
+  ref,
+  args,
+) {
+  ref.keepFor(detailKeepAlive);
+  return ref
       .watch(catalogGatewayProvider)
-      .units(args.request.reference, source: args.source),
-);
+      .units(args.request.reference, source: args.source);
+});
 
 final lastProgressProvider = FutureProvider.autoDispose
     .family<ProgressDto?, DetailRequest>(

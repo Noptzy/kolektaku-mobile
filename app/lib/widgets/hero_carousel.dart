@@ -6,6 +6,8 @@ import '../core/theme/kolektaku_tokens.dart';
 import 'hero_slide.dart';
 import 'hero_slide_view.dart';
 
+const _actionsHeight = 40.0;
+
 class HeroCarousel extends StatefulWidget {
   const HeroCarousel({
     super.key,
@@ -27,9 +29,23 @@ class HeroCarousel extends StatefulWidget {
     return '${two(index + 1)} / ${two(total)}';
   }
 
-  static double heightFor(Size screen) {
+  static double heightFor(
+    Size screen, {
+    double inset = 0,
+    TextScaler scaler = TextScaler.noScaling,
+  }) {
+    final poster = heroPosterWidth(screen.width) / Sizes.posterAspect;
+    final synopsis = scaler.scale(heroSynopsisLines * 13 * 1.4);
+    final natural =
+        inset +
+        Spacing.lg +
+        poster +
+        Spacing.md +
+        synopsis.ceilToDouble() +
+        Spacing.md +
+        _actionsHeight +
+        Spacing.lg;
     final cap = screen.height * Sizes.heroMaxHeightFraction;
-    final natural = screen.width * 1.2;
     return natural < cap ? natural : cap;
   }
 
@@ -45,8 +61,13 @@ class _HeroCarouselState extends State<HeroCarousel> {
     if (widget.slides.isEmpty) return const SizedBox.shrink();
     final theme = ShadTheme.of(context);
     final total = widget.slides.length;
+    final inset = MediaQuery.paddingOf(context).top;
     return SizedBox(
-      height: HeroCarousel.heightFor(MediaQuery.sizeOf(context)),
+      height: HeroCarousel.heightFor(
+        MediaQuery.sizeOf(context),
+        inset: inset,
+        scaler: MediaQuery.textScalerOf(context),
+      ),
       child: Stack(
         children: [
           PageView.builder(
@@ -67,7 +88,7 @@ class _HeroCarouselState extends State<HeroCarousel> {
             ),
           ),
           Positioned(
-            top: Spacing.lg,
+            top: inset + Spacing.lg,
             right: Spacing.screenGutter,
             child: Text(
               HeroCarousel.counter(_page, total),

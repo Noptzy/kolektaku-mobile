@@ -24,8 +24,8 @@ abstract final class Radii {
 abstract final class Sizes {
   static const double touchTarget = 48;
   static const double posterAspect = 2 / 3;
-  static const double railPosterWidth = 112;
   static const double heroMaxHeightFraction = 0.55;
+  static const double railPosterWidth = 112;
   static const double bottomBarHeight = 64;
 }
 

@@ -9,7 +9,9 @@ import 'package:kolektaku/src/rust/dto/profile_summary.dart';
 import 'package:kolektaku/src/rust/dto/sources.dart';
 import 'package:kolektaku/src/rust/service/browse.dart';
 
-class FakeCatalogGateway implements CatalogGateway {
+import 'fake_cache_clearing.dart';
+
+class FakeCatalogGateway with FakeCacheClearing implements CatalogGateway {
   HomeDto homeResult = const HomeDto(sections: [], notices: []);
   List<GenreDto> genreResult = const [];
   List<GenreCoverDto> coverResult = const [];
