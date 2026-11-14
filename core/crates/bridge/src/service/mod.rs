@@ -1,0 +1,31 @@
+pub mod browse;
+pub mod detail;
+pub mod library;
+pub mod people;
+pub mod play;
+pub mod scene;
+pub mod settings;
+pub mod sources;
+pub mod subtitle;
+pub mod update;
+
+#[cfg(test)]
+mod people_search_tests;
+#[cfg(test)]
+mod scene_tests;
+#[cfg(test)]
+mod service_library_tests;
+#[cfg(test)]
+mod service_support;
+#[cfg(test)]
+mod service_tests;
+#[cfg(test)]
+mod settings_tests;
+#[cfg(test)]
+mod subtitle_tests;
+#[cfg(test)]
+mod update_check_tests;
+#[cfg(test)]
+mod update_download_tests;
+#[cfg(test)]
+mod update_support;
