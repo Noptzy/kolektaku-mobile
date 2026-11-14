@@ -2,3 +2,14 @@
 name = "updater"
 version = "0.1.0"
 edition = "2024"
+
+[dependencies]
+semver = "1.0.26"
+sha2 = "0.10.9"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "time", "fs", "io-util"] }
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls-no-provider", "http2"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+webpki-roots = "1"
+url = "2.5.8"
