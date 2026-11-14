@@ -3,6 +3,7 @@ mod catalog;
 mod covers;
 mod discover;
 mod graphql;
+mod list_request;
 mod mapper;
 mod matching;
 mod people_queries;

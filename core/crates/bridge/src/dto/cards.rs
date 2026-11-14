@@ -87,6 +87,10 @@ fn section_name(id: HomeSectionId) -> &'static str {
         HomeSectionId::Trending => "trending",
         HomeSectionId::Seasonal => "seasonal",
         HomeSectionId::Popular => "popular",
+        HomeSectionId::TopRated => "top_rated",
+        HomeSectionId::NewThisWeek => "new_week",
+        HomeSectionId::FinishedThisWeek => "finished_week",
+        HomeSectionId::Returning => "returning",
         HomeSectionId::Latest => "latest",
     }
 }

@@ -15,7 +15,20 @@ pub enum HomeSectionId {
     Trending,
     Seasonal,
     Popular,
+    TopRated,
+    NewThisWeek,
+    FinishedThisWeek,
+    Returning,
     Latest,
+}
+
+impl HomeSectionId {
+    pub fn is_weekly(self) -> bool {
+        matches!(
+            self,
+            Self::TopRated | Self::NewThisWeek | Self::FinishedThisWeek | Self::Returning
+        )
+    }
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -47,8 +60,18 @@ fn lists_for(kind: MediaKind) -> Vec<MediaListKind> {
             MediaListKind::Trending,
             MediaListKind::Seasonal,
             MediaListKind::Popular,
+            MediaListKind::TopRated,
+            MediaListKind::NewThisWeek,
+            MediaListKind::FinishedThisWeek,
+            MediaListKind::Returning,
         ],
-        MediaKind::Manga => vec![MediaListKind::Trending, MediaListKind::Popular],
+        MediaKind::Manga => vec![
+            MediaListKind::Trending,
+            MediaListKind::Popular,
+            MediaListKind::TopRated,
+            MediaListKind::NewThisWeek,
+            MediaListKind::FinishedThisWeek,
+        ],
     }
 }
 
@@ -57,6 +80,10 @@ fn section_of(list: MediaListKind) -> HomeSectionId {
         MediaListKind::Trending => HomeSectionId::Trending,
         MediaListKind::Seasonal => HomeSectionId::Seasonal,
         MediaListKind::Popular => HomeSectionId::Popular,
+        MediaListKind::TopRated => HomeSectionId::TopRated,
+        MediaListKind::NewThisWeek => HomeSectionId::NewThisWeek,
+        MediaListKind::FinishedThisWeek => HomeSectionId::FinishedThisWeek,
+        MediaListKind::Returning => HomeSectionId::Returning,
     }
 }
 
@@ -93,11 +120,13 @@ impl<C: MetadataCatalog + 'static> HomeFeed<C> {
             match part {
                 Part::List(list, Ok(page)) => {
                     answered = true;
-                    let cards = page.items.into_iter().map(MediaCard::of_media).collect();
-                    sections.push(HomeSection {
-                        id: section_of(list),
-                        cards,
-                    });
+                    let id = section_of(list);
+                    let cards: Vec<MediaCard> =
+                        page.items.into_iter().map(MediaCard::of_media).collect();
+                    if id.is_weekly() && cards.is_empty() {
+                        continue;
+                    }
+                    sections.push(HomeSection { id, cards });
                 }
                 Part::List(_, Err(error)) => record(&mut notices, &mut first_error, None, error),
                 Part::Latest(index, Ok(page)) => {

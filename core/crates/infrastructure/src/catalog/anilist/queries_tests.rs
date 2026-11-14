@@ -4,7 +4,7 @@ use super::*;
 fn every_document_shares_the_summary_fragment() {
     for document in [
         detail_query(),
-        list_query(false),
+        list_query(false, false),
         search_query(),
         batch_match_query(1),
     ] {
@@ -15,7 +15,7 @@ fn every_document_shares_the_summary_fragment() {
 
 #[test]
 fn lists_exclude_adult_titles_at_the_source() {
-    assert!(list_query(false).contains("isAdult: false"));
+    assert!(list_query(false, false).contains("isAdult: false"));
     assert!(search_query().contains("isAdult: false"));
     assert!(batch_match_query(2).contains("isAdult: false"));
 }
@@ -82,10 +82,26 @@ fn the_detail_asks_for_cast_staff_relations_and_recommendations() {
 
 #[test]
 fn only_the_rich_list_asks_for_the_synopsis_and_the_sharp_cover() {
-    let rich = list_query(true);
+    let rich = list_query(true, false);
     assert!(rich.contains("synopsis: description(asHtml: false)"));
     assert!(rich.contains("coverImage { large extraLarge }"));
-    let plain = list_query(false);
+    let plain = list_query(false, false);
     assert!(!plain.contains("synopsis"));
     assert!(!plain.contains("extraLarge"));
+}
+
+#[test]
+fn only_the_comeback_list_asks_for_prequel_links() {
+    assert!(list_query(true, true).contains("prequels: relations"));
+    assert!(!list_query(true, false).contains("prequels"));
+    assert!(!list_query(false, false).contains("prequels"));
+}
+
+#[test]
+fn the_list_query_accepts_a_status_and_date_window() {
+    let document = list_query(false, false);
+    assert!(document.contains("$status: MediaStatus"));
+    assert!(document.contains("$startFrom: FuzzyDateInt"));
+    assert!(document.contains("startDate_greater: $startFrom"));
+    assert!(document.contains("endDate_greater: $endFrom"));
 }

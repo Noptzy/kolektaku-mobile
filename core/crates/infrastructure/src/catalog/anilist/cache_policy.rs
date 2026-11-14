@@ -32,7 +32,10 @@ mod tests {
 
     #[test]
     fn lists_are_kept_for_half_an_hour() {
-        assert_eq!(catalog_ttl(&post(list_query(false))), Some(LIST_TTL_SECS));
+        assert_eq!(
+            catalog_ttl(&post(list_query(false, false))),
+            Some(LIST_TTL_SECS)
+        );
     }
 
     #[test]
