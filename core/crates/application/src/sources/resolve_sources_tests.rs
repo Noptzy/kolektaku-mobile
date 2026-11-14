@@ -132,3 +132,24 @@ async fn a_doubtful_match_is_flagged_so_the_person_can_correct_it() {
     assert!(!link.confidence.is_automatic());
     assert!(resolved.needs_hint(&SourceId::new("a")));
 }
+
+#[tokio::test]
+async fn a_title_a_site_only_knows_by_a_synonym_is_still_found() {
+    use domain::media::MediaKind;
+    use domain::source::{ItemId, SourceItem};
+
+    use super::resolve_support::{TITLE, detail};
+    use crate::testing::FakeSource;
+
+    let alias = "Spy Family Alias";
+    let site = FakeSource::new("a", MediaKind::Anime)
+        .with_priority(1)
+        .with_search(alias, vec![SourceItem::new(ItemId::new("a-alias"), TITLE)])
+        .with_detail(detail("a-alias", TITLE, 2022, 12));
+    let rig = rig(vec![site]);
+    let mut media = media();
+    media.synonyms = vec!["日本語のタイトル".into(), alias.into()];
+    let resolved = rig.use_case.execute(&media).await.unwrap();
+    assert_eq!(order(&resolved.links), vec!["a"]);
+    assert_eq!(resolved.best().unwrap().item.as_str(), "a-alias");
+}

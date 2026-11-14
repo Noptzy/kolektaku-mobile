@@ -11,6 +11,7 @@ use super::find_link::{find_in_source, verify_item};
 use super::merge::{Answer, is_fresh, merge_answers};
 use super::rank::rank_links;
 use super::resolved_sources::ResolvedSources;
+use super::search_queries::search_queries;
 use crate::matching::MatchTarget;
 use crate::ports::{Clock, SourceProvider};
 use crate::settings::AppSettingsStore;
@@ -174,15 +175,4 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
         }
         answers
     }
-}
-
-fn search_queries(media: &MediaSummary) -> Vec<String> {
-    let mut queries = vec![media.title.romaji.clone()];
-    let english = media
-        .title
-        .english
-        .clone()
-        .filter(|name| !name.trim().is_empty() && *name != media.title.romaji);
-    queries.extend(english);
-    queries
 }

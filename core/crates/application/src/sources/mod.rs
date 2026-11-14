@@ -7,6 +7,7 @@ mod next_source;
 mod rank;
 mod resolve_sources;
 mod resolved_sources;
+mod search_queries;
 mod switches;
 
 #[cfg(test)]
