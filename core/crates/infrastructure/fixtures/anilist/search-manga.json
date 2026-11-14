@@ -1,0 +1,160 @@
+{
+ "data": {
+  "Page": {
+   "pageInfo": {
+    "currentPage": 1,
+    "hasNextPage": false
+   },
+   "media": [
+    {
+     "id": 105778,
+     "type": "MANGA",
+     "title": {
+      "romaji": "Chainsaw Man",
+      "english": "Chainsaw Man",
+      "native": "チェンソーマン"
+     },
+     "synonyms": [
+      "CSM",
+      "رجل المنشار",
+      "Человек-бензопила",
+      "체인소 맨",
+      "鏈鋸人",
+      "电锯人",
+      "มนุษย์เลื่อยยนต์",
+      "Testere Adam"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105778-euxXZEIfDY2u.png"
+     },
+     "format": "MANGA",
+     "status": "FINISHED",
+     "seasonYear": null,
+     "startDate": {
+      "year": 2018
+     },
+     "episodes": null,
+     "chapters": 232,
+     "averageScore": 84,
+     "genres": [
+      "Action",
+      "Comedy",
+      "Drama",
+      "Horror",
+      "Supernatural"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    },
+    {
+     "id": 138829,
+     "type": "MANGA",
+     "title": {
+      "romaji": "Chainsaw Man: Buddy Stories",
+      "english": "Chainsaw Man: Buddy Stories",
+      "native": "チェンソーマン バディ・ストーリーズ"
+     },
+     "synonyms": [],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138829-NthKwJR53d9O.jpg"
+     },
+     "format": "NOVEL",
+     "status": "FINISHED",
+     "seasonYear": null,
+     "startDate": {
+      "year": 2021
+     },
+     "episodes": null,
+     "chapters": 4,
+     "averageScore": 75,
+     "genres": [
+      "Action",
+      "Comedy",
+      "Drama",
+      "Horror",
+      "Supernatural"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    },
+    {
+     "id": 139855,
+     "type": "MANGA",
+     "title": {
+      "romaji": "Fujimoto Tatsuki Tanpenshuu: 17-21",
+      "english": "Tatsuki Fujimoto Before Chainsaw Man: 17-21",
+      "native": "藤本タツキ短編集 17－21"
+     },
+     "synonyms": [
+      "Histórias Curtas de Tatsuki Fujimoto 17-21",
+      "Tatsuki Fujimoto Short Stories 17-21",
+      "후지모토 타츠키 단편집 17-21",
+      "Niwa ni wa Niwa Niwatori ga Ita",
+      "Sasaki-kun ga Juudan Tometa",
+      "Koi wa Moumoku",
+      "Tatsuki Fujimoto - Zbiór opowiadań 17-21"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx139855-dQnn5sPNrNLk.jpg"
+     },
+     "format": "MANGA",
+     "status": "FINISHED",
+     "seasonYear": null,
+     "startDate": {
+      "year": 2021
+     },
+     "episodes": null,
+     "chapters": 4,
+     "averageScore": 71,
+     "genres": [
+      "Action",
+      "Comedy",
+      "Romance",
+      "Sci-Fi"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    },
+    {
+     "id": 141157,
+     "type": "MANGA",
+     "title": {
+      "romaji": "Fujimoto Tatsuki Tanpenshuu: 22-26",
+      "english": "Tatsuki Fujimoto Before Chainsaw Man: 22-26",
+      "native": "藤本タツキ短編集 22-26"
+     },
+     "synonyms": [
+      "Histórias Curtas de Tatsuki Fujimoto 22-26",
+      "Tatsuki Fujimoto Short Stories 22-26",
+      "후지모토 타츠키 단편집 22-26",
+      "Tatsuki Fujimoto - Zbiór opowiadań 22-26"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141157-ILmgH9puHckH.jpg"
+     },
+     "format": "MANGA",
+     "status": "FINISHED",
+     "seasonYear": null,
+     "startDate": {
+      "year": 2021
+     },
+     "episodes": null,
+     "chapters": 4,
+     "averageScore": 74,
+     "genres": [
+      "Comedy",
+      "Drama",
+      "Ecchi",
+      "Fantasy",
+      "Music",
+      "Psychological",
+      "Romance",
+      "Supernatural"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    }
+   ]
+  }
+ }
+}

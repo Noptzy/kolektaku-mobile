@@ -1,0 +1,8 @@
+{
+  "poster": "https://img.example/one-piece.jpg",
+  "sources": [
+    { "url": "https://cdn.example/one-piece-480.mp4?token=signed", "type": "video/mp4", "quality": "480" },
+    { "url": "https://cdn.example/one-piece-720.mp4?token=signed", "type": "video/mp4", "quality": "720" },
+    { "url": "https://cdn.example/one-piece-360.mp4?token=signed", "type": "video/mp4", "quality": "360" }
+  ]
+}

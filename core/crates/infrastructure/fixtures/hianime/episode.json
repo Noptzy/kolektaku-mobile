@@ -1,0 +1,24 @@
+{
+ "episode": {
+  "id": "6ad1e16933988c0d81afdac7",
+  "link": {
+   "sub": [
+    "https://zokoanime.video/stream/mal/63825/4/sub?color=35d5bf"
+   ],
+   "dub": [
+    "https://zokoanime.video/stream/mal/63825/4/dub?color=35d5bf"
+   ]
+  },
+  "episodeNumber": 4,
+  "title": "Episode 4",
+  "slug": "steel-ball-run-jojos-bizarre-adventure-2nd-stage-episode-4-ep-4-i47qir-2bhx1",
+  "slugs": [
+   "steel-ball-run-jojos-bizarre-adventure-2nd-stage-episode-4-ep-4-i47qir-2bhx1"
+  ]
+ },
+ "anime": {
+  "_id": "6ab63dce32e4b6276712b562",
+  "title": "Steel Ball Run: JoJo's Bizarre Adventure 2nd Stage",
+  "mal_id": 61469
+ }
+}

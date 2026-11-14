@@ -1,0 +1,67 @@
+{
+ "total": 2,
+ "page": 1,
+ "limit": 20,
+ "totalPages": 1,
+ "results": [
+  {
+   "_id": "6ab63dce32e4b6276712b562",
+   "title": "Steel Ball Run: JoJo's Bizarre Adventure 2nd Stage",
+   "alternateTitle": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
+   "English": "Steel Ball Run: JoJo's Bizarre Adventure 2nd Stage",
+   "Japanese": "ジョジョの奇妙な冒険 スティール・ボール・ラン 2nd - 3rd STAGE",
+   "slug": "steel-ball-run-jojo's-bizarre-adventure-2nd-3rd-stage-13m7yk",
+   "slugs": [
+    "steel-ball-run-jojo's-bizarre-adventure-2nd-3rd-stage-13m7yk"
+   ],
+   "image": "https://animehot.cc/storage/media/2026/09/6ab63dce32e4b6276712b562-poster.jpg",
+   "landScapeImage": "https://animehot.cc/storage/media/2026/09/6ab63dce32e4b6276712b562-landscape.jpg",
+   "mal_id": 61469,
+   "synopsis": "The second and third race stage of JoJo no Kimyou na Bouken: Steel Ball Run.\n\n\n\nIn the 2nd STAGE, a desert crossing spanning roughly 750 miles- the land that Johnny Joestar and Gyro Zeppeli must challenge, is home to the area that is feared as the \"Devil's Palm.\" In 1875, a threat lurking in said desert wiped out a cavalry of 26 people, eliciting fear from the local native people. As ominous incidents begin to unfold, they are forced to realize that this race is far more than a mere competition. The two press forward, where countless hidden motives collide.. \n\n\n\n(Source: Warner Bros. Japan Anime, Netflix Anime, edited)",
+   "genres": [
+    "Action",
+    "Adventure",
+    "Drama",
+    "Mystery",
+    "Supernatural"
+   ],
+   "Type": "ONA",
+   "totalEpisodes": "8",
+   "totalSubbed": 8,
+   "totalDubbed": 8,
+   "Aired": "2026-09-25",
+   "Status": "Currently Airing",
+   "Rating": "PG-13",
+   "Score": "8.4"
+  },
+  {
+   "_id": "6a9283663880af9536662140",
+   "title": "Steel Ball Run: JoJo's Bizarre Adventure",
+   "alternateTitle": "Steel Ball Run: JoJo's Bizarre Adventure",
+   "English": "Steel Ball Run: JoJo's Bizarre Adventure",
+   "Japanese": "スティール・ボール・ラン ジョジョの奇妙な冒険",
+   "slug": "steel-ball-run:-jojo's-bizarre-adventure-5ea2y3",
+   "slugs": [
+    "steel-ball-run:-jojo's-bizarre-adventure-5ea2y3"
+   ],
+   "image": "https://animehot.cc/storage/media/2026/09/6a9283663880af9536662140-poster.jpg",
+   "landScapeImage": "https://animehot.cc/storage/media/2026/09/6a9283663880af9536662140-landscape.webp",
+   "mal_id": 61469,
+   "synopsis": "In the American Old West, the world's greatest race is about to begin. Thousands line up in San Diego to travel over six thousand kilometers for a chance to win the grand prize of fifty million dollars. With the era of the horse reaching its end, contestants are allowed to use any kind of vehicle they wish. Competitors will have to endure grueling conditions, traveling up to a hundred kilometers a day through uncharted wastelands. The Steel Ball Run is truly a one-of-a-kind event.\n\nThe youthful Johnny Joestar, a crippled former horse racer, has come to San Diego to watch the start of the race. There he encounters Gyro Zeppeli, a racer with two steel balls at his waist instead of a gun. Johnny witnesses Gyro using one of his steel balls to unleash a fantastical power, compelling a man to fire his gun at himself during a duel. In the midst of the action, Johnny happens to touch the steel ball and feels a power surging through his legs, allowing him to stand up for the first time in two years. Vowing to find the secret of the steel balls, Johnny decides to compete in the race, and so begins his bizarre adventure across America on the Steel Ball Run.\n\n[Written by MAL Rewrite]",
+   "genres": [
+    "Action",
+    "Adventure",
+    "Mystery",
+    "Supernatural"
+   ],
+   "Type": "ONA",
+   "totalEpisodes": "1",
+   "totalSubbed": 1,
+   "totalDubbed": 1,
+   "Aired": "Mar 19, 2026 to ?",
+   "Status": "Currently Airing",
+   "Rating": "R - 17+ (violence & profanity)",
+   "Score": "9.1"
+  }
+ ]
+}

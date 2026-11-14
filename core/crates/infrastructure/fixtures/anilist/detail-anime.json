@@ -1,0 +1,1549 @@
+{
+ "data": {
+  "Media": {
+   "id": 101922,
+   "type": "ANIME",
+   "title": {
+    "romaji": "Kimetsu no Yaiba",
+    "english": "Demon Slayer: Kimetsu no Yaiba",
+    "native": "鬼滅の刃"
+   },
+   "synonyms": [
+    "KnY",
+    "Kimetsu no Yaiba: Kyoudai no Kizuna",
+    "Demon Slayer: Kimetsu no Yaiba: Bonds of Siblings",
+    "鬼滅の刃-兄妹の絆-",
+    "鬼灭之刃",
+    "הלהב קוטל השדים",
+    "قاتل الشياطين",
+    "ดาบพิฆาตอสูร",
+    "Miecz zabójcy demonów – Kimetsu no Yaiba",
+    " Guardians de la nit: Kimetsu no Yaiba",
+    "İblis Keser",
+    "ΚΥΝΗΓΟΣ ΔΑΙΜΟΝΩΝ: KIMETSU NO YAIBA",
+    "Zabiják démonů",
+    "شیطان کش",
+    "귀멸의 칼날",
+    "Истребитель демонов",
+    "Клинок, рассекающий демонов"
+   ],
+   "coverImage": {
+    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg",
+    "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-WBsBl0ClmgYL.jpg"
+   },
+   "format": "TV",
+   "status": "FINISHED",
+   "seasonYear": 2019,
+   "startDate": {
+    "year": 2019,
+    "month": 4,
+    "day": 6
+   },
+   "episodes": 26,
+   "chapters": null,
+   "averageScore": 82,
+   "genres": [
+    "Action",
+    "Adventure",
+    "Drama",
+    "Fantasy",
+    "Supernatural"
+   ],
+   "countryOfOrigin": "JP",
+   "isAdult": false,
+   "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/101922-33MtJGsUSxga.jpg",
+   "description": "<p>It is the Taisho Period in Japan. Tanjiro, a kindhearted boy who sells charcoal for a living, finds his family slaughtered by a demon. To make matters worse, his younger sister Nezuko, the sole survivor, has been transformed into a demon herself. Though devastated by this grim reality, Tanjiro resolves to become a “demon slayer” so that he can turn his sister back into a human, and kill the demon that massacred his family.<br><br />\n<br><br />\n(Source: Crunchyroll)</p>",
+   "duration": 24,
+   "season": "SPRING",
+   "source": "MANGA",
+   "siteUrl": "https://anilist.co/anime/101922",
+   "endDate": {
+    "year": 2019,
+    "month": 9,
+    "day": 28
+   },
+   "studios": {
+    "nodes": [
+     {
+      "name": "ufotable"
+     }
+    ]
+   },
+   "trailer": {
+    "id": "6vMuWuWlW4I",
+    "site": "youtube",
+    "thumbnail": "https://i.ytimg.com/vi/6vMuWuWlW4I/hqdefault.jpg"
+   },
+   "nextAiringEpisode": null,
+   "characters": {
+    "edges": [
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 126071,
+       "name": {
+        "full": "Tanjirou Kamado"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126071-BTNEc1nRIv68.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 111635,
+        "name": {
+         "full": "Natsuki Hanae"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n111635-L385UcjTKCBq.png"
+        },
+        "languageV2": "Japanese"
+       },
+       {
+        "id": 101560,
+        "name": {
+         "full": "Satomi Satou"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101560-YN8w6EZZtIhb.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 127518,
+       "name": {
+        "full": "Nezuko Kamado"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b127518-NRlq1CQ1v1ro.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 119722,
+        "name": {
+         "full": "Akari Kitou"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n119722-Ls7ORfBejJEP.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 129130,
+       "name": {
+        "full": "Inosuke Hashibira"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/n129130-SJC0Kn1DU39E.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 106817,
+        "name": {
+         "full": "Yoshitsugu Matsuoka"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n106817-mioGQjbTWWQ6.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 129131,
+       "name": {
+        "full": "Zenitsu Agatsuma"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129131-FZrQ7lSlxmEr.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95356,
+        "name": {
+         "full": "Hiro Shimono"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95356-PFaZRlI9oJ56.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 129132,
+       "name": {
+        "full": "Muzan Kibutsuji"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129132-4nIZakUZ1o8W.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95129,
+        "name": {
+         "full": "Toshihiko Seki"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95129-AAL7kfwAPpgR.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 129133,
+       "name": {
+        "full": "Kyoujurou Rengoku"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129133-VlTPowwt68rJ.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95245,
+        "name": {
+         "full": "Satoshi Hino"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95245-prBoWpg0HaGX.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 130050,
+       "name": {
+        "full": "Giyuu Tomioka"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b130050-qsLThJs5VIbz.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95079,
+        "name": {
+         "full": "Takahiro Sakurai"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95079-MdbWTLxPUvFf.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136069,
+       "name": {
+        "full": "Muichirou Tokitou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136069-6PLglx4tETUX.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 110877,
+        "name": {
+         "full": "Kengo Kawanishi"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n110877-8mqVadVTaFl4.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136070,
+       "name": {
+        "full": "Shinobu Kochou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136070-MC9LLxJsHyHE.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95869,
+        "name": {
+         "full": "Saori Hayami"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95869-qCQ0EaWpq1QT.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136071,
+       "name": {
+        "full": "Tengen Uzui"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136071-99Kexnnn2PiV.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95020,
+        "name": {
+         "full": "Katsuyuki Konishi"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95020-uOJO2IlwpcX0.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136072,
+       "name": {
+        "full": "Mitsuri Kanroji"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136072-xVwyRUKdpybi.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95185,
+        "name": {
+         "full": "Kana Hanazawa"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95185-x8ZYvtN7SegC.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137773,
+       "name": {
+        "full": "Sakonji Urokodaki"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137773-N4O52f73dJKZ.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95337,
+        "name": {
+         "full": "Houchuu Ootsuka"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95337-NnvEQEBKV2dR.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137774,
+       "name": {
+        "full": "Sanemi Shinazugawa"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137774-O1iYrnGLB71l.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95001,
+        "name": {
+         "full": "Tomokazu Seki"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95001-vm0RtZhmlzhK.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137775,
+       "name": {
+        "full": "Jigorou Kuwajima"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137775-WVj9nyVaYo45.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95255,
+        "name": {
+         "full": "Shigeru Chiba"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95255-VOwYfPMZuZGQ.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137776,
+       "name": {
+        "full": "Genya Shinazugawa"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137776-E0QuFD7y19OQ.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95270,
+        "name": {
+         "full": "Nobuhiko Okamoto"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95270-LqNIF238L59u.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137777,
+       "name": {
+        "full": "Obanai Iguro"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137777-kGViiNyx0wa7.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95005,
+        "name": {
+         "full": "Kenichi Suzumura"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95005-SkoVN02iOglr.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137778,
+       "name": {
+        "full": "Gyoumei Himejima"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137778-H4Uzb9cSCvZ6.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95002,
+        "name": {
+         "full": "Tomokazu Sugita"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95002-nDIvHaynicEg.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137806,
+       "name": {
+        "full": "Makomo"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137806-43Lqae34Vzqu.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 113511,
+        "name": {
+         "full": "Ai Kakuma"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n113511-F58Tk4OFKs1w.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137808,
+       "name": {
+        "full": "Kagaya Ubuyashiki"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137808-4yA8XQUDrAho.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95006,
+        "name": {
+         "full": "Toshiyuki Morikawa"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95006-hoLuiZANeD3Q.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137809,
+       "name": {
+        "full": "Sabito"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137809-6Tkle99lCBl8.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95672,
+        "name": {
+         "full": "Yuuki Kaji"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95672-T33YV7yCDKnL.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137810,
+       "name": {
+        "full": "Matsuemon Tennouji"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137810-x5JEOQTuxd86.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95346,
+        "name": {
+         "full": "Takumi Yamazaki"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95346-YNXEZtXvJttr.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138810,
+       "name": {
+        "full": "Susamaru"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138810-1d6mUy8lzr8K.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 105071,
+        "name": {
+         "full": "Mikako Komatsu"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n105071-Hcj0X2gcliPq.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138811,
+       "name": {
+        "full": "Yahaba"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138811-V9NNgNp9dAjq.png"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 95086,
+        "name": {
+         "full": "Jun Fukuyama"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95086-cwKYmhOFNtH5.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138812,
+       "name": {
+        "full": "Numa Oni"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138812-Imqj3sSfpcso.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 96762,
+        "name": {
+         "full": "Ryouhei Kimura"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96762-DNKMFBA2vWRr.jpg"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138846,
+       "name": {
+        "full": "Yushirou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138846-i8frJEl8baly.jpg"
+       }
+      },
+      "voiceActors": [
+       {
+        "id": 116971,
+        "name": {
+         "full": "Daiki Yamashita"
+        },
+        "image": {
+         "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n116971-KDHjlYPO4HrS.png"
+        },
+        "languageV2": "Japanese"
+       }
+      ]
+     }
+    ]
+   },
+   "staff": {
+    "edges": [
+     {
+      "role": "Original Creator",
+      "node": {
+       "id": 119973,
+       "name": {
+        "full": "Koyoharu Gotouge"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n119973-pzMtyCVGBWNt.jpg"
+       }
+      }
+     },
+     {
+      "role": "Director",
+      "node": {
+       "id": 99006,
+       "name": {
+        "full": "Haruo Sotozaki"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n99006-NuAjczMqcL3W.jpg"
+       }
+      }
+     },
+     {
+      "role": "Character Design",
+      "node": {
+       "id": 119808,
+       "name": {
+        "full": "Akira Matsushima"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n119808-61yB4qZ8gvPf.png"
+       }
+      }
+     },
+     {
+      "role": "Sub Character Design",
+      "node": {
+       "id": 146728,
+       "name": {
+        "full": "Youko Kajiyama"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n146728-SCLHr6f0n4Tz.png"
+       }
+      }
+     },
+     {
+      "role": "Sub Character Design",
+      "node": {
+       "id": 183407,
+       "name": {
+        "full": "Mika Kikuchi"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n183407-7u161oaNx8aq.jpg"
+       }
+      }
+     },
+     {
+      "role": "Sub Character Design",
+      "node": {
+       "id": 183357,
+       "name": {
+        "full": "Miyuki Satou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n183357-thpik7UhcKcM.png"
+       }
+      }
+     },
+     {
+      "role": "Prop Design",
+      "node": {
+       "id": 146709,
+       "name": {
+        "full": "Masaharu Koyama"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n146709-mDkNNAHI6crh.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistance",
+      "node": {
+       "id": 119439,
+       "name": {
+        "full": "Kazuharu Satou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistance",
+      "node": {
+       "id": 122847,
+       "name": {
+        "full": "Akira Hiyama"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistance",
+      "node": {
+       "id": 155350,
+       "name": {
+        "full": "Kumiko Oohori"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistance",
+      "node": {
+       "id": 185104,
+       "name": {
+        "full": "Masasuke Nakazawa"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistance",
+      "node": {
+       "id": 185105,
+       "name": {
+        "full": "So-Dam Jeong"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     }
+    ]
+   },
+   "relations": {
+    "edges": [
+     {
+      "relationType": "SOURCE",
+      "node": {
+       "id": 87216,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba",
+        "english": "Demon Slayer: Kimetsu no Yaiba",
+        "native": "鬼滅の刃"
+       },
+       "synonyms": [
+        "KnY",
+        "Guardianes de la Noche",
+        "Miecz zabójcy demonów",
+        "Les Rôdeurs de la nuit",
+        "İblis Keser",
+        "Zabiják démonů",
+        "귀멸의 칼날",
+        "قاتل الشياطين",
+        "ดาบพิฆาตอสูร",
+        "Thanh gươm diệt quỷ",
+        "Guardians de la Nit",
+        "Истребитель демонов",
+        "Ubica demona",
+        "鬼滅之刃"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87216-c9bSNVD10UuD.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2016
+       },
+       "episodes": null,
+       "chapters": 207,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SEQUEL",
+      "node": {
+       "id": 112151,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen",
+        "english": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+        "native": "鬼滅の刃 無限列車編"
+       },
+       "synonyms": [
+        "KnY Movie",
+        "Els Guardians de la Nit: El Tren Infinit",
+        "Guardianes de la Noche: Tren Infinito",
+        "Demon Slayer: Mugen Treni",
+        "Demon Slayer: Il Treno Mugen",
+        "鬼灭之刃：无限列车篇",
+        "قاتل الشياطين الفيلم: قطار اللانهاية",
+        "ดาบพิฆาตอสูร เดอะมูฟวี่ : ศึกรถไฟสู่นิรันดร์",
+        "Demon Slayer: Kimetsu no Yaiba - Le film : Le train de l'Infini",
+        "ΚΥΝΗΓΟΣ ΔΑΙΜΟΝΩΝ: KIMETSU NO YAIBA – Η ΤΑΙΝΙΑ: ΤΟ ΤΡΕΝΟ ΜΟΥΓΚΕΝ",
+        "극장판 귀멸의 칼날: 무한열차편",
+        "Клинок, Рассекающий Демонов: Бесконечный Поезд"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112151-1qlQwPB1RrJe.png"
+       },
+       "format": "MOVIE",
+       "status": "FINISHED",
+       "seasonYear": 2020,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": 84,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "CHARACTER",
+      "node": {
+       "id": 129627,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Chuukou Ikkan!! Kimetsu Gakuen Monogatari: Valentine-hen",
+        "english": "Junior High and High School!! Kimetsu Academy Story: Valentine Edition",
+        "native": "中高一貫!!キメツ学園物語 ～バレンタイン編～"
+       },
+       "synonyms": [
+        "Tales of a Demon Slayer Academy: Valentine Specials",
+        "キメツ学園物語 バレンタイン編",
+        "Kimetsu Gakuen Monogatari: Valentine-hen",
+        "初高中同校！！鬼灭学园物语",
+        "Kimetsu Gakuen: Valentine-hen",
+        "Академия Клинка: День Святого Валентина"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129627-GiVeOqDUAqUC.png"
+       },
+       "format": "ONA",
+       "status": "FINISHED",
+       "seasonYear": 2021,
+       "startDate": {
+        "year": 2021
+       },
+       "episodes": 4,
+       "chapters": null,
+       "averageScore": 68,
+       "genres": [
+        "Comedy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SEQUEL",
+      "node": {
+       "id": 129874,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen (TV)",
+        "english": "Demon Slayer: Kimetsu no Yaiba Mugen Train Arc",
+        "native": "鬼滅の刃 無限列車編 (TV)"
+       },
+       "synonyms": [
+        "KnY 2",
+        "ดาบพิฆาตอสูร : ศึกรถไฟสู่นิรันดร์ (TV)",
+        "鬼灭之刃 无限列车篇",
+        "Demon Slayer: Kimetsu no Yaiba: Le train de l'Infini",
+        "Demon Slayer: Kimetsu no Yaiba season 2",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba: Nieskończony Pociąg",
+        "귀멸의 칼날: 무한열차편",
+        "Клинок, Рассекающий Демонов: Бесконечный Поезд"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129874-g6ZKXB94Hui1.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2021,
+       "startDate": {
+        "year": 2021
+       },
+       "episodes": 7,
+       "chapters": null,
+       "averageScore": 82,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "CHARACTER",
+      "node": {
+       "id": 154541,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Chuukou Ikkan!! Kimetsu Gakuen Monogatari: Kimetsu no Utage Tokubetsu-hen",
+        "english": "Junior High and High School!! Kimetsu Academy Story: Kimetsu no Utage Special Edition",
+        "native": "中高一貫!!キメツ学園物語 ～鬼滅の宴=特別編=～"
+       },
+       "synonyms": [
+        "Kimetsu Academy: Kimetsu no Utage Special Edition",
+        "Kimetsu Gakuen Monogatari: Demon's Banquet Special Arc"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154541-Q7djLI2ttMp9.jpg"
+       },
+       "format": "SPECIAL",
+       "status": "FINISHED",
+       "seasonYear": 2020,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": 3,
+       "chapters": null,
+       "averageScore": 67,
+       "genres": [
+        "Comedy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "CHARACTER",
+      "node": {
+       "id": 187383,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba x MLB Tokyo Series presented by Guggenheim",
+        "english": null,
+        "native": "鬼滅の刃 × MLB Tokyo Series presented by Guggenheim"
+       },
+       "synonyms": [],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187383-OlAtb2DU7e5A.png"
+       },
+       "format": "ONA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2025
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": 59,
+       "genres": [
+        "Sports"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     }
+    ]
+   },
+   "recommendations": {
+    "nodes": [
+     {
+      "mediaRecommendation": {
+       "id": 113415,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Jujutsu Kaisen",
+        "english": "JUJUTSU KAISEN",
+        "native": "呪術廻戦"
+       },
+       "synonyms": [
+        "JJK",
+        "Sorcery Fight",
+        "咒术回战",
+        "주술회전",
+        "มหาเวทย์ผนึกมาร",
+        "جوجوتسو كايسن",
+        "Магическая битва",
+        "咒術迴戰",
+        "Chú Thuật Hồi Chiến"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2020,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": 24,
+       "chapters": null,
+       "averageScore": 84,
+       "genres": [
+        "Action",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 101347,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Dororo",
+        "english": "Dororo",
+        "native": "どろろ"
+       },
+       "synonyms": [
+        "Дороро"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2019,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": 24,
+       "chapters": null,
+       "averageScore": 81,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 269,
+       "type": "ANIME",
+       "title": {
+        "romaji": "BLEACH",
+        "english": "Bleach",
+        "native": "BLEACH"
+       },
+       "synonyms": [
+        "ブリーチ",
+        "'בליץ",
+        "เทพมรณะ",
+        "بليتش",
+        "Блич"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2004,
+       "startDate": {
+        "year": 2004
+       },
+       "episodes": 366,
+       "chapters": null,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 104276,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Boku no Hero Academia 4",
+        "english": "My Hero Academia Season 4",
+        "native": "僕のヒーローアカデミア４"
+       },
+       "synonyms": [
+        "BNHA 4",
+        "MHA 4",
+        "我的英雄学院 4",
+        "我的英雄学院第四季",
+        "มายฮีโร่ อคาเดเมีย ภาค 4",
+        "أكاديميتي للأبطال",
+        "Моя геройская академия 4"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104276-SnEowMvesWIE.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2019,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": 25,
+       "chapters": null,
+       "averageScore": 78,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Drama",
+        "Sci-Fi"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 97940,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Black Clover",
+        "english": "Black Clover",
+        "native": "ブラッククローバー"
+       },
+       "synonyms": [
+        "תלתן שחור",
+        "แบล็กโคลเวอร์",
+        "Чёрный клевер"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2017,
+       "startDate": {
+        "year": 2017
+       },
+       "episodes": 170,
+       "chapters": null,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Fantasy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 128893,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Jigokuraku",
+        "english": "Hell’s Paradise",
+        "native": "地獄楽"
+       },
+       "synonyms": [
+        "Hell’s Paradise: Jigokuraku",
+        "สุขาวดีอเวจี",
+        "Адский рай"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128893-Gc2t8b8M0mVu.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2023,
+       "startDate": {
+        "year": 2023
+       },
+       "episodes": 13,
+       "chapters": null,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 142877,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan (2023)",
+        "english": "Rurouni Kenshin (2023)",
+        "native": "るろうに剣心 －明治剣客浪漫譚－(2023)"
+       },
+       "synonyms": [
+        "Samurai X (2023)",
+        "Kenshin le vagabond (2023)"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142877-FrXXLsgXYQAp.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2023,
+       "startDate": {
+        "year": 2023
+       },
+       "episodes": 24,
+       "chapters": null,
+       "averageScore": 74,
+       "genres": [
+        "Action",
+        "Drama",
+        "Romance"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 11061,
+       "type": "ANIME",
+       "title": {
+        "romaji": "HUNTER×HUNTER (2011)",
+        "english": "Hunter x Hunter (2011)",
+        "native": "HUNTER×HUNTER (2011)"
+       },
+       "synonyms": [
+        "ハンター×ハンター",
+        "HxH",
+        "全职猎人",
+        "האנטר האנטר",
+        "ฮันเตอร์ x ฮันเตอร์",
+        "القناص ",
+        "Мисливець X Мисливець"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-y5gsT1hoHuHw.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2011,
+       "startDate": {
+        "year": 2011
+       },
+       "episodes": 148,
+       "chapters": null,
+       "averageScore": 89,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Fantasy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 5114,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Hagane no Renkinjutsushi: FULLMETAL ALCHEMIST",
+        "english": "Fullmetal Alchemist: Brotherhood",
+        "native": "鋼の錬金術師 FULLMETAL ALCHEMIST"
+       },
+       "synonyms": [
+        "FMA",
+        "FMAB",
+        "Hagaren",
+        "الخيميائي الفولاذي",
+        "אלכימאי המתכת: אחוות אחים",
+        "Full Metal Alchemist: Brotherhood",
+        "钢之炼金术师 FULLMETAL ALCHEMIST",
+        "แขนกล คนแปรธาตุ: บราเธอร์ฮูด",
+        "Stalowy alchemik: Misja braci",
+        "Сталевий алхімік. Братерство",
+        "Стальной алхимик: Братство"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5114-nSWCgQlmOMtj.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2009,
+       "startDate": {
+        "year": 2009
+       },
+       "episodes": 64,
+       "chapters": null,
+       "averageScore": 90,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 20613,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Akame ga Kill!",
+        "english": "Akame ga Kill!",
+        "native": "アカメが斬る！"
+       },
+       "synonyms": [
+        "Akame ga Kiru!",
+        "أكامي: قاتلة بالإكراه!",
+        "Red Eyes Sword",
+        "斬！赤紅之瞳"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2014,
+       "startDate": {
+        "year": 2014
+       },
+       "episodes": 24,
+       "chapters": null,
+       "averageScore": 73,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Horror",
+        "Psychological",
+        "Thriller"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 20829,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Owari no Seraph",
+        "english": "Seraph of the End: Vampire Reign",
+        "native": "終わりのセラフ"
+       },
+       "synonyms": [
+        "OwaSera",
+        "Seraph of the End: El Reino de los Vampiros",
+        "เทวทูตแห่งโลกมืด"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20829-pgsXVjrfyI5V.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2015,
+       "startDate": {
+        "year": 2015
+       },
+       "episodes": 12,
+       "chapters": null,
+       "averageScore": 73,
+       "genres": [
+        "Action",
+        "Drama",
+        "Fantasy",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 20,
+       "type": "ANIME",
+       "title": {
+        "romaji": "NARUTO",
+        "english": "Naruto",
+        "native": "NARUTO -ナルト-"
+       },
+       "synonyms": [
+        "נארוטו",
+        "ناروتو",
+        "火影忍者",
+        "นารูโตะ นินจาจอมคาถา",
+        "Наруто"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2002,
+       "startDate": {
+        "year": 2002
+       },
+       "episodes": 220,
+       "chapters": null,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Drama",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     }
+    ]
+   }
+  }
+ }
+}

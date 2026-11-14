@@ -1,0 +1,159 @@
+{
+ "data": {
+  "m0": {
+   "media": [
+    {
+     "id": 21,
+     "type": "ANIME",
+     "title": {
+      "romaji": "ONE PIECE",
+      "english": "ONE PIECE",
+      "native": "ONE PIECE"
+     },
+     "synonyms": [
+      "ワンピース",
+      "海贼王",
+      "וואן פיס",
+      "ون بيس",
+      "วันพีซ",
+      "Vua Hải Tặc",
+      "All'arrembaggio!",
+      "Tutti all'arrembaggio!",
+      "Ντρέηκ, το Κυνήγι του Θησαυρού",
+      "OP",
+      "Ван-Пис"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+     },
+     "format": "TV",
+     "status": "RELEASING",
+     "seasonYear": 1999,
+     "startDate": {
+      "year": 1999
+     },
+     "episodes": null,
+     "chapters": null,
+     "averageScore": 87,
+     "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Drama",
+      "Fantasy"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    },
+    {
+     "id": 171630,
+     "type": "ANIME",
+     "title": {
+      "romaji": "THE ONE PIECE",
+      "english": "THE ONE PIECE",
+      "native": "THE ONE PIECE"
+     },
+     "synonyms": [
+      "ザワンピース"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+     },
+     "format": null,
+     "status": "NOT_YET_RELEASED",
+     "seasonYear": 2027,
+     "startDate": {
+      "year": 2027
+     },
+     "episodes": 7,
+     "chapters": null,
+     "averageScore": null,
+     "genres": [
+      "Adventure"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    },
+    {
+     "id": 459,
+     "type": "ANIME",
+     "title": {
+      "romaji": "ONE PIECE (Movie)",
+      "english": "ONE PIECE: The Movie",
+      "native": "ONE PIECE (Movie)"
+     },
+     "synonyms": [
+      "One Piece: The Movie",
+      "One Piece (2000)",
+      "One Piece: La Película",
+      "วันพีซ เดอะมูฟวี่ 1 เกาะสมบัติแห่งวูนัน",
+      "Vua Hải Tặc: Đảo Châu Báu",
+      "One Piece: Golden Island Adventure",
+      "One Piece - Per tutto l'oro del mondo"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx459-Ivw65mUXackh.png"
+     },
+     "format": "MOVIE",
+     "status": "FINISHED",
+     "seasonYear": 2000,
+     "startDate": {
+      "year": 2000
+     },
+     "episodes": 1,
+     "chapters": null,
+     "averageScore": 68,
+     "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Fantasy"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    }
+   ]
+  },
+  "m1": {
+   "media": [
+    {
+     "id": 166531,
+     "type": "ANIME",
+     "title": {
+      "romaji": "[Oshi no Ko] 2nd Season",
+      "english": "OSHI NO KO Season 2",
+      "native": "【推しの子】第2期"
+     },
+     "synonyms": [
+      "我推的孩子",
+      "[OSHI NO KO] Season 2",
+      "【OSHI NO KO】Season 2"
+     ],
+     "coverImage": {
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166531-dAL5MsqDHUkj.jpg"
+     },
+     "format": "TV",
+     "status": "FINISHED",
+     "seasonYear": 2024,
+     "startDate": {
+      "year": 2024
+     },
+     "episodes": 13,
+     "chapters": null,
+     "averageScore": 85,
+     "genres": [
+      "Drama",
+      "Mystery",
+      "Psychological",
+      "Supernatural"
+     ],
+     "countryOfOrigin": "JP",
+     "isAdult": false
+    }
+   ]
+  },
+  "m2": {
+   "media": []
+  }
+ }
+}
