@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/watch/player/player_settings.dart';
 import 'package:kolektaku/features/watch/player/video_quality.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'player_extras_ui_support.dart';
 
@@ -71,22 +72,44 @@ void main() {
       expect(find.byKey(const Key('settings-row-audio')), findsNothing);
     });
 
-    testWidgets('rows fill the sheet so the arrows line up on the right', (
+    testWidgets('every arrow sits at the right edge of its row', (
       tester,
     ) async {
       await show(
         tester,
         qualities: adaptive,
         onAudio: () {},
-        audioLabel: 'Server 1',
+        audioLabel: 'Server 1 · Dub · audio Inggris',
       );
       await openSettings(tester);
-      final widths = [
-        for (final id in ['quality', 'audio', 'speed'])
-          tester.getSize(find.byKey(Key('settings-row-$id'))).width,
-      ];
-      expect(widths.toSet(), hasLength(1));
-      expect(widths.first, greaterThan(300));
+      for (final id in ['quality', 'audio', 'speed']) {
+        final row = find.byKey(Key('settings-row-$id'));
+        final arrow = find.descendant(
+          of: row,
+          matching: find.byIcon(LucideIcons.chevronRight),
+        );
+        expect(
+          tester.getTopRight(arrow).dx,
+          closeTo(tester.getTopRight(row).dx, 1),
+          reason: id,
+        );
+      }
+    });
+
+    testWidgets('a long value is cut instead of pushing the label away', (
+      tester,
+    ) async {
+      await show(
+        tester,
+        onAudio: () {},
+        audioLabel: 'Server 12 · Dub · audio bahasa Inggris Amerika Serikat',
+      );
+      await openSettings(tester);
+      final value = find.descendant(
+        of: find.byKey(const Key('settings-row-audio')),
+        matching: find.textContaining('Server 12'),
+      );
+      expect(tester.getSize(value).width, lessThanOrEqualTo(150));
     });
 
     testWidgets('closes the sheet before opening the chosen picker', (

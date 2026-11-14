@@ -8,6 +8,8 @@ import '../../../widgets/swipe_sheet.dart';
 import 'player_session.dart';
 import 'player_settings.dart';
 
+const _valueMaxWidth = 150.0;
+
 class PlayerSettingsButton extends StatelessWidget {
   const PlayerSettingsButton({
     super.key,
@@ -86,7 +88,8 @@ class SettingRow extends StatelessWidget {
           children: [
             Icon(choice.icon, size: 20, color: muted),
             Expanded(child: Text(choice.label, style: theme.textTheme.p)),
-            Flexible(
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: _valueMaxWidth),
               child: Text(
                 choice.value,
                 maxLines: 1,
