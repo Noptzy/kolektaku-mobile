@@ -17,7 +17,7 @@ Kolektaku dibagikan lewat halaman [Releases](https://github.com/Noptzy/kolektaku
 2. Buka berkas yang terunduh. Saat diminta, izinkan pemasangan dari sumber ini ("instal aplikasi tidak dikenal").
 3. Pasang, lalu buka Kolektaku.
 
-Pembaruan berikutnya tidak perlu mengunduh manual: aplikasi memeriksa rilis baru sendiri (paling sering 12 jam sekali), dan juga lewat Pengaturan → Pembaruan. APK diverifikasi dengan SHA-256 sebelum dipasang.
+Pembaruan berikutnya tidak perlu mengunduh manual: aplikasi memeriksa rilis baru sendiri setiap dibuka dan mengunduhnya otomatis, lalu tinggal ketuk Pasang. Kamu juga bisa memeriksanya kapan saja lewat Pengaturan → Pembaruan. APK diverifikasi dengan SHA-256 sebelum dipasang.
 
 ## Tampilan
 
