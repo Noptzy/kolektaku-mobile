@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/providers/gateway_providers.dart';
+import '../../src/rust/dto/update.dart';
 import '../../platform/apk_installer.dart';
 import '../settings/settings_logic.dart';
 import 'update_providers.dart';
 import 'update_state.dart';
-
-const lastCheckKey = 'update.last_checked';
 
 class UpdateController extends Notifier<UpdateState> {
   @override
@@ -16,55 +14,44 @@ class UpdateController extends Notifier<UpdateState> {
 
   Future<void> checkOnLaunch() async {
     if (state.busy || state.hasOffer) return;
-    try {
-      final stored = await ref
-          .read(libraryGatewayProvider)
-          .preference(lastCheckKey);
-      final now = ref.read(nowSecondsProvider)();
-      final due = ref
-          .read(updateGatewayProvider)
-          .due(int.tryParse(stored ?? ''), now, manual: false);
-      if (due) await _check(manual: false);
-    } on Object {
-      return;
-    }
+    await _check(manual: false);
   }
 
   Future<void> checkNow() => _check(manual: true);
 
   Future<void> _check({required bool manual}) async {
     if (state.busy) return;
-    state = const UpdateState(phase: UpdatePhase.checking);
+    state = UpdateState(
+      phase: UpdatePhase.checking,
+      installed: state.installed,
+    );
+    var installed = '';
+    UpdateOfferDto? offer;
     try {
-      final installed = await ref.read(appVersionProvider.future);
+      installed = await ref.read(appVersionProvider.future);
       final abis = await ref.read(apkInstallerProvider).abis();
-      final offer = await ref
-          .read(updateGatewayProvider)
-          .check(installed, abis);
-      await _remember();
-      state = offer == null
-          ? const UpdateState(phase: UpdatePhase.upToDate)
-          : UpdateState(
-              phase: UpdatePhase.available,
-              offer: offer,
-              total: offer.size.toInt(),
-            );
+      offer = await ref.read(updateGatewayProvider).check(installed, abis);
     } on Object catch (error) {
       state = manual
-          ? UpdateState(phase: UpdatePhase.failed, error: '$error')
-          : const UpdateState();
-    }
-  }
-
-  Future<void> _remember() async {
-    try {
-      final now = ref.read(nowSecondsProvider)();
-      await ref
-          .read(libraryGatewayProvider)
-          .setPreference(lastCheckKey, '$now');
-    } on Object {
+          ? UpdateState(
+              phase: UpdatePhase.failed,
+              error: '$error',
+              installed: installed,
+            )
+          : UpdateState(installed: installed);
       return;
     }
+    if (offer == null) {
+      state = UpdateState(phase: UpdatePhase.upToDate, installed: installed);
+      return;
+    }
+    state = UpdateState(
+      phase: UpdatePhase.available,
+      offer: offer,
+      total: offer.size.toInt(),
+      installed: installed,
+    );
+    if (ref.read(autoDownloadProvider)) await download();
   }
 
   Future<void> download() async {
@@ -74,6 +61,7 @@ class UpdateController extends Notifier<UpdateState> {
       phase: UpdatePhase.downloading,
       offer: offer,
       total: offer.size.toInt(),
+      installed: state.installed,
     );
     try {
       final folder = await ref.read(updateFolderProvider)();

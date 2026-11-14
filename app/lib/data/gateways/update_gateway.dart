@@ -5,8 +5,6 @@ abstract interface class UpdateGateway {
   Future<UpdateOfferDto?> check(String installed, List<String> abis);
 
   Stream<UpdateProgressDto> download(UpdateOfferDto offer, String folder);
-
-  bool due(int? lastCheckedSecs, int nowSecs, {required bool manual});
 }
 
 class BridgeUpdateGateway implements UpdateGateway {
@@ -19,15 +17,4 @@ class BridgeUpdateGateway implements UpdateGateway {
   @override
   Stream<UpdateProgressDto> download(UpdateOfferDto offer, String folder) =>
       api.downloadUpdate(offer: offer, folder: folder);
-
-  @override
-  bool due(int? lastCheckedSecs, int nowSecs, {required bool manual}) {
-    return api.updateDue(
-      lastCheckedSecs: lastCheckedSecs == null
-          ? null
-          : BigInt.from(lastCheckedSecs),
-      nowSecs: BigInt.from(nowSecs),
-      manual: manual,
-    );
-  }
 }

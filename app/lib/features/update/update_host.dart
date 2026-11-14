@@ -19,6 +19,7 @@ class UpdateHost extends ConsumerStatefulWidget {
 
 class _UpdateHostState extends ConsumerState<UpdateHost> {
   String? _shownFor;
+  bool _open = false;
 
   @override
   void initState() {
@@ -30,13 +31,14 @@ class _UpdateHostState extends ConsumerState<UpdateHost> {
     });
   }
 
-  void _offer(UpdateState state) {
+  void _present(UpdateState state) {
     final offer = state.offer;
-    if (offer == null || state.isRequired) return;
-    if (state.phase != UpdatePhase.available || _shownFor == offer.version) {
-      return;
-    }
+    if (offer == null || state.isRequired || _open) return;
+    final fresh =
+        state.phase == UpdatePhase.available && _shownFor != offer.version;
+    if (!fresh && state.phase != UpdatePhase.ready) return;
     _shownFor = offer.version;
+    _open = true;
     showSwipeSheet<void>(
       context: context,
       builder: (sheetContext) => ShadSheet(
@@ -58,13 +60,13 @@ class _UpdateHostState extends ConsumerState<UpdateHost> {
           ),
         ),
       ),
-    );
+    ).whenComplete(() => _open = false);
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen<UpdateState>(updateControllerProvider, (previous, next) {
-      if (previous?.phase != next.phase) _offer(next);
+      if (previous?.phase != next.phase) _present(next);
     });
     final state = ref.watch(updateControllerProvider);
     final blocked = state.isRequired && state.phase != UpdatePhase.upToDate;

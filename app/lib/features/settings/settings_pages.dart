@@ -47,7 +47,8 @@ enum SettingsPage {
     title: 'Pembaruan',
     icon: LucideIcons.circleArrowDown,
     intro:
-        'Kolektaku memeriksa versi baru sendiri paling sering 12 jam sekali. '
+        'Kolektaku memeriksa versi baru sendiri setiap dibuka dan mengunduhnya '
+        'otomatis. '
         'Kamu juga bisa memeriksanya sekarang.',
   ),
   about(

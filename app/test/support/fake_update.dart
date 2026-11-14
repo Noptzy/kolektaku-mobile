@@ -31,10 +31,8 @@ class FakeUpdateGateway implements UpdateGateway {
   UpdateOfferDto? offer;
   Object? checkError;
   Object? downloadError;
-  bool dueResult = true;
   List<UpdateProgressDto> events = const [];
   final List<(String, List<String>)> checks = [];
-  final List<({int? last, int now, bool manual})> dueAsks = [];
   final List<String> downloads = [];
 
   @override
@@ -56,12 +54,6 @@ class FakeUpdateGateway implements UpdateGateway {
     }
     final error = downloadError;
     if (error != null) throw error;
-  }
-
-  @override
-  bool due(int? lastCheckedSecs, int nowSecs, {required bool manual}) {
-    dueAsks.add((last: lastCheckedSecs, now: nowSecs, manual: manual));
-    return dueResult;
   }
 }
 

@@ -102,7 +102,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => -240455349;
+  int get rustContentHash => 1180523819;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -320,12 +320,6 @@ abstract class RustLibApi extends BaseApi {
   Future<UnitsDto> crateApiDetailUnits({
     required MediaRefDto reference,
     String? source,
-  });
-
-  bool crateApiUpdateUpdateDue({
-    BigInt? lastCheckedSecs,
-    required BigInt nowSecs,
-    required bool manual,
   });
 }
 
@@ -1885,37 +1879,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiDetailUnitsConstMeta => const TaskConstMeta(
     debugName: "units",
     argNames: ["reference", "source"],
-  );
-
-  @override
-  bool crateApiUpdateUpdateDue({
-    BigInt? lastCheckedSecs,
-    required BigInt nowSecs,
-    required bool manual,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_opt_box_autoadd_u_64(lastCheckedSecs, serializer);
-          sse_encode_u_64(nowSecs, serializer);
-          sse_encode_bool(manual, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUpdateUpdateDueConstMeta,
-        argValues: [lastCheckedSecs, nowSecs, manual],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUpdateUpdateDueConstMeta => const TaskConstMeta(
-    debugName: "update_due",
-    argNames: ["lastCheckedSecs", "nowSecs", "manual"],
   );
 
   @protected

@@ -19,6 +19,7 @@ class UpdateState {
     this.total = 0,
     this.path,
     this.error,
+    this.installed,
   });
 
   final UpdatePhase phase;
@@ -27,6 +28,7 @@ class UpdateState {
   final int total;
   final String? path;
   final String? error;
+  final String? installed;
 
   bool get busy =>
       phase == UpdatePhase.checking ||
@@ -54,6 +56,7 @@ class UpdateState {
       total: total ?? this.total,
       path: path ?? this.path,
       error: error,
+      installed: installed,
     );
   }
 }

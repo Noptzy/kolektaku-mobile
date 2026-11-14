@@ -24,13 +24,3 @@ Stream<UpdateProgressDto> downloadUpdate({
   offer: offer,
   folder: folder,
 );
-
-bool updateDue({
-  BigInt? lastCheckedSecs,
-  required BigInt nowSecs,
-  required bool manual,
-}) => RustLib.instance.api.crateApiUpdateUpdateDue(
-  lastCheckedSecs: lastCheckedSecs,
-  nowSecs: nowSecs,
-  manual: manual,
-);
