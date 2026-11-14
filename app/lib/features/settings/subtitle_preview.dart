@@ -30,6 +30,7 @@ class SubtitlePreview extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               const Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(child: ColoredBox(color: Color(0xFFE9E3D2))),
                   Expanded(child: ColoredBox(color: Color(0xFF2B2B35))),

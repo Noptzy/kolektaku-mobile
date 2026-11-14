@@ -94,21 +94,24 @@ class _Dot extends StatelessWidget {
       label: label,
       selected: selected,
       minSize: 44,
-      child: Center(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: selected ? scheme.primary : scheme.border,
-              width: selected ? 3 : 1,
+      child: SizedBox.square(
+        dimension: 44,
+        child: Center(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected ? scheme.primary : scheme.border,
+                width: selected ? 3 : 1,
+              ),
             ),
-          ),
-          child: SizedBox.square(
-            dimension: 36,
-            child: selected
-                ? Icon(LucideIcons.check, size: 18, color: ink)
-                : null,
+            child: SizedBox.square(
+              dimension: 36,
+              child: selected
+                  ? Icon(LucideIcons.check, size: 18, color: ink)
+                  : null,
+            ),
           ),
         ),
       ),
