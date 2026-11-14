@@ -2,27 +2,23 @@ import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../core/pesan_error.dart';
 import '../../src/rust/dto/media.dart';
+import '../../src/rust/dto/sources.dart';
 import '../../src/rust/dto/stream.dart';
-import '../../src/rust/error.dart';
 import '../watch/episodes_sheet.dart';
 import '../watch/player/standby_panel.dart';
 import 'chapter_loader.dart';
 import 'page_image.dart';
 import 'page_heights.dart';
+import 'read_failure.dart';
 import 'read_progress.dart';
 import 'read_request.dart';
-import 'reader_bars.dart';
 import 'reader_controller.dart';
+import 'reader_layers.dart';
 import 'reader_pages.dart';
+import 'reader_zoom.dart';
 
 const _probeDepth = 0.3;
-
-String readFailureMessage(Object? error) {
-  if (error is BridgeError) return pesanError(error);
-  return 'Terjadi masalah saat membuka chapter. Coba lagi.';
-}
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({
@@ -53,6 +49,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
   );
   ScrollController _scroll = ScrollController();
   PageHeights _metrics = PageHeights();
+  final ReaderZoom _zoom = ReaderZoom();
+  double _appliedZoom = 1;
   ChapterViewDto? _shown;
   bool _bars = true;
 
@@ -60,10 +58,19 @@ class _ReaderScreenState extends State<ReaderScreen> {
   void initState() {
     super.initState();
     _controller.addListener(_onChange);
+    _zoom.addListener(_onZoom);
     _controller.load();
   }
 
-  double get _width => MediaQuery.sizeOf(context).width;
+  double get _width => _zoom.widthOf(MediaQuery.sizeOf(context).width);
+
+  void _onZoom() {
+    if (_zoom.zoom == _appliedZoom) return;
+    if (_scroll.hasClients) {
+      _scroll.jumpTo(_scroll.position.pixels * _zoom.zoom / _appliedZoom);
+    }
+    _appliedZoom = _zoom.zoom;
+  }
 
   void _onChange() {
     final view = _controller.view;
@@ -116,13 +123,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
     );
   }
 
-  void _goNext() {
-    final target = _controller.next;
-    if (target != null) _controller.goTo(target);
-  }
-
-  void _goPrevious() {
-    final target = _controller.previous;
+  void _go(UnitDto? target) {
     if (target != null) _controller.goTo(target);
   }
 
@@ -134,6 +135,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
   @override
   void dispose() {
     _controller.removeListener(_onChange);
+    _zoom.removeListener(_onZoom);
+    _zoom.dispose();
     _controller.dispose();
     _scroll.dispose();
     super.dispose();
@@ -163,51 +166,32 @@ class _ReaderScreenState extends State<ReaderScreen> {
         onRetry: failed ? _controller.load : null,
       );
     }
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        ReaderPages(
+    return ReaderLayers(
+      title: _title(),
+      barsVisible: _bars,
+      page: _controller.page,
+      total: _controller.total,
+      onBack: _back,
+      onChapters: _controller.units.isEmpty ? null : _showChapters,
+      onPrevious: _controller.previous == null
+          ? null
+          : () => _go(_controller.previous),
+      onNext: _controller.next == null ? null : () => _go(_controller.next),
+      pages: ZoomSurface(
+        model: _zoom,
+        builder: (context, width) => ReaderPages(
           view: view,
           scroll: _scroll,
           metrics: _metrics,
           imageFor: widget.imageFor,
           next: _controller.next,
           onAspect: _onAspect,
-          onNext: _goNext,
+          onNext: () => _go(_controller.next),
           onTap: () => setState(() => _bars = !_bars),
           onScroll: _onScroll,
+          decodeScale: _zoom.decodeScale,
+          physics: _zoom.pinching ? const NeverScrollableScrollPhysics() : null,
         ),
-        _bar(
-          top: true,
-          child: ReaderTopBar(
-            title: _title(),
-            onBack: _back,
-            onChapters: _controller.units.isEmpty ? null : _showChapters,
-          ),
-        ),
-        _bar(
-          top: false,
-          child: ReaderBottomBar(
-            page: _controller.page,
-            total: _controller.total,
-            onPrevious: _controller.previous == null ? null : _goPrevious,
-            onNext: _controller.next == null ? null : _goNext,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _bar({required bool top, required Widget child}) {
-    return Positioned(
-      top: top ? 0 : null,
-      bottom: top ? null : 0,
-      left: 0,
-      right: 0,
-      child: AnimatedOpacity(
-        opacity: _bars ? 1 : 0,
-        duration: const Duration(milliseconds: 200),
-        child: IgnorePointer(ignoring: !_bars, child: child),
       ),
     );
   }
