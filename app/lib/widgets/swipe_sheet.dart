@@ -4,7 +4,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 const sheetDismissDistance = 96.0;
 const sheetDismissVelocity = 700.0;
 const _settleDuration = Duration(milliseconds: 180);
-const _grabberSize = Size(40, 4);
 
 bool shouldDismiss({required double distance, required double velocity}) =>
     distance >= sheetDismissDistance || velocity >= sheetDismissVelocity;
@@ -71,7 +70,6 @@ class _SwipeDismissState extends State<SwipeDismiss>
 
   @override
   Widget build(BuildContext context) {
-    final muted = ShadTheme.of(context).colorScheme.mutedForeground;
     return GestureDetector(
       key: const Key('swipe-dismiss'),
       onVerticalDragUpdate: _drag,
@@ -80,25 +78,7 @@ class _SwipeDismissState extends State<SwipeDismiss>
         animation: _settle,
         builder: (context, child) =>
             Transform.translate(offset: Offset(0, _shift), child: child),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            widget.child,
-            Positioned(
-              top: 8,
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  key: const Key('sheet-grabber'),
-                  decoration: BoxDecoration(
-                    color: muted.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(_grabberSize.height),
-                  ),
-                  child: SizedBox.fromSize(size: _grabberSize),
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: widget.child,
       ),
     );
   }

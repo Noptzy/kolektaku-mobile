@@ -69,10 +69,9 @@ void main() {
   });
 
   group('showSwipeSheet', () {
-    testWidgets('shows the sheet with a grabber', (tester) async {
+    testWidgets('shows the sheet', (tester) async {
       await open(tester);
       expect(find.text(_title), findsOneWidget);
-      expect(find.byKey(const Key('sheet-grabber')), findsOneWidget);
     });
 
     testWidgets('dragging down past the distance closes it', (tester) async {

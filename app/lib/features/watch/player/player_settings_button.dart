@@ -44,6 +44,7 @@ class PlayerSettingsButton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   for (final choice in choices)
                     SettingRow(

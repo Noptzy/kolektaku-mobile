@@ -71,6 +71,24 @@ void main() {
       expect(find.byKey(const Key('settings-row-audio')), findsNothing);
     });
 
+    testWidgets('rows fill the sheet so the arrows line up on the right', (
+      tester,
+    ) async {
+      await show(
+        tester,
+        qualities: adaptive,
+        onAudio: () {},
+        audioLabel: 'Server 1',
+      );
+      await openSettings(tester);
+      final widths = [
+        for (final id in ['quality', 'audio', 'speed'])
+          tester.getSize(find.byKey(Key('settings-row-$id'))).width,
+      ];
+      expect(widths.toSet(), hasLength(1));
+      expect(widths.first, greaterThan(300));
+    });
+
     testWidgets('closes the sheet before opening the chosen picker', (
       tester,
     ) async {
