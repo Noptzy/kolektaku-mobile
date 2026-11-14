@@ -1,6 +1,9 @@
 use domain::media::{MediaKind, MediaSummary, MediaTitle};
 
+use super::synopsis::brief_synopsis;
 use crate::catalog::anilist::schema::{RawKind, RawSummary};
+
+const SYNOPSIS_WORDS: usize = 100;
 
 const UNTITLED: &str = "Tanpa judul";
 
@@ -50,9 +53,17 @@ pub fn map_summary(raw: RawSummary) -> MediaSummary {
             .map(|synonym| synonym.trim().to_string())
             .filter(|synonym| !synonym.is_empty())
             .collect(),
+        cover_hd_url: raw
+            .cover_image
+            .as_ref()
+            .and_then(|image| image.extra_large.clone()),
         cover_url: raw
             .cover_image
-            .and_then(|image| image.extra_large.or(image.large)),
+            .and_then(|image| image.large.or(image.extra_large)),
+        synopsis: raw
+            .synopsis
+            .as_deref()
+            .and_then(|text| brief_synopsis(text, SYNOPSIS_WORDS)),
         format: raw.format,
         status: raw.status,
         year: raw
@@ -98,15 +109,49 @@ mod tests {
     }
 
     #[test]
-    fn manga_counts_chapters_and_the_large_cover_wins() {
+    fn manga_counts_chapters_and_keeps_both_cover_sizes() {
         let summary = map_summary(raw(
             r#"{"id":2,"type":"MANGA","title":{"romaji":"Berserk"},"episodes":9,"chapters":364,
             "coverImage":{"large":"l","extraLarge":"xl"},"startDate":{"year":1989}}"#,
         ));
         assert_eq!(summary.kind, MediaKind::Manga);
         assert_eq!(summary.unit_count, Some(364));
-        assert_eq!(summary.cover_url.as_deref(), Some("xl"));
+        assert_eq!(summary.cover_url.as_deref(), Some("l"));
+        assert_eq!(summary.cover_hd_url.as_deref(), Some("xl"));
         assert_eq!(summary.year, Some(1989));
+    }
+
+    #[test]
+    fn the_only_cover_sent_is_still_used_for_cards() {
+        let summary = map_summary(raw(
+            r#"{"id":3,"type":"ANIME","title":{"romaji":"X"},"coverImage":{"extraLarge":"xl"}}"#,
+        ));
+        assert_eq!(summary.cover_url.as_deref(), Some("xl"));
+        assert_eq!(summary.cover_hd_url.as_deref(), Some("xl"));
+    }
+
+    #[test]
+    fn the_synopsis_is_cleaned_and_capped_at_one_hundred_words() {
+        let long = (1..=130)
+            .map(|n| format!("w{n}"))
+            .collect::<Vec<_>>()
+            .join(" ");
+        let json = format!(
+            r#"{{"id":4,"type":"ANIME","title":{{"romaji":"X"}},"synopsis":"Intro<br>~!spoiler!~ {long}"}}"#
+        );
+        let summary = map_summary(raw(&json));
+        let text = summary.synopsis.unwrap();
+        assert!(text.starts_with("Intro w1 w2"));
+        assert!(text.ends_with('…'));
+        assert!(!text.contains("spoiler"));
+        assert_eq!(text.trim_end_matches('…').split(' ').count(), 100);
+    }
+
+    #[test]
+    fn a_missing_synopsis_stays_empty() {
+        let summary = map_summary(raw(r#"{"id":5,"type":"ANIME","title":{"romaji":"X"}}"#));
+        assert_eq!(summary.synopsis, None);
+        assert_eq!(summary.cover_hd_url, None);
     }
 
     #[test]

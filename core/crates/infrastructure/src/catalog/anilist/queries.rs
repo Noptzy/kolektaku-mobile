@@ -1,10 +1,8 @@
-const SUMMARY_FRAGMENT: &str = "
-fragment S on Media {
+const SUMMARY_FIELDS: &str = "
   id
   type
   title { romaji english native }
   synonyms
-  coverImage { large }
   format
   status
   seasonYear
@@ -14,8 +12,19 @@ fragment S on Media {
   averageScore
   genres
   countryOfOrigin
-  isAdult
-}";
+  isAdult";
+
+const RICH_COVER: &str = "coverImage { large extraLarge }";
+const RICH_EXTRA: &str = "synopsis: description(asHtml: false)";
+
+fn summary_fragment(rich: bool) -> String {
+    let (cover, extra) = if rich {
+        (RICH_COVER, RICH_EXTRA)
+    } else {
+        ("coverImage { large }", "")
+    };
+    format!("\nfragment S on Media {{{SUMMARY_FIELDS}  {cover}\n  {extra}\n}}")
+}
 
 const DETAIL_BODY: &str = "
 query ($id: Int, $type: MediaType) {
@@ -76,19 +85,19 @@ query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $genre: Str
 }";
 
 pub fn discover_query() -> String {
-    format!("{DISCOVER_BODY}{SUMMARY_FRAGMENT}")
+    format!("{DISCOVER_BODY}{}", summary_fragment(false))
 }
 
 pub fn detail_query() -> String {
-    format!("{DETAIL_BODY}{SUMMARY_FRAGMENT}")
+    format!("{DETAIL_BODY}{}", summary_fragment(false))
 }
 
-pub fn list_query() -> String {
-    format!("{LIST_BODY}{SUMMARY_FRAGMENT}")
+pub fn list_query(rich: bool) -> String {
+    format!("{LIST_BODY}{}", summary_fragment(rich))
 }
 
 pub fn search_query() -> String {
-    format!("{SEARCH_BODY}{SUMMARY_FRAGMENT}")
+    format!("{SEARCH_BODY}{}", summary_fragment(false))
 }
 
 pub fn batch_match_query(count: usize) -> String {
@@ -103,9 +112,10 @@ pub fn batch_match_query(count: usize) -> String {
         })
         .collect();
     format!(
-        "query ($type: MediaType, {}) {{\n  {}\n}}\n{SUMMARY_FRAGMENT}",
+        "query ($type: MediaType, {}) {{\n  {}\n}}\n{}",
         variables.join(", "),
-        aliases.join("\n  ")
+        aliases.join("\n  "),
+        summary_fragment(false)
     )
 }
 

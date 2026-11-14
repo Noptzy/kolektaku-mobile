@@ -40,6 +40,7 @@ pub struct RawSummary {
     pub title: RawTitle,
     pub synonyms: Option<Vec<String>>,
     pub cover_image: Option<RawImage>,
+    pub synopsis: Option<String>,
     #[serde(default, deserialize_with = "lenient")]
     pub format: Option<MediaFormat>,
     #[serde(default, deserialize_with = "lenient")]

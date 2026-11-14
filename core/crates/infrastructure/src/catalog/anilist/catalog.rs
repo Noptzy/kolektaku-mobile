@@ -129,7 +129,8 @@ impl MetadataCatalog for AniListCatalog {
             variables["season"] = json!(season.name);
             variables["year"] = json!(season.year);
         }
-        self.page(list_query(), variables, page).await
+        let rich = list == MediaListKind::Trending;
+        self.page(list_query(rich), variables, page).await
     }
 
     async fn search(

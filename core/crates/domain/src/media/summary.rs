@@ -9,6 +9,10 @@ pub struct MediaSummary {
     pub title: MediaTitle,
     pub synonyms: Vec<String>,
     pub cover_url: Option<String>,
+    #[serde(default)]
+    pub cover_hd_url: Option<String>,
+    #[serde(default)]
+    pub synopsis: Option<String>,
     pub format: Option<MediaFormat>,
     pub status: Option<MediaStatus>,
     pub year: Option<u16>,
@@ -27,6 +31,8 @@ impl MediaSummary {
             title,
             synonyms: Vec::new(),
             cover_url: None,
+            cover_hd_url: None,
+            synopsis: None,
             format: None,
             status: None,
             year: None,

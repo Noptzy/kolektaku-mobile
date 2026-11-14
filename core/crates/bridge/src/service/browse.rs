@@ -42,6 +42,12 @@ pub async fn home<C: MetadataCatalog + 'static>(
     Ok(HomeDto::from(&feed.execute(kind).await?))
 }
 
+pub async fn clear_catalog_cache<C: MetadataCatalog + 'static>(state: &AppState<C>) {
+    if let Some(cache) = &state.response_cache {
+        cache.clear().await;
+    }
+}
+
 pub async fn search<C: MetadataCatalog + 'static>(
     state: &AppState<C>,
     kind: MediaKindDto,
