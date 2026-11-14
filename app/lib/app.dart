@@ -4,6 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'core/router.dart';
+import 'features/scene_search/share_listener.dart';
 import 'core/theme/kolektaku_theme.dart';
 
 class KolektakuApp extends StatelessWidget {
@@ -17,8 +18,10 @@ class KolektakuApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       darkTheme: kolektakuDarkTheme(),
       routerConfig: kolektakuRouter,
-      builder: (context, child) =>
-          FTheme(data: FTheme.neutral.dark.touch, child: child!),
+      builder: (context, child) => ShareListener(
+        router: kolektakuRouter,
+        child: FTheme(data: FTheme.neutral.dark.touch, child: child!),
+      ),
     );
   }
 }

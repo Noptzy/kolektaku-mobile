@@ -1,0 +1,16 @@
+abstract final class Routes {
+  static const home = '/beranda';
+  static const collection = '/koleksiku';
+  static const search = '/cari';
+  static const genres = '/genre';
+  static const genre = '/genre/daftar';
+  static const detail = '/detail';
+  static const profile = '/profil';
+  static const watch = '/watch';
+  static const read = '/baca';
+  static const settings = '/pengaturan';
+  static const settingsPage = '/pengaturan/:page';
+  static const sceneSearch = '/cari-gambar';
+  static const gate = '/gate';
+  static const gallery = '/galeri';
+}
