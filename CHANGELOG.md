@@ -2,7 +2,7 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
-## [Belum dirilis]
+## [0.2.0] — 2026-11-14
 
 ### Ditambahkan
 - Hero Beranda berkategori dan berputar otomatis: rating tertinggi minggu ini, terbaru, baru saja tamat, baru saja comeback, dan sedang ramai; tiap slide punya sinopsis singkat dan sampul yang tajam.
