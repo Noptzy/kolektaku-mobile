@@ -24,6 +24,8 @@ void main() {
   testWidgets('resumes from the saved position', (tester) async {
     final harness = WatchHarness(resume: const Duration(seconds: 90));
     await harness.open(tester);
+    await tester.tap(find.byKey(const Key('resume-continue')));
+    await tester.pumpAndSettle();
     expect(harness.engine.startedAt.single, const Duration(seconds: 90));
   });
 

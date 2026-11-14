@@ -18,6 +18,7 @@ import 'server_flow.dart';
 import 'watch_controller.dart';
 import 'watch_details.dart';
 import 'watch_progress.dart';
+import 'watch_resume_sheet.dart';
 import 'watch_request.dart';
 import 'watch_stage.dart';
 
@@ -81,6 +82,7 @@ class _WatchScreenState extends State<WatchScreen> {
         _controller.session?.engine.snapshot.value.playing ?? false,
   );
   bool _fullscreen = false;
+  bool _asking = false;
   LoadedEpisode? _announced;
 
   @override
@@ -90,7 +92,19 @@ class _WatchScreenState extends State<WatchScreen> {
     _controller.load();
   }
 
+  void _askResume(Duration position) {
+    _asking = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final choice = await showResumeSheet(context, position: position);
+      _asking = false;
+      await _controller.chooseResume(resume: choice ?? true);
+    });
+  }
+
   void _onChange() {
+    final prompt = _controller.resumePrompt;
+    if (prompt != null && !_asking) _askResume(prompt);
     _awakeGuard.follow(_controller.session?.engine.snapshot);
     final loaded = _controller.loaded;
     if (loaded == null || identical(loaded, _announced)) return;

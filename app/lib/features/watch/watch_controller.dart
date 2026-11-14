@@ -14,9 +14,12 @@ import 'player/playback_engine.dart';
 import 'player/player_extras.dart';
 import 'player/player_session.dart';
 import 'player/watch_pip.dart';
+import 'resume_gate.dart';
 import 'watch_progress.dart';
 import 'watch_request.dart';
 import 'watch_units.dart';
+
+part 'watch_controller_switching.dart';
 
 class WatchController extends ChangeNotifier {
   WatchController({
@@ -47,6 +50,7 @@ class WatchController extends ChangeNotifier {
   late final AutoNext autoNext;
   late final EndWatcher endWatcher;
   late final WatchUnits _units = WatchUnits(loader: loader, onChange: _notify);
+  final ResumeGate _gate = ResumeGate();
 
   WatchRequest request;
   PlayerSession? session;
@@ -59,6 +63,8 @@ class WatchController extends ChangeNotifier {
 
   double get current => loaded?.playback.unit.number ?? request.episode;
 
+  Duration? get resumePrompt => _gate.waitingFor;
+
   List<UnitDto> get units => _units.list;
 
   UnitDto? get next => unitAfter(units, current);
@@ -70,6 +76,7 @@ class WatchController extends ChangeNotifier {
     Duration? startAt,
   }) async {
     final generation = ++_generation;
+    _gate.clear();
     await _teardown();
     error = null;
     loaded = null;
@@ -85,12 +92,15 @@ class WatchController extends ChangeNotifier {
         exclude: exclude,
       );
       if (generation != _generation) return;
-      final resumeAt =
-          startAt ??
-          request.startAt ??
-          await progress.resumeAt(request) ??
-          Duration.zero;
-      await _begin(result, resumeAt, generation);
+      final explicit = startAt ?? request.startAt;
+      final saved = explicit == null ? await progress.resumeAt(request) : null;
+      if (generation != _generation) return;
+      if (saved == null) {
+        await _begin(result, explicit ?? Duration.zero, generation);
+      } else {
+        _gate.hold(result, saved, generation);
+        _notify();
+      }
       if (_units.needs(result.playback.source)) {
         unawaited(_units.load(request.reference, result.playback.source));
       }
@@ -105,36 +115,6 @@ class WatchController extends ChangeNotifier {
     autoNext.cancel();
     request = request.copyWith(episode: unit.number, clearStart: true);
     await load();
-  }
-
-  Future<void> useServer(String serverId) async {
-    final current = loaded;
-    final position = _position;
-    if (current == null || current.serverId == serverId) return;
-    final generation = ++_generation;
-    try {
-      final next = await loader.useServer(current, serverId);
-      if (generation != _generation) return;
-      await _teardown();
-      await _begin(next, position ?? Duration.zero, generation);
-    } on Object catch (failure) {
-      if (generation != _generation || _disposed) return;
-      error = failure;
-      _notify();
-    }
-  }
-
-  Duration? get _position => session?.engine.snapshot.value.position;
-
-  Future<void> useSource(String source) {
-    request = request.copyWith(preferredSource: source);
-    return load(startAt: _position);
-  }
-
-  Future<void> tryOtherSource() {
-    final current = loaded;
-    if (current == null) return load();
-    return load(exclude: [current.playback.source], startAt: _position);
   }
 
   Future<void> _begin(
@@ -204,6 +184,7 @@ class WatchController extends ChangeNotifier {
     if (_disposed) return;
     _disposed = true;
     _units.close();
+    _gate.clear();
     _generation++;
     autoNext.dispose();
     session?.engine.snapshot.removeListener(_onSnapshot);
