@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../widgets/pressable.dart';
+import '../../widgets/swipe_sheet.dart';
 import 'source_names.dart';
 
 String linkSubtitle(SourceLinkDto link) {
@@ -25,9 +26,8 @@ Future<String?> showSourceSheet(
   required String? current,
   SourceNames? names,
 }) {
-  return showShadSheet<String>(
+  return showSwipeSheet<String>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: const Text('Pilih sumber'),
       description: const Text('Daftar episode mengikuti sumber yang dipilih.'),

@@ -12,15 +12,16 @@ Future<void> scrollDown(WidgetTester tester, [double by = 2500]) async {
 }
 
 void main() {
-  testWidgets('there is no search bar and no camera on the home page', (
-    tester,
-  ) async {
-    await openHome(tester);
-    expect(find.text('Cari anime'), findsNothing);
-    expect(find.text('Cari manga'), findsNothing);
-    expect(find.bySemanticsLabel('Cari dari gambar'), findsNothing);
-    expect(find.text('Kolektaku'), findsOneWidget);
-  });
+  testWidgets(
+    'there is no search bar, no camera and no title on the home page',
+    (tester) async {
+      await openHome(tester);
+      expect(find.text('Cari anime'), findsNothing);
+      expect(find.text('Cari manga'), findsNothing);
+      expect(find.bySemanticsLabel('Cari dari gambar'), findsNothing);
+      expect(find.text('Kolektaku'), findsNothing);
+    },
+  );
 
   testWidgets('the hero mixes anime and manga', (tester) async {
     await openHome(tester);
@@ -33,11 +34,11 @@ void main() {
     for (final title in [
       'Top 10 anime',
       'Episode baru',
-      'Top 10 manga',
+      'Top 10 komik',
       'Chapter baru',
       'Anime musim ini',
       'Anime populer',
-      'Manga populer',
+      'Komik populer',
     ]) {
       expect(find.text(title), findsOneWidget, reason: title);
     }
@@ -48,7 +49,7 @@ void main() {
   ) async {
     await openHome(tester);
     final anime = tester.getTopLeft(find.text('Top 10 anime')).dy;
-    final manga = tester.getTopLeft(find.text('Top 10 manga')).dy;
+    final manga = tester.getTopLeft(find.text('Top 10 komik')).dy;
     expect(anime, lessThan(manga));
     final latestAnime = tester.getTopLeft(find.text('Episode baru')).dy;
     expect(latestAnime, lessThan(manga));
@@ -59,7 +60,7 @@ void main() {
   ) async {
     await openHome(tester, prefersAnime: false);
     final anime = tester.getTopLeft(find.text('Top 10 anime')).dy;
-    final manga = tester.getTopLeft(find.text('Top 10 manga')).dy;
+    final manga = tester.getTopLeft(find.text('Top 10 komik')).dy;
     expect(manga, lessThan(anime));
     expect(find.text('Baca'), findsOneWidget);
     expect(find.text('Tonton'), findsNothing);
@@ -74,7 +75,7 @@ void main() {
   testWidgets('the genre grid follows the favored kind', (tester) async {
     await openHome(tester);
     expect(find.text('Jelajahi genre'), findsOneWidget);
-    expect(find.text('Jelajahi genre manga'), findsOneWidget);
+    expect(find.text('Jelajahi genre komik'), findsOneWidget);
     expect(find.text('Jelajahi genre anime'), findsNothing);
   });
 
@@ -83,7 +84,7 @@ void main() {
   ) async {
     await openHome(tester, prefersAnime: false);
     expect(find.text('Jelajahi genre anime'), findsOneWidget);
-    expect(find.text('Jelajahi genre manga'), findsNothing);
+    expect(find.text('Jelajahi genre komik'), findsNothing);
   });
 
   testWidgets('the button for the other kind opens its genre list', (
@@ -91,7 +92,7 @@ void main() {
   ) async {
     final harness = await openHome(tester);
     await scrollDown(tester, 4000);
-    await tester.tap(find.text('Jelajahi genre manga'));
+    await tester.tap(find.text('Jelajahi genre komik'));
     await tester.pumpAndSettle();
     expect(harness.visits.single.path, Routes.genres);
     expect(harness.visits.single.extra, MediaKindDto.manga);

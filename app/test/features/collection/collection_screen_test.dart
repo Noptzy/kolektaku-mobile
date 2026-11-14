@@ -1,62 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kolektaku/core/routes.dart';
-import 'package:kolektaku/features/collection/collection_screen.dart';
 import 'package:kolektaku/features/detail/detail_request.dart';
-import 'package:kolektaku/src/rust/dto/library.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
 
-import '../../support/screen_harness.dart';
-import '../detail/detail_support.dart';
-
-const now = 2000000;
-
-ProgressDto progress(
-  int id, {
-  MediaKindDto kind = MediaKindDto.anime,
-  double unit = 2,
-  String? title,
-  bool completed = false,
-  int savedAgo = 7200,
-}) {
-  return ProgressDto(
-    reference: ref(id),
-    kind: kind,
-    unitNumber: unit,
-    title: title ?? 'Judul $id',
-    position: 600,
-    length: 1200,
-    updatedAtSecs: BigInt.from(now - savedAgo),
-    completed: completed,
-  );
-}
-
-FavoriteDto favorite(
-  int id, {
-  MediaKindDto kind = MediaKindDto.anime,
-  String? title,
-}) {
-  return FavoriteDto(
-    reference: ref(id),
-    kind: kind,
-    title: title ?? 'Favorit $id',
-    addedAtSecs: BigInt.zero,
-  );
-}
-
-Future<ScreenHarness> open(
-  WidgetTester tester, {
-  List<ProgressDto> history = const [],
-  List<ProgressDto> resumable = const [],
-  List<FavoriteDto> favorites = const [],
-}) async {
-  final harness = ScreenHarness();
-  harness.library.historyResult = history;
-  harness.library.continueResult = resumable;
-  harness.library.favoriteResult = favorites;
-  await harness.pump(tester, CollectionScreen(now: () => now));
-  return harness;
-}
+import '../detail/detail_support.dart' show ref;
+import 'collection_support.dart';
 
 void main() {
   testWidgets('an empty collection says what is missing in each part', (
@@ -105,17 +53,6 @@ void main() {
     expect(find.text('Tontonan'), findsNothing);
     expect(find.text('Belum ada yang dibaca.'), findsNothing);
     expect(find.text('Chapter 2 · Hal. 600 dari 1200'), findsOneWidget);
-  });
-
-  testWidgets('a history row opens the detail of its title', (tester) async {
-    final harness = await open(tester, history: [progress(5, title: 'Buka')]);
-    await tester.tap(find.text('Buka'));
-    await tester.pumpAndSettle();
-    final visit = harness.visits.single;
-    expect(visit.path, Routes.detail);
-    final request = visit.extra! as DetailRequest;
-    expect(request.kind, MediaKindDto.anime);
-    expect(request.reference, ref(5));
   });
 
   testWidgets('a favorite opens its detail too', (tester) async {
@@ -197,13 +134,6 @@ void main() {
     expect(find.text('Anime Satu'), findsNothing);
     expect(find.text('Belum ada yang ditonton.'), findsOneWidget);
     expect(harness.library.historyResult.single.title, 'Manga Satu');
-  });
-
-  testWidgets('the settings button opens the settings', (tester) async {
-    final harness = await open(tester);
-    await tester.tap(find.byKey(const Key('open-settings')));
-    await tester.pumpAndSettle();
-    expect(harness.visits.single.path, Routes.settings);
   });
 
   testWidgets('a finished item shows no progress bar', (tester) async {

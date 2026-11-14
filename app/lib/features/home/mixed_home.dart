@@ -15,7 +15,7 @@ import 'home_actions.dart';
 import 'home_mix.dart';
 import 'home_notice.dart';
 import 'home_sections.dart';
-import 'resume_card.dart';
+import 'resume_rail.dart';
 
 class MixedHome extends StatelessWidget {
   const MixedHome({
@@ -80,7 +80,7 @@ class MixedHome extends StatelessWidget {
 
   Widget _otherGenres(MediaKindDto kind) {
     if ((genres[kind] ?? const []).isEmpty) return const SizedBox.shrink();
-    final label = kind == MediaKindDto.anime ? 'anime' : 'manga';
+    final label = kind == MediaKindDto.anime ? 'anime' : 'komik';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.screenGutter),
       child: ShadButton.outline(
@@ -99,7 +99,6 @@ class MixedHome extends StatelessWidget {
       manga: manga,
       prefersAnime: prefersAnime,
     );
-    final resumeCards = [for (final item in resume) resumeCard(item)];
     final notices = [...?anime?.notices, ...?manga?.notices];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,16 +117,7 @@ class MixedHome extends StatelessWidget {
             onWatch: (index) =>
                 actions.onOpen(hero[index].kind, hero[index].card),
           ),
-        if (resume.isNotEmpty)
-          MediaRail(
-            title: 'Lanjutkan',
-            cards: resumeCards,
-            unitLabel: '',
-            progressOf: (card) =>
-                resumeFraction(resume[resumeCards.indexOf(card)]),
-            onTap: (card) =>
-                actions.onResume(resume[resumeCards.indexOf(card)]),
-          ),
+        if (resume.isNotEmpty) ResumeRail(items: resume, actions: actions),
         _top(favored),
         _rail(favored, 'latest', fresh: true),
         _top(other),

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
+import '../../widgets/swipe_sheet.dart';
 
 Future<bool> confirmSheet(
   BuildContext context, {
@@ -9,9 +10,8 @@ Future<bool> confirmSheet(
   required String message,
   required String confirmLabel,
 }) async {
-  final agreed = await showShadSheet<bool>(
+  final agreed = await showSwipeSheet<bool>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: Text(title),
       description: Text(message),

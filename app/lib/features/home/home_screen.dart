@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/routes.dart';
+import '../../data/providers/gateway_providers.dart';
 import '../../data/providers/home_providers.dart';
 import '../../data/providers/settings_providers.dart';
 import '../../src/rust/dto/cards.dart';
@@ -12,10 +13,10 @@ import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../src/rust/error.dart';
 import '../../widgets/error_state_view.dart';
+import '../../widgets/refresh_on_visible.dart';
 import '../../widgets/state_view.dart';
 import '../detail/detail_request.dart';
 import 'home_actions.dart';
-import 'home_header.dart';
 import 'home_mix.dart';
 import 'home_skeleton.dart';
 import 'mixed_home.dart';
@@ -26,6 +27,10 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   Future<void> _refresh(WidgetRef ref) async {
+    await ref
+        .read(catalogGatewayProvider)
+        .clearCache()
+        .catchError((Object _) {});
     for (final kind in _kinds) {
       ref.invalidate(homeProvider(kind));
       ref.invalidate(continueProvider(kind));
@@ -40,11 +45,21 @@ class HomeScreen extends ConsumerWidget {
     }
   }
 
-  HomeActions _actions(BuildContext context) {
-    void open(MediaKindDto kind, MediaRefDto reference) => context.push(
-      Routes.detail,
-      extra: DetailRequest(kind: kind, reference: reference),
-    );
+  void _refreshLibrary(WidgetRef ref) {
+    for (final kind in _kinds) {
+      ref.invalidate(continueProvider(kind));
+    }
+  }
+
+  HomeActions _actions(BuildContext context, WidgetRef ref) {
+    Future<void> open(MediaKindDto kind, MediaRefDto reference) async {
+      await context.push(
+        Routes.detail,
+        extra: DetailRequest(kind: kind, reference: reference),
+      );
+      _refreshLibrary(ref);
+    }
+
     return HomeActions(
       onOpen: (kind, card) => open(kind, card.reference),
       onResume: (ProgressDto progress) =>
@@ -60,17 +75,19 @@ class HomeScreen extends ConsumerWidget {
     final prefersAnime = ref.watch(currentSettingsProvider).prefersAnime;
     final anime = ref.watch(homeProvider(MediaKindDto.anime));
     final manga = ref.watch(homeProvider(MediaKindDto.manga));
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      slivers: [
-        CupertinoSliverRefreshControl(onRefresh: () => _refresh(ref)),
-        const SliverToBoxAdapter(child: HomeHeader()),
-        SliverToBoxAdapter(
-          child: _body(context, ref, anime, manga, prefersAnime),
+    return RefreshOnVisible(
+      onVisible: () => _refreshLibrary(ref),
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
         ),
-      ],
+        slivers: [
+          CupertinoSliverRefreshControl(onRefresh: () => _refresh(ref)),
+          SliverToBoxAdapter(
+            child: _body(context, ref, anime, manga, prefersAnime),
+          ),
+        ],
+      ),
     );
   }
 
@@ -84,7 +101,7 @@ class HomeScreen extends ConsumerWidget {
     final waiting = anime.isLoading && manga.isLoading;
     if (waiting) return const HomeSkeleton();
     if (anime.hasError && manga.hasError) {
-      return _failure(anime.error!, ref);
+      return _failure(context, anime.error!, ref);
     }
     return MixedHome(
       anime: anime.value,
@@ -102,11 +119,12 @@ class HomeScreen extends ConsumerWidget {
         for (final kind in _kinds)
           kind: ref.watch(genreCoversProvider(kind)).value ?? const {},
       },
-      actions: _actions(context),
+      actions: _actions(context, ref),
     );
   }
 
-  Widget _failure(Object error, WidgetRef ref) {
+  Widget _failure(BuildContext context, Object error, WidgetRef ref) {
+    final inset = MediaQuery.paddingOf(context).top;
     void retry() {
       for (final kind in _kinds) {
         ref.invalidate(homeProvider(kind));
@@ -115,17 +133,23 @@ class HomeScreen extends ConsumerWidget {
 
     if (error is BridgeError) {
       return SizedBox(
-        height: 420,
-        child: ErrorStateView(error: error, onRetry: retry),
+        height: 420 + inset,
+        child: Padding(
+          padding: EdgeInsets.only(top: inset),
+          child: ErrorStateView(error: error, onRetry: retry),
+        ),
       );
     }
     return SizedBox(
-      height: 420,
-      child: StateView.error(
-        title: 'Ada yang tidak beres',
-        message: 'Beranda belum bisa dimuat.',
-        actionLabel: 'Coba lagi',
-        onAction: retry,
+      height: 420 + inset,
+      child: Padding(
+        padding: EdgeInsets.only(top: inset),
+        child: StateView.error(
+          title: 'Ada yang tidak beres',
+          message: 'Beranda belum bisa dimuat.',
+          actionLabel: 'Coba lagi',
+          onAction: retry,
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../core/theme/kolektaku_tokens.dart';
+import 'swipe_sheet.dart';
 import 'filter_links.dart';
 import 'option_chip.dart';
 
@@ -33,9 +34,8 @@ Future<FilterChoice?> showFilterSheet(
   required FilterChoice initial,
   FilterLinkSection? links,
 }) {
-  return showShadSheet<FilterChoice>(
+  return showSwipeSheet<FilterChoice>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: const Text('Filter'),
       child: FilterSheetBody(

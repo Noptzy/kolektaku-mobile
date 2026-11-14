@@ -5,12 +5,12 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../platform/url_opener.dart';
 import '../../src/rust/dto/credits.dart';
+import '../../widgets/swipe_sheet.dart';
 import 'trailer_player.dart';
 
 Future<void> showTrailerSheet(BuildContext context, TrailerDto trailer) {
-  return showShadSheet<void>(
+  return showSwipeSheet<void>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: const Text('Trailer'),
       child: TrailerSheetBody(trailer: trailer),
