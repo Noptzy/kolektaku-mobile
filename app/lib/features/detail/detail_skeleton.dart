@@ -8,6 +8,9 @@ class DetailSkeleton extends StatelessWidget {
 
   final bool animate;
 
+  Widget _bar({double? width, double height = 14}) =>
+      Skeleton(width: width, height: height, radius: 4, animate: animate);
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -20,13 +23,60 @@ class DetailSkeleton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Spacing.screenGutter),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: Spacing.md,
+            spacing: Spacing.lg,
             children: [
-              Skeleton(height: 22, radius: 4, animate: animate),
-              Skeleton(width: 160, height: 14, radius: 4, animate: animate),
-              Skeleton(height: 14, radius: 4, animate: animate),
-              Skeleton(height: 14, radius: 4, animate: animate),
-              Skeleton(width: 220, height: 14, radius: 4, animate: animate),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: Spacing.md,
+                children: [
+                  Skeleton(
+                    width: 104,
+                    height: 150,
+                    radius: Radii.poster,
+                    animate: animate,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: Spacing.sm,
+                      children: [
+                        _bar(height: 22),
+                        _bar(width: 140),
+                        _bar(width: 96),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                spacing: Spacing.sm,
+                children: [
+                  for (var i = 0; i < 3; i++)
+                    Skeleton(
+                      width: 72,
+                      height: 28,
+                      radius: Radii.chip,
+                      animate: animate,
+                    ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: Spacing.sm,
+                children: [_bar(), _bar(), _bar(width: 220)],
+              ),
+              Row(
+                spacing: Spacing.sm,
+                children: [
+                  for (var i = 0; i < 2; i++)
+                    Skeleton(
+                      width: 112,
+                      height: 40,
+                      radius: Radii.poster,
+                      animate: animate,
+                    ),
+                ],
+              ),
             ],
           ),
         ),
