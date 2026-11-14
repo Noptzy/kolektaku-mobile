@@ -18,6 +18,7 @@ class InstallResultReceiver : BroadcastReceiver() {
                 confirmIntent?.let { context.startActivity(it) }
                 Log.i(TAG, "pemasangan butuh satu ketukan")
             }
+
             PackageInstaller.STATUS_SUCCESS -> Log.i(TAG, "pemasangan berhasil tanpa ketukan")
             else -> Log.e(TAG, "pemasangan gagal: status=$status pesan=$message")
         }

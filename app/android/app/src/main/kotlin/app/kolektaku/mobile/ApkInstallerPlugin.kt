@@ -25,6 +25,10 @@ class ApkInstallerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        if (call.method == "abis") {
+            result.success(Build.SUPPORTED_ABIS.toList())
+            return
+        }
         if (call.method != "install") {
             result.notImplemented()
             return
