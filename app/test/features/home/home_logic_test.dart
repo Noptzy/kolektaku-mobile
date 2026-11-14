@@ -46,9 +46,9 @@ void main() {
       expect(resumeTitle(MediaKindDto.manga), 'Lanjut baca');
     });
 
-    test('units are eps for anime and ch for manga', () {
+    test('units are eps for anime and chapter for comics', () {
       expect(unitLabelFor(MediaKindDto.anime), 'eps');
-      expect(unitLabelFor(MediaKindDto.manga), 'ch');
+      expect(unitLabelFor(MediaKindDto.manga), 'chapter');
     });
 
     test('a genre image comes from the first card that has a cover', () {

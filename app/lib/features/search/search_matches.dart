@@ -54,9 +54,8 @@ class SearchMatches extends ConsumerWidget {
         if (manga.isNotEmpty)
           MediaRail(
             key: const Key('manga-matches'),
-            title: 'Manga',
+            title: 'Komik',
             cards: manga,
-            unitLabel: 'ch',
             onTap: (card) => context.push(
               Routes.detail,
               extra: DetailRequest(

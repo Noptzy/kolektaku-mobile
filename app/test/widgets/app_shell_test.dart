@@ -48,7 +48,7 @@ int currentTab(WidgetTester tester) =>
 void main() {
   testWidgets('starts on the home page with four destinations', (tester) async {
     await open(tester);
-    expect(find.text('Kolektaku'), findsOneWidget);
+    expect(find.text('Kolektaku'), findsNothing);
     expect(bar('Beranda'), findsOneWidget);
     expect(bar('Cari'), findsOneWidget);
     expect(bar('Koleksi'), findsOneWidget);
@@ -83,11 +83,11 @@ void main() {
 
   testWidgets('search is its own tab, without scope buttons', (tester) async {
     await open(tester);
-    expect(find.text('Cari anime, manga, karakter, studio'), findsNothing);
+    expect(find.text('Cari anime, komik, karakter, studio'), findsNothing);
     await tester.tap(bar('Cari'));
     await tester.pumpAndSettle();
-    expect(find.text('Cari anime, manga, karakter, studio'), findsOneWidget);
-    for (final scope in ['Manga', 'Karakter', 'Staf', 'Studio']) {
+    expect(find.text('Cari anime, komik, karakter, studio'), findsOneWidget);
+    for (final scope in ['Komik', 'Karakter', 'Staf', 'Studio']) {
       expect(find.widgetWithText(OptionChip, scope), findsNothing);
     }
   });

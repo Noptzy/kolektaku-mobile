@@ -75,7 +75,7 @@ class DetailExtras extends StatelessWidget {
                 anime ? LucideIcons.bookOpen : LucideIcons.tv,
                 size: 16,
               ),
-              child: Text(anime ? 'Baca manganya' : 'Tonton animenya'),
+              child: Text(anime ? 'Baca komiknya' : 'Tonton animenya'),
             ),
         ],
       ),

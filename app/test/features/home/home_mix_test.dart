@@ -93,7 +93,7 @@ void main() {
     'rail titles name the kind and the verb on the hero button follows it',
     () {
       expect(railTitle(MediaKindDto.anime, 'trending'), 'Top 10 anime');
-      expect(railTitle(MediaKindDto.manga, 'popular'), 'Manga populer');
+      expect(railTitle(MediaKindDto.manga, 'popular'), 'Komik populer');
       expect(railTitle(MediaKindDto.anime, 'latest'), 'Episode baru');
       expect(railTitle(MediaKindDto.manga, 'latest'), 'Chapter baru');
       expect(actionLabelFor(MediaKindDto.anime), 'Tonton');

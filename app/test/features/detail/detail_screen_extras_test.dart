@@ -164,7 +164,7 @@ void main() {
           ),
         ),
       );
-      await tester.tap(find.text('Baca manganya'));
+      await tester.tap(find.text('Baca komiknya'));
       await tester.pumpAndSettle();
       final visit = opened.harness.visits.single;
       expect(visit.path, Routes.detail);

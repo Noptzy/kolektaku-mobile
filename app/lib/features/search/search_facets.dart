@@ -13,7 +13,7 @@ enum SearchAiring {
 
 enum SearchOrigin {
   all('Semua', null),
-  manga('Manga', 'MANGA'),
+  manga('Komik', 'MANGA'),
   lightNovel('Novel ringan', 'LIGHT_NOVEL'),
   visualNovel('Novel visual', 'VISUAL_NOVEL'),
   videoGame('Game', 'VIDEO_GAME'),

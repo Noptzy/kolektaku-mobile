@@ -14,7 +14,7 @@ class MediaRail extends StatelessWidget {
     this.onTap,
     this.progressOf,
     this.newOnly = false,
-    this.unitLabel = 'eps',
+    this.unitLabel,
     this.cardWidth = Sizes.railPosterWidth,
     this.trailing,
   });
@@ -24,7 +24,7 @@ class MediaRail extends StatelessWidget {
   final ValueChanged<MediaCardDto>? onTap;
   final double? Function(MediaCardDto card)? progressOf;
   final bool newOnly;
-  final String unitLabel;
+  final String? unitLabel;
   final double cardWidth;
   final Widget? trailing;
 

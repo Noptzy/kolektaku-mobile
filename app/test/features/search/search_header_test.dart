@@ -68,10 +68,10 @@ void main() {
 
     testWidgets('there are no scope buttons to choose from', (tester) async {
       await open(tester);
-      for (final label in ['Anime', 'Manga', 'Karakter', 'Staf', 'Studio']) {
+      for (final label in ['Anime', 'Komik', 'Karakter', 'Staf', 'Studio']) {
         expect(find.widgetWithText(OptionChip, label), findsNothing);
       }
-      expect(find.text('Cari anime, manga, karakter, studio'), findsOneWidget);
+      expect(find.text('Cari anime, komik, karakter, studio'), findsOneWidget);
     });
 
     testWidgets('the badge counts the active filters', (tester) async {

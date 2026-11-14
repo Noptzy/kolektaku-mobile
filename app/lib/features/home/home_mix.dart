@@ -59,10 +59,10 @@ List<ProgressDto> mergeResume(
 String railTitle(MediaKindDto kind, String sectionId) {
   final anime = kind == MediaKindDto.anime;
   return switch (sectionId) {
-    'trending' => anime ? 'Top 10 anime' : 'Top 10 manga',
+    'trending' => anime ? 'Top 10 anime' : 'Top 10 komik',
     'latest' => anime ? 'Episode baru' : 'Chapter baru',
-    'seasonal' => anime ? 'Anime musim ini' : 'Manga musim ini',
-    'popular' => anime ? 'Anime populer' : 'Manga populer',
+    'seasonal' => anime ? 'Anime musim ini' : 'Komik musim ini',
+    'popular' => anime ? 'Anime populer' : 'Komik populer',
     _ => sectionId,
   };
 }

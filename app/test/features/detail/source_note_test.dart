@@ -65,7 +65,7 @@ void main() {
         summary: '',
       );
       final names = sourceNamesOf([status('a'), manga], MediaKindDto.manga);
-      expect(names.labels, {'m': 'Sumber manga 1'});
+      expect(names.labels, {'m': 'Sumber komik 1'});
     });
 
     test('a short list says how much is missing', () {

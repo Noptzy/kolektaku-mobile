@@ -11,7 +11,7 @@ List<MediaCardDto> cardsOf(HomeDto home, String sectionId) {
 }
 
 String unitLabelFor(MediaKindDto kind) =>
-    kind == MediaKindDto.anime ? 'eps' : 'ch';
+    kind == MediaKindDto.anime ? 'eps' : 'chapter';
 
 String resumeTitle(MediaKindDto kind) =>
     kind == MediaKindDto.anime ? 'Lanjut nonton' : 'Lanjut baca';

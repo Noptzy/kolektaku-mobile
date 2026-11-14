@@ -62,7 +62,7 @@ void main() {
     ]);
     expect(find.text('Sumber anime 1'), findsOneWidget);
     expect(find.text('Sumber anime 2'), findsOneWidget);
-    expect(find.text('Sumber manga 1'), findsOneWidget);
+    expect(find.text('Sumber komik 1'), findsOneWidget);
     expect(find.textContaining('Rahasia'), findsNothing);
   });
 

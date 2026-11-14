@@ -88,7 +88,7 @@ void main() {
             autoSkip: true,
           ),
     );
-    expect(find.text('Lebih banyak manga'), findsOneWidget);
+    expect(find.text('Lebih banyak komik'), findsOneWidget);
     expect(find.text('Sumber anime 2'), findsOneWidget);
     expect(find.text('Inggris · Sangat besar'), findsOneWidget);
     expect(find.text('1 dari 2 sumber aktif'), findsOneWidget);

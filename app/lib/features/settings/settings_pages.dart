@@ -9,7 +9,7 @@ enum SettingsPage {
     title: 'Beranda',
     icon: LucideIcons.house,
     intro:
-        'Atur isi Beranda: lebih banyak anime atau lebih banyak manga. '
+        'Atur isi Beranda: lebih banyak anime atau lebih banyak komik. '
         'Keduanya tetap tampil, hanya porsinya yang berubah.',
   ),
   sourceChoice(

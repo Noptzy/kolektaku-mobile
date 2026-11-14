@@ -53,7 +53,7 @@ String historyKey(ProgressDto progress) =>
     '${progress.reference.id}|${progress.unitNumber}';
 
 String collectionTitle(MediaKindDto kind) =>
-    kind == MediaKindDto.anime ? 'Anime' : 'Manga';
+    kind == MediaKindDto.anime ? 'Anime' : 'Komik';
 
 String emptyFavorites(MediaKindDto kind) =>
     'Belum ada ${collectionTitle(kind).toLowerCase()} favorit. Ketuk ikon hati di halaman detail.';

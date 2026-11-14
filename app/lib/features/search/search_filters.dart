@@ -7,7 +7,7 @@ enum SearchFormat {
   movie('Film', ['MOVIE']),
   ova('OVA', ['OVA', 'ONA', 'SPECIAL']),
   music('Musik', ['MUSIC']),
-  manga('Manga', ['MANGA']),
+  manga('Komik', ['MANGA']),
   oneShot('One-shot', ['ONE_SHOT']),
   novel('Novel', ['NOVEL']);
 
