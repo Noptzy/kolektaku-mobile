@@ -8,7 +8,7 @@ import 'hero_slide.dart';
 import 'poster.dart';
 import 'score_badge.dart';
 
-const heroSynopsisLines = 6;
+const heroSynopsisLines = 4;
 const _posterShare = 0.3;
 const _posterMaxWidth = 130.0;
 

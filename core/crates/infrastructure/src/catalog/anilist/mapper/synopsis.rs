@@ -1,5 +1,6 @@
 const SPOILER_OPEN: &str = "~!";
 const SPOILER_CLOSE: &str = "!~";
+const BLOCK_TAGS: [&str; 10] = ["br", "p", "div", "li", "ul", "ol", "h1", "h2", "h3", "hr"];
 const SOURCE_MARKERS: [&str; 2] = ["(Source:", "(source:"];
 const ENTITIES: [(&str, &str); 6] = [
     ("&amp;", "&"),
@@ -25,18 +26,34 @@ fn without_spoilers(text: &str) -> String {
     kept
 }
 
+fn breaks_a_line(tag: &str) -> bool {
+    let name = tag
+        .trim_start_matches('/')
+        .split(|symbol: char| symbol.is_whitespace() || symbol == '/')
+        .next()
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    BLOCK_TAGS.contains(&name.as_str())
+}
+
 fn without_tags(text: &str) -> String {
     let mut kept = String::with_capacity(text.len());
+    let mut tag = String::new();
     let mut inside = false;
     for symbol in text.chars() {
         match symbol {
-            '<' => inside = true,
+            '<' => {
+                inside = true;
+                tag.clear();
+            }
             '>' if inside => {
                 inside = false;
-                kept.push(' ');
+                if breaks_a_line(&tag) {
+                    kept.push(' ');
+                }
             }
-            _ if !inside => kept.push(symbol),
-            _ => {}
+            _ if inside => tag.push(symbol),
+            _ => kept.push(symbol),
         }
     }
     kept
@@ -124,6 +141,22 @@ mod tests {
         assert_eq!(
             brief_synopsis("One<br>Two <i>Three</i>", 100).as_deref(),
             Some("One Two Three")
+        );
+    }
+
+    #[test]
+    fn inline_tags_vanish_without_leaving_a_gap() {
+        assert_eq!(
+            brief_synopsis("Isekai Seikatsu</i>. <b>Bold</b>text", 100).as_deref(),
+            Some("Isekai Seikatsu. Boldtext")
+        );
+    }
+
+    #[test]
+    fn block_tags_with_attributes_still_break_the_line() {
+        assert_eq!(
+            brief_synopsis("One<p class=\"x\">Two</p>Three<BR/>Four", 100).as_deref(),
+            Some("One Two Three Four")
         );
     }
 

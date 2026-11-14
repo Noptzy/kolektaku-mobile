@@ -29,7 +29,7 @@ void main() {
     });
 
     test('the height makes room for the poster, synopsis and buttons', () {
-      expect(HeroCarousel.heightFor(phoneLarge), closeTo(380, 2));
+      expect(HeroCarousel.heightFor(phoneLarge), closeTo(345, 2));
     });
 
     test('the status bar inset is added on top', () {
