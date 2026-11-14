@@ -1,8 +1,10 @@
 const aboutNotes = (
-  version: '0.2.1',
+  version: '0.2.2',
   lines: [
-    'Kolektaku mengecek versi baru setiap kali dibuka dan mengunduhnya sendiri.',
-    'Tombol Cek pembaruan tetap ada, dan statusnya menyebut versi terpasang.',
+    'Hero Beranda berupa kartu poster yang tajam, tanpa lapisan blur.',
+    'Riwayat di Koleksi memakai kartu poster yang sama dengan Favorit.',
+    'Pengaturan pemutar membuka pilihan di sheet yang sama, dengan tombol kembali.',
+    'Halaman Tentang memuat catatan versi dan sumber data.',
   ],
 );
 
