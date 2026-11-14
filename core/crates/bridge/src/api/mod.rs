@@ -1,1 +1,12 @@
+pub mod browse;
+pub mod detail;
 pub mod foundation;
+pub mod library;
+pub mod people;
+pub mod play;
+pub mod scene;
+pub mod session;
+pub mod settings;
+pub mod sources;
+pub mod subtitle;
+pub mod update;

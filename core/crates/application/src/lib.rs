@@ -1,18 +1,15 @@
-use domain::AppInfo;
+pub mod catalog;
+pub mod detail;
+mod greeting;
+pub mod library;
+pub mod matching;
+pub mod ports;
+pub mod reading;
+pub mod scene;
+pub mod settings;
+pub mod sources;
+pub mod streaming;
+#[cfg(any(test, feature = "testing"))]
+pub mod testing;
 
-pub fn greet(target: &str) -> String {
-    let info = AppInfo::new("Kolektaku");
-    format!("Halo dari Rust untuk {target}! {} siap jalan.", info.name)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn greet_menyebut_target_dan_nama_app() {
-        let result = greet("Flutter");
-        assert!(result.contains("Flutter"));
-        assert!(result.contains("Kolektaku"));
-    }
-}
+pub use greeting::greet;

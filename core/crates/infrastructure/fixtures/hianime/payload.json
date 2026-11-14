@@ -1,0 +1,17 @@
+{
+  "origin": "https://zokoanime.video",
+  "file": "https://hls.dramahot.top/p/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/master.m3u8",
+  "image": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/thumb.jpg",
+  "duration": 1510.1,
+  "tracks": [
+    { "file": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/sprite.vtt", "label": "", "kind": "thumbnails", "default": false },
+    { "file": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/subs/mkv-0-a.vtt", "label": "English", "kind": "captions", "default": true },
+    { "file": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/subs/mkv-1-b.vtt", "label": "English - Forced", "kind": "captions", "default": false },
+    { "file": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/subs/mkv-23-c.vtt", "label": "Indonesian", "kind": "captions", "default": false },
+    { "file": "https://hls.dramahot.top/v/scxqicy/0rmxjw9tey/d1qljlvy8o/j9yy5m5366w583/subs/mkv-22-d.vtt", "label": "Hindi - Latin | Forced", "kind": "captions", "default": false }
+  ],
+  "marks": [
+    { "kind": "intro", "start": 72.0, "end": 158.0 },
+    { "kind": "outro", "start": 1326.0, "end": 1510.0 }
+  ]
+}

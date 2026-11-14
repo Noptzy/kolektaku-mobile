@@ -1,0 +1,1800 @@
+{
+ "data": {
+  "Media": {
+   "id": 87216,
+   "type": "MANGA",
+   "title": {
+    "romaji": "Kimetsu no Yaiba",
+    "english": "Demon Slayer: Kimetsu no Yaiba",
+    "native": "鬼滅の刃"
+   },
+   "synonyms": [
+    "KnY",
+    "Guardianes de la Noche",
+    "Miecz zabójcy demonów",
+    "Les Rôdeurs de la nuit",
+    "İblis Keser",
+    "Zabiják démonů",
+    "귀멸의 칼날",
+    "قاتل الشياطين",
+    "ดาบพิฆาตอสูร",
+    "Thanh gươm diệt quỷ",
+    "Guardians de la Nit",
+    "Истребитель демонов",
+    "Ubica demona",
+    "鬼滅之刃"
+   ],
+   "coverImage": {
+    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87216-c9bSNVD10UuD.png",
+    "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx87216-c9bSNVD10UuD.png"
+   },
+   "format": "MANGA",
+   "status": "FINISHED",
+   "seasonYear": null,
+   "startDate": {
+    "year": 2016,
+    "month": 2,
+    "day": 15
+   },
+   "episodes": null,
+   "chapters": 207,
+   "averageScore": 79,
+   "genres": [
+    "Action",
+    "Adventure",
+    "Drama",
+    "Supernatural"
+   ],
+   "countryOfOrigin": "JP",
+   "isAdult": false,
+   "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/manga/banner/87216-TVKEGfSxAqKs.jpg",
+   "description": "<p>The setting is Taisho era Japan. Tanjirou is a kindhearted young boy who lived peacefully with his family as a coal seller. Their normal life changes completely when his family is slaughtered by demons. The only other survivor, Tanjirou's younger sister Nezuko, has become a ferocious demon. In order to return Nezuko to normal and get revenge on the demon that killed their family, the two of them depart on a journey. From a young talent, an adventure tale of blood and swords begins!<br />\n<br><br><br />\n(Source: Shonen Jump)<br />\n<br><br><br />\n<i>Notes:<br></p>\n<ul>\n<li>Includes two extra chapters.<br> </li>\n<li>Nominated to the 24th and 25th Annual Tezuka Osamu Cultural Prize.</i></li>\n</ul>",
+   "duration": null,
+   "season": null,
+   "source": "ORIGINAL",
+   "siteUrl": "https://anilist.co/manga/87216",
+   "endDate": {
+    "year": 2020,
+    "month": 5,
+    "day": 18
+   },
+   "studios": {
+    "nodes": []
+   },
+   "trailer": {
+    "id": "UP1VEX8K1yA",
+    "site": "youtube",
+    "thumbnail": "https://i.ytimg.com/vi/UP1VEX8K1yA/hqdefault.jpg"
+   },
+   "nextAiringEpisode": null,
+   "characters": {
+    "edges": [
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 126071,
+       "name": {
+        "full": "Tanjirou Kamado"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126071-BTNEc1nRIv68.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 127518,
+       "name": {
+        "full": "Nezuko Kamado"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b127518-NRlq1CQ1v1ro.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 129130,
+       "name": {
+        "full": "Inosuke Hashibira"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/n129130-SJC0Kn1DU39E.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "MAIN",
+      "node": {
+       "id": 129131,
+       "name": {
+        "full": "Zenitsu Agatsuma"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129131-FZrQ7lSlxmEr.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 129132,
+       "name": {
+        "full": "Muzan Kibutsuji"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129132-4nIZakUZ1o8W.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 129133,
+       "name": {
+        "full": "Kyoujurou Rengoku"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129133-VlTPowwt68rJ.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 130050,
+       "name": {
+        "full": "Giyuu Tomioka"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b130050-qsLThJs5VIbz.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136069,
+       "name": {
+        "full": "Muichirou Tokitou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136069-6PLglx4tETUX.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136070,
+       "name": {
+        "full": "Shinobu Kochou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136070-MC9LLxJsHyHE.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136071,
+       "name": {
+        "full": "Tengen Uzui"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136071-99Kexnnn2PiV.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 136072,
+       "name": {
+        "full": "Mitsuri Kanroji"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136072-xVwyRUKdpybi.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137773,
+       "name": {
+        "full": "Sakonji Urokodaki"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137773-N4O52f73dJKZ.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137774,
+       "name": {
+        "full": "Sanemi Shinazugawa"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137774-O1iYrnGLB71l.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137775,
+       "name": {
+        "full": "Jigorou Kuwajima"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137775-WVj9nyVaYo45.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137776,
+       "name": {
+        "full": "Genya Shinazugawa"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137776-E0QuFD7y19OQ.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137777,
+       "name": {
+        "full": "Obanai Iguro"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137777-kGViiNyx0wa7.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137778,
+       "name": {
+        "full": "Gyoumei Himejima"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137778-H4Uzb9cSCvZ6.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137806,
+       "name": {
+        "full": "Makomo"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137806-43Lqae34Vzqu.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137808,
+       "name": {
+        "full": "Kagaya Ubuyashiki"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137808-4yA8XQUDrAho.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 137809,
+       "name": {
+        "full": "Sabito"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137809-6Tkle99lCBl8.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138810,
+       "name": {
+        "full": "Susamaru"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138810-1d6mUy8lzr8K.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138811,
+       "name": {
+        "full": "Yahaba"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138811-V9NNgNp9dAjq.png"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138812,
+       "name": {
+        "full": "Numa Oni"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138812-Imqj3sSfpcso.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138846,
+       "name": {
+        "full": "Yushirou"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138846-i8frJEl8baly.jpg"
+       }
+      },
+      "voiceActors": []
+     },
+     {
+      "role": "SUPPORTING",
+      "node": {
+       "id": 138847,
+       "name": {
+        "full": "Tamayo"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138847-rOwIPLKaR5Ux.jpg"
+       }
+      },
+      "voiceActors": []
+     }
+    ]
+   },
+   "staff": {
+    "edges": [
+     {
+      "role": "Story & Art",
+      "node": {
+       "id": 119973,
+       "name": {
+        "full": "Koyoharu Gotouge"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n119973-pzMtyCVGBWNt.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistant",
+      "node": {
+       "id": 130104,
+       "name": {
+        "full": "Mizuki Yoda"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n130104-jE53bt9HgQ7K.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistant",
+      "node": {
+       "id": 129129,
+       "name": {
+        "full": "Kintetsu Yamada"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n129129-GEnBPTFz17FO.jpg"
+       }
+      }
+     },
+     {
+      "role": "Assistant",
+      "node": {
+       "id": 208668,
+       "name": {
+        "full": "Seiran Furuta"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Editor",
+      "node": {
+       "id": 190878,
+       "name": {
+        "full": "Tatsuhiko Katayama"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Editor",
+      "node": {
+       "id": 338142,
+       "name": {
+        "full": "Ken Takano"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n338142-oqKrQ2jPyT7p.png"
+       }
+      }
+     },
+     {
+      "role": "Editor",
+      "node": {
+       "id": 226183,
+       "name": {
+        "full": "Yuusuke Asai"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Translator (English)",
+      "node": {
+       "id": 217969,
+       "name": {
+        "full": "John Werry"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n217969-Am0lyzl84aeb.jpg"
+       }
+      }
+     },
+     {
+      "role": "Translator (French)",
+      "node": {
+       "id": 283456,
+       "name": {
+        "full": "Arnaud Takahashi"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Translator (Korean)",
+      "node": {
+       "id": 236834,
+       "name": {
+        "full": "Ji-Yeon Jang"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     },
+     {
+      "role": "Translator (Italian)",
+      "node": {
+       "id": 225327,
+       "name": {
+        "full": "Andrea Maniscalco"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n225327-aDRBs2EPEQfL.png"
+       }
+      }
+     },
+     {
+      "role": "Lettering (Italian)",
+      "node": {
+       "id": 219572,
+       "name": {
+        "full": "Christian Biscaro"
+       },
+       "image": {
+        "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+       }
+      }
+     }
+    ]
+   },
+   "relations": {
+    "edges": [
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 101922,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba",
+        "english": "Demon Slayer: Kimetsu no Yaiba",
+        "native": "鬼滅の刃"
+       },
+       "synonyms": [
+        "KnY",
+        "Kimetsu no Yaiba: Kyoudai no Kizuna",
+        "Demon Slayer: Kimetsu no Yaiba: Bonds of Siblings",
+        "鬼滅の刃-兄妹の絆-",
+        "鬼灭之刃",
+        "הלהב קוטל השדים",
+        "قاتل الشياطين",
+        "ดาบพิฆาตอสูร",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba",
+        " Guardians de la nit: Kimetsu no Yaiba",
+        "İblis Keser",
+        "ΚΥΝΗΓΟΣ ΔΑΙΜΟΝΩΝ: KIMETSU NO YAIBA",
+        "Zabiják démonů",
+        "شیطان کش",
+        "귀멸의 칼날",
+        "Истребитель демонов",
+        "Клинок, рассекающий демонов"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2019,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": 26,
+       "chapters": null,
+       "averageScore": 82,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SPIN_OFF",
+      "node": {
+       "id": 108817,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Tomioka Giyuu Gaiden",
+        "english": "Demon Slayer: Kimetsu no Yaiba - Giyu Tomioka’s Story",
+        "native": "鬼滅の刃 冨岡義勇【外伝】"
+       },
+       "synonyms": [
+        "Stories of Water and Flame: Giyu Tomioka’s Story"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx108817-S8hrTFoS2sfZ.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": null,
+       "chapters": 2,
+       "averageScore": 74,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SPIN_OFF",
+      "node": {
+       "id": 108846,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Aima!",
+        "english": "Kimetsu Between the Scenes!",
+        "native": "きめつのあいま！"
+       },
+       "synonyms": [],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx108846-OOdChqlKtv2P.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": null,
+       "chapters": 26,
+       "averageScore": 64,
+       "genres": [
+        "Comedy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ALTERNATIVE",
+      "node": {
+       "id": 111236,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kagarigari",
+        "english": "Overhunter Hunter",
+        "native": "過狩り狩り"
+       },
+       "synonyms": [
+        "Kagari-gari,"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx111236-bceyvXiYrbKB.png"
+       },
+       "format": "ONE_SHOT",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2013
+       },
+       "episodes": null,
+       "chapters": 1,
+       "averageScore": 58,
+       "genres": [
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 112151,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen",
+        "english": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+        "native": "鬼滅の刃 無限列車編"
+       },
+       "synonyms": [
+        "KnY Movie",
+        "Els Guardians de la Nit: El Tren Infinit",
+        "Guardianes de la Noche: Tren Infinito",
+        "Demon Slayer: Mugen Treni",
+        "Demon Slayer: Il Treno Mugen",
+        "鬼灭之刃：无限列车篇",
+        "قاتل الشياطين الفيلم: قطار اللانهاية",
+        "ดาบพิฆาตอสูร เดอะมูฟวี่ : ศึกรถไฟสู่นิรันดร์",
+        "Demon Slayer: Kimetsu no Yaiba - Le film : Le train de l'Infini",
+        "ΚΥΝΗΓΟΣ ΔΑΙΜΟΝΩΝ: KIMETSU NO YAIBA – Η ΤΑΙΝΙΑ: ΤΟ ΤΡΕΝΟ ΜΟΥΓΚΕΝ",
+        "극장판 귀멸의 칼날: 무한열차편",
+        "Клинок, Рассекающий Демонов: Бесконечный Поезд"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112151-1qlQwPB1RrJe.png"
+       },
+       "format": "MOVIE",
+       "status": "FINISHED",
+       "seasonYear": 2020,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": 84,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SIDE_STORY",
+      "node": {
+       "id": 116141,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Katahane no Chou",
+        "english": "Demon Slayer: Kimetsu no Yaiba - One-Winged Butterfly",
+        "native": "鬼滅の刃 片羽の蝶"
+       },
+       "synonyms": [
+        "Kimetsu no Yaiba: One-Winged Butterfly",
+        "Guardianes de la Noche - La Mariposa de una Sola Ala",
+        "ดาบพิฆาตอสูร ผีเสื้อปีกเดียว",
+        "Tiểu thuyết Thanh gươm diệt quỷ - Cánh bướm khuyết",
+        "鬼滅之刃 單翅之蝶",
+        "Demon Slayer - Borboleta de uma asa",
+        "Demon Slayer : Le papillon qui ne pouvait plus voler",
+        "Miecz zabójcy demonów - Jednoskrzydły motyl ",
+        "Demon Slayer – Kimetsu no Yaiba: Einflügeliger Schmetterling",
+        "귀멸의 칼날 한쪽 날개의 나비"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx116141-FlWc7gn6qZHp.jpg"
+       },
+       "format": "NOVEL",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": null,
+       "chapters": 6,
+       "averageScore": 73,
+       "genres": [
+        "Action",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SIDE_STORY",
+      "node": {
+       "id": 116140,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Shiawase no Hana",
+        "english": "Demon Slayer: Kimetsu no Yaiba - The Flower of Happiness",
+        "native": "鬼滅の刃 しあわせの花"
+       },
+       "synonyms": [
+        "Kimetsu no Yaiba: Flower of Happiness",
+        "Guardianes de la Noche - La Flor de la Felicidad",
+        "Miecza zabójcy demonów Light novel - Kwiat szczęścia",
+        "Demon Slayer - Flor da Felicidade",
+        "ดาบพิฆาตอสูร ดอกไม้แห่งความสุข",
+        "Tiểu thuyết Thanh gươm diệt quỷ - Đóa hoa hạnh phúc",
+        "鬼滅之刃 幸福之花",
+        "Demon Slayer : La fleur du bonheur",
+        "Demon Slayer – Kimetsu no Yaiba: Blume des Glücks",
+        "귀멸의 칼날 행복의 꽃"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx116140-i9UlieKwD4rn.jpg"
+       },
+       "format": "NOVEL",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2019
+       },
+       "episodes": null,
+       "chapters": 5,
+       "averageScore": 69,
+       "genres": [
+        "Comedy",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SIDE_STORY",
+      "node": {
+       "id": 118750,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Kaze no Michishirube",
+        "english": "Demon Slayer: Kimetsu no Yaiba - Signs from the Wind",
+        "native": "鬼滅の刃 風の道しるべ"
+       },
+       "synonyms": [
+        "Kimetsu no Yaiba: The Wind's Telltale Signs",
+        "ดาบพิฆาตอสูร สายลมนำทาง",
+        "Demon Slayer : Le guide du vent",
+        "Demon Slayer – Sinais dos Ventos",
+        "Miecz zabójcy demonów: Wietrzny drogowskaz",
+        "Demon Slayer – Kimetsu no Yaiba: Der Wind weist den Weg",
+        "귀멸의 칼날 바람의 이정표"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118750-NCAvBDCyKEUA.jpg"
+       },
+       "format": "NOVEL",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": null,
+       "chapters": 5,
+       "averageScore": 72,
+       "genres": [
+        "Action",
+        "Comedy",
+        "Drama",
+        "Mystery",
+        "Slice of Life",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SPIN_OFF",
+      "node": {
+       "id": 118991,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Rengoku Kyoujurou Gaiden",
+        "english": "Demon Slayer: Kimetsu no Yaiba - Kyojuro Rengoku’s Story",
+        "native": "鬼滅の刃 煉獄杏寿郎 【外伝】"
+       },
+       "synonyms": [
+        "Stories of Water and Flame: Kyojuro Rengoku’s Story"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118991-JTtCck3yxaXk.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": null,
+       "chapters": 2,
+       "averageScore": 76,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SIDE_STORY",
+      "node": {
+       "id": 124283,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Rengoku Volume 0",
+        "english": "Demon Slayer: Kimetsu no Yaiba - Special One-Shot",
+        "native": "鬼滅の刃 煉獄 0巻"
+       },
+       "synonyms": [
+        "Kimetsu no Yaiba: Tokubetsu Yomikiri",
+        "鬼滅の刃 特別読切",
+        "Capitulo extra: Guardianes de la noche"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx124283-w79xIaUKDiHH.jpg"
+       },
+       "format": "ONE_SHOT",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": null,
+       "chapters": 1,
+       "averageScore": 72,
+       "genres": [
+        "Action",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SPIN_OFF",
+      "node": {
+       "id": 126445,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Gaiden",
+        "english": "Demon Slayer: Kimetsu no Yaiba - Stories of Water and Flame",
+        "native": "鬼滅の刃 外伝"
+       },
+       "synonyms": [
+        "Rengoku Kyoujurou Gaiden",
+        "Tomioka Giyuu Gaiden",
+        "Kimetsu no Aima",
+        "Miecz zabójcy demonów - Opowieści płomienia i wody",
+        "ดาบพิฆาตอสูร ไกเด็น",
+        "Demon Slayer – Kimetsu no Yaiba: Wasser und Flammen",
+        "귀멸의 칼날 외전"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx126445-F06tM0NpCsph.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": null,
+       "chapters": 30,
+       "averageScore": 75,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 129874,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen (TV)",
+        "english": "Demon Slayer: Kimetsu no Yaiba Mugen Train Arc",
+        "native": "鬼滅の刃 無限列車編 (TV)"
+       },
+       "synonyms": [
+        "KnY 2",
+        "ดาบพิฆาตอสูร : ศึกรถไฟสู่นิรันดร์ (TV)",
+        "鬼灭之刃 无限列车篇",
+        "Demon Slayer: Kimetsu no Yaiba: Le train de l'Infini",
+        "Demon Slayer: Kimetsu no Yaiba season 2",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba: Nieskończony Pociąg",
+        "귀멸의 칼날: 무한열차편",
+        "Клинок, Рассекающий Демонов: Бесконечный Поезд"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129874-g6ZKXB94Hui1.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2021,
+       "startDate": {
+        "year": 2021
+       },
+       "episodes": 7,
+       "chapters": null,
+       "averageScore": 82,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "SPIN_OFF",
+      "node": {
+       "id": 136382,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kimetsu Gakuen!",
+        "english": "Demon Slayer: Kimetsu Academy",
+        "native": "キメツ学園！"
+       },
+       "synonyms": [
+        "Demon Slayer - Kimetsu no Yaiba: School Days",
+        "Demon Slayer School Days "
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx136382-MbpgvJ8eBy4d.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2021
+       },
+       "episodes": null,
+       "chapters": 36,
+       "averageScore": 72,
+       "genres": [
+        "Comedy",
+        "Slice of Life"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 142329,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Yuukaku-hen",
+        "english": "Demon Slayer: Kimetsu no Yaiba Entertainment District Arc",
+        "native": "鬼滅の刃 遊郭編"
+       },
+       "synonyms": [
+        "KnY 2",
+        "Demon Slayer: Kimetsu no Yaiba - Le quartier des plaisirs",
+        "ดาบพิฆาตอสูร ภาค 2 บทย่านเริงรมย์",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba: Dzielnica uciech",
+        "귀멸의 칼날: 환락의 거리편",
+        "Клинок, Рассекающий Демонов: Квартал Красных Фонарей"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142329-kET1PIXJv2eW.jpg"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2022,
+       "startDate": {
+        "year": 2021
+       },
+       "episodes": 11,
+       "chapters": null,
+       "averageScore": 86,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 145139,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Katanakaji no Sato-hen",
+        "english": "Demon Slayer: Kimetsu no Yaiba Swordsmith Village Arc",
+        "native": "鬼滅の刃 刀鍛冶の里編"
+       },
+       "synonyms": [
+        "KnY 3",
+        "ดาบพิฆาตอสูร ภาค 3 บทหมู่บ้านช่างตีดาบ",
+        "Demon Slayer: Kimetsu no Yaiba - Le village des forgerons",
+        "Истребитель демонов: Kimetsu no Yaiba. Деревня кузнецов",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba: Wioska płatnerzy"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145139-rRimpHGWLhym.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2023,
+       "startDate": {
+        "year": 2023
+       },
+       "episodes": 11,
+       "chapters": null,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 154541,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Chuukou Ikkan!! Kimetsu Gakuen Monogatari: Kimetsu no Utage Tokubetsu-hen",
+        "english": "Junior High and High School!! Kimetsu Academy Story: Kimetsu no Utage Special Edition",
+        "native": "中高一貫!!キメツ学園物語 ～鬼滅の宴=特別編=～"
+       },
+       "synonyms": [
+        "Kimetsu Academy: Kimetsu no Utage Special Edition",
+        "Kimetsu Gakuen Monogatari: Demon's Banquet Special Arc"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154541-Q7djLI2ttMp9.jpg"
+       },
+       "format": "SPECIAL",
+       "status": "FINISHED",
+       "seasonYear": 2020,
+       "startDate": {
+        "year": 2020
+       },
+       "episodes": 3,
+       "chapters": null,
+       "averageScore": 67,
+       "genres": [
+        "Comedy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 166240,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Hashira Geiko-hen",
+        "english": "Demon Slayer: Kimetsu no Yaiba Hashira Training Arc",
+        "native": "鬼滅の刃 柱稽古編"
+       },
+       "synonyms": [
+        "KnY 4",
+        "Demon Slayer: Kimetsu no Yaiba - L'entraînement des Piliers",
+        "Miecz zabójcy demonów – Kimetsu no Yaiba: Trening Filarów",
+        "Клинок, рассекающий демонов: Тренировка столпов"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166240-PBV7zukIHW7V.png"
+       },
+       "format": "TV",
+       "status": "FINISHED",
+       "seasonYear": 2024,
+       "startDate": {
+        "year": 2024
+       },
+       "episodes": 8,
+       "chapters": null,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 178788,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugenjou-hen Movie 1 - Akaza Sairai",
+        "english": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+        "native": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来"
+       },
+       "synonyms": [
+        "Demon Slayer: Kimetsu no Yaiba La Forteresse infinie",
+        "Demon Slayer: Kimetsu no Yaiba Castelo Infinito",
+        "Клинок, Рассекающий Демонов: Бесконечный Замок"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178788-zm3gtpB9TpRt.jpg"
+       },
+       "format": "MOVIE",
+       "status": "FINISHED",
+       "seasonYear": 2025,
+       "startDate": {
+        "year": 2025
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": 86,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Fantasy",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 195200,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugenjou-hen Movie 2",
+        "english": "Demon Slayer: Kimetsu no Yaiba Infinity Castle Part 2",
+        "native": "劇場版「鬼滅の刃」無限城編 第二章"
+       },
+       "synonyms": [],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195200-wJaLJ4mDDKGc.png"
+       },
+       "format": "MOVIE",
+       "status": "NOT_YET_RELEASED",
+       "seasonYear": null,
+       "startDate": {
+        "year": null
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": null,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "relationType": "ADAPTATION",
+      "node": {
+       "id": 195201,
+       "type": "ANIME",
+       "title": {
+        "romaji": "Kimetsu no Yaiba: Mugenjou-hen Movie 3",
+        "english": null,
+        "native": "劇場版「鬼滅の刃」無限城編 第終章"
+       },
+       "synonyms": [],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"
+       },
+       "format": "MOVIE",
+       "status": "NOT_YET_RELEASED",
+       "seasonYear": null,
+       "startDate": {
+        "year": null
+       },
+       "episodes": 1,
+       "chapters": null,
+       "averageScore": null,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     }
+    ]
+   },
+   "recommendations": {
+    "nodes": [
+     {
+      "mediaRecommendation": {
+       "id": 101517,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Jujutsu Kaisen",
+        "english": "Jujutsu Kaisen",
+        "native": "呪術廻戦"
+       },
+       "synonyms": [
+        "Sorcery Fight",
+        "주술회전",
+        "咒术回战",
+        "Guerra de Hechiceros",
+        "Batalha de Feiticeiros",
+        "JJK",
+        "มหาเวทย์ผนึกมาร",
+        "Chú thuật hồi chiến",
+        "Магическая битва",
+        "La guerra màgica",
+        "Prokleté války",
+        "咒術迴戰",
+        "Contiendas de Brujería",
+        "Lanet Savaşları"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101517-H3TdM3g5ZUe9.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2018
+       },
+       "episodes": null,
+       "chapters": 272,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Drama",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 100994,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Jigokuraku",
+        "english": "Hell’s Paradise: Jigokuraku",
+        "native": "地獄楽"
+       },
+       "synonyms": [
+        "Hell's Paradise",
+        "Paradition",
+        "Heavenhell",
+        "Jigoku Raku",
+        "Piekielny Raj",
+        "지옥락",
+        "สุขาวดีอเวจี",
+        "地獄樂"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx100994-f6CMjiQQNVeS.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2018
+       },
+       "episodes": null,
+       "chapters": 127,
+       "averageScore": 81,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30022,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+        "english": "Rurouni Kenshin",
+        "native": "るろうに剣心 -明治剣客浪漫譚-"
+       },
+       "synonyms": [
+        "Rurouni Kenshin: Meiji Swordsman Romantic Story",
+        "Samurai X",
+        "Sengoku no Mikazuki",
+        "Crescent Moon in the Warring States",
+        "Rurouni Kenshin - Η ρομαντική ιστορία του ξιφομάχου της εποχής Μέιτζι",
+        "Kenshin, o Samurai Errante",
+        "Kenshin le Vagabond",
+        "Kenshin - Samurai vagabondo",
+        "Kenshin "
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30022-jxTlViun1o10.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 1994
+       },
+       "episodes": null,
+       "chapters": 259,
+       "averageScore": 82,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Romance"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30012,
+       "type": "MANGA",
+       "title": {
+        "romaji": "BLEACH",
+        "english": "Bleach",
+        "native": "BLEACH"
+       },
+       "synonyms": [
+        "ブリーチ",
+        "بلیچ",
+        "死神",
+        "BLEACH 블리치",
+        "境·界死神（）"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30012-1epmVfTSv2rr.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2001
+       },
+       "episodes": null,
+       "chapters": 706,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 169355,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Kagurabachi",
+        "english": "Kagurabachi",
+        "native": "カグラバチ"
+       },
+       "synonyms": [
+        "神樂鉢",
+        "KGB",
+        "คากุระบาจิ",
+        "카구라바치"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx169355-5pqzh1Wb4NOQ.png"
+       },
+       "format": "MANGA",
+       "status": "RELEASING",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2023
+       },
+       "episodes": null,
+       "chapters": null,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Drama",
+        "Fantasy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 85486,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Boku no Hero Academia",
+        "english": "My Hero Academia",
+        "native": "僕のヒーローアカデミア"
+       },
+       "synonyms": [
+        "HeroAca",
+        "ヒロアカ",
+        "BNHA",
+        "MHA",
+        "My Hero Academia- Akademia bohaterów",
+        "Mitt Helteakademia",
+        "나의 히어로 아카데미아",
+        "나히아",
+        "מיי הירו אקדמיה",
+        "אקדמיית הגיבורים שלי",
+        "Kahramanlık Akademim",
+        "My Hero Academia - Moje hrdinská akademie",
+        "Моя геройская академия",
+        "Học Viện Siêu Anh Hùng",
+        "มายฮีโร่อคาเดเมีย",
+        "我的英雄學院"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85486-INqnYx8gL3eX.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2014
+       },
+       "episodes": null,
+       "chapters": 432,
+       "averageScore": 78,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Drama",
+        "Fantasy"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 73661,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Owari no Seraph",
+        "english": "Seraph of the End: Vampire Reign",
+        "native": "終わりのセラフ"
+       },
+       "synonyms": [
+        "Seraph of the End",
+        "Owari no Serafu",
+        "OwaSera",
+        "Seraph of the End: Serafin dni ostatnich",
+        "Seraph of the End: Kıyamet Meleği",
+        "เทวทูตแห่งโลกมืด",
+        "종말의 세라프"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx73661-PJX2JcBAUYCx.png"
+       },
+       "format": "MANGA",
+       "status": "RELEASING",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2012
+       },
+       "episodes": null,
+       "chapters": null,
+       "averageScore": 75,
+       "genres": [
+        "Action",
+        "Drama",
+        "Mystery",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30011,
+       "type": "MANGA",
+       "title": {
+        "romaji": "NARUTO",
+        "english": "Naruto",
+        "native": "NARUTO -ナルト-"
+       },
+       "synonyms": [
+        "נארוטו",
+        "Наруто",
+        "火影忍者",
+        "나루토",
+        "นินจาคาถา โอ้โฮเฮะ"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30011-9yUF1dXWgDOx.jpg"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 1999
+       },
+       "episodes": null,
+       "chapters": 700,
+       "averageScore": 79,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30656,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Vagabond",
+        "english": "Vagabond",
+        "native": "バガボンド"
+       },
+       "synonyms": [
+        "배가본드"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30656-9mW113O7rDnA.png"
+       },
+       "format": "MANGA",
+       "status": "RELEASING",
+       "seasonYear": null,
+       "startDate": {
+        "year": 1998
+       },
+       "episodes": null,
+       "chapters": null,
+       "averageScore": 91,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 54692,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Noragami",
+        "english": "Noragami: Stray God",
+        "native": "ノラガミ"
+       },
+       "synonyms": [
+        "Бездомный Бог",
+        "Vị thần lang thang"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx54692-3vWUzvrCyArN.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2010
+       },
+       "episodes": null,
+       "chapters": 109,
+       "averageScore": 82,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Drama",
+        "Romance",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30583,
+       "type": "MANGA",
+       "title": {
+        "romaji": "CLAYMORE",
+        "english": "Claymore",
+        "native": "CLAYMORE"
+       },
+       "synonyms": [
+        "クレイモア"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30583-Ysqwu8uryIUX.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 2001
+       },
+       "episodes": null,
+       "chapters": 159,
+       "averageScore": 81,
+       "genres": [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Horror"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     },
+     {
+      "mediaRecommendation": {
+       "id": 30053,
+       "type": "MANGA",
+       "title": {
+        "romaji": "Yuu☆Yuu☆Hakusho",
+        "english": "Yu Yu Hakusho",
+        "native": "幽☆遊☆白書"
+       },
+       "synonyms": [
+        "Yuu Yuu Hakusho",
+        "YuYu Hakusho",
+        "YYH",
+        "Yu degli spettri",
+        "Hành trình U Linh Giới",
+        "Yu Yu Hakusho - archiwum duchów",
+        "幽遊白書",
+        "유유백서"
+       ],
+       "coverImage": {
+        "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30053-wCR6xyGzeUYo.png"
+       },
+       "format": "MANGA",
+       "status": "FINISHED",
+       "seasonYear": null,
+       "startDate": {
+        "year": 1990
+       },
+       "episodes": null,
+       "chapters": 176,
+       "averageScore": 80,
+       "genres": [
+        "Action",
+        "Comedy",
+        "Drama",
+        "Romance",
+        "Supernatural"
+       ],
+       "countryOfOrigin": "JP",
+       "isAdult": false
+      }
+     }
+    ]
+   }
+  }
+ }
+}

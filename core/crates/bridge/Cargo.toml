@@ -4,11 +4,21 @@ version = "0.1.0"
 edition = "2024"
 
 [lib]
-crate-type = ["cdylib", "staticlib"]
+crate-type = ["cdylib", "staticlib", "rlib"]
 
 [dependencies]
 flutter_rust_bridge = "=2.13.0"
+domain = { path = "../domain" }
 application = { path = "../application" }
+infrastructure = { path = "../infrastructure" }
+updater = { path = "../updater" }
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "time", "sync"] }
+serde = "1.0.229"
+serde_json = "1.0.154"
+
+[dev-dependencies]
+application = { path = "../application", features = ["testing"] }
+sha2 = "0.10.9"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
