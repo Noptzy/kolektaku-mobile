@@ -1,7 +1,9 @@
+mod cache_policy;
 mod catalog;
 mod covers;
 mod discover;
 mod graphql;
+mod list_request;
 mod mapper;
 mod matching;
 mod people_queries;
@@ -37,4 +39,5 @@ mod catalog_test_support;
 #[cfg(test)]
 mod catalog_titles_tests;
 
+pub use cache_policy::catalog_ttl;
 pub use catalog::AniListCatalog;

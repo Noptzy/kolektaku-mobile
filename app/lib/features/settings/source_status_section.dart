@@ -66,7 +66,7 @@ class SourceStatusSection extends ConsumerWidget {
         SettingsNote(
           kind == MediaKindDto.anime
               ? 'Semua sumber anime mati, jadi tidak ada yang bisa ditonton.'
-              : 'Semua sumber manga mati, jadi tidak ada yang bisa dibaca.',
+              : 'Semua sumber komik mati, jadi tidak ada yang bisa dibaca.',
           key: Key('all-off-${kind.name}'),
         ),
     ];

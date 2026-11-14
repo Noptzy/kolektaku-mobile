@@ -37,7 +37,7 @@ class HistoryRow extends StatelessWidget {
         minSize: Sizes.touchTarget,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.screenGutter,
+            horizontal: Spacing.md,
             vertical: Spacing.xs,
           ),
           child: Row(

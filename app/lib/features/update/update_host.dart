@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
+import '../../widgets/swipe_sheet.dart';
 import 'update_controller.dart';
 import 'update_panel.dart';
 import 'update_state.dart';
@@ -36,9 +37,8 @@ class _UpdateHostState extends ConsumerState<UpdateHost> {
       return;
     }
     _shownFor = offer.version;
-    showShadSheet<void>(
+    showSwipeSheet<void>(
       context: context,
-      side: ShadSheetSide.bottom,
       builder: (sheetContext) => ShadSheet(
         title: Text('Pembaruan ${offer.version}'),
         description: const Text('Versi baru Kolektaku siap dipasang.'),

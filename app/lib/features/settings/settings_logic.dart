@@ -23,7 +23,7 @@ List<SourceEntry> numberedSources(
 }
 
 String sourceLabel(MediaKindDto kind, int number) {
-  final name = kind == MediaKindDto.anime ? 'anime' : 'manga';
+  final name = kind == MediaKindDto.anime ? 'anime' : 'komik';
   return 'Sumber $name $number';
 }
 

@@ -5,7 +5,7 @@ import 'settings_labels.dart';
 import 'settings_logic.dart';
 
 String preferenceSummary(SettingsDto settings) =>
-    settings.prefersAnime ? 'Lebih banyak anime' : 'Lebih banyak manga';
+    settings.prefersAnime ? 'Lebih banyak anime' : 'Lebih banyak komik';
 
 String animeSourceSummary(
   SettingsDto settings,

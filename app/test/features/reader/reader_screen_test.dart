@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/reader/page_image.dart';
-import 'package:kolektaku/features/reader/reader_screen.dart';
+import 'package:kolektaku/features/reader/read_failure.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../support/decode.dart';

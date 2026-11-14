@@ -77,7 +77,9 @@ void main() {
         sub('English - Forced', 'en', variant: 'forced'),
       ],
     );
-    await tester.tap(find.byKey(const Key('subtitles')));
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('settings-row-subtitle')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('option-Mati')), findsOneWidget);
     expect(find.text('Indonesia  •'), findsOneWidget);
@@ -98,7 +100,9 @@ void main() {
       tester,
       subtitles: [sub('Indonesian', 'id')],
     );
-    await tester.tap(find.byKey(const Key('subtitles')));
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('settings-row-subtitle')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('option-Mati')));
     await tester.pumpAndSettle();

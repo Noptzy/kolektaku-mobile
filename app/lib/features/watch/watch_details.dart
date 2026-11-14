@@ -9,7 +9,7 @@ import '../detail/episode_window.dart';
 import 'scene_estimate_bar.dart';
 import 'watch_scroll.dart';
 import 'watch_section_heading.dart';
-import 'server_sheet.dart';
+import 'server_flow.dart';
 import 'watch_controller.dart';
 import 'watch_info.dart';
 import 'watch_labels.dart';
@@ -101,31 +101,13 @@ class _WatchDetailsState extends State<WatchDetails> {
     if (unit != null) _controller.goTo(unit);
   }
 
-  Future<void> _changeServer() async {
-    final loaded = _controller.loaded;
-    if (loaded == null) return;
-    final choice = await showServerSheet(
-      context,
-      servers: loaded.playback.servers,
-      current: loaded.serverId,
-      others: otherSourcesOf(
-        linked: widget.linkedSources,
-        current: loaded.playback.source,
-        names: widget.sourceNames,
-        summaries: widget.sourceSummaries,
-      ),
-    );
-    switch (choice) {
-      case PickServer(:final id):
-        await _controller.useServer(id);
-      case UseSource(:final id):
-        await _controller.useSource(id);
-      case TryOtherSource():
-        await _controller.tryOtherSource();
-      case null:
-        return;
-    }
-  }
+  Future<void> _changeServer() => changeServer(
+    context,
+    _controller,
+    linkedSources: widget.linkedSources,
+    sourceNames: widget.sourceNames,
+    sourceSummaries: widget.sourceSummaries,
+  );
 
   EpisodeRow _row(UnitDto unit, {bool playing = false}) {
     return EpisodeRow(

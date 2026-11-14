@@ -6,6 +6,8 @@ class HeroSlide {
     required this.title,
     required this.meta,
     this.imageUrl,
+    this.synopsis,
+    this.label,
     this.score,
     this.hasTrailer = false,
     this.actionLabel,
@@ -15,6 +17,7 @@ class HeroSlide {
     MediaCardDto card, {
     bool hasTrailer = false,
     String? actionLabel,
+    String? label,
   }) {
     final parts = <String>[
       if (card.year != null) '${card.year}',
@@ -24,7 +27,9 @@ class HeroSlide {
     return HeroSlide(
       title: card.title,
       meta: parts.join(' · '),
-      imageUrl: card.coverUrl,
+      imageUrl: card.coverHdUrl ?? card.coverUrl,
+      synopsis: card.synopsis,
+      label: label,
       score: card.score,
       hasTrailer: hasTrailer,
       actionLabel: actionLabel,
@@ -34,6 +39,8 @@ class HeroSlide {
   final String title;
   final String meta;
   final String? imageUrl;
+  final String? synopsis;
+  final String? label;
   final double? score;
   final bool hasTrailer;
   final String? actionLabel;

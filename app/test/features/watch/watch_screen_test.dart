@@ -24,6 +24,8 @@ void main() {
   testWidgets('resumes from the saved position', (tester) async {
     final harness = WatchHarness(resume: const Duration(seconds: 90));
     await harness.open(tester);
+    await tester.tap(find.byKey(const Key('resume-continue')));
+    await tester.pumpAndSettle();
     expect(harness.engine.startedAt.single, const Duration(seconds: 90));
   });
 
@@ -78,7 +80,9 @@ void main() {
   testWidgets('the speed menu changes the playback speed', (tester) async {
     final harness = WatchHarness();
     await harness.open(tester);
-    await tester.tap(find.byKey(const Key('speed')));
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('settings-row-speed')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('option-1.5x')));
     await tester.pumpAndSettle();
@@ -91,7 +95,9 @@ void main() {
     final harness = WatchHarness();
     await harness.open(tester);
     harness.engine.emit(position: const Duration(seconds: 120), playing: true);
-    await tester.tap(find.byKey(const Key('quality')));
+    await tester.tap(find.byKey(const Key('player-settings')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('settings-row-quality')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('option-480p')));
     await tester.pumpAndSettle();

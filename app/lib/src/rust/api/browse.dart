@@ -17,6 +17,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 Future<HomeDto> home({required MediaKindDto kind}) =>
     RustLib.instance.api.crateApiBrowseHome(kind: kind);
 
+Future<void> clearCatalogCache() =>
+    RustLib.instance.api.crateApiBrowseClearCatalogCache();
+
 Future<CardPageDto> search({
   required MediaKindDto kind,
   required String query,

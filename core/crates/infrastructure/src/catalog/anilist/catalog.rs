@@ -12,12 +12,12 @@ use serde_json::{Value, json};
 use super::covers::fetch_covers;
 use super::discover::discover_variables;
 use super::graphql::GraphQl;
+use super::list_request::list_request;
 use super::mapper::{map_detail, visible_summaries};
 use super::matching::match_all;
 use super::profile_fetch::{fetch_people, fetch_profile};
 use super::queries::{detail_query, discover_query, list_query, search_query};
-use super::schema::{RawDetailResponse, RawListResponse};
-use super::season::season_of;
+use super::schema::{RawDetailResponse, RawListResponse, RawSummary};
 use crate::catalog::mal::titled_episodes;
 use crate::http::HttpClient;
 
@@ -46,8 +46,19 @@ impl AniListCatalog {
         variables: Value,
         requested: u32,
     ) -> Result<MediaPage, SourceError> {
+        self.page_where(query, variables, requested, |_| true).await
+    }
+
+    async fn page_where(
+        &self,
+        query: String,
+        variables: Value,
+        requested: u32,
+        keep: fn(&RawSummary) -> bool,
+    ) -> Result<MediaPage, SourceError> {
         let data = self.graphql.run(&query, variables).await?;
-        let response: RawListResponse = parse(data, "list")?;
+        let mut response: RawListResponse = parse(data, "list")?;
+        response.page.media.retain(keep);
         let info = response.page.page_info;
         Ok(MediaPage {
             items: visible_summaries(response.page.media),
@@ -64,13 +75,6 @@ pub(super) fn media_type(kind: MediaKind) -> &'static str {
     match kind {
         MediaKind::Anime => "ANIME",
         MediaKind::Manga => "MANGA",
-    }
-}
-
-fn sorts(list: MediaListKind) -> Vec<&'static str> {
-    match list {
-        MediaListKind::Trending => vec!["TRENDING_DESC", "POPULARITY_DESC"],
-        MediaListKind::Popular | MediaListKind::Seasonal => vec!["POPULARITY_DESC"],
     }
 }
 
@@ -115,21 +119,14 @@ impl MetadataCatalog for AniListCatalog {
                 "seasonal lists exist for anime only".into(),
             ));
         }
-        let mut variables = json!({
-            "page": page,
-            "perPage": PAGE_SIZE,
-            "type": media_type(kind),
-            "sort": sorts(list),
-        });
-        if kind == MediaKind::Anime {
-            variables["country"] = json!(ANIME_COUNTRY);
+        let request = list_request(kind, list, page, self.clock.now_secs(), media_type(kind));
+        let query = list_query(request.rich, request.prequels);
+        if request.prequels {
+            return self
+                .page_where(query, request.variables, page, RawSummary::has_prequel)
+                .await;
         }
-        if list == MediaListKind::Seasonal {
-            let season = season_of(self.clock.now_secs());
-            variables["season"] = json!(season.name);
-            variables["year"] = json!(season.year);
-        }
-        self.page(list_query(), variables, page).await
+        self.page(query, request.variables, page).await
     }
 
     async fn search(

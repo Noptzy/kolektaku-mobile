@@ -1,4 +1,6 @@
-use domain::media::{MediaDate, MediaDetail, NextAiring, StudioRef, Trailer, TrailerSite};
+use domain::media::{
+    MediaDate, MediaDetail, MediaSummary, NextAiring, StudioRef, Trailer, TrailerSite,
+};
 
 use super::credits::{map_characters, map_staff};
 use super::episodes::map_episodes;
@@ -66,8 +68,15 @@ pub fn map_detail(raw: RawDetail) -> MediaDetail {
         episodes: map_episodes(raw.streaming_episodes, total_episodes),
         mal_id,
         links: map_links(raw.external_links),
-        summary: map_summary(raw.summary),
+        summary: sharp_cover(map_summary(raw.summary)),
     }
+}
+
+fn sharp_cover(mut summary: MediaSummary) -> MediaSummary {
+    if let Some(sharp) = summary.cover_hd_url.clone() {
+        summary.cover_url = Some(sharp);
+    }
+    summary
 }
 
 #[cfg(test)]

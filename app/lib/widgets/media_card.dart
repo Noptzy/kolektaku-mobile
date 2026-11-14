@@ -20,7 +20,7 @@ class MediaCard extends StatelessWidget {
     this.onTap,
     this.progress,
     this.isNew = false,
-    this.unitLabel = 'eps',
+    this.unitLabel,
     this.tag,
     this.onRemove,
   });
@@ -29,7 +29,7 @@ class MediaCard extends StatelessWidget {
   final VoidCallback? onTap;
   final double? progress;
   final bool isNew;
-  final String unitLabel;
+  final String? unitLabel;
   final String? tag;
   final VoidCallback? onRemove;
 

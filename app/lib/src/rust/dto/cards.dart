@@ -74,6 +74,8 @@ class MediaCardDto {
   final String title;
   final String? titleEnglish;
   final String? coverUrl;
+  final String? coverHdUrl;
+  final String? synopsis;
   final String? latestLabel;
   final double? score;
   final int? year;
@@ -89,6 +91,8 @@ class MediaCardDto {
     required this.title,
     this.titleEnglish,
     this.coverUrl,
+    this.coverHdUrl,
+    this.synopsis,
     this.latestLabel,
     this.score,
     this.year,
@@ -106,6 +110,8 @@ class MediaCardDto {
       title.hashCode ^
       titleEnglish.hashCode ^
       coverUrl.hashCode ^
+      coverHdUrl.hashCode ^
+      synopsis.hashCode ^
       latestLabel.hashCode ^
       score.hashCode ^
       year.hashCode ^
@@ -125,6 +131,8 @@ class MediaCardDto {
           title == other.title &&
           titleEnglish == other.titleEnglish &&
           coverUrl == other.coverUrl &&
+          coverHdUrl == other.coverHdUrl &&
+          synopsis == other.synopsis &&
           latestLabel == other.latestLabel &&
           score == other.score &&
           year == other.year &&

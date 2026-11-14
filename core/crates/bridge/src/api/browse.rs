@@ -11,6 +11,11 @@ pub async fn home(kind: MediaKindDto) -> Result<HomeDto, BridgeError> {
     browse::home(global()?, kind).await
 }
 
+pub async fn clear_catalog_cache() -> Result<(), BridgeError> {
+    browse::clear_catalog_cache(global()?).await;
+    Ok(())
+}
+
 pub async fn search(
     kind: MediaKindDto,
     query: String,

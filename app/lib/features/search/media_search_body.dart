@@ -112,6 +112,9 @@ class _MediaSearchBodyState extends ConsumerState<MediaSearchBody> {
         _empty(state),
         SliverToBoxAdapter(child: _footer(state)),
       ],
+      _ when visible.isEmpty && state.status != SearchStatus.failed => [
+        const MediaGridSkeletonSliver(count: 6),
+      ],
       _ when visible.isEmpty => [SliverToBoxAdapter(child: _footer(state))],
       _ => [
         MediaGridSliver(

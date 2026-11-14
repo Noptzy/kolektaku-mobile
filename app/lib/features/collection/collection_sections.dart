@@ -11,7 +11,7 @@ import '../../widgets/skeleton.dart';
 import '../home/home_sections.dart';
 import '../home/resume_card.dart';
 import 'collection_logic.dart';
-import 'history_row.dart';
+import 'history_box.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({super.key, required this.text, this.trailing});
@@ -138,17 +138,13 @@ List<Widget> historySection(
     if (items.isEmpty)
       SliverToBoxAdapter(child: EmptyNote(text: emptyHistory(kind)))
     else
-      SliverList.list(
-        children: [
-          for (final item in items)
-            HistoryRow(
-              key: ValueKey(historyKey(item)),
-              progress: item,
-              nowSecs: nowSecs,
-              onOpen: () => onOpen(item),
-              onRemove: () => onRemove(item),
-            ),
-        ],
+      SliverToBoxAdapter(
+        child: HistoryBox(
+          items: items,
+          nowSecs: nowSecs,
+          onOpen: onOpen,
+          onRemove: onRemove,
+        ),
       ),
   ];
 }

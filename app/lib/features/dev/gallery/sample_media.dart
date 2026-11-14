@@ -1,6 +1,11 @@
 import '../../../src/rust/dto/cards.dart';
 import '../../../src/rust/dto/media.dart';
 
+const sampleSynopsis =
+    'Seorang apoteker muda kembali ke kehidupan lamanya di distrik hiburan '
+    'setelah pemberontakan berakhir, tetapi teka-teki baru segera muncul dan '
+    'menariknya ke dalam intrik istana.';
+
 MediaCardDto sampleCard(
   int id, {
   String? title,
@@ -8,6 +13,8 @@ MediaCardDto sampleCard(
   int? year = 2016,
   int? units = 12,
   bool limited = false,
+  bool withSynopsis = true,
+  String? format = 'TV',
 }) {
   return MediaCardDto(
     reference: MediaRefDto(
@@ -18,9 +25,10 @@ MediaCardDto sampleCard(
     ),
     title: title ?? 'Judul contoh nomor $id yang cukup panjang',
     coverUrl: null,
+    synopsis: withSynopsis ? sampleSynopsis : null,
     score: score,
     year: year,
-    format: 'TV',
+    format: format,
     genres: const ['Action', 'Drama'],
     unitCount: units,
     limited: limited,

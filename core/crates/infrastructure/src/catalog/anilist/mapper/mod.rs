@@ -12,6 +12,7 @@ mod profile_facts;
 mod profile_links;
 mod related;
 mod summary;
+mod synopsis;
 
 pub use detail::map_detail;
 pub use people::{map_people, map_studio};

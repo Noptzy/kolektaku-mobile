@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_text.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/pressable.dart';
+import '../../widgets/swipe_sheet.dart';
 
 class WatchHeading extends StatelessWidget {
   const WatchHeading({
@@ -108,9 +109,8 @@ Future<void> showSynopsisSheet(
   required String title,
   required String text,
 }) {
-  return showShadSheet<void>(
+  return showSwipeSheet<void>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: Text(title),
       description: const Text('Sinopsis'),

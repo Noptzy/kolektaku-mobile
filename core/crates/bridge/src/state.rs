@@ -5,17 +5,20 @@ use application::ports::{Clock, MetadataCatalog, SourceProvider};
 use application::settings::AppSettingsStore;
 use application::sources::{ResolveSources, SourceDirectory, SourceHealth, SourceSwitches};
 use domain::media::MediaKind;
-use infrastructure::catalog::anilist::AniListCatalog;
+use infrastructure::catalog::anilist::{AniListCatalog, catalog_ttl};
 use infrastructure::clock::SystemClock;
 use infrastructure::config::{ConfigLoader, FileConfigStore, merge};
 use infrastructure::http::{
-    HttpClient, RateLimitSettings, RateLimitedClient, ReqwestClient, SystemPause,
+    CachedHttp, HttpClient, RateLimitSettings, RateLimitedClient, ReqwestClient, ResponseCache,
+    SystemPause,
 };
 use infrastructure::scene::trace_moe::TraceMoeSceneSearch;
 use infrastructure::sources::registry::{SourceEnv, SourceRegistry, all_defaults};
 use infrastructure::storage::{JsonLibraryRepository, JsonSourceLinkStore};
 
 use crate::error::BridgeError;
+
+const CACHE_CAPACITY: usize = 400;
 
 const RELEASE_CONFIG_URL: &str =
     "https://github.com/Noptzy/kolektaku-mobile/releases/latest/download/config.json";
@@ -32,6 +35,7 @@ pub struct AppState<C: MetadataCatalog> {
     pub clock: Arc<dyn Clock>,
     pub scene: Arc<TraceMoeSceneSearch>,
     pub http: Arc<dyn HttpClient>,
+    pub response_cache: Option<Arc<ResponseCache>>,
 }
 
 impl<C: MetadataCatalog + 'static> AppState<C> {
@@ -65,7 +69,13 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
             clock,
             scene,
             http,
+            response_cache: None,
         }
+    }
+
+    pub fn with_response_cache(mut self, cache: Arc<ResponseCache>) -> Self {
+        self.response_cache = Some(cache);
+        self
     }
 
     pub fn active_sources(&self, kind: MediaKind) -> Vec<Arc<dyn SourceProvider>> {
@@ -112,8 +122,20 @@ pub async fn build_production(data_dir: &Path) -> Result<AppState<AniListCatalog
     tokio::spawn(async move {
         loader.refresh().await;
     });
-    let catalog = Arc::new(AniListCatalog::new(limited, clock.clone()));
-    Ok(AppState::assemble(catalog, registry, data_dir, clock, scene, plain).await)
+    let cache = Arc::new(ResponseCache::new(
+        data_dir.join("cache").join("catalog"),
+        clock.clone(),
+        CACHE_CAPACITY,
+    ));
+    let pruned = cache.clone();
+    tokio::spawn(async move {
+        pruned.prune().await;
+    });
+    let remembered: Arc<dyn HttpClient> =
+        Arc::new(CachedHttp::new(limited, cache.clone(), catalog_ttl));
+    let catalog = Arc::new(AniListCatalog::new(remembered, clock.clone()));
+    let state = AppState::assemble(catalog, registry, data_dir, clock, scene, plain).await;
+    Ok(state.with_response_cache(cache))
 }
 
 static GLOBAL: std::sync::OnceLock<AppState<AniListCatalog>> = std::sync::OnceLock::new();

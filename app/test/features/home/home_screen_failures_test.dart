@@ -51,6 +51,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(harness.catalog.homeCalls, 4);
+    expect(harness.catalog.cacheClears, 1);
   });
 
   testWidgets('a small phone still keeps the hero within 55 percent', (

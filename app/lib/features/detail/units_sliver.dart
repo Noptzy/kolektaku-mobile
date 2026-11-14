@@ -36,22 +36,33 @@ class UnitsSliver extends StatelessWidget {
   final VoidCallback onRetry;
   final ValueChanged<UnitDto> onPlay;
 
+  Widget _failure(Object error) {
+    if (_isMissing(error)) {
+      return StateView.empty(
+        key: const Key('units-missing'),
+        title: missingUnitsTitle(kind),
+        message:
+            'Judul ini belum ada di sumber mana pun. Coba "Bukan ini?" atau '
+            'cek lagi nanti.',
+      );
+    }
+    if (error is BridgeError) {
+      return ErrorStateView(error: error, onRetry: onRetry);
+    }
+    return StateView.error(
+      title: 'Ada yang tidak beres',
+      message: 'Daftar belum bisa dimuat.',
+      actionLabel: 'Coba lagi',
+      onAction: onRetry,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return units.when(
       loading: () => const _Loading(),
       error: (error, stack) => SliverToBoxAdapter(
-        child: SizedBox(
-          height: 320,
-          child: error is BridgeError
-              ? ErrorStateView(error: error, onRetry: onRetry)
-              : StateView.error(
-                  title: 'Ada yang tidak beres',
-                  message: 'Daftar belum bisa dimuat.',
-                  actionLabel: 'Coba lagi',
-                  onAction: onRetry,
-                ),
-        ),
+        child: SizedBox(height: 320, child: _failure(error)),
       ),
       data: (data) => data.units.isEmpty
           ? const SliverToBoxAdapter(
@@ -77,6 +88,13 @@ class UnitsSliver extends StatelessWidget {
     );
   }
 }
+
+bool _isMissing(Object error) =>
+    error is BridgeError && error.kind == BridgeErrorKind.notFound;
+
+String missingUnitsTitle(MediaKindDto kind) => kind == MediaKindDto.anime
+    ? 'Episode tidak ditemukan'
+    : 'Chapter tidak ditemukan';
 
 class _Loading extends StatelessWidget {
   const _Loading();

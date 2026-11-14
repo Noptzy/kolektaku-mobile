@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../src/rust/dto/stream.dart';
 import '../../widgets/pressable.dart';
+import '../../widgets/swipe_sheet.dart';
 
 sealed class ServerChoice {
   const ServerChoice();
@@ -69,9 +70,8 @@ Future<ServerChoice?> showServerSheet(
   required String? current,
   List<OtherSource> others = const [],
 }) {
-  return showShadSheet<ServerChoice>(
+  return showSwipeSheet<ServerChoice>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: const Text('Ganti server'),
       description: Text(

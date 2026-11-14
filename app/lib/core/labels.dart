@@ -9,7 +9,7 @@ String? formatLabel(String? format) {
     'ONA' => 'ONA',
     'SPECIAL' => 'Spesial',
     'MUSIC' => 'Musik',
-    'MANGA' => 'Manga',
+    'MANGA' => 'Komik',
     'NOVEL' => 'Novel',
     'ONE_SHOT' => 'One-shot',
     _ => format,
@@ -31,7 +31,7 @@ String? statusLabel(String? status, MediaKindDto kind) {
 
 String unitCountLabel(int? count, MediaKindDto kind) {
   if (count == null) return '';
-  return '$count ${kind == MediaKindDto.anime ? 'eps' : 'ch'}';
+  return '$count ${kind == MediaKindDto.anime ? 'eps' : 'chapter'}';
 }
 
 String relationLabel(String relation) => switch (relation.toUpperCase()) {

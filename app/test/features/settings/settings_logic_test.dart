@@ -43,7 +43,7 @@ void main() {
       final label = sourceLabel(MediaKindDto.anime, 2);
       expect(label, 'Sumber anime 2');
       expect(label, isNot(contains('Nama Situs')));
-      expect(sourceLabel(MediaKindDto.manga, 1), 'Sumber manga 1');
+      expect(sourceLabel(MediaKindDto.manga, 1), 'Sumber komik 1');
     });
   });
 

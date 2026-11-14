@@ -21,6 +21,8 @@ class ReaderPages extends StatelessWidget {
     required this.onNext,
     required this.onTap,
     required this.onScroll,
+    this.decodeScale = 1,
+    this.physics,
   });
 
   final ChapterViewDto view;
@@ -32,12 +34,14 @@ class ReaderPages extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onTap;
   final bool Function(ScrollNotification notification) onScroll;
+  final double decodeScale;
+  final ScrollPhysics? physics;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final screen = MediaQuery.sizeOf(context).width;
     final ratio = MediaQuery.devicePixelRatioOf(context);
-    final decode = decodeWidth(width, ratio);
+    final decode = decodeWidth(screen * decodeScale, ratio);
     return NotificationListener<ScrollNotification>(
       onNotification: onScroll,
       child: GestureDetector(
@@ -46,6 +50,7 @@ class ReaderPages extends StatelessWidget {
         child: ListView.builder(
           key: ValueKey(view),
           controller: scroll,
+          physics: physics,
           cacheExtent: readerCacheExtent,
           itemCount: view.pages.length + 1,
           itemBuilder: (context, index) {

@@ -27,7 +27,7 @@ void main() {
 
     test('unit counts name the unit by kind', () {
       expect(unitCountLabel(12, MediaKindDto.anime), '12 eps');
-      expect(unitCountLabel(40, MediaKindDto.manga), '40 ch');
+      expect(unitCountLabel(40, MediaKindDto.manga), '40 chapter');
       expect(unitCountLabel(null, MediaKindDto.anime), '');
     });
 

@@ -30,6 +30,18 @@ void main() {
       expect(mediaMeta(sampleCard(1), unitLabel: 'ch'), '2016 · 12 ch');
     });
 
+    test('counts chapters for comics and episodes for everything else', () {
+      expect(unitLabelOf(sampleCard(1, format: 'MANGA')), 'chapter');
+      expect(unitLabelOf(sampleCard(1, format: 'novel')), 'chapter');
+      expect(unitLabelOf(sampleCard(1, format: 'ONE_SHOT')), 'chapter');
+      expect(unitLabelOf(sampleCard(1, format: 'MOVIE')), 'eps');
+      expect(unitLabelOf(sampleCard(1, format: null)), 'eps');
+    });
+
+    test('a comic card names its chapters without being told to', () {
+      expect(mediaMeta(sampleCard(1, format: 'MANGA')), '2016 · 12 chapter');
+    });
+
     test('skips what is unknown', () {
       expect(mediaMeta(sampleCard(1, units: null)), '2016');
       expect(mediaMeta(sampleCard(1, year: null, units: null)), '');

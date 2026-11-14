@@ -10,6 +10,8 @@ pub mod subtitle;
 pub mod update;
 
 #[cfg(test)]
+mod cache_tests;
+#[cfg(test)]
 mod people_search_tests;
 #[cfg(test)]
 mod scene_tests;

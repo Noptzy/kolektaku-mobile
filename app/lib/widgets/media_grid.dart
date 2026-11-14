@@ -35,7 +35,7 @@ class MediaGridSliver extends StatelessWidget {
     super.key,
     required this.cards,
     this.onTap,
-    this.unitLabel = 'eps',
+    this.unitLabel,
     this.progressOf,
     this.tagOf,
     this.onRemove,
@@ -45,7 +45,7 @@ class MediaGridSliver extends StatelessWidget {
   final ValueChanged<MediaCardDto>? onRemove;
   final List<MediaCardDto> cards;
   final ValueChanged<MediaCardDto>? onTap;
-  final String unitLabel;
+  final String? unitLabel;
   final double? Function(MediaCardDto card)? progressOf;
 
   @override

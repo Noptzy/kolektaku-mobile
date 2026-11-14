@@ -3,6 +3,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../src/rust/dto/stream.dart';
 import '../../../src/rust/dto/stream_extras.dart';
+import '../../../widgets/swipe_sheet.dart';
 import 'subtitle_logic.dart';
 import 'video_quality.dart';
 
@@ -17,9 +18,8 @@ Future<void> _pick<T>({
   required T selected,
   required ValueChanged<T> onPicked,
 }) {
-  return showShadSheet<void>(
+  return showSwipeSheet<void>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheet) => ShadSheet(
       title: Text(title),
       child: ConstrainedBox(

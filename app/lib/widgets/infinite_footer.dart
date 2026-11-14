@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../core/theme/kolektaku_tokens.dart';
-import '../features/watch/player/stream_spinner.dart';
+import 'media_skeleton_row.dart';
 
 class InfiniteFooter extends StatelessWidget {
   const InfiniteFooter({
@@ -22,12 +22,7 @@ class InfiniteFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return const Padding(
-        padding: EdgeInsets.all(Spacing.xl),
-        child: Center(child: StreamSpinner(size: 28)),
-      );
-    }
+    if (loading) return const MediaSkeletonRow(key: Key('footer-skeleton'));
     if (hasMore && (failed || paused)) {
       return Padding(
         padding: const EdgeInsets.all(Spacing.xl),

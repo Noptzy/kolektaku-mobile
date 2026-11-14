@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/widgets/poster.dart';
@@ -33,7 +34,7 @@ void main() {
         const SizedBox(width: 100, child: Poster(url: null)),
       );
       expect(find.byType(PosterPlaceholder), findsOneWidget);
-      expect(find.byType(Image), findsNothing);
+      expect(find.byType(CachedNetworkImage), findsNothing);
     });
 
     testWidgets('an empty address shows the placeholder too', (tester) async {
@@ -57,10 +58,11 @@ void main() {
           ),
         ),
       );
-      final image = tester.widget<Image>(find.byType(Image));
-      final provider = image.image as ResizeImage;
-      expect(provider.width, 100);
-      expect(image.gaplessPlayback, isTrue);
+      final image = tester.widget<CachedNetworkImage>(
+        find.byType(CachedNetworkImage),
+      );
+      expect(image.imageUrl, 'https://x.test/p.jpg');
+      expect(image.memCacheWidth, 100);
     });
   });
 }

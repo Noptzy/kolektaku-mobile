@@ -49,15 +49,21 @@ class _SkeletonState extends State<Skeleton>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color.lerp(skeletonBase, skeletonGlow, _controller.value),
-          borderRadius: BorderRadius.circular(widget.radius),
-        ),
-        child: SizedBox(width: widget.width, height: widget.height),
-      ),
+    return LayoutBuilder(
+      builder: (context, box) {
+        final width =
+            widget.width ?? (box.hasBoundedWidth ? box.maxWidth : null);
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) => DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color.lerp(skeletonBase, skeletonGlow, _controller.value),
+              borderRadius: BorderRadius.circular(widget.radius),
+            ),
+            child: SizedBox(width: width, height: widget.height),
+          ),
+        );
+      },
     );
   }
 }

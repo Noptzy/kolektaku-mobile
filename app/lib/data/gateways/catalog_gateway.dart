@@ -9,6 +9,8 @@ import '../../src/rust/dto/sources.dart';
 import '../../src/rust/service/browse.dart';
 
 abstract interface class CatalogGateway {
+  Future<void> clearCache();
+
   Future<HomeDto> home(MediaKindDto kind);
 
   Future<CardPageDto> search(MediaKindDto kind, String query, int page);

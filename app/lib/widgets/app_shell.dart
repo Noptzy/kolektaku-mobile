@@ -28,7 +28,13 @@ class AppShell extends StatelessWidget {
         color: scheme.background,
         child: Column(
           children: [
-            Expanded(child: SafeArea(bottom: false, child: shell)),
+            Expanded(
+              child: SafeArea(
+                top: shell.currentIndex != 0,
+                bottom: false,
+                child: shell,
+              ),
+            ),
             AppBottomBar(
               destinations: appDestinations,
               currentIndex: shell.currentIndex,

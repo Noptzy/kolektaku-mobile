@@ -1,10 +1,8 @@
-const SUMMARY_FRAGMENT: &str = "
-fragment S on Media {
+const SUMMARY_FIELDS: &str = "
   id
   type
   title { romaji english native }
   synonyms
-  coverImage { large }
   format
   status
   seasonYear
@@ -14,8 +12,28 @@ fragment S on Media {
   averageScore
   genres
   countryOfOrigin
-  isAdult
-}";
+  isAdult";
+
+const RICH_COVER: &str = "coverImage { large extraLarge }";
+const RICH_EXTRA: &str = "synopsis: description(asHtml: false)";
+
+const PREQUELS: &str = "prequels: relations { edges { relationType(version: 2) } }";
+
+fn summary_fragment(rich: bool, prequels: bool) -> String {
+    let (cover, extra) = if rich {
+        (RICH_COVER, RICH_EXTRA)
+    } else {
+        ("coverImage { large }", "")
+    };
+    let links = if prequels { PREQUELS } else { "" };
+    format!(
+        "
+fragment S on Media {{{SUMMARY_FIELDS}  {cover}
+  {extra}
+  {links}
+}}"
+    )
+}
 
 const DETAIL_BODY: &str = "
 query ($id: Int, $type: MediaType) {
@@ -52,10 +70,10 @@ query ($id: Int, $type: MediaType) {
 }";
 
 const LIST_BODY: &str = "
-query ($page: Int, $perPage: Int, $type: MediaType, $sort: [MediaSort], $country: CountryCode, $season: MediaSeason, $year: Int) {
+query ($page: Int, $perPage: Int, $type: MediaType, $sort: [MediaSort], $country: CountryCode, $season: MediaSeason, $year: Int, $status: MediaStatus, $startFrom: FuzzyDateInt, $endFrom: FuzzyDateInt) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { currentPage hasNextPage }
-    media(type: $type, sort: $sort, isAdult: false, countryOfOrigin: $country, season: $season, seasonYear: $year) { ...S }
+    media(type: $type, sort: $sort, isAdult: false, countryOfOrigin: $country, season: $season, seasonYear: $year, status: $status, startDate_greater: $startFrom, endDate_greater: $endFrom) { ...S }
   }
 }";
 
@@ -76,19 +94,19 @@ query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $genre: Str
 }";
 
 pub fn discover_query() -> String {
-    format!("{DISCOVER_BODY}{SUMMARY_FRAGMENT}")
+    format!("{DISCOVER_BODY}{}", summary_fragment(false, false))
 }
 
 pub fn detail_query() -> String {
-    format!("{DETAIL_BODY}{SUMMARY_FRAGMENT}")
+    format!("{DETAIL_BODY}{}", summary_fragment(false, false))
 }
 
-pub fn list_query() -> String {
-    format!("{LIST_BODY}{SUMMARY_FRAGMENT}")
+pub fn list_query(rich: bool, prequels: bool) -> String {
+    format!("{LIST_BODY}{}", summary_fragment(rich, prequels))
 }
 
 pub fn search_query() -> String {
-    format!("{SEARCH_BODY}{SUMMARY_FRAGMENT}")
+    format!("{SEARCH_BODY}{}", summary_fragment(false, false))
 }
 
 pub fn batch_match_query(count: usize) -> String {
@@ -103,9 +121,10 @@ pub fn batch_match_query(count: usize) -> String {
         })
         .collect();
     format!(
-        "query ($type: MediaType, {}) {{\n  {}\n}}\n{SUMMARY_FRAGMENT}",
+        "query ($type: MediaType, {}) {{\n  {}\n}}\n{}",
         variables.join(", "),
-        aliases.join("\n  ")
+        aliases.join("\n  "),
+        summary_fragment(false, false)
     )
 }
 

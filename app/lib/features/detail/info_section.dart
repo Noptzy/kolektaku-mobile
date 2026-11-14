@@ -13,7 +13,7 @@ import '../../widgets/pressable.dart';
 String sourceMaterialLabel(String? source) {
   if (source == null) return '';
   return switch (source.toUpperCase()) {
-    'MANGA' => 'Manga',
+    'MANGA' => 'Komik',
     'LIGHT_NOVEL' => 'Novel ringan',
     'NOVEL' => 'Novel',
     'VISUAL_NOVEL' => 'Visual novel',

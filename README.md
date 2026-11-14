@@ -21,11 +21,23 @@ Pembaruan berikutnya tidak perlu mengunduh manual: aplikasi memeriksa rilis baru
 
 ## Tampilan
 
-<p align="center">
-  <img src="media/screenshots/beranda.png" alt="Beranda" width="240">
-  <img src="media/screenshots/karakter.png" alt="Daftar karakter dan pengisi suara" width="240">
-  <img src="media/screenshots/cari-dari-gambar.png" alt="Cari dari gambar" width="240">
-</p>
+<table align="center">
+  <tr>
+    <td align="center"><img src="media/screenshots/beranda.png" alt="Beranda dengan hero berkategori" width="240"><br><sub>Beranda</sub></td>
+    <td align="center"><img src="media/screenshots/koleksi.png" alt="Koleksi dengan pengalih anime dan komik" width="240"><br><sub>Koleksi</sub></td>
+    <td align="center"><img src="media/screenshots/cari-studio.png" alt="Pencarian otomatis mengenali studio" width="240"><br><sub>Cari, studio dikenali otomatis</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="media/screenshots/filter.png" alt="Filter genre, format, dan status" width="240"><br><sub>Filter</sub></td>
+    <td align="center"><img src="media/screenshots/detail.png" alt="Detail anime dengan pilihan sumber" width="240"><br><sub>Detail dan ganti sumber</sub></td>
+    <td align="center"><img src="media/screenshots/info.png" alt="Info yang bisa diklik" width="240"><br><sub>Info yang bisa diklik</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="media/screenshots/pemutar.png" alt="Pengaturan pemutar" width="240"><br><sub>Pengaturan pemutar</sub></td>
+    <td align="center"><img src="media/screenshots/subtitle.png" alt="Pengaturan subtitle dengan pratinjau" width="240"><br><sub>Subtitle dengan pratinjau</sub></td>
+    <td align="center"><img src="media/screenshots/cari-dari-gambar.png" alt="Cari dari gambar" width="240"><br><sub>Cari dari gambar</sub></td>
+  </tr>
+</table>
 
 ## Struktur
 

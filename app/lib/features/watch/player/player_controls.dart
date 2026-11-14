@@ -3,9 +3,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'clock_format.dart';
 import 'playback_engine.dart';
-import 'player_buttons.dart';
-import 'player_menus.dart';
 import 'player_session.dart';
+import 'player_settings_button.dart';
 import 'seek_bar.dart';
 
 class PlayerControls extends StatelessWidget {
@@ -19,6 +18,8 @@ class PlayerControls extends StatelessWidget {
     required this.onBack,
     required this.onInteract,
     this.onEpisodes,
+    this.onAudio,
+    this.audioLabel,
   });
 
   final PlayerSession session;
@@ -29,6 +30,8 @@ class PlayerControls extends StatelessWidget {
   final VoidCallback onBack;
   final VoidCallback onInteract;
   final VoidCallback? onEpisodes;
+  final VoidCallback? onAudio;
+  final String? audioLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -145,21 +148,12 @@ class PlayerControls extends StatelessWidget {
               ),
             ),
           ),
-          ShadButton.ghost(
-            key: const Key('speed'),
-            size: ShadButtonSize.sm,
-            onPressed: () => pickSpeed(
-              context,
-              current: snapshot.speed,
-              onPicked: (speed) {
-                session.setSpeed(speed);
-                onInteract();
-              },
-            ),
-            child: Text(speedLabel(snapshot.speed)),
+          PlayerSettingsButton(
+            session: session,
+            onInteract: onInteract,
+            onAudio: onAudio,
+            audioLabel: audioLabel,
           ),
-          SubtitleButton(session: session, onInteract: onInteract),
-          QualityButton(session: session, onInteract: onInteract),
           ShadIconButton.ghost(
             key: const Key('fullscreen'),
             icon: Icon(

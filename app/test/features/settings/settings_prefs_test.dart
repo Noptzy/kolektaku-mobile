@@ -50,28 +50,28 @@ void main() {
     testWidgets('anime is the default choice', (tester) async {
       await open(tester);
       expect(selected(tester, 'Anime'), isTrue);
-      expect(selected(tester, 'Manga'), isFalse);
+      expect(selected(tester, 'Komik'), isFalse);
     });
 
     testWidgets('choosing manga is saved', (tester) async {
       final harness = await open(tester);
-      await tapChip(tester, 'Manga');
+      await tapChip(tester, 'Komik');
       expect(harness.settings.saves.single.prefersAnime, isFalse);
-      expect(selected(tester, 'Manga'), isTrue);
+      expect(selected(tester, 'Komik'), isTrue);
     });
 
     testWidgets('a stored choice is shown when the screen opens', (
       tester,
     ) async {
       await open(tester, stored: defaultSettings.copyWith(prefersAnime: false));
-      expect(selected(tester, 'Manga'), isTrue);
+      expect(selected(tester, 'Komik'), isTrue);
       expect(selected(tester, 'Anime'), isFalse);
     });
 
     testWidgets('a failed save puts the old choice back', (tester) async {
       final harness = await open(tester);
       harness.settings.failSaves = true;
-      await tapChip(tester, 'Manga');
+      await tapChip(tester, 'Komik');
       expect(selected(tester, 'Anime'), isTrue);
     });
   });

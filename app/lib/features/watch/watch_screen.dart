@@ -14,9 +14,11 @@ import 'player/fullscreen_mode.dart';
 import 'player/playback_engine.dart';
 import 'player/player_extras.dart';
 import 'player/video_player_engine.dart';
+import 'server_flow.dart';
 import 'watch_controller.dart';
 import 'watch_details.dart';
 import 'watch_progress.dart';
+import 'watch_resume_sheet.dart';
 import 'watch_request.dart';
 import 'watch_stage.dart';
 
@@ -80,6 +82,7 @@ class _WatchScreenState extends State<WatchScreen> {
         _controller.session?.engine.snapshot.value.playing ?? false,
   );
   bool _fullscreen = false;
+  final ResumeAsker _asker = ResumeAsker();
   LoadedEpisode? _announced;
 
   @override
@@ -90,6 +93,7 @@ class _WatchScreenState extends State<WatchScreen> {
   }
 
   void _onChange() {
+    _asker.follow(() => context, () => mounted, _controller);
     _awakeGuard.follow(_controller.session?.engine.snapshot);
     final loaded = _controller.loaded;
     if (loaded == null || identical(loaded, _announced)) return;
@@ -102,13 +106,8 @@ class _WatchScreenState extends State<WatchScreen> {
     }
   }
 
-  void _goBack() {
-    if (_fullscreen) {
-      _setFullscreen(false);
-    } else {
-      Navigator.of(context).maybePop();
-    }
-  }
+  void _goBack() =>
+      _fullscreen ? _setFullscreen(false) : Navigator.of(context).maybePop();
 
   void _showEpisodes() {
     showEpisodesSheet(
@@ -121,6 +120,14 @@ class _WatchScreenState extends State<WatchScreen> {
       onPick: _controller.goTo,
     );
   }
+
+  Future<void> _changeServer() => changeServer(
+    context,
+    _controller,
+    linkedSources: widget.linkedSources,
+    sourceNames: widget.sourceNames,
+    sourceSummaries: widget.sourceSummaries,
+  );
 
   Future<void> _setFullscreen(bool on) async {
     setState(() => _fullscreen = on);
@@ -184,6 +191,7 @@ class _WatchScreenState extends State<WatchScreen> {
       onFullscreen: () => _setFullscreen(!_fullscreen),
       onBack: _goBack,
       onEpisodes: _showEpisodes,
+      onAudio: _changeServer,
     );
   }
 }

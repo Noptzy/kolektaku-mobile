@@ -33,6 +33,17 @@ pub struct RawDate {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct RawPrequelEdge {
+    pub relation_type: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RawPrequelEdges {
+    pub edges: Option<Vec<RawPrequelEdge>>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RawSummary {
     pub id: MediaId,
     #[serde(rename = "type")]
@@ -40,6 +51,8 @@ pub struct RawSummary {
     pub title: RawTitle,
     pub synonyms: Option<Vec<String>>,
     pub cover_image: Option<RawImage>,
+    pub synopsis: Option<String>,
+    pub prequels: Option<RawPrequelEdges>,
     #[serde(default, deserialize_with = "lenient")]
     pub format: Option<MediaFormat>,
     #[serde(default, deserialize_with = "lenient")]
@@ -52,6 +65,19 @@ pub struct RawSummary {
     pub genres: Option<Vec<String>>,
     pub country_of_origin: Option<String>,
     pub is_adult: Option<bool>,
+}
+
+impl RawSummary {
+    pub fn has_prequel(&self) -> bool {
+        self.prequels
+            .as_ref()
+            .and_then(|links| links.edges.as_ref())
+            .is_some_and(|edges| {
+                edges
+                    .iter()
+                    .any(|edge| edge.relation_type.as_deref() == Some("PREQUEL"))
+            })
+    }
 }
 
 #[cfg(test)]
@@ -76,5 +102,24 @@ mod tests {
         assert!(serde_json::from_str::<RawSummary>(broken).is_err());
         let zero = r#"{"id":0,"type":"MANGA","title":{}}"#;
         assert!(serde_json::from_str::<RawSummary>(zero).is_err());
+    }
+
+    #[test]
+    fn a_prequel_link_marks_a_return() {
+        let json = r#"{"id":1,"type":"ANIME","title":{"romaji":"X"},
+            "prequels":{"edges":[{"relationType":"SEQUEL"},{"relationType":"PREQUEL"}]}}"#;
+        let raw: RawSummary = serde_json::from_str(json).unwrap();
+        assert!(raw.has_prequel());
+    }
+
+    #[test]
+    fn without_a_prequel_link_it_is_not_a_return() {
+        let json = r#"{"id":1,"type":"ANIME","title":{"romaji":"X"},
+            "prequels":{"edges":[{"relationType":"SIDE_STORY"},{"relationType":null}]}}"#;
+        let raw: RawSummary = serde_json::from_str(json).unwrap();
+        assert!(!raw.has_prequel());
+        let plain: RawSummary =
+            serde_json::from_str(r#"{"id":2,"type":"ANIME","title":{"romaji":"Y"}}"#).unwrap();
+        assert!(!plain.has_prequel());
     }
 }

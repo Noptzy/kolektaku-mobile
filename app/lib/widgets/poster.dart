@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../core/theme/kolektaku_tokens.dart';
+
+const imageFadeIn = Duration(milliseconds: 160);
 
 int? decodeWidth(double logicalWidth, double pixelRatio) {
   if (!logicalWidth.isFinite || logicalWidth <= 0) return null;
@@ -47,15 +50,15 @@ class Poster extends StatelessWidget {
   Widget _image(BuildContext context, double width) {
     final address = url;
     if (address == null || address.isEmpty) return placeholder;
-    return Image.network(
-      address,
+    return CachedNetworkImage(
+      imageUrl: address,
       fit: BoxFit.cover,
-      cacheWidth: decodeWidth(width, MediaQuery.devicePixelRatioOf(context)),
+      memCacheWidth: decodeWidth(width, MediaQuery.devicePixelRatioOf(context)),
       filterQuality: FilterQuality.medium,
-      gaplessPlayback: true,
-      errorBuilder: (context, error, stack) => placeholder,
-      loadingBuilder: (context, child, progress) =>
-          progress == null ? child : placeholder,
+      fadeInDuration: imageFadeIn,
+      fadeOutDuration: Duration.zero,
+      placeholder: (context, url) => placeholder,
+      errorWidget: (context, url, error) => placeholder,
     );
   }
 }

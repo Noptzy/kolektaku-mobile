@@ -24,6 +24,8 @@ class WatchPlayerView extends StatelessWidget {
     required this.onFullscreen,
     required this.onBack,
     this.onEpisodes,
+    this.onAudio,
+    this.audioLabel,
     this.showChrome = true,
     this.settings = defaultSettings,
   });
@@ -38,6 +40,8 @@ class WatchPlayerView extends StatelessWidget {
   final VoidCallback onFullscreen;
   final VoidCallback onBack;
   final VoidCallback? onEpisodes;
+  final VoidCallback? onAudio;
+  final String? audioLabel;
   final bool showChrome;
   final SettingsDto settings;
 
@@ -86,6 +90,8 @@ class WatchPlayerView extends StatelessWidget {
             onBack: onBack,
             onInteract: onInteract,
             onEpisodes: onEpisodes,
+            onAudio: onAudio,
+            audioLabel: audioLabel,
           ),
         ),
       ),

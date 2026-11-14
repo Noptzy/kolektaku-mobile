@@ -8,6 +8,7 @@ import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../widgets/poster.dart';
 import '../../widgets/pressable.dart';
+import '../../widgets/swipe_sheet.dart';
 
 class MatchChoice {
   const MatchChoice.pick(this.source, this.item) : forget = false;
@@ -26,9 +27,8 @@ Future<MatchChoice?> showWrongMatchSheet(
   required String? currentSource,
   required bool hasManualChoice,
 }) {
-  return showShadSheet<MatchChoice>(
+  return showSwipeSheet<MatchChoice>(
     context: context,
-    side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       title: const Text('Bukan ini?'),
       description: const Text('Pilih judul yang benar dari sumber.'),

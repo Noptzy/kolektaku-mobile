@@ -16,7 +16,7 @@ List<MediaCardDto> _cards(String prefix, String word, int count, int base) => [
     sampleCard(base + i, title: '$prefix $word $i'),
 ];
 
-HomeDto homeOf(String prefix, {int trending = 10}) {
+HomeDto homeOf(String prefix, {int trending = 10, bool weekly = true}) {
   final base = prefix == 'M' ? 1000 : 0;
   return HomeDto(
     sections: [
@@ -36,6 +36,24 @@ HomeDto homeOf(String prefix, {int trending = 10}) {
         id: 'popular',
         cards: _cards(prefix, 'populer', 4, base + 400),
       ),
+      if (weekly) ...[
+        HomeSectionDto(
+          id: 'top_rated',
+          cards: _cards(prefix, 'rating', 2, base + 500),
+        ),
+        HomeSectionDto(
+          id: 'new_week',
+          cards: _cards(prefix, 'terbaru', 2, base + 600),
+        ),
+        HomeSectionDto(
+          id: 'finished_week',
+          cards: _cards(prefix, 'tamat', 2, base + 700),
+        ),
+        HomeSectionDto(
+          id: 'returning',
+          cards: _cards(prefix, 'comeback', 2, base + 800),
+        ),
+      ],
     ],
     notices: const [],
   );

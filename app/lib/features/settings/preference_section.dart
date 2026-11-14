@@ -17,9 +17,9 @@ class PreferenceSection extends ConsumerWidget {
         ChoiceRow<bool>(
           title: 'Lebih suka',
           hint:
-              'Beranda menampilkan lebih banyak anime atau manga sesuai '
+              'Beranda menampilkan lebih banyak anime atau komik sesuai '
               'pilihanmu.',
-          options: const [(true, 'Anime'), (false, 'Manga')],
+          options: const [(true, 'Anime'), (false, 'Komik')],
           value: settings.prefersAnime,
           onChanged: (value) => ref
               .read(settingsProvider.notifier)

@@ -115,9 +115,9 @@ void main() {
 
   test('the wording follows the kind', () {
     expect(collectionTitle(MediaKindDto.anime), 'Anime');
-    expect(collectionTitle(MediaKindDto.manga), 'Manga');
+    expect(collectionTitle(MediaKindDto.manga), 'Komik');
     expect(emptyHistory(MediaKindDto.anime), contains('ditonton'));
     expect(emptyHistory(MediaKindDto.manga), contains('dibaca'));
-    expect(emptyFavorites(MediaKindDto.manga), contains('manga'));
+    expect(emptyFavorites(MediaKindDto.manga), contains('komik'));
   });
 }
