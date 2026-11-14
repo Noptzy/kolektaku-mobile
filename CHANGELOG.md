@@ -2,10 +2,18 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
-## [0.2.0] — 2026-11-14
+## [0.2.1] — 2026-11-14
 
 ### Ditambahkan
 - Pembaruan otomatis: aplikasi mengecek rilis baru setiap dibuka (tanpa batas 12 jam), mengunduhnya sendiri, dan menampilkan sheet untuk memasangnya; "Cek pembaruan" di Pengaturan tetap bisa dipakai kapan saja dan status "sudah terbaru" menyebut versi terpasang.
+- Status "sudah versi terbaru" di Pengaturan menyebut versi yang terpasang.
+
+### Diubah
+- Pengecekan pembaruan saat dibuka tidak lagi dibatasi 12 jam.
+
+## [0.2.0] — 2026-11-14
+
+### Ditambahkan
 - Hero Beranda berkategori dan berputar otomatis: rating tertinggi minggu ini, terbaru, baru saja tamat, baru saja comeback, dan sedang ramai; tiap slide punya sinopsis singkat dan sampul yang tajam.
 - Tombol pengaturan di pemutar: resolusi, subtitle, suara (sub atau dub), dan kecepatan dalam satu tempat.
 - Pertanyaan "Lanjut dari menit sekian atau mulai dari awal" saat episode punya progres.
