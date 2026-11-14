@@ -12,10 +12,11 @@ import '../../support/fake_library_gateway.dart';
 import '../../support/fake_update.dart';
 
 class Rig {
-  Rig() {
+  Rig({this.auto = false}) {
     container = ProviderContainer(
       retry: noRetry,
       overrides: [
+        autoDownloadProvider.overrideWithValue(auto),
         updateGatewayProvider.overrideWithValue(gateway),
         apkInstallerProvider.overrideWithValue(installer),
         libraryGatewayProvider.overrideWithValue(library),
@@ -28,6 +29,7 @@ class Rig {
     container.listen(updateControllerProvider, (previous, next) {});
   }
 
+  final bool auto;
   final FakeUpdateGateway gateway = FakeUpdateGateway();
   final FakeApkInstaller installer = FakeApkInstaller();
   final FakeLibraryGateway library = FakeLibraryGateway();
@@ -67,12 +69,6 @@ void main() {
       expect(rig.state.isRequired, isTrue);
     });
 
-    test('the moment of the check is remembered', () async {
-      final rig = Rig();
-      await rig.controller.checkNow();
-      expect(rig.library.prefs[lastCheckKey], '${rig.now}');
-    });
-
     test('a failed manual check is shown without the raw error', () async {
       final rig = Rig();
       rig.gateway.checkError = StateError('offline');
@@ -91,22 +87,20 @@ void main() {
   });
 
   group('on launch', () {
-    test('asks the 12 hour rule and stays quiet when it is too soon', () async {
-      final rig = Rig();
-      rig.gateway.dueResult = false;
-      rig.library.prefs[lastCheckKey] = '999000';
-      await rig.controller.checkOnLaunch();
-      expect(rig.gateway.dueAsks.single.last, 999000);
-      expect(rig.gateway.dueAsks.single.manual, isFalse);
-      expect(rig.gateway.checks, isEmpty);
-      expect(rig.state.phase, UpdatePhase.idle);
-    });
+    test(
+      'checks every time the app opens, however soon after the last',
+      () async {
+        final rig = Rig();
+        await rig.controller.checkOnLaunch();
+        await rig.controller.checkOnLaunch();
+        expect(rig.gateway.checks.length, 2);
+      },
+    );
 
-    test('checks when the rule says it is due', () async {
+    test('an update found on launch is offered', () async {
       final rig = Rig();
       rig.gateway.offer = offerOf();
       await rig.controller.checkOnLaunch();
-      expect(rig.gateway.dueAsks.single.last, isNull);
       expect(rig.state.phase, UpdatePhase.available);
     });
 

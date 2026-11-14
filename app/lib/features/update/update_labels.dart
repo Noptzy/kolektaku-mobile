@@ -8,14 +8,21 @@ String megabytes(int bytes) {
 String percentLabel(double? fraction) =>
     fraction == null ? '' : '${(fraction * 100).round()}%';
 
+String _upToDate(String? installed) {
+  if (installed == null || installed.isEmpty) {
+    return 'Kolektaku sudah versi terbaru.';
+  }
+  return 'Kolektaku sudah versi terbaru ($installed).';
+}
+
 String updateStatus(UpdateState state) {
   final version = state.offer?.version ?? '';
   return switch (state.phase) {
     UpdatePhase.idle =>
-      'Cek apakah ada versi baru. Pengecekan otomatis berjalan paling '
-          'sering 12 jam sekali.',
+      'Cek apakah ada versi baru. Kolektaku juga mengecek sendiri setiap '
+          'dibuka dan mengunduh pembaruan otomatis.',
     UpdatePhase.checking => 'Memeriksa pembaruan…',
-    UpdatePhase.upToDate => 'Kolektaku sudah versi terbaru.',
+    UpdatePhase.upToDate => _upToDate(state.installed),
     UpdatePhase.available => 'Versi $version tersedia.',
     UpdatePhase.downloading => 'Mengunduh versi $version…',
     UpdatePhase.ready => 'Versi $version siap dipasang.',

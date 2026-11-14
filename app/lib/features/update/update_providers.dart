@@ -12,6 +12,8 @@ final apkInstallerProvider = Provider<ApkInstaller>(
   (ref) => const ChannelApkInstaller(),
 );
 
+final autoDownloadProvider = Provider<bool>((ref) => true);
+
 typedef FolderLookup = Future<String> Function();
 
 final updateFolderProvider = Provider<FolderLookup>(

@@ -1,47 +1,10 @@
-import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kolektaku/features/settings/settings_logic.dart';
-import 'package:kolektaku/features/settings/settings_page_screen.dart';
-import 'package:kolektaku/features/settings/settings_pages.dart';
-import 'package:kolektaku/features/update/update_host.dart';
 import 'package:kolektaku/features/update/update_labels.dart';
-import 'package:kolektaku/features/update/update_providers.dart';
 import 'package:kolektaku/features/update/update_state.dart';
 
 import '../../support/fake_update.dart';
-import '../../support/screen_harness.dart';
-
-class Rig {
-  final FakeUpdateGateway gateway = FakeUpdateGateway();
-  final FakeApkInstaller installer = FakeApkInstaller();
-  final ScreenHarness harness = ScreenHarness();
-
-  List<Override> get overrides => [
-    updateGatewayProvider.overrideWithValue(gateway),
-    apkInstallerProvider.overrideWithValue(installer),
-    appVersionProvider.overrideWith((ref) async => '2.0.0'),
-    nowSecondsProvider.overrideWithValue(() => 1_000_000),
-    updateFolderProvider.overrideWithValue(() async => '/cache'),
-  ];
-
-  Future<void> host(WidgetTester tester) async {
-    await harness.pump(
-      tester,
-      const UpdateHost(child: Text('isi aplikasi')),
-      extra: overrides,
-    );
-    await tester.pumpAndSettle(const Duration(milliseconds: 200));
-  }
-
-  Future<void> page(WidgetTester tester) async {
-    await harness.pump(
-      tester,
-      const SettingsPageScreen(page: SettingsPage.update),
-      extra: overrides,
-    );
-  }
-}
+import 'update_ui_support.dart';
 
 void main() {
   group('launch', () {
@@ -89,15 +52,10 @@ void main() {
       expect(find.byKey(const Key('update-status')), findsNothing);
     });
 
-    testWidgets('too soon after the last check nothing happens', (
-      tester,
-    ) async {
+    testWidgets('every launch asks the release page', (tester) async {
       final rig = Rig();
-      rig.gateway.dueResult = false;
-      rig.gateway.offer = offerOf();
       await rig.host(tester);
-      expect(rig.gateway.checks, isEmpty);
-      expect(find.text('Pembaruan 2.1.0'), findsNothing);
+      expect(rig.gateway.checks, hasLength(1));
     });
   });
 
@@ -127,13 +85,14 @@ void main() {
   });
 
   group('settings page', () {
-    testWidgets('starts with a check button and the 12 hour note', (
+    testWidgets('starts with a check button and says it checks on launch', (
       tester,
     ) async {
       final rig = Rig();
       await rig.page(tester);
       expect(find.byKey(const Key('update-check')), findsOneWidget);
-      expect(find.textContaining('12 jam'), findsWidgets);
+      expect(find.textContaining('setiap dibuka'), findsWidgets);
+      expect(find.textContaining('12 jam'), findsNothing);
     });
 
     testWidgets('a manual check with nothing new says so', (tester) async {
@@ -141,7 +100,10 @@ void main() {
       await rig.page(tester);
       await tester.tap(find.byKey(const Key('update-check')));
       await tester.pumpAndSettle();
-      expect(find.text('Kolektaku sudah versi terbaru.'), findsOneWidget);
+      expect(
+        find.text('Kolektaku sudah versi terbaru (2.0.0).'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('a manual check that fails shows a calm message', (
