@@ -55,7 +55,7 @@ enum SettingsPage {
     slug: 'tentang',
     title: 'Tentang',
     icon: LucideIcons.info,
-    intro: 'Informasi aplikasi dan sumber datanya.',
+    intro: 'Versi terpasang, apa yang baru, dan sumber datanya.',
   );
 
   const SettingsPage({
