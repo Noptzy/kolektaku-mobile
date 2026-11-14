@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use updater::{ReqwestTransport, due, manifest_url};
+use updater::{ReqwestTransport, manifest_url};
 
 use crate::dto::update::{UpdateOfferDto, UpdateProgressDto};
 use crate::error::BridgeError;
@@ -26,9 +26,4 @@ pub async fn download_update(
     })
     .await?;
     Ok(())
-}
-
-#[flutter_rust_bridge::frb(sync)]
-pub fn update_due(last_checked_secs: Option<u64>, now_secs: u64, manual: bool) -> bool {
-    due(last_checked_secs, now_secs, manual)
 }
