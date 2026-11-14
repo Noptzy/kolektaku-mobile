@@ -82,7 +82,7 @@ class _WatchScreenState extends State<WatchScreen> {
         _controller.session?.engine.snapshot.value.playing ?? false,
   );
   bool _fullscreen = false;
-  bool _asking = false;
+  final ResumeAsker _asker = ResumeAsker();
   LoadedEpisode? _announced;
 
   @override
@@ -92,19 +92,8 @@ class _WatchScreenState extends State<WatchScreen> {
     _controller.load();
   }
 
-  void _askResume(Duration position) {
-    _asking = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      final choice = await showResumeSheet(context, position: position);
-      _asking = false;
-      await _controller.chooseResume(resume: choice ?? true);
-    });
-  }
-
   void _onChange() {
-    final prompt = _controller.resumePrompt;
-    if (prompt != null && !_asking) _askResume(prompt);
+    _asker.follow(() => context, () => mounted, _controller);
     _awakeGuard.follow(_controller.session?.engine.snapshot);
     final loaded = _controller.loaded;
     if (loaded == null || identical(loaded, _announced)) return;
@@ -117,13 +106,8 @@ class _WatchScreenState extends State<WatchScreen> {
     }
   }
 
-  void _goBack() {
-    if (_fullscreen) {
-      _setFullscreen(false);
-    } else {
-      Navigator.of(context).maybePop();
-    }
-  }
+  void _goBack() =>
+      _fullscreen ? _setFullscreen(false) : Navigator.of(context).maybePop();
 
   void _showEpisodes() {
     showEpisodesSheet(

@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/swipe_sheet.dart';
 import 'player/clock_format.dart';
+import 'watch_controller.dart';
 
 String resumeQuestion(Duration position) =>
     'Terakhir kamu berhenti di ${formatClock(position)}.';
@@ -39,4 +40,24 @@ Future<bool?> showResumeSheet(
       ),
     ),
   );
+}
+
+class ResumeAsker {
+  bool _asking = false;
+
+  void follow(
+    BuildContext Function() context,
+    bool Function() mounted,
+    WatchController controller,
+  ) {
+    final position = controller.resumePrompt;
+    if (position == null || _asking) return;
+    _asking = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted()) return;
+      final choice = await showResumeSheet(context(), position: position);
+      _asking = false;
+      await controller.chooseResume(resume: choice ?? true);
+    });
+  }
 }
