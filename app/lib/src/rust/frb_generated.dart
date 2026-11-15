@@ -14,6 +14,7 @@ import 'api/session.dart';
 import 'api/settings.dart';
 import 'api/sources.dart';
 import 'api/subtitle.dart';
+import 'api/translate.dart';
 import 'api/update.dart';
 
 import 'dart:async';
@@ -37,6 +38,7 @@ import 'dto/sources.dart';
 import 'dto/stream.dart';
 import 'dto/stream_extras.dart';
 import 'dto/studio.dart';
+import 'dto/translate.dart';
 import 'dto/update.dart';
 import 'error.dart';
 import 'frb_generated.dart';
@@ -102,7 +104,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => -1641960645;
+  int get rustContentHash => -2087883883;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -321,6 +323,12 @@ abstract class RustLibApi extends BaseApi {
     required String episodeId,
     required String server,
   });
+
+  Future<TextTranslationDto> crateApiTranslateTranslateTexts({
+    required List<String> texts,
+  });
+
+  Future<BigInt?> crateApiTranslateTranslationPausedUntil();
 
   Future<UnitsDto> crateApiDetailUnits({
     required MediaRefDto reference,
@@ -1886,6 +1894,63 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   );
 
   @override
+  Future<TextTranslationDto> crateApiTranslateTranslateTexts({
+    required List<String> texts,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_list_String(texts, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 48,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_text_translation_dto,
+          decodeErrorData: sse_decode_bridge_error,
+        ),
+        constMeta: kCrateApiTranslateTranslateTextsConstMeta,
+        argValues: [texts],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiTranslateTranslateTextsConstMeta =>
+      const TaskConstMeta(debugName: "translate_texts", argNames: ["texts"]);
+
+  @override
+  Future<BigInt?> crateApiTranslateTranslationPausedUntil() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 49,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_u_64,
+          decodeErrorData: sse_decode_bridge_error,
+        ),
+        constMeta: kCrateApiTranslateTranslationPausedUntilConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiTranslateTranslationPausedUntilConstMeta =>
+      const TaskConstMeta(debugName: "translation_paused_until", argNames: []);
+
+  @override
   Future<UnitsDto> crateApiDetailUnits({
     required MediaRefDto reference,
     String? source,
@@ -1899,7 +1964,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 48,
+            funcId: 50,
             port: port_,
           );
         },
@@ -3186,6 +3251,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SubtitleSizeDto dco_decode_subtitle_size_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return SubtitleSizeDto.values[raw as int];
+  }
+
+  @protected
+  TextTranslationDto dco_decode_text_translation_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return TextTranslationDto(
+      texts: dco_decode_list_String(arr[0]),
+      translated: dco_decode_bool(arr[1]),
+      failed: dco_decode_bool(arr[2]),
+    );
   }
 
   @protected
@@ -5015,6 +5093,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextTranslationDto sse_decode_text_translation_dto(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_texts = sse_decode_list_String(deserializer);
+    var var_translated = sse_decode_bool(deserializer);
+    var var_failed = sse_decode_bool(deserializer);
+    return TextTranslationDto(
+      texts: var_texts,
+      translated: var_translated,
+      failed: var_failed,
+    );
+  }
+
+  @protected
   TrailerDto sse_decode_trailer_dto(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_site = sse_decode_String(deserializer);
@@ -6602,6 +6695,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_text_translation_dto(
+    TextTranslationDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_String(self.texts, serializer);
+    sse_encode_bool(self.translated, serializer);
+    sse_encode_bool(self.failed, serializer);
   }
 
   @protected

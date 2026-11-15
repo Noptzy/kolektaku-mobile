@@ -16,6 +16,7 @@ pub mod sources;
 pub mod stream;
 pub mod stream_extras;
 pub mod studio;
+pub mod translate;
 pub mod update;
 
 #[cfg(test)]

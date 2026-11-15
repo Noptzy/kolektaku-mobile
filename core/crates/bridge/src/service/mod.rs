@@ -7,6 +7,7 @@ pub mod scene;
 pub mod settings;
 pub mod sources;
 pub mod subtitle;
+pub mod translate;
 pub mod update;
 
 #[cfg(test)]
@@ -27,6 +28,8 @@ mod settings_tests;
 mod subtitle_tests;
 #[cfg(test)]
 mod subtitle_translation_tests;
+#[cfg(test)]
+mod translate_tests;
 #[cfg(test)]
 mod update_check_tests;
 #[cfg(test)]

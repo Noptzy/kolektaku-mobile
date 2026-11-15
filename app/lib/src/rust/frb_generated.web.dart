@@ -17,6 +17,7 @@ import 'api/session.dart';
 import 'api/settings.dart';
 import 'api/sources.dart';
 import 'api/subtitle.dart';
+import 'api/translate.dart';
 import 'api/update.dart';
 
 import 'dart:async';
@@ -40,6 +41,7 @@ import 'dto/sources.dart';
 import 'dto/stream.dart';
 import 'dto/stream_extras.dart';
 import 'dto/studio.dart';
+import 'dto/translate.dart';
 import 'dto/update.dart';
 import 'error.dart';
 import 'frb_generated.dart';
@@ -473,6 +475,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SubtitleSizeDto dco_decode_subtitle_size_dto(dynamic raw);
+
+  @protected
+  TextTranslationDto dco_decode_text_translation_dto(dynamic raw);
 
   @protected
   TrailerDto dco_decode_trailer_dto(dynamic raw);
@@ -1008,6 +1013,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SubtitleSizeDto sse_decode_subtitle_size_dto(SseDeserializer deserializer);
+
+  @protected
+  TextTranslationDto sse_decode_text_translation_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   TrailerDto sse_decode_trailer_dto(SseDeserializer deserializer);
@@ -1697,6 +1707,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_subtitle_size_dto(
     SubtitleSizeDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_text_translation_dto(
+    TextTranslationDto self,
     SseSerializer serializer,
   );
 
