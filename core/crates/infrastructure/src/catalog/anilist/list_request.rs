@@ -1,6 +1,7 @@
 use domain::media::{MediaKind, MediaListKind};
 use serde_json::{Value, json};
 
+use super::format_scope::apply_format_scope;
 use super::season::{fuzzy_date_days_ago, season_of};
 
 const PAGE_SIZE: u32 = 20;
@@ -81,6 +82,7 @@ pub fn list_request(
         variables["country"] = json!(ANIME_COUNTRY);
     }
     add_window(&mut variables, list, now_secs);
+    apply_format_scope(&mut variables, kind);
     ListRequest {
         variables,
         rich: list == MediaListKind::Trending || is_hero(list),

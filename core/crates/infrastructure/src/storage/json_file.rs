@@ -38,6 +38,23 @@ impl JsonFile {
         Ok(result)
     }
 
+    pub async fn keep_copy(&self, label: &str) -> Result<(), StorageError> {
+        let _turn = self.gate.lock().await;
+        if !self.path.exists() {
+            return Ok(());
+        }
+        let mut name = self.path.file_name().unwrap_or_default().to_os_string();
+        name.push(format!(".{label}"));
+        let copy = self.path.with_file_name(name);
+        if copy.is_file() {
+            return Ok(());
+        }
+        tokio::fs::copy(&self.path, &copy)
+            .await
+            .map(|_| ())
+            .map_err(|error| failure("copy", error))
+    }
+
     async fn load<T: DeserializeOwned + Default>(&self) -> T {
         let Ok(text) = tokio::fs::read_to_string(&self.path).await else {
             return T::default();

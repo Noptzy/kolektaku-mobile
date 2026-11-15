@@ -19,6 +19,8 @@ mod scene_tests;
 #[cfg(test)]
 mod service_library_tests;
 #[cfg(test)]
+mod service_novel_tests;
+#[cfg(test)]
 mod service_support;
 #[cfg(test)]
 mod service_tests;

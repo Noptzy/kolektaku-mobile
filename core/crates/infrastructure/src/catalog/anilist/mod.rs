@@ -2,6 +2,8 @@ mod cache_policy;
 mod catalog;
 mod covers;
 mod discover;
+mod format_lookup;
+mod format_scope;
 mod graphql;
 mod list_request;
 mod mapper;
@@ -12,6 +14,7 @@ mod profile_queries;
 mod queries;
 mod sanitize;
 mod schema;
+mod search_request;
 mod season;
 
 #[cfg(test)]
@@ -38,6 +41,10 @@ mod catalog_profile_tests;
 mod catalog_test_support;
 #[cfg(test)]
 mod catalog_titles_tests;
+#[cfg(test)]
+mod format_lookup_tests;
+#[cfg(test)]
+mod scope_tests;
 
 pub use cache_policy::catalog_ttl;
 pub use catalog::AniListCatalog;

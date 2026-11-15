@@ -2,8 +2,8 @@ use std::collections::HashMap;
 
 use domain::error::SourceError;
 use domain::media::{
-    Discover, EpisodeInfo, MediaDetail, MediaId, MediaKind, MediaListKind, MediaPage, MediaSummary,
-    Profile, ProfileKind, ProfileSummary,
+    Discover, EpisodeInfo, MediaDetail, MediaFormat, MediaId, MediaKind, MediaListKind, MediaPage,
+    MediaSummary, Profile, ProfileKind, ProfileSummary,
 };
 
 use super::CallRecorder;
@@ -20,6 +20,7 @@ pub struct FakeCatalog {
     pub(super) people: HashMap<(ProfileKind, String), Vec<ProfileSummary>>,
     pub(super) discovered: Vec<MediaSummary>,
     pub(super) titles: HashMap<MediaId, Vec<EpisodeInfo>>,
+    pub(super) formats: HashMap<MediaId, MediaFormat>,
     pub(super) recorder: CallRecorder,
 }
 
@@ -141,5 +142,17 @@ impl MetadataCatalog for FakeCatalog {
             page,
             has_next_page: false,
         })
+    }
+
+    async fn comic_formats(
+        &self,
+        ids: &[MediaId],
+    ) -> Result<Vec<(MediaId, Option<MediaFormat>)>, SourceError> {
+        self.enter(format!("comic_formats {}", ids.len()))?;
+        Ok(ids
+            .iter()
+            .filter(|id| self.formats.contains_key(id))
+            .map(|id| (*id, self.formats.get(id).copied()))
+            .collect())
     }
 }

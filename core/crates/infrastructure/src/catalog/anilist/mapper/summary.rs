@@ -1,4 +1,4 @@
-use domain::media::{MediaKind, MediaSummary, MediaTitle};
+use domain::media::{MediaFormat, MediaKind, MediaSummary, MediaTitle};
 
 use super::synopsis::brief_synopsis;
 use crate::catalog::anilist::schema::{RawKind, RawSummary};
@@ -7,10 +7,11 @@ const SYNOPSIS_WORDS: usize = 100;
 
 const UNTITLED: &str = "Tanpa judul";
 
-fn media_kind(raw: RawKind) -> MediaKind {
-    match raw {
-        RawKind::Anime => MediaKind::Anime,
-        RawKind::Manga => MediaKind::Manga,
+fn media_kind(raw: RawKind, format: Option<MediaFormat>) -> MediaKind {
+    match (raw, format) {
+        (RawKind::Anime, _) => MediaKind::Anime,
+        (RawKind::Manga, Some(MediaFormat::Novel)) => MediaKind::Novel,
+        (RawKind::Manga, _) => MediaKind::Manga,
     }
 }
 
@@ -26,7 +27,7 @@ pub fn visible_summaries(raw: Vec<RawSummary>) -> Vec<MediaSummary> {
 }
 
 pub fn map_summary(raw: RawSummary) -> MediaSummary {
-    let kind = media_kind(raw.kind);
+    let kind = media_kind(raw.kind, raw.format);
     let romaji = raw
         .title
         .romaji
@@ -36,7 +37,7 @@ pub fn map_summary(raw: RawSummary) -> MediaSummary {
         .unwrap_or_else(|| UNTITLED.to_string());
     let unit_count = match kind {
         MediaKind::Anime => raw.episodes,
-        MediaKind::Manga => raw.chapters,
+        MediaKind::Manga | MediaKind::Novel => raw.chapters,
     };
     MediaSummary {
         id: raw.id,

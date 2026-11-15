@@ -84,4 +84,11 @@ pub trait LibraryRepository: Send + Sync {
         &self,
         kind: MediaKind,
     ) -> impl Future<Output = Result<(), StorageError>> + Send;
+
+    fn move_entries(
+        &self,
+        from: MediaKind,
+        to: MediaKind,
+        media: &[MediaRef],
+    ) -> impl Future<Output = Result<usize, StorageError>> + Send;
 }

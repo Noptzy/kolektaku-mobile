@@ -1,6 +1,7 @@
 use std::path::Path;
 use std::sync::Arc;
 
+use application::library::MigrateNovelEntries;
 use application::ports::{Clock, MetadataCatalog, SourceProvider, TranslationHealth, Translator};
 use application::settings::AppSettingsStore;
 use application::sources::{ResolveSources, SourceDirectory, SourceHealth, SourceSwitches};
@@ -170,6 +171,10 @@ pub async fn build_production(data_dir: &Path) -> Result<AppState<AniListCatalog
         Arc::new(CachedHttp::new(limited, cache.clone(), catalog_ttl));
     let catalog = Arc::new(AniListCatalog::new(remembered, clock.clone()));
     let state = AppState::assemble(catalog, registry, data_dir, clock, scene, plain).await;
+    let migration = MigrateNovelEntries::new(state.library.clone(), state.catalog.clone());
+    tokio::spawn(async move {
+        migration.execute().await;
+    });
     Ok(state.with_response_cache(cache))
 }
 

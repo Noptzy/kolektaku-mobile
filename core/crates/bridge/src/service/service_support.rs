@@ -152,6 +152,23 @@ pub async fn state_with(
     .await
 }
 
+pub async fn state_with_catalog(folder: &Folder, catalog: FakeCatalog) -> AppState<FakeCatalog> {
+    let http: Arc<dyn HttpClient> = Arc::new(offline());
+    let scene = Arc::new(TraceMoeSceneSearch::new(
+        http.clone(),
+        Arc::new(SystemPause),
+    ));
+    AppState::assemble(
+        Arc::new(catalog),
+        SourceRegistry::from_providers(Vec::new()),
+        &folder.0,
+        Arc::new(FakeClock::at(1_000)),
+        scene,
+        http,
+    )
+    .await
+}
+
 pub async fn state(folder: &Folder) -> AppState<FakeCatalog> {
     let providers: Vec<Arc<dyn SourceProvider>> = vec![Arc::new(site())];
     state_with(folder, providers, offline()).await

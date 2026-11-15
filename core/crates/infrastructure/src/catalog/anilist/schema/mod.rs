@@ -2,6 +2,7 @@ mod cover;
 mod credits;
 mod detail;
 mod lenient;
+pub use lenient::lenient;
 mod page;
 mod people;
 mod profile;

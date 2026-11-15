@@ -2863,6 +2863,7 @@ impl SseDecode for crate::dto::media::MediaKindDto {
         return match inner {
             0 => crate::dto::media::MediaKindDto::Anime,
             1 => crate::dto::media::MediaKindDto::Manga,
+            2 => crate::dto::media::MediaKindDto::Novel,
             _ => unreachable!("Invalid variant for MediaKindDto: {}", inner),
         };
     }
@@ -4618,6 +4619,7 @@ impl flutter_rust_bridge::IntoDart for crate::dto::media::MediaKindDto {
         match self {
             Self::Anime => 0.into_dart(),
             Self::Manga => 1.into_dart(),
+            Self::Novel => 2.into_dart(),
             _ => unreachable!(),
         }
     }
@@ -6448,6 +6450,7 @@ impl SseEncode for crate::dto::media::MediaKindDto {
             match self {
                 crate::dto::media::MediaKindDto::Anime => 0,
                 crate::dto::media::MediaKindDto::Manga => 1,
+                crate::dto::media::MediaKindDto::Novel => 2,
                 _ => {
                     unimplemented!("");
                 }

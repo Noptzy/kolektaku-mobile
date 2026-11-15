@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum MediaKind {
     Anime,
     Manga,
+    Novel,
 }
 
 impl MediaKind {
@@ -12,6 +13,7 @@ impl MediaKind {
         match self {
             Self::Anime => "anime",
             Self::Manga => "manga",
+            Self::Novel => "novel",
         }
     }
 }
@@ -22,7 +24,7 @@ mod tests {
 
     #[test]
     fn as_str_matches_serde_name() {
-        for kind in [MediaKind::Anime, MediaKind::Manga] {
+        for kind in [MediaKind::Anime, MediaKind::Manga, MediaKind::Novel] {
             let json = serde_json::to_string(&kind).unwrap();
             assert_eq!(json, format!("\"{}\"", kind.as_str()));
         }
