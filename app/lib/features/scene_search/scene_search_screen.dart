@@ -16,6 +16,7 @@ import 'quota_note.dart';
 import 'scene_candidate_row.dart';
 import 'scene_launch.dart';
 import 'scene_notifier.dart';
+import 'scene_start_view.dart';
 import 'scene_state.dart';
 
 class SceneSearchScreen extends ConsumerStatefulWidget {
@@ -89,7 +90,13 @@ class _SceneSearchScreenState extends ConsumerState<SceneSearchScreen> {
   List<Widget> _body(SceneSearchState state, SceneSearchNotifier notifier) {
     final theme = ShadTheme.of(context);
     return switch (state.status) {
-      SceneStatus.idle => [_choose(notifier)],
+      SceneStatus.idle => [
+        SceneStartView(
+          onCamera: notifier.takePhoto,
+          onFiles: notifier.pickFromGallery,
+          quotaLeft: state.quotaLeft,
+        ),
+      ],
       SceneStatus.searching || SceneStatus.opening => [
         _working(
           state.status == SceneStatus.searching
@@ -117,32 +124,6 @@ class _SceneSearchScreenState extends ConsumerState<SceneSearchScreen> {
         QuotaNote(left: state.quotaLeft),
       ],
     };
-  }
-
-  Widget _choose(SceneSearchNotifier notifier) {
-    final theme = ShadTheme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(Spacing.xl),
-      child: Column(
-        spacing: Spacing.lg,
-        children: [
-          Text(
-            'Pilih tangkapan layar dari anime, lalu kami carikan judul, episode, dan menitnya.',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.muted,
-          ),
-          PictureButtons(
-            onCamera: notifier.takePhoto,
-            onFiles: notifier.pickFromGallery,
-          ),
-          Text(
-            'Hanya frame anime asli yang dikenali. Foto layar miring atau gambar buatan penggemar sering gagal.',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.small,
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _working(String message) {
