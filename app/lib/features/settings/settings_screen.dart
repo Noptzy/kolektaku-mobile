@@ -45,12 +45,17 @@ class SettingsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: Spacing.xxl),
                 children: [
                   SettingsGroup(
-                    title: 'Tampilan',
+                    title: 'Preferensi',
                     children: [
                       _row(
                         context,
                         SettingsPage.preference,
                         preferenceSummary(settings),
+                      ),
+                      _row(
+                        context,
+                        SettingsPage.appearance,
+                        appearanceSummary(settings),
                       ),
                     ],
                   ),

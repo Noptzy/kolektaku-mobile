@@ -12,6 +12,14 @@ enum SettingsPage {
         'Atur isi Beranda: lebih banyak anime atau lebih banyak komik. '
         'Keduanya tetap tampil, hanya porsinya yang berubah.',
   ),
+  appearance(
+    slug: 'tampilan',
+    title: 'Tampilan',
+    icon: LucideIcons.palette,
+    intro:
+        'Pilih warna aksen aplikasi. Tombol utama, tab aktif, dan elemen '
+        'lainnya yang sekarang kuning ikut berubah.',
+  ),
   sourceChoice(
     slug: 'sumber-video',
     title: 'Sumber video anime',
