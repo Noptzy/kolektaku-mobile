@@ -162,6 +162,7 @@ void main() {
     () {
       expect(railTitle(MediaKindDto.anime, 'trending'), 'Top 10 anime');
       expect(railTitle(MediaKindDto.manga, 'popular'), 'Komik populer');
+      expect(railTitle(MediaKindDto.novel, 'popular'), 'Novel populer');
       expect(railTitle(MediaKindDto.anime, 'latest'), 'Episode baru');
       expect(railTitle(MediaKindDto.manga, 'latest'), 'Chapter baru');
       expect(actionLabelFor(MediaKindDto.anime), 'Tonton');

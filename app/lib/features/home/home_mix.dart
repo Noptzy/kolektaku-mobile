@@ -97,6 +97,9 @@ List<ProgressDto> mergeResume(Iterable<List<ProgressDto>> groups) {
 }
 
 String railTitle(MediaKindDto kind, String sectionId) {
+  if (kind == MediaKindDto.novel) {
+    return sectionId == 'popular' ? 'Novel populer' : sectionId;
+  }
   final anime = kind == MediaKindDto.anime;
   return switch (sectionId) {
     'trending' => anime ? 'Top 10 anime' : 'Top 10 komik',

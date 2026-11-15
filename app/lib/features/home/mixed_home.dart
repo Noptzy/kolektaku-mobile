@@ -22,6 +22,7 @@ class MixedHome extends StatelessWidget {
     super.key,
     required this.anime,
     required this.manga,
+    this.novel,
     required this.prefersAnime,
     required this.resume,
     required this.genres,
@@ -32,6 +33,7 @@ class MixedHome extends StatelessWidget {
 
   final HomeDto? anime;
   final HomeDto? manga;
+  final HomeDto? novel;
   final bool prefersAnime;
   final List<ProgressDto> resume;
   final Map<MediaKindDto, List<GenreDto>> genres;
@@ -39,8 +41,11 @@ class MixedHome extends StatelessWidget {
   final HomeActions actions;
   final Duration? heroAutoPlay;
 
-  HomeDto? _home(MediaKindDto kind) =>
-      kind == MediaKindDto.anime ? anime : manga;
+  HomeDto? _home(MediaKindDto kind) => switch (kind) {
+    MediaKindDto.anime => anime,
+    MediaKindDto.manga => manga,
+    MediaKindDto.novel => novel,
+  };
 
   Widget _top(MediaKindDto kind) {
     final home = _home(kind);
@@ -130,6 +135,7 @@ class MixedHome extends StatelessWidget {
         _rail(other, 'latest', fresh: true),
         _rail(favored, 'popular'),
         _rail(other, 'popular'),
+        _rail(MediaKindDto.novel, 'popular'),
         _otherGenres(other),
         const SizedBox(height: Spacing.xl),
       ],

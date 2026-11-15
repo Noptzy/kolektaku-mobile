@@ -16,7 +16,7 @@ void main() {
       prepare: (harness) => harness.catalog.homeError = unavailable(),
     );
     await tester.pump(const Duration(seconds: 30));
-    expect(harness.catalog.homeCalls, 2);
+    expect(harness.catalog.homeCalls, 3);
   });
 
   testWidgets('when both kinds fail the page offers a retry', (tester) async {
@@ -41,16 +41,16 @@ void main() {
     expect(find.text('Tonton'), findsOneWidget);
   });
 
-  testWidgets('pulling down refreshes both feeds', (tester) async {
+  testWidgets('pulling down refreshes every feed', (tester) async {
     final harness = await openHome(tester);
-    expect(harness.catalog.homeCalls, 2);
+    expect(harness.catalog.homeCalls, 3);
     await tester.fling(
       find.byType(CustomScrollView),
       const Offset(0, 400),
       1000,
     );
     await tester.pumpAndSettle();
-    expect(harness.catalog.homeCalls, 4);
+    expect(harness.catalog.homeCalls, 6);
     expect(harness.catalog.cacheClears, 1);
   });
 
