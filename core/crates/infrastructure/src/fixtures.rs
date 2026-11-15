@@ -25,6 +25,10 @@ pub fn komiku(name: &str) -> String {
     read("komiku", name)
 }
 
+pub fn weebcentral(name: &str) -> String {
+    read("weebcentral", name)
+}
+
 pub fn novelphoenix(name: &str) -> String {
     read("novelphoenix", name)
 }

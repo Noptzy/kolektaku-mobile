@@ -38,6 +38,7 @@ sources! {
     komikindo => "komikindo/mod.rs",
     meionovels => "meionovels/mod.rs",
     novelphoenix => "novelphoenix/mod.rs",
+    weebcentral => "weebcentral/mod.rs",
     #[cfg(test)] example => "example/mod.rs",
 }
 

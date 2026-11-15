@@ -17,6 +17,7 @@ fn the_registry_has_unique_ids_and_the_real_sites() {
         "komikindo",
         "meionovels",
         "novelphoenix",
+        "weebcentral",
     ] {
         assert!(ids.contains(&real), "{real}");
     }
