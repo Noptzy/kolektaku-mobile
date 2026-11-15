@@ -172,5 +172,73 @@ void main() {
       expect(next.kind, MediaKindDto.manga);
       expect(next.reference, ref(99));
     });
+
+    for (final (type, label) in [
+      ('ADAPTATION', 'an adaptation'),
+      ('SOURCE', 'a source'),
+    ]) {
+      testWidgets('an anime with $label light novel offers to read it', (
+        tester,
+      ) async {
+        final opened = await open(
+          tester,
+          view: catalogView(
+            head: detail(
+              relations: [
+                RelationDto(
+                  relationType: type,
+                  media: summary(
+                    id: 77,
+                    kind: MediaKindDto.novel,
+                    title: 'Novel Asli',
+                    format: 'NOVEL',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+        expect(find.text('Baca komiknya'), findsNothing);
+        await tester.tap(find.byKey(const Key('read-novel')));
+        await tester.pumpAndSettle();
+        final visit = opened.harness.visits.single;
+        expect(visit.path, Routes.detail);
+        final next = visit.extra! as DetailRequest;
+        expect(next.kind, MediaKindDto.novel);
+        expect(next.reference, ref(77));
+      });
+    }
+
+    testWidgets('a related novel never becomes the comic button', (
+      tester,
+    ) async {
+      await open(
+        tester,
+        view: catalogView(
+          head: detail(
+            relations: [
+              RelationDto(
+                relationType: 'ADAPTATION',
+                media: summary(
+                  id: 77,
+                  kind: MediaKindDto.novel,
+                  title: 'Novel Asli',
+                  format: 'NOVEL',
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+      expect(find.text('Baca komiknya'), findsNothing);
+      expect(find.text('Baca novelnya'), findsOneWidget);
+    });
+
+    testWidgets('a title with no novel relation has no novel button', (
+      tester,
+    ) async {
+      await open(tester);
+      expect(find.byKey(const Key('read-novel')), findsNothing);
+    });
   });
 }

@@ -12,6 +12,7 @@ import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../profile/profile_request.dart';
+import '../novel_reader/novel_request.dart';
 import '../reader/read_request.dart';
 import '../watch/watch_request.dart';
 import 'cta_plan.dart';
@@ -41,29 +42,42 @@ class DetailActions {
   }
 
   Future<void> play(UnitDto unit, {Duration? startAt, String? source}) async {
-    if (request.kind == MediaKindDto.novel) return;
-    final target = request.kind == MediaKindDto.anime
-        ? Routes.watch
-        : Routes.read;
-    final Object extra = request.kind == MediaKindDto.anime
-        ? WatchRequest(
-            reference: request.reference,
-            kind: request.kind,
-            title: info.title,
-            episode: unit.number,
-            coverUrl: info.coverUrl,
-            startAt: startAt,
-            preferredSource: source,
-            synopsis: info.synopsis,
-          )
-        : ReadRequest(
-            reference: request.reference,
-            title: info.title,
-            chapter: unit.number,
-            coverUrl: info.coverUrl,
-            preferredSource: source,
-          );
-    await context.push(target, extra: extra);
+    final (target, extra) = switch (request.kind) {
+      MediaKindDto.anime => (
+        Routes.watch,
+        WatchRequest(
+          reference: request.reference,
+          kind: request.kind,
+          title: info.title,
+          episode: unit.number,
+          coverUrl: info.coverUrl,
+          startAt: startAt,
+          preferredSource: source,
+          synopsis: info.synopsis,
+        ),
+      ),
+      MediaKindDto.manga => (
+        Routes.read,
+        ReadRequest(
+          reference: request.reference,
+          title: info.title,
+          chapter: unit.number,
+          coverUrl: info.coverUrl,
+          preferredSource: source,
+        ),
+      ),
+      MediaKindDto.novel => (
+        Routes.novel,
+        NovelRequest(
+          reference: request.reference,
+          title: info.title,
+          chapter: unit.number,
+          coverUrl: info.coverUrl,
+          preferredSource: source,
+        ),
+      ),
+    };
+    await context.push<void>(target, extra: extra);
     _refreshProgress();
   }
 

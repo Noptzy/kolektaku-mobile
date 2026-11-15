@@ -35,8 +35,11 @@ class DetailExtras extends StatelessWidget {
     final relation = view.catalog == null
         ? null
         : adaptationOf(view.catalog!.detail.relations, other);
+    final novel = view.catalog == null || kind == MediaKindDto.novel
+        ? null
+        : novelOf(view.catalog!.detail.relations);
     final links = shownLinks(info.links);
-    if (!canTrailer && relation == null && links.isEmpty) {
+    if (!canTrailer && relation == null && novel == null && links.isEmpty) {
       return const SizedBox.shrink();
     }
     final ink = ShadTheme.of(context).colorScheme.primary;
@@ -81,6 +84,13 @@ class DetailExtras extends StatelessWidget {
                 size: 16,
               ),
               child: Text(anime ? 'Baca komiknya' : 'Tonton animenya'),
+            ),
+          if (novel != null)
+            ShadButton.outline(
+              key: const Key('read-novel'),
+              onPressed: () => actions.openSummary(novel),
+              leading: const Icon(LucideIcons.bookText, size: 16),
+              child: const Text('Baca novelnya'),
             ),
         ],
       ),

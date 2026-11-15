@@ -1,7 +1,7 @@
 import '../../core/routes.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
-import '../detail/detail_request.dart';
+import '../novel_reader/novel_request.dart';
 import '../reader/read_request.dart';
 import '../watch/watch_request.dart';
 
@@ -10,7 +10,7 @@ const _minimumResumeSecs = 5.0;
 String historyRoute(ProgressDto item) => switch (item.kind) {
   MediaKindDto.anime => Routes.watch,
   MediaKindDto.manga => Routes.read,
-  MediaKindDto.novel => Routes.detail,
+  MediaKindDto.novel => Routes.novel,
 };
 
 Duration? historyStart(ProgressDto item) {
@@ -33,8 +33,10 @@ Object historyRequest(ProgressDto item) => switch (item.kind) {
     chapter: item.unitNumber,
     coverUrl: item.coverUrl,
   ),
-  MediaKindDto.novel => DetailRequest(
-    kind: item.kind,
+  MediaKindDto.novel => NovelRequest(
     reference: item.reference,
+    title: item.title,
+    chapter: item.unitNumber,
+    coverUrl: item.coverUrl,
   ),
 };

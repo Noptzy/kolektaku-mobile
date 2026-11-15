@@ -51,6 +51,7 @@ class ScreenHarness {
     Routes.profile,
     Routes.watch,
     Routes.read,
+    Routes.novel,
     Routes.settings,
     Routes.settingsPage,
     Routes.search,

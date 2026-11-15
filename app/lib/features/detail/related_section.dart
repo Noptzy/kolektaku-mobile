@@ -23,6 +23,17 @@ MediaSummaryDto? adaptationOf(
   return null;
 }
 
+MediaSummaryDto? novelOf(List<RelationDto> relations) {
+  for (final relation in relations) {
+    final type = relation.relationType.toUpperCase();
+    final linked = type == 'ADAPTATION' || type == 'SOURCE';
+    if (linked && relation.media.kind == MediaKindDto.novel) {
+      return relation.media;
+    }
+  }
+  return null;
+}
+
 class RelatedSection extends StatelessWidget {
   const RelatedSection({
     super.key,

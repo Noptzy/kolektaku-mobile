@@ -12,6 +12,8 @@ import '../features/genre/genre_list_screen.dart';
 import '../features/genre/genre_titles_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/profile/profile_request.dart';
+import '../features/novel_reader/novel_request.dart';
+import '../features/novel_reader/novel_screen.dart';
 import '../features/reader/read_request.dart';
 import '../features/reader/reader_screen.dart';
 import '../features/profile/profile_screen.dart';
@@ -105,6 +107,10 @@ GoRouter createRouter({String initialLocation = startRoute}) {
       _route(
         Routes.read,
         (state) => ReaderScreen(request: state.extra! as ReadRequest),
+      ),
+      _route(
+        Routes.novel,
+        (state) => NovelScreen(request: state.extra! as NovelRequest),
       ),
       _route(
         Routes.watch,
