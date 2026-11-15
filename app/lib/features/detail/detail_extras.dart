@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
@@ -38,6 +39,8 @@ class DetailExtras extends StatelessWidget {
     if (!canTrailer && relation == null && links.isEmpty) {
       return const SizedBox.shrink();
     }
+    final ink = ShadTheme.of(context).colorScheme.primary;
+    final trailerIsYoutube = trailer?.site.toLowerCase().trim() == 'youtube';
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         Spacing.screenGutter,
@@ -52,14 +55,16 @@ class DetailExtras extends StatelessWidget {
           if (canTrailer)
             ShadButton.outline(
               onPressed: () => actions.openTrailer(trailer),
-              leading: const Icon(LucideIcons.circlePlay, size: 16),
+              leading: trailerIsYoutube
+                  ? FaIcon(FontAwesomeIcons.youtube, size: 16, color: ink)
+                  : const Icon(LucideIcons.circlePlay, size: 16),
               child: const Text('Trailer'),
             ),
           for (final link in links)
             ShadButton.outline(
               key: Key('link-${link.url}'),
               onPressed: () => actions.openLink(link.url),
-              leading: Icon(linkIcon(link.site), size: 16),
+              leading: siteIcon(link.site, size: 16, color: ink),
               child: Flexible(
                 child: Text(
                   linkLabel(link.site),
