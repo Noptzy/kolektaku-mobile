@@ -73,7 +73,7 @@ fn read_card(card: ElementRef, base: &Url) -> Option<Card> {
 }
 
 fn looks_like_a_listing(html: &str, document: &Html) -> bool {
-    let markers = ["hxloading", "hx-get", "class=\"bge\""];
+    let markers = ["hxloading", "hx-get", "class=\"bge\"", "class=\"no-results\""];
     let body_text = document
         .select(&selector("body"))
         .next()

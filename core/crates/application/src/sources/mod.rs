@@ -16,6 +16,8 @@ mod resolve_manual_tests;
 mod resolve_sources_tests;
 #[cfg(test)]
 mod resolve_support;
+#[cfg(test)]
+mod search_queries_tests;
 
 pub use attempt::{Working, candidate_links, find_unit, first_working};
 pub use directory::SourceDirectory;

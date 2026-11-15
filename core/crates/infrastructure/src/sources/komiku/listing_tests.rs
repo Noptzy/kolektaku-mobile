@@ -51,6 +51,12 @@ fn accepts_an_empty_result_but_not_an_unknown_page() {
     assert!(matches!(unknown, Err(SourceError::MarkupChanged(_))));
 }
 
+#[test]
+fn the_sites_no_results_notice_is_an_empty_list_not_a_markup_change() {
+    let page = parse_listing_page(&fixtures::komiku("listing-no-results.html"), &site()).unwrap();
+    assert!(page.items.is_empty() && !page.has_next_page);
+}
+
 fn card(slug: &str, theme: &str) -> String {
     format!(
         r#"<div class="bge"><div class="bgei"><a href="/manga/{slug}/"><img src="https://x.test/{slug}.jpg"><div class="tpe1_inf"><b>Manga</b> {theme}</div></a></div><div class="kan"><h3>{slug}</h3></div></div>"#
