@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use std::ops::Range;
 use std::sync::Arc;
 
 use domain::translation::{LanguageRoute, speaks_the_same};
@@ -47,8 +48,9 @@ impl TranslateLines {
         if route.needs_no_translation() {
             return LineTranslation::untouched(lines);
         }
-        let unique = unique_texts_from(&lines, start_at);
+        let unique = unique_texts(&lines);
         let chunks = chunk_by_limits(&unique, LINES_PER_REQUEST, BYTES_PER_REQUEST);
+        let chunks = holding_first(chunks, &unique, lines.get(start_at));
         let mut outcome = LineTranslation::untouched(Vec::new());
         let mut known: HashMap<String, String> = HashMap::new();
         for range in chunks.into_iter().take(MAX_REQUESTS_PER_FILE) {
@@ -75,16 +77,28 @@ impl TranslateLines {
     }
 }
 
-fn unique_texts_from(lines: &[String], start_at: usize) -> Vec<String> {
-    let start = start_at.min(lines.len());
-    let mut seen: HashMap<&str, ()> = HashMap::new();
+fn unique_texts(lines: &[String]) -> Vec<String> {
+    let mut seen: HashSet<&str> = HashSet::new();
     let mut unique = Vec::new();
-    for line in lines[start..].iter().chain(lines[..start].iter()) {
-        if !line.trim().is_empty() && seen.insert(line.as_str(), ()).is_none() {
+    for line in lines {
+        if !line.trim().is_empty() && seen.insert(line.as_str()) {
             unique.push(line.clone());
         }
     }
     unique
+}
+
+fn holding_first(
+    chunks: Vec<Range<usize>>,
+    unique: &[String],
+    start_text: Option<&String>,
+) -> Vec<Range<usize>> {
+    let holder = start_text
+        .and_then(|text| unique.iter().position(|candidate| candidate == text))
+        .and_then(|index| chunks.iter().position(|chunk| chunk.contains(&index)))
+        .unwrap_or(0);
+    let (before, from_holder) = chunks.split_at(holder);
+    from_holder.iter().chain(before).cloned().collect()
 }
 
 fn keep_usable(known: &mut HashMap<String, String>, asked: Vec<String>, answered: Vec<String>) {

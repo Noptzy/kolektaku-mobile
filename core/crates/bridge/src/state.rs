@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::sync::Arc;
 
-use application::ports::{Clock, MetadataCatalog, SourceProvider};
+use application::ports::{Clock, MetadataCatalog, SourceProvider, TranslationHealth, Translator};
 use application::settings::AppSettingsStore;
 use application::sources::{ResolveSources, SourceDirectory, SourceHealth, SourceSwitches};
 use domain::media::MediaKind;
@@ -15,6 +15,8 @@ use infrastructure::http::{
 use infrastructure::scene::trace_moe::TraceMoeSceneSearch;
 use infrastructure::sources::registry::{SourceEnv, SourceRegistry, all_defaults};
 use infrastructure::storage::{JsonLibraryRepository, JsonSourceLinkStore};
+use infrastructure::translate::google::GoogleTranslator;
+use infrastructure::translate::{CACHE_CAPACITY as TRANSLATION_CACHE_CAPACITY, CachedTranslator};
 
 use crate::error::BridgeError;
 
@@ -34,6 +36,8 @@ pub struct AppState<C: MetadataCatalog> {
     pub settings: Arc<AppSettingsStore>,
     pub clock: Arc<dyn Clock>,
     pub scene: Arc<TraceMoeSceneSearch>,
+    pub translator: Arc<dyn Translator>,
+    pub translation_health: Arc<dyn TranslationHealth>,
     pub http: Arc<dyn HttpClient>,
     pub response_cache: Option<Arc<ResponseCache>>,
 }
@@ -57,6 +61,7 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
         let directory =
             Arc::new(SourceDirectory::new(registry.all()).with_settings(settings.clone()));
         let health = Arc::new(SourceHealth::new(clock.clone()));
+        let translation = translation_service(data_dir, &http, &clock);
         Self {
             catalog,
             registry,
@@ -68,9 +73,21 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
             settings,
             clock,
             scene,
+            translator: translation.clone(),
+            translation_health: translation,
             http,
             response_cache: None,
         }
+    }
+
+    pub fn with_translator(
+        mut self,
+        translator: Arc<dyn Translator>,
+        health: Arc<dyn TranslationHealth>,
+    ) -> Self {
+        self.translator = translator;
+        self.translation_health = health;
+        self
     }
 
     pub fn with_response_cache(mut self, cache: Arc<ResponseCache>) -> Self {
@@ -95,6 +112,24 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
         )
         .with_settings(self.settings.clone())
     }
+}
+
+fn translation_service(
+    data_dir: &Path,
+    http: &Arc<dyn HttpClient>,
+    clock: &Arc<dyn Clock>,
+) -> Arc<CachedTranslator> {
+    let cache = Arc::new(ResponseCache::new(
+        data_dir.join("cache").join("translation"),
+        clock.clone(),
+        TRANSLATION_CACHE_CAPACITY,
+    ));
+    let pruned = cache.clone();
+    tokio::spawn(async move {
+        pruned.prune().await;
+    });
+    let online = Arc::new(GoogleTranslator::new(http.clone()));
+    Arc::new(CachedTranslator::new(online, cache, clock.clone()))
 }
 
 pub async fn build_production(data_dir: &Path) -> Result<AppState<AniListCatalog>, BridgeError> {

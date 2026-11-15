@@ -4,6 +4,7 @@ mod clock;
 mod page_source;
 mod scene_search;
 mod source_provider;
+mod translation_health;
 mod translator;
 mod video_source;
 
@@ -13,5 +14,6 @@ pub use clock::Clock;
 pub use page_source::PageSource;
 pub use scene_search::SceneSearch;
 pub use source_provider::SourceProvider;
+pub use translation_health::TranslationHealth;
 pub use translator::Translator;
 pub use video_source::VideoSource;

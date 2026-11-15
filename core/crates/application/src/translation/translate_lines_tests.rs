@@ -161,11 +161,25 @@ async fn a_detected_source_equal_to_the_target_returns_the_original_unlabelled()
 async fn the_part_holding_the_playback_position_is_sent_first() {
     let fake = Arc::new(FakeTranslator::prefixing("T:"));
     let result = run(fake.clone(), numbered(450), 430).await;
-    let first = &fake.calls()[0];
-    assert_eq!(first[0], "line 430");
-    assert_eq!(fake.calls().len(), 3);
+    let calls = fake.calls();
+    assert_eq!(calls[0][0], "line 400");
+    let sizes: Vec<_> = calls.iter().map(Vec::len).collect();
+    assert_eq!(sizes, vec![50, 200, 200]);
     assert_eq!(result.lines[0], "T:line 0");
     assert_eq!(result.lines[449], "T:line 449");
+}
+
+#[tokio::test]
+async fn the_parts_are_the_same_wherever_playback_starts() {
+    let first = Arc::new(FakeTranslator::prefixing("T:"));
+    let second = Arc::new(FakeTranslator::prefixing("T:"));
+    run(first.clone(), numbered(450), 0).await;
+    run(second.clone(), numbered(450), 300).await;
+    let mut a = first.calls();
+    let mut b = second.calls();
+    a.sort();
+    b.sort();
+    assert_eq!(a, b);
 }
 
 #[tokio::test]
