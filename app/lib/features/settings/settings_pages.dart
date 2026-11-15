@@ -17,8 +17,8 @@ enum SettingsPage {
     title: 'Tampilan',
     icon: LucideIcons.palette,
     intro:
-        'Pilih warna aksen aplikasi. Tombol utama, tab aktif, dan elemen '
-        'lainnya yang sekarang kuning ikut berubah.',
+        'Pilih warna aksen aplikasi. Tombol utama, tab aktif, tautan, dan '
+        'elemen lain yang berwarna aksen ikut berubah.',
   ),
   sourceChoice(
     slug: 'sumber-video',
