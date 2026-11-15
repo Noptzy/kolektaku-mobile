@@ -404,6 +404,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   QualityDto dco_decode_quality_dto(dynamic raw);
 
   @protected
+  ReadingSizeDto dco_decode_reading_size_dto(dynamic raw);
+
+  @protected
+  ReadingSpacingDto dco_decode_reading_spacing_dto(dynamic raw);
+
+  @protected
   RelationDto dco_decode_relation_dto(dynamic raw);
 
   @protected
@@ -945,6 +951,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   QualityDto sse_decode_quality_dto(SseDeserializer deserializer);
+
+  @protected
+  ReadingSizeDto sse_decode_reading_size_dto(SseDeserializer deserializer);
+
+  @protected
+  ReadingSpacingDto sse_decode_reading_spacing_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   RelationDto sse_decode_relation_dto(SseDeserializer deserializer);
@@ -1620,6 +1634,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_quality_dto(QualityDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_reading_size_dto(
+    ReadingSizeDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_reading_spacing_dto(
+    ReadingSpacingDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_relation_dto(RelationDto self, SseSerializer serializer);

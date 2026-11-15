@@ -1,5 +1,6 @@
 use super::accent::AccentColor;
 use super::quality::QualityPreference;
+use super::reading_look::{ReadingSize, ReadingSpacing};
 use super::subtitle::{
     SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage,
     SubtitleSize,
@@ -20,8 +21,10 @@ const AUTO_NEXT: &str = "setting.auto_next";
 const AUTO_SKIP: &str = "setting.auto_skip";
 const ACCENT_COLOR: &str = "setting.accent_color";
 const TRANSLATION_LANGUAGE: &str = "setting.translation_language";
+const READING_SIZE: &str = "setting.reading_size";
+const READING_SPACING: &str = "setting.reading_spacing";
 
-pub const SETTING_KEYS: [&str; 13] = [
+pub const SETTING_KEYS: [&str; 15] = [
     PREFERS_ANIME,
     ANIME_SOURCE,
     SUBTITLE_LANGUAGE,
@@ -35,6 +38,8 @@ pub const SETTING_KEYS: [&str; 13] = [
     AUTO_SKIP,
     ACCENT_COLOR,
     TRANSLATION_LANGUAGE,
+    READING_SIZE,
+    READING_SPACING,
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -52,6 +57,8 @@ pub struct AppSettings {
     pub auto_skip: bool,
     pub accent: AccentColor,
     pub translation: TranslationLanguage,
+    pub reading_size: ReadingSize,
+    pub reading_spacing: ReadingSpacing,
 }
 
 impl Default for AppSettings {
@@ -70,6 +77,8 @@ impl Default for AppSettings {
             auto_skip: false,
             accent: AccentColor::default(),
             translation: TranslationLanguage::default(),
+            reading_size: ReadingSize::default(),
+            reading_spacing: ReadingSpacing::default(),
         }
     }
 }
@@ -114,6 +123,8 @@ impl AppSettings {
             (AUTO_SKIP, flag(self.auto_skip)),
             (ACCENT_COLOR, self.accent.hex()),
             (TRANSLATION_LANGUAGE, self.translation.key().to_string()),
+            (READING_SIZE, self.reading_size.key().to_string()),
+            (READING_SPACING, self.reading_spacing.key().to_string()),
         ]
     }
 
@@ -155,6 +166,12 @@ impl AppSettings {
             translation: lookup(TRANSLATION_LANGUAGE)
                 .and_then(|text| TranslationLanguage::parse(&text))
                 .unwrap_or(fallback.translation),
+            reading_size: lookup(READING_SIZE)
+                .and_then(|text| ReadingSize::parse(&text))
+                .unwrap_or(fallback.reading_size),
+            reading_spacing: lookup(READING_SPACING)
+                .and_then(|text| ReadingSpacing::parse(&text))
+                .unwrap_or(fallback.reading_spacing),
         }
     }
 }

@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use super::accent::AccentColor;
 use super::app_settings::{AppSettings, SETTING_KEYS};
 use super::quality::QualityPreference;
+use super::reading_look::{ReadingSize, ReadingSpacing};
 use super::subtitle::{
     SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage,
     SubtitleSize,
@@ -30,6 +31,8 @@ fn changed() -> AppSettings {
         auto_skip: true,
         accent: AccentColor::parse("#1E90FF").unwrap(),
         translation: TranslationLanguage::Japanese,
+        reading_size: ReadingSize::Largest,
+        reading_spacing: ReadingSpacing::Loose,
     }
 }
 
@@ -59,6 +62,8 @@ fn broken_values_fall_back_one_by_one() {
         "setting.anime_source" => Some("   ".into()),
         "setting.accent_color" => Some("notacolor".into()),
         "setting.translation_language" => Some("klingon".into()),
+        "setting.reading_size" => Some("gigantic".into()),
+        "setting.reading_spacing" => Some("loose".into()),
         _ => None,
     });
     assert!(restored.prefers_anime);
@@ -70,6 +75,8 @@ fn broken_values_fall_back_one_by_one() {
     assert_eq!(restored.anime_source, None);
     assert_eq!(restored.accent, AccentColor::default());
     assert_eq!(restored.translation, TranslationLanguage::Indonesian);
+    assert_eq!(restored.reading_size, ReadingSize::Medium);
+    assert_eq!(restored.reading_spacing, ReadingSpacing::Loose);
 }
 
 #[test]
@@ -106,4 +113,20 @@ fn old_stored_background_values_are_ignored_without_harm() {
     });
     assert_eq!(restored.subtitle_box_opacity, SubtitleBoxOpacity::Off);
     assert_eq!(restored.subtitle_edge, SubtitleEdge::Outline);
+}
+
+#[test]
+fn reading_starts_at_the_middle_size_and_spacing() {
+    let settings = AppSettings::from_lookup(|_| None);
+    assert_eq!(settings.reading_size, ReadingSize::Medium);
+    assert_eq!(settings.reading_spacing, ReadingSpacing::Normal);
+}
+
+#[test]
+fn every_setting_has_one_stored_key() {
+    let entries = AppSettings::default().entries();
+    assert_eq!(entries.len(), SETTING_KEYS.len());
+    for (key, _) in entries {
+        assert!(SETTING_KEYS.contains(&key), "{key}");
+    }
 }

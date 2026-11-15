@@ -9,6 +9,10 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 enum QualityDto { auto, p1080, p720, p480, p360 }
 
+enum ReadingSizeDto { smallest, small, medium, large, largest }
+
+enum ReadingSpacingDto { tight, normal, loose }
+
 class SettingsDto {
   final bool prefersAnime;
   final String? animeSource;
@@ -23,6 +27,8 @@ class SettingsDto {
   final bool autoSkip;
   final String accent;
   final TranslationLanguageDto translation;
+  final ReadingSizeDto readingSize;
+  final ReadingSpacingDto readingSpacing;
 
   const SettingsDto({
     required this.prefersAnime,
@@ -38,6 +44,8 @@ class SettingsDto {
     required this.autoSkip,
     required this.accent,
     required this.translation,
+    required this.readingSize,
+    required this.readingSpacing,
   });
 
   @override
@@ -54,7 +62,9 @@ class SettingsDto {
       autoNext.hashCode ^
       autoSkip.hashCode ^
       accent.hashCode ^
-      translation.hashCode;
+      translation.hashCode ^
+      readingSize.hashCode ^
+      readingSpacing.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -73,7 +83,9 @@ class SettingsDto {
           autoNext == other.autoNext &&
           autoSkip == other.autoSkip &&
           accent == other.accent &&
-          translation == other.translation;
+          translation == other.translation &&
+          readingSize == other.readingSize &&
+          readingSpacing == other.readingSpacing;
 }
 
 enum SubtitleBoxColorDto { black, gray, navy }

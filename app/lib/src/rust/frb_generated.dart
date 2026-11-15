@@ -3054,6 +3054,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReadingSizeDto dco_decode_reading_size_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ReadingSizeDto.values[raw as int];
+  }
+
+  @protected
+  ReadingSpacingDto dco_decode_reading_spacing_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ReadingSpacingDto.values[raw as int];
+  }
+
+  @protected
   RelationDto dco_decode_relation_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3144,8 +3156,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SettingsDto dco_decode_settings_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 13)
-      throw Exception('unexpected arr length: expect 13 but see ${arr.length}');
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
     return SettingsDto(
       prefersAnime: dco_decode_bool(arr[0]),
       animeSource: dco_decode_opt_String(arr[1]),
@@ -3160,6 +3172,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       autoSkip: dco_decode_bool(arr[10]),
       accent: dco_decode_String(arr[11]),
       translation: dco_decode_translation_language_dto(arr[12]),
+      readingSize: dco_decode_reading_size_dto(arr[13]),
+      readingSpacing: dco_decode_reading_spacing_dto(arr[14]),
     );
   }
 
@@ -4887,6 +4901,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReadingSizeDto sse_decode_reading_size_dto(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ReadingSizeDto.values[inner];
+  }
+
+  @protected
+  ReadingSpacingDto sse_decode_reading_spacing_dto(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ReadingSpacingDto.values[inner];
+  }
+
+  @protected
   RelationDto sse_decode_relation_dto(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_relationType = sse_decode_String(deserializer);
@@ -5000,6 +5030,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_autoSkip = sse_decode_bool(deserializer);
     var var_accent = sse_decode_String(deserializer);
     var var_translation = sse_decode_translation_language_dto(deserializer);
+    var var_readingSize = sse_decode_reading_size_dto(deserializer);
+    var var_readingSpacing = sse_decode_reading_spacing_dto(deserializer);
     return SettingsDto(
       prefersAnime: var_prefersAnime,
       animeSource: var_animeSource,
@@ -5014,6 +5046,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       autoSkip: var_autoSkip,
       accent: var_accent,
       translation: var_translation,
+      readingSize: var_readingSize,
+      readingSpacing: var_readingSpacing,
     );
   }
 
@@ -6615,6 +6649,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_reading_size_dto(
+    ReadingSizeDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_reading_spacing_dto(
+    ReadingSpacingDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_relation_dto(RelationDto self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.relationType, serializer);
@@ -6707,6 +6759,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.autoSkip, serializer);
     sse_encode_String(self.accent, serializer);
     sse_encode_translation_language_dto(self.translation, serializer);
+    sse_encode_reading_size_dto(self.readingSize, serializer);
+    sse_encode_reading_spacing_dto(self.readingSpacing, serializer);
   }
 
   @protected

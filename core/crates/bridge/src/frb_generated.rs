@@ -3412,6 +3412,34 @@ impl SseDecode for crate::dto::settings::QualityDto {
     }
 }
 
+impl SseDecode for crate::dto::settings::ReadingSizeDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::ReadingSizeDto::Smallest,
+            1 => crate::dto::settings::ReadingSizeDto::Small,
+            2 => crate::dto::settings::ReadingSizeDto::Medium,
+            3 => crate::dto::settings::ReadingSizeDto::Large,
+            4 => crate::dto::settings::ReadingSizeDto::Largest,
+            _ => unreachable!("Invalid variant for ReadingSizeDto: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::dto::settings::ReadingSpacingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::ReadingSpacingDto::Tight,
+            1 => crate::dto::settings::ReadingSpacingDto::Normal,
+            2 => crate::dto::settings::ReadingSpacingDto::Loose,
+            _ => unreachable!("Invalid variant for ReadingSpacingDto: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for crate::dto::credits::RelationDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3550,6 +3578,9 @@ impl SseDecode for crate::dto::settings::SettingsDto {
         let mut var_accent = <String>::sse_decode(deserializer);
         let mut var_translation =
             <crate::dto::settings::TranslationLanguageDto>::sse_decode(deserializer);
+        let mut var_readingSize = <crate::dto::settings::ReadingSizeDto>::sse_decode(deserializer);
+        let mut var_readingSpacing =
+            <crate::dto::settings::ReadingSpacingDto>::sse_decode(deserializer);
         return crate::dto::settings::SettingsDto {
             prefers_anime: var_prefersAnime,
             anime_source: var_animeSource,
@@ -3564,6 +3595,8 @@ impl SseDecode for crate::dto::settings::SettingsDto {
             auto_skip: var_autoSkip,
             accent: var_accent,
             translation: var_translation,
+            reading_size: var_readingSize,
+            reading_spacing: var_readingSpacing,
         };
     }
 }
@@ -5115,6 +5148,52 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::QualityDto>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::ReadingSizeDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Smallest => 0.into_dart(),
+            Self::Small => 1.into_dart(),
+            Self::Medium => 2.into_dart(),
+            Self::Large => 3.into_dart(),
+            Self::Largest => 4.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::ReadingSizeDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::ReadingSizeDto>
+    for crate::dto::settings::ReadingSizeDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::ReadingSizeDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::ReadingSpacingDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Tight => 0.into_dart(),
+            Self::Normal => 1.into_dart(),
+            Self::Loose => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::ReadingSpacingDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::ReadingSpacingDto>
+    for crate::dto::settings::ReadingSpacingDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::ReadingSpacingDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::dto::credits::RelationDto {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5291,6 +5370,8 @@ impl flutter_rust_bridge::IntoDart for crate::dto::settings::SettingsDto {
             self.auto_skip.into_into_dart().into_dart(),
             self.accent.into_into_dart().into_dart(),
             self.translation.into_into_dart().into_dart(),
+            self.reading_size.into_into_dart().into_dart(),
+            self.reading_spacing.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -7004,6 +7085,42 @@ impl SseEncode for crate::dto::settings::QualityDto {
     }
 }
 
+impl SseEncode for crate::dto::settings::ReadingSizeDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::ReadingSizeDto::Smallest => 0,
+                crate::dto::settings::ReadingSizeDto::Small => 1,
+                crate::dto::settings::ReadingSizeDto::Medium => 2,
+                crate::dto::settings::ReadingSizeDto::Large => 3,
+                crate::dto::settings::ReadingSizeDto::Largest => 4,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::dto::settings::ReadingSpacingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::ReadingSpacingDto::Tight => 0,
+                crate::dto::settings::ReadingSpacingDto::Normal => 1,
+                crate::dto::settings::ReadingSpacingDto::Loose => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for crate::dto::credits::RelationDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7114,6 +7231,8 @@ impl SseEncode for crate::dto::settings::SettingsDto {
         <bool>::sse_encode(self.auto_skip, serializer);
         <String>::sse_encode(self.accent, serializer);
         <crate::dto::settings::TranslationLanguageDto>::sse_encode(self.translation, serializer);
+        <crate::dto::settings::ReadingSizeDto>::sse_encode(self.reading_size, serializer);
+        <crate::dto::settings::ReadingSpacingDto>::sse_encode(self.reading_spacing, serializer);
     }
 }
 

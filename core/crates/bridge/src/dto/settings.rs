@@ -1,6 +1,7 @@
 use domain::settings::{
-    AccentColor, AppSettings, QualityPreference, SubtitleBoxColor, SubtitleBoxOpacity,
-    SubtitleColor, SubtitleEdge, SubtitleLanguage, SubtitleSize, TranslationLanguage,
+    AccentColor, AppSettings, QualityPreference, ReadingSize, ReadingSpacing, SubtitleBoxColor,
+    SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage, SubtitleSize,
+    TranslationLanguage,
 };
 use domain::source::SourceId;
 
@@ -36,6 +37,8 @@ mirror_enum!(SubtitleEdgeDto <-> SubtitleEdge { None, Shadow, Outline });
 mirror_enum!(SubtitleBoxColorDto <-> SubtitleBoxColor { Black, Gray, Navy });
 mirror_enum!(SubtitleBoxOpacityDto <-> SubtitleBoxOpacity { Off, Light, Medium, Full });
 mirror_enum!(QualityDto <-> QualityPreference { Auto, P1080, P720, P480, P360 });
+mirror_enum!(ReadingSizeDto <-> ReadingSize { Smallest, Small, Medium, Large, Largest });
+mirror_enum!(ReadingSpacingDto <-> ReadingSpacing { Tight, Normal, Loose });
 mirror_enum!(TranslationLanguageDto <-> TranslationLanguage {
     Off, Indonesian, English, Malay, Japanese, Korean, Chinese, Arabic, Thai, Vietnamese,
     Filipino, Spanish, Portuguese, French, German, Russian, Hindi, Turkish
@@ -56,6 +59,8 @@ pub struct SettingsDto {
     pub auto_skip: bool,
     pub accent: String,
     pub translation: TranslationLanguageDto,
+    pub reading_size: ReadingSizeDto,
+    pub reading_spacing: ReadingSpacingDto,
 }
 
 impl From<&AppSettings> for SettingsDto {
@@ -74,6 +79,8 @@ impl From<&AppSettings> for SettingsDto {
             auto_skip: settings.auto_skip,
             accent: settings.accent.hex(),
             translation: settings.translation.into(),
+            reading_size: settings.reading_size.into(),
+            reading_spacing: settings.reading_spacing.into(),
         }
     }
 }
@@ -94,6 +101,8 @@ impl From<&SettingsDto> for AppSettings {
             auto_skip: dto.auto_skip,
             accent: AccentColor::parse(&dto.accent).unwrap_or_default(),
             translation: dto.translation.into(),
+            reading_size: dto.reading_size.into(),
+            reading_spacing: dto.reading_spacing.into(),
         }
     }
 }
@@ -125,11 +134,15 @@ mod tests {
             auto_skip: true,
             accent: AccentColor::parse("#00FF00").unwrap(),
             translation: TranslationLanguage::Korean,
+            reading_size: ReadingSize::Largest,
+            reading_spacing: ReadingSpacing::Tight,
         };
         let dto = SettingsDto::from(&changed);
         assert_eq!(dto.anime_source.as_deref(), Some("x"));
         assert_eq!(dto.quality, QualityDto::P360);
         assert_eq!(dto.translation, TranslationLanguageDto::Korean);
+        assert_eq!(dto.reading_size, ReadingSizeDto::Largest);
+        assert_eq!(dto.reading_spacing, ReadingSpacingDto::Tight);
         assert_eq!(AppSettings::from(&dto), changed);
     }
 
