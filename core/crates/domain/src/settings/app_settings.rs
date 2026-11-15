@@ -4,6 +4,7 @@ use super::subtitle::{
     SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage,
     SubtitleSize,
 };
+use super::translation::TranslationLanguage;
 use crate::source::SourceId;
 
 const PREFERS_ANIME: &str = "setting.prefers_anime";
@@ -18,8 +19,9 @@ const QUALITY: &str = "setting.quality";
 const AUTO_NEXT: &str = "setting.auto_next";
 const AUTO_SKIP: &str = "setting.auto_skip";
 const ACCENT_COLOR: &str = "setting.accent_color";
+const TRANSLATION_LANGUAGE: &str = "setting.translation_language";
 
-pub const SETTING_KEYS: [&str; 12] = [
+pub const SETTING_KEYS: [&str; 13] = [
     PREFERS_ANIME,
     ANIME_SOURCE,
     SUBTITLE_LANGUAGE,
@@ -32,6 +34,7 @@ pub const SETTING_KEYS: [&str; 12] = [
     AUTO_NEXT,
     AUTO_SKIP,
     ACCENT_COLOR,
+    TRANSLATION_LANGUAGE,
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -48,6 +51,7 @@ pub struct AppSettings {
     pub auto_next: bool,
     pub auto_skip: bool,
     pub accent: AccentColor,
+    pub translation: TranslationLanguage,
 }
 
 impl Default for AppSettings {
@@ -65,6 +69,7 @@ impl Default for AppSettings {
             auto_next: true,
             auto_skip: false,
             accent: AccentColor::default(),
+            translation: TranslationLanguage::default(),
         }
     }
 }
@@ -108,6 +113,7 @@ impl AppSettings {
             (AUTO_NEXT, flag(self.auto_next)),
             (AUTO_SKIP, flag(self.auto_skip)),
             (ACCENT_COLOR, self.accent.hex()),
+            (TRANSLATION_LANGUAGE, self.translation.key().to_string()),
         ]
     }
 
@@ -146,6 +152,9 @@ impl AppSettings {
             accent: lookup(ACCENT_COLOR)
                 .and_then(|text| AccentColor::parse(&text))
                 .unwrap_or(fallback.accent),
+            translation: lookup(TRANSLATION_LANGUAGE)
+                .and_then(|text| TranslationLanguage::parse(&text))
+                .unwrap_or(fallback.translation),
         }
     }
 }

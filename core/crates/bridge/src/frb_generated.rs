@@ -3310,6 +3310,8 @@ impl SseDecode for crate::dto::settings::SettingsDto {
         let mut var_autoNext = <bool>::sse_decode(deserializer);
         let mut var_autoSkip = <bool>::sse_decode(deserializer);
         let mut var_accent = <String>::sse_decode(deserializer);
+        let mut var_translation =
+            <crate::dto::settings::TranslationLanguageDto>::sse_decode(deserializer);
         return crate::dto::settings::SettingsDto {
             prefers_anime: var_prefersAnime,
             anime_source: var_animeSource,
@@ -3323,6 +3325,7 @@ impl SseDecode for crate::dto::settings::SettingsDto {
             auto_next: var_autoNext,
             auto_skip: var_autoSkip,
             accent: var_accent,
+            translation: var_translation,
         };
     }
 }
@@ -3654,6 +3657,34 @@ impl SseDecode for crate::dto::credits::TrailerDto {
             site: var_site,
             video_id: var_videoId,
             thumbnail_url: var_thumbnailUrl,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::settings::TranslationLanguageDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::TranslationLanguageDto::Off,
+            1 => crate::dto::settings::TranslationLanguageDto::Indonesian,
+            2 => crate::dto::settings::TranslationLanguageDto::English,
+            3 => crate::dto::settings::TranslationLanguageDto::Malay,
+            4 => crate::dto::settings::TranslationLanguageDto::Japanese,
+            5 => crate::dto::settings::TranslationLanguageDto::Korean,
+            6 => crate::dto::settings::TranslationLanguageDto::Chinese,
+            7 => crate::dto::settings::TranslationLanguageDto::Arabic,
+            8 => crate::dto::settings::TranslationLanguageDto::Thai,
+            9 => crate::dto::settings::TranslationLanguageDto::Vietnamese,
+            10 => crate::dto::settings::TranslationLanguageDto::Filipino,
+            11 => crate::dto::settings::TranslationLanguageDto::Spanish,
+            12 => crate::dto::settings::TranslationLanguageDto::Portuguese,
+            13 => crate::dto::settings::TranslationLanguageDto::French,
+            14 => crate::dto::settings::TranslationLanguageDto::German,
+            15 => crate::dto::settings::TranslationLanguageDto::Russian,
+            16 => crate::dto::settings::TranslationLanguageDto::Hindi,
+            17 => crate::dto::settings::TranslationLanguageDto::Turkish,
+            _ => unreachable!("Invalid variant for TranslationLanguageDto: {}", inner),
         };
     }
 }
@@ -4927,6 +4958,7 @@ impl flutter_rust_bridge::IntoDart for crate::dto::settings::SettingsDto {
             self.auto_next.into_into_dart().into_dart(),
             self.auto_skip.into_into_dart().into_dart(),
             self.accent.into_into_dart().into_dart(),
+            self.translation.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5407,6 +5439,43 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::credits::TrailerDto>
     for crate::dto::credits::TrailerDto
 {
     fn into_into_dart(self) -> crate::dto::credits::TrailerDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::TranslationLanguageDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Off => 0.into_dart(),
+            Self::Indonesian => 1.into_dart(),
+            Self::English => 2.into_dart(),
+            Self::Malay => 3.into_dart(),
+            Self::Japanese => 4.into_dart(),
+            Self::Korean => 5.into_dart(),
+            Self::Chinese => 6.into_dart(),
+            Self::Arabic => 7.into_dart(),
+            Self::Thai => 8.into_dart(),
+            Self::Vietnamese => 9.into_dart(),
+            Self::Filipino => 10.into_dart(),
+            Self::Spanish => 11.into_dart(),
+            Self::Portuguese => 12.into_dart(),
+            Self::French => 13.into_dart(),
+            Self::German => 14.into_dart(),
+            Self::Russian => 15.into_dart(),
+            Self::Hindi => 16.into_dart(),
+            Self::Turkish => 17.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::TranslationLanguageDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::TranslationLanguageDto>
+    for crate::dto::settings::TranslationLanguageDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::TranslationLanguageDto {
         self
     }
 }
@@ -6645,6 +6714,7 @@ impl SseEncode for crate::dto::settings::SettingsDto {
         <bool>::sse_encode(self.auto_next, serializer);
         <bool>::sse_encode(self.auto_skip, serializer);
         <String>::sse_encode(self.accent, serializer);
+        <crate::dto::settings::TranslationLanguageDto>::sse_encode(self.translation, serializer);
     }
 }
 
@@ -6920,6 +6990,38 @@ impl SseEncode for crate::dto::credits::TrailerDto {
         <String>::sse_encode(self.site, serializer);
         <String>::sse_encode(self.video_id, serializer);
         <Option<String>>::sse_encode(self.thumbnail_url, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::settings::TranslationLanguageDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::TranslationLanguageDto::Off => 0,
+                crate::dto::settings::TranslationLanguageDto::Indonesian => 1,
+                crate::dto::settings::TranslationLanguageDto::English => 2,
+                crate::dto::settings::TranslationLanguageDto::Malay => 3,
+                crate::dto::settings::TranslationLanguageDto::Japanese => 4,
+                crate::dto::settings::TranslationLanguageDto::Korean => 5,
+                crate::dto::settings::TranslationLanguageDto::Chinese => 6,
+                crate::dto::settings::TranslationLanguageDto::Arabic => 7,
+                crate::dto::settings::TranslationLanguageDto::Thai => 8,
+                crate::dto::settings::TranslationLanguageDto::Vietnamese => 9,
+                crate::dto::settings::TranslationLanguageDto::Filipino => 10,
+                crate::dto::settings::TranslationLanguageDto::Spanish => 11,
+                crate::dto::settings::TranslationLanguageDto::Portuguese => 12,
+                crate::dto::settings::TranslationLanguageDto::French => 13,
+                crate::dto::settings::TranslationLanguageDto::German => 14,
+                crate::dto::settings::TranslationLanguageDto::Russian => 15,
+                crate::dto::settings::TranslationLanguageDto::Hindi => 16,
+                crate::dto::settings::TranslationLanguageDto::Turkish => 17,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 

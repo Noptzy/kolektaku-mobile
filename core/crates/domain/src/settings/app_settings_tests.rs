@@ -7,6 +7,7 @@ use super::subtitle::{
     SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage,
     SubtitleSize,
 };
+use super::translation::TranslationLanguage;
 use crate::source::SourceId;
 
 fn lookup_of(entries: Vec<(&'static str, String)>) -> impl Fn(&str) -> Option<String> {
@@ -28,6 +29,7 @@ fn changed() -> AppSettings {
         auto_next: false,
         auto_skip: true,
         accent: AccentColor::parse("#1E90FF").unwrap(),
+        translation: TranslationLanguage::Japanese,
     }
 }
 
@@ -56,6 +58,7 @@ fn broken_values_fall_back_one_by_one() {
         "setting.quality" => Some("720".into()),
         "setting.anime_source" => Some("   ".into()),
         "setting.accent_color" => Some("notacolor".into()),
+        "setting.translation_language" => Some("klingon".into()),
         _ => None,
     });
     assert!(restored.prefers_anime);
@@ -66,6 +69,22 @@ fn broken_values_fall_back_one_by_one() {
     assert_eq!(restored.quality, QualityPreference::P720);
     assert_eq!(restored.anime_source, None);
     assert_eq!(restored.accent, AccentColor::default());
+    assert_eq!(restored.translation, TranslationLanguage::Indonesian);
+}
+
+#[test]
+fn translation_is_on_towards_indonesian_from_the_start() {
+    let settings = AppSettings::from_lookup(|_| None);
+    assert_eq!(settings.translation, TranslationLanguage::Indonesian);
+}
+
+#[test]
+fn translation_can_be_switched_off_and_stays_off() {
+    let restored = AppSettings::from_lookup(|key| match key {
+        "setting.translation_language" => Some("off".into()),
+        _ => None,
+    });
+    assert_eq!(restored.translation, TranslationLanguage::Off);
 }
 
 #[test]

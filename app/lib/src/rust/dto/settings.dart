@@ -22,6 +22,7 @@ class SettingsDto {
   final bool autoNext;
   final bool autoSkip;
   final String accent;
+  final TranslationLanguageDto translation;
 
   const SettingsDto({
     required this.prefersAnime,
@@ -36,6 +37,7 @@ class SettingsDto {
     required this.autoNext,
     required this.autoSkip,
     required this.accent,
+    required this.translation,
   });
 
   @override
@@ -51,7 +53,8 @@ class SettingsDto {
       quality.hashCode ^
       autoNext.hashCode ^
       autoSkip.hashCode ^
-      accent.hashCode;
+      accent.hashCode ^
+      translation.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -69,7 +72,8 @@ class SettingsDto {
           quality == other.quality &&
           autoNext == other.autoNext &&
           autoSkip == other.autoSkip &&
-          accent == other.accent;
+          accent == other.accent &&
+          translation == other.translation;
 }
 
 enum SubtitleBoxColorDto { black, gray, navy }
@@ -83,3 +87,24 @@ enum SubtitleEdgeDto { none, shadow, outline }
 enum SubtitleLanguageDto { indonesian, english, off }
 
 enum SubtitleSizeDto { small, medium, large, huge }
+
+enum TranslationLanguageDto {
+  off,
+  indonesian,
+  english,
+  malay,
+  japanese,
+  korean,
+  chinese,
+  arabic,
+  thai,
+  vietnamese,
+  filipino,
+  spanish,
+  portuguese,
+  french,
+  german,
+  russian,
+  hindi,
+  turkish,
+}

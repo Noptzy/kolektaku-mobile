@@ -15,6 +15,7 @@ const defaultSettings = SettingsDto(
   autoNext: true,
   autoSkip: false,
   accent: '#F5B82E',
+  translation: TranslationLanguageDto.indonesian,
 );
 
 class SettingsNotifier extends AsyncNotifier<SettingsDto> {

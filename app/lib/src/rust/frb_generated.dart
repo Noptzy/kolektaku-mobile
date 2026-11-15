@@ -2928,8 +2928,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SettingsDto dco_decode_settings_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 12)
-      throw Exception('unexpected arr length: expect 12 but see ${arr.length}');
+    if (arr.length != 13)
+      throw Exception('unexpected arr length: expect 13 but see ${arr.length}');
     return SettingsDto(
       prefersAnime: dco_decode_bool(arr[0]),
       animeSource: dco_decode_opt_String(arr[1]),
@@ -2943,6 +2943,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       autoNext: dco_decode_bool(arr[9]),
       autoSkip: dco_decode_bool(arr[10]),
       accent: dco_decode_String(arr[11]),
+      translation: dco_decode_translation_language_dto(arr[12]),
     );
   }
 
@@ -3175,6 +3176,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       videoId: dco_decode_String(arr[1]),
       thumbnailUrl: dco_decode_opt_String(arr[2]),
     );
+  }
+
+  @protected
+  TranslationLanguageDto dco_decode_translation_language_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TranslationLanguageDto.values[raw as int];
   }
 
   @protected
@@ -4699,6 +4706,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_autoNext = sse_decode_bool(deserializer);
     var var_autoSkip = sse_decode_bool(deserializer);
     var var_accent = sse_decode_String(deserializer);
+    var var_translation = sse_decode_translation_language_dto(deserializer);
     return SettingsDto(
       prefersAnime: var_prefersAnime,
       animeSource: var_animeSource,
@@ -4712,6 +4720,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       autoNext: var_autoNext,
       autoSkip: var_autoSkip,
       accent: var_accent,
+      translation: var_translation,
     );
   }
 
@@ -4978,6 +4987,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       videoId: var_videoId,
       thumbnailUrl: var_thumbnailUrl,
     );
+  }
+
+  @protected
+  TranslationLanguageDto sse_decode_translation_language_dto(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return TranslationLanguageDto.values[inner];
   }
 
   @protected
@@ -6331,6 +6349,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.autoNext, serializer);
     sse_encode_bool(self.autoSkip, serializer);
     sse_encode_String(self.accent, serializer);
+    sse_encode_translation_language_dto(self.translation, serializer);
   }
 
   @protected
@@ -6544,6 +6563,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.site, serializer);
     sse_encode_String(self.videoId, serializer);
     sse_encode_opt_String(self.thumbnailUrl, serializer);
+  }
+
+  @protected
+  void sse_encode_translation_language_dto(
+    TranslationLanguageDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
