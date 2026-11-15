@@ -131,5 +131,6 @@ pub fn parse_detail(html: &str, item_id: &str, base: &Url) -> Result<SourceDetai
             .map(|paragraph| collapse(&text_of(paragraph)))
             .unwrap_or_default(),
         genres,
+        catalog_id: None,
     })
 }

@@ -11,6 +11,8 @@ mod search_queries;
 mod switches;
 
 #[cfg(test)]
+mod catalog_id_tests;
+#[cfg(test)]
 mod resolve_manual_tests;
 #[cfg(test)]
 mod resolve_sources_tests;

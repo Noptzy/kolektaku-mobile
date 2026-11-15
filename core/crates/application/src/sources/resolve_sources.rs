@@ -138,6 +138,7 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
         now: u64,
     ) -> Vec<Answer> {
         let target = MatchTarget::of(media);
+        let catalog_id = media.id.get();
         let queries = search_queries(media);
         let mut tasks = JoinSet::new();
         for source in &self.sources {
@@ -152,15 +153,17 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
             let (source, target, queries) = (Arc::clone(source), target.clone(), queries.clone());
             tasks.spawn(async move {
                 let verified = match unverified {
-                    Some(item) => verify_item(Arc::clone(&source), target.clone(), item, now)
-                        .await
-                        .ok()
-                        .flatten(),
+                    Some(item) => {
+                        verify_item(Arc::clone(&source), target.clone(), catalog_id, item, now)
+                            .await
+                            .ok()
+                            .flatten()
+                    }
                     None => None,
                 };
                 let result = match verified {
                     Some(found) => Ok(Some(found)),
-                    None => find_in_source(source, target, queries, now).await,
+                    None => find_in_source(source, target, catalog_id, queries, now).await,
                 };
                 Answer { source: id, result }
             });
