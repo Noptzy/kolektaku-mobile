@@ -226,3 +226,34 @@ async fn the_health_port_reports_when_the_pause_ends() {
     }
     assert_eq!(rig.cached.paused_until(), Some(1_000 + PAUSE_SECS));
 }
+
+#[tokio::test]
+async fn requests_wait_for_their_turn_and_never_overlap() {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    let active = Arc::new(AtomicUsize::new(0));
+    let busiest = Arc::new(AtomicUsize::new(0));
+    let (a, b) = (active.clone(), busiest.clone());
+    let slow = FakeTranslator::scripted(move |_, lines| {
+        let now = a.fetch_add(1, Ordering::SeqCst) + 1;
+        b.fetch_max(now, Ordering::SeqCst);
+        std::thread::sleep(std::time::Duration::from_millis(15));
+        a.fetch_sub(1, Ordering::SeqCst);
+        Ok(TranslationReply::new(lines.to_vec(), None))
+    });
+    let rig = Arc::new(rig_with(slow, "cached-serial"));
+    let target = route(TranslationLanguage::Indonesian);
+    let mut jobs = Vec::new();
+    for round in 0..4 {
+        let (rig, target) = (rig.clone(), target.clone());
+        jobs.push(tokio::spawn(async move {
+            rig.cached
+                .translate(vec![format!("line {round}")], target)
+                .await
+        }));
+    }
+    for job in jobs {
+        job.await.unwrap().unwrap();
+    }
+    assert_eq!(busiest.load(Ordering::SeqCst), 1);
+    assert_eq!(rig.inner.calls().len(), 4);
+}

@@ -30,3 +30,34 @@ class CueDto {
           endMs == other.endMs &&
           text == other.text;
 }
+
+class CuePlanDto {
+  final List<CueDto> cues;
+  final bool translated;
+  final bool failed;
+  final BigInt? retryAtSecs;
+
+  const CuePlanDto({
+    required this.cues,
+    required this.translated,
+    required this.failed,
+    this.retryAtSecs,
+  });
+
+  @override
+  int get hashCode =>
+      cues.hashCode ^
+      translated.hashCode ^
+      failed.hashCode ^
+      retryAtSecs.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CuePlanDto &&
+          runtimeType == other.runtimeType &&
+          cues == other.cues &&
+          translated == other.translated &&
+          failed == other.failed &&
+          retryAtSecs == other.retryAtSecs;
+}

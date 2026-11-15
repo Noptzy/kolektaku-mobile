@@ -12,7 +12,7 @@ impl LanguageRoute {
             from: from
                 .map(str::trim)
                 .filter(|code| !code.is_empty())
-                .map(str::to_lowercase),
+                .map(|code| service_code(&code.to_lowercase())),
             target_code: target.code()?,
         })
     }
@@ -33,6 +33,14 @@ impl LanguageRoute {
         self.from
             .as_deref()
             .is_some_and(|from| speaks_the_same(from, self.target_code))
+    }
+}
+
+fn service_code(code: &str) -> String {
+    match code {
+        "fil" => "tl".to_string(),
+        "zh" => "zh-CN".to_string(),
+        other => other.to_string(),
     }
 }
 
@@ -61,6 +69,20 @@ mod tests {
         assert_eq!(route.from_code(), Some("en"));
         let blank = LanguageRoute::new(Some("  "), TranslationLanguage::Indonesian).unwrap();
         assert_eq!(blank.from_code(), None);
+    }
+
+    #[test]
+    fn track_language_codes_are_turned_into_service_codes() {
+        let filipino = LanguageRoute::new(Some("fil"), TranslationLanguage::English).unwrap();
+        assert_eq!(filipino.from_code(), Some("tl"));
+        let chinese = LanguageRoute::new(Some("zh"), TranslationLanguage::English).unwrap();
+        assert_eq!(chinese.from_code(), Some("zh-CN"));
+    }
+
+    #[test]
+    fn a_filipino_track_needs_no_translation_into_filipino() {
+        let route = LanguageRoute::new(Some("fil"), TranslationLanguage::Filipino).unwrap();
+        assert!(route.needs_no_translation());
     }
 
     #[test]

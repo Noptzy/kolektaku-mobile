@@ -10,8 +10,16 @@ import '../frb_generated.dart';
 
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-Future<List<CueDto>> fetchCues({
+Future<CuePlanDto> fetchCues({
   required String url,
   required List<HeaderDto> headers,
-}) =>
-    RustLib.instance.api.crateApiSubtitleFetchCues(url: url, headers: headers);
+  String? language,
+  required BigInt positionMs,
+  required bool translate,
+}) => RustLib.instance.api.crateApiSubtitleFetchCues(
+  url: url,
+  headers: headers,
+  language: language,
+  positionMs: positionMs,
+  translate: translate,
+);

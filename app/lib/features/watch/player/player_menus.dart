@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../src/rust/dto/stream.dart';
 import '../../../src/rust/dto/stream_extras.dart';
@@ -52,21 +53,37 @@ Widget subtitleOptions({
   required List<SubtitleDto> tracks,
   required SubtitleDto? current,
   required ValueChanged<SubtitleDto?> onPicked,
+  String? currentLabel,
+  Widget? originalToggle,
 }) {
   final ordered = orderedSubtitles(tracks);
   final titles = [for (final track in ordered) subtitleTitle(track)];
+  String labelOf(int index) {
+    if (ordered[index] == current && currentLabel != null) return currentLabel;
+    final repeated = titles.where((title) => title == titles[index]).length > 1;
+    return repeated ? ordered[index].label : titles[index];
+  }
+
   return OptionList<SubtitleDto?>(
     options: [
       ('Mati', null),
-      for (var i = 0; i < ordered.length; i++)
-        (
-          titles.where((title) => title == titles[i]).length > 1
-              ? ordered[i].label
-              : titles[i],
-          ordered[i],
-        ),
+      for (var i = 0; i < ordered.length; i++) (labelOf(i), ordered[i]),
     ],
     selected: current,
     onPicked: onPicked,
+    footer: [?originalToggle],
+  );
+}
+
+Widget originalTextToggle({
+  required bool showingOriginal,
+  required VoidCallback onPressed,
+}) {
+  return ShadButton.outline(
+    key: const Key('toggle-original-subtitle'),
+    onPressed: onPressed,
+    child: Text(
+      showingOriginal ? 'Tampilkan terjemahan' : 'Tampilkan teks asli',
+    ),
   );
 }

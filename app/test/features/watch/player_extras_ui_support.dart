@@ -12,6 +12,7 @@ import 'package:kolektaku/features/watch/player/player_settings.dart';
 
 import '../../widgets/widget_harness.dart';
 import 'fake_engine.dart';
+import 'player_extras_support.dart' show plan;
 
 SubtitleDto sub(String label, String language, {String variant = 'full'}) =>
     SubtitleDto(
@@ -62,13 +63,13 @@ Future<(FakeEngine, PlayerSession)> show(
     stream: stream(subtitles: subtitles),
     refetch: () async => stream(subtitles: subtitles),
     settings: settings ?? defaultSettings,
-    cueLoader: (url, headers) async => [
+    cueLoader: (request) async => plan([
       CueDto(
         startMs: BigInt.from(1000),
         endMs: BigInt.from(3000),
         text: 'Halo dunia',
       ),
-    ],
+    ]),
   );
   await session.start(Duration.zero);
   await tester.pump();

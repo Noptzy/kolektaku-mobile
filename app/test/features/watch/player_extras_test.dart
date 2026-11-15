@@ -122,10 +122,22 @@ void main() {
       final rig = Rig(
         settings: defaultSettings.copyWith(
           subtitleLanguage: SubtitleLanguageDto.english,
+          translation: TranslationLanguageDto.off,
         ),
       );
       await rig.start();
       expect(rig.session.extras.subtitle.value?.label, 'English');
+    });
+
+    test('a human-made track in the translation language wins over the '
+        'preferred one', () async {
+      final rig = Rig(
+        settings: defaultSettings.copyWith(
+          subtitleLanguage: SubtitleLanguageDto.english,
+        ),
+      );
+      await rig.start();
+      expect(rig.session.extras.subtitle.value?.label, 'Indonesian');
     });
 
     test(
@@ -151,19 +163,19 @@ void main() {
     test(
       'a slow answer for an old choice never overwrites the new one',
       () async {
-        final slow = Completer<List<CueDto>>();
+        final slow = Completer<CuePlanDto>();
         final engine = FakeEngine();
         final session = PlayerSession(
           engine: engine,
           stream: hlsStream(),
           refetch: () async => hlsStream(),
-          cueLoader: (url, headers) => url.contains('Indonesian')
+          cueLoader: (request) => request.url.contains('Indonesian')
               ? slow.future
-              : Future.value([cue(0, 1000, 'en')]),
+              : Future.value(plan([cue(0, 1000, 'en')])),
         );
         await session.start(Duration.zero);
         await session.extras.selectSubtitle(session.extras.available.first);
-        slow.complete([cue(0, 1000, 'terlambat')]);
+        slow.complete(plan([cue(0, 1000, 'terlambat')]));
         await pumpEventQueue();
         expect(session.extras.cues.value.single.text, 'en');
       },

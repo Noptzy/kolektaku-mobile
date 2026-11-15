@@ -10,6 +10,7 @@ import 'player_overlays.dart';
 import 'player_session.dart';
 import 'skip_button.dart';
 import 'subtitle_overlay.dart';
+import 'translation_notice.dart';
 import 'player_settings.dart';
 
 class WatchPlayerView extends StatelessWidget {
@@ -58,6 +59,7 @@ class WatchPlayerView extends StatelessWidget {
           settings: settings,
           lifted: controlsVisible && showChrome,
         ),
+        TranslationNotice(session: session),
         if (showChrome) ..._chrome(),
         if (showChrome) SkipButton(session: session, lifted: controlsVisible),
         _failure(),

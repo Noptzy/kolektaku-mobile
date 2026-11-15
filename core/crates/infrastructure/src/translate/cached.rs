@@ -4,6 +4,7 @@ use application::ports::{BoxFuture, Clock, TranslationHealth, Translator};
 use domain::error::SourceError;
 use domain::translation::{LanguageRoute, TranslationReply};
 use serde::{Deserialize, Serialize};
+use tokio::sync::Mutex;
 
 use super::pause_after_failures::{PAUSE_SECS, PauseAfterFailures, ServiceState};
 use crate::http::ResponseCache;
@@ -21,6 +22,7 @@ pub struct CachedTranslator {
     cache: Arc<ResponseCache>,
     clock: Arc<dyn Clock>,
     pause: PauseAfterFailures,
+    one_at_a_time: Mutex<()>,
 }
 
 impl CachedTranslator {
@@ -34,6 +36,7 @@ impl CachedTranslator {
             cache,
             clock,
             pause: PauseAfterFailures::new(),
+            one_at_a_time: Mutex::new(()),
         }
     }
 
@@ -63,6 +66,7 @@ impl CachedTranslator {
         lines: Vec<String>,
         route: LanguageRoute,
     ) -> Result<TranslationReply, SourceError> {
+        let _turn = self.one_at_a_time.lock().await;
         let now = self.clock.now_secs();
         if let ServiceState::PausedUntil(until) = self.pause.state_at(now) {
             return Err(SourceError::RateLimited {

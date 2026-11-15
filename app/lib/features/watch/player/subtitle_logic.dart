@@ -1,6 +1,7 @@
 import '../../../src/rust/dto/cues.dart';
 import '../../../src/rust/dto/settings.dart';
 import '../../../src/rust/dto/stream_extras.dart';
+import 'translation_logic.dart';
 
 const _languageNames = {
   'id': 'Indonesia',
@@ -53,9 +54,15 @@ SubtitleDto? _firstFull(Iterable<SubtitleDto> tracks, {String? language}) {
 
 SubtitleDto? chooseSubtitle(
   List<SubtitleDto> tracks,
-  SubtitleLanguageDto preference,
-) {
+  SubtitleLanguageDto preference, {
+  TranslationLanguageDto translation = TranslationLanguageDto.off,
+}) {
   if (tracks.isEmpty || preference == SubtitleLanguageDto.off) return null;
+  final ownLanguage = trackLanguageOf(translation);
+  final humanMade = ownLanguage == null
+      ? null
+      : _firstFull(tracks, language: ownLanguage);
+  if (humanMade != null) return humanMade;
   final wanted = _languageOf(preference);
   return _firstFull(tracks, language: wanted) ??
       _firstFull(tracks, language: 'en') ??

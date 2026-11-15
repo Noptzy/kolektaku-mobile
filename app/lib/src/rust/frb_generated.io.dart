@@ -149,6 +149,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CueDto dco_decode_cue_dto(dynamic raw);
 
   @protected
+  CuePlanDto dco_decode_cue_plan_dto(dynamic raw);
+
+  @protected
   DateDto dco_decode_date_dto(dynamic raw);
 
   @protected
@@ -473,6 +476,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   TrailerDto dco_decode_trailer_dto(dynamic raw);
 
   @protected
+  TranslationLanguageDto dco_decode_translation_language_dto(dynamic raw);
+
+  @protected
   int dco_decode_u_16(dynamic raw);
 
   @protected
@@ -614,6 +620,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CueDto sse_decode_cue_dto(SseDeserializer deserializer);
+
+  @protected
+  CuePlanDto sse_decode_cue_plan_dto(SseDeserializer deserializer);
 
   @protected
   DateDto sse_decode_date_dto(SseDeserializer deserializer);
@@ -1002,6 +1011,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   TrailerDto sse_decode_trailer_dto(SseDeserializer deserializer);
 
   @protected
+  TranslationLanguageDto sse_decode_translation_language_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   int sse_decode_u_16(SseDeserializer deserializer);
 
   @protected
@@ -1182,6 +1196,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_cue_dto(CueDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_cue_plan_dto(CuePlanDto self, SseSerializer serializer);
 
   @protected
   void sse_encode_date_dto(DateDto self, SseSerializer serializer);
@@ -1683,6 +1700,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_trailer_dto(TrailerDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_translation_language_dto(
+    TranslationLanguageDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_u_16(int self, SseSerializer serializer);

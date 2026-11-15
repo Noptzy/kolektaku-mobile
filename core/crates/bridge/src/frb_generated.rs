@@ -271,12 +271,21 @@ fn wire__crate__api__subtitle__fetch_cues_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_url = <String>::sse_decode(&mut deserializer);
             let api_headers = <Vec<crate::dto::stream::HeaderDto>>::sse_decode(&mut deserializer);
+            let api_language = <Option<String>>::sse_decode(&mut deserializer);
+            let api_position_ms = <u64>::sse_decode(&mut deserializer);
+            let api_translate = <bool>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::error::BridgeError>(
                     (move || async move {
-                        let output_ok =
-                            crate::api::subtitle::fetch_cues(api_url, api_headers).await?;
+                        let output_ok = crate::api::subtitle::fetch_cues(
+                            api_url,
+                            api_headers,
+                            api_language,
+                            api_position_ms,
+                            api_translate,
+                        )
+                        .await?;
                         std::result::Result::Ok(output_ok)
                     })()
                     .await,
@@ -2042,6 +2051,22 @@ impl SseDecode for crate::dto::cues::CueDto {
             start_ms: var_startMs,
             end_ms: var_endMs,
             text: var_text,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::cues::CuePlanDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_cues = <Vec<crate::dto::cues::CueDto>>::sse_decode(deserializer);
+        let mut var_translated = <bool>::sse_decode(deserializer);
+        let mut var_failed = <bool>::sse_decode(deserializer);
+        let mut var_retryAtSecs = <Option<u64>>::sse_decode(deserializer);
+        return crate::dto::cues::CuePlanDto {
+            cues: var_cues,
+            translated: var_translated,
+            failed: var_failed,
+            retry_at_secs: var_retryAtSecs,
         };
     }
 }
@@ -4100,6 +4125,26 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::cues::CueDto> for crate::dto:
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::cues::CuePlanDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.cues.into_into_dart().into_dart(),
+            self.translated.into_into_dart().into_dart(),
+            self.failed.into_into_dart().into_dart(),
+            self.retry_at_secs.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::dto::cues::CuePlanDto {}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::cues::CuePlanDto>
+    for crate::dto::cues::CuePlanDto
+{
+    fn into_into_dart(self) -> crate::dto::cues::CuePlanDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::dto::credits::DateDto {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5732,6 +5777,16 @@ impl SseEncode for crate::dto::cues::CueDto {
         <u64>::sse_encode(self.start_ms, serializer);
         <u64>::sse_encode(self.end_ms, serializer);
         <String>::sse_encode(self.text, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::cues::CuePlanDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::dto::cues::CueDto>>::sse_encode(self.cues, serializer);
+        <bool>::sse_encode(self.translated, serializer);
+        <bool>::sse_encode(self.failed, serializer);
+        <Option<u64>>::sse_encode(self.retry_at_secs, serializer);
     }
 }
 

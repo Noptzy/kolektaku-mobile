@@ -26,6 +26,8 @@ mod settings_tests;
 #[cfg(test)]
 mod subtitle_tests;
 #[cfg(test)]
+mod subtitle_translation_tests;
+#[cfg(test)]
 mod update_check_tests;
 #[cfg(test)]
 mod update_download_tests;

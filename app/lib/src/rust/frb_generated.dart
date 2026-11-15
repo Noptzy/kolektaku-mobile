@@ -139,9 +139,12 @@ abstract class RustLibApi extends BaseApi {
     required String folder,
   });
 
-  Future<List<CueDto>> crateApiSubtitleFetchCues({
+  Future<CuePlanDto> crateApiSubtitleFetchCues({
     required String url,
     required List<HeaderDto> headers,
+    String? language,
+    required BigInt positionMs,
+    required bool translate,
   });
 
   Future<SceneFindingDto> crateApiSceneFindScene({required List<int> image});
@@ -509,9 +512,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<CueDto>> crateApiSubtitleFetchCues({
+  Future<CuePlanDto> crateApiSubtitleFetchCues({
     required String url,
     required List<HeaderDto> headers,
+    String? language,
+    required BigInt positionMs,
+    required bool translate,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -519,6 +525,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(url, serializer);
           sse_encode_list_header_dto(headers, serializer);
+          sse_encode_opt_String(language, serializer);
+          sse_encode_u_64(positionMs, serializer);
+          sse_encode_bool(translate, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -527,11 +536,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_list_cue_dto,
+          decodeSuccessData: sse_decode_cue_plan_dto,
           decodeErrorData: sse_decode_bridge_error,
         ),
         constMeta: kCrateApiSubtitleFetchCuesConstMeta,
-        argValues: [url, headers],
+        argValues: [url, headers, language, positionMs, translate],
         apiImpl: this,
       ),
     );
@@ -539,7 +548,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kCrateApiSubtitleFetchCuesConstMeta => const TaskConstMeta(
     debugName: "fetch_cues",
-    argNames: ["url", "headers"],
+    argNames: ["url", "headers", "language", "positionMs", "translate"],
   );
 
   @override
@@ -2152,6 +2161,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CuePlanDto dco_decode_cue_plan_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return CuePlanDto(
+      cues: dco_decode_list_cue_dto(arr[0]),
+      translated: dco_decode_bool(arr[1]),
+      failed: dco_decode_bool(arr[2]),
+      retryAtSecs: dco_decode_opt_box_autoadd_u_64(arr[3]),
+    );
+  }
+
+  @protected
   DateDto dco_decode_date_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3559,6 +3582,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_endMs = sse_decode_u_64(deserializer);
     var var_text = sse_decode_String(deserializer);
     return CueDto(startMs: var_startMs, endMs: var_endMs, text: var_text);
+  }
+
+  @protected
+  CuePlanDto sse_decode_cue_plan_dto(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_cues = sse_decode_list_cue_dto(deserializer);
+    var var_translated = sse_decode_bool(deserializer);
+    var var_failed = sse_decode_bool(deserializer);
+    var var_retryAtSecs = sse_decode_opt_box_autoadd_u_64(deserializer);
+    return CuePlanDto(
+      cues: var_cues,
+      translated: var_translated,
+      failed: var_failed,
+      retryAtSecs: var_retryAtSecs,
+    );
   }
 
   @protected
@@ -5368,6 +5406,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.startMs, serializer);
     sse_encode_u_64(self.endMs, serializer);
     sse_encode_String(self.text, serializer);
+  }
+
+  @protected
+  void sse_encode_cue_plan_dto(CuePlanDto self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_cue_dto(self.cues, serializer);
+    sse_encode_bool(self.translated, serializer);
+    sse_encode_bool(self.failed, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.retryAtSecs, serializer);
   }
 
   @protected

@@ -9,11 +9,13 @@ class OptionList<T> extends StatelessWidget {
     required this.options,
     required this.selected,
     required this.onPicked,
+    this.footer = const [],
   });
 
   final List<(String, T)> options;
   final T selected;
   final ValueChanged<T> onPicked;
+  final List<Widget> footer;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class OptionList<T> extends StatelessWidget {
                 ),
               ),
             ),
+          ...footer,
         ],
       ),
     );
