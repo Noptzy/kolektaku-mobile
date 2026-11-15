@@ -71,7 +71,10 @@ void main() {
       for (final label in ['Anime', 'Komik', 'Karakter', 'Staf', 'Studio']) {
         expect(find.widgetWithText(OptionChip, label), findsNothing);
       }
-      expect(find.text('Cari anime, komik, karakter, studio'), findsOneWidget);
+      expect(
+        find.text('Cari anime, komik, novel, karakter, studio'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('the badge counts the active filters', (tester) async {

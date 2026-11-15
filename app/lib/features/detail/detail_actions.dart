@@ -41,6 +41,7 @@ class DetailActions {
   }
 
   Future<void> play(UnitDto unit, {Duration? startAt, String? source}) async {
+    if (request.kind == MediaKindDto.novel) return;
     final target = request.kind == MediaKindDto.anime
         ? Routes.watch
         : Routes.read;

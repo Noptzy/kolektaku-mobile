@@ -90,11 +90,8 @@ List<HeroEntry> mixHero({
   return [...primary, ...secondary];
 }
 
-List<ProgressDto> mergeResume(
-  List<ProgressDto> anime,
-  List<ProgressDto> manga,
-) {
-  final all = [...anime, ...manga]
+List<ProgressDto> mergeResume(Iterable<List<ProgressDto>> groups) {
+  final all = [for (final group in groups) ...group]
     ..sort((a, b) => b.updatedAtSecs.compareTo(a.updatedAtSecs));
   return all.take(resumeLimit).toList();
 }

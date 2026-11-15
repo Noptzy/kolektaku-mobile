@@ -131,15 +131,21 @@ void main() {
   });
 
   group('mergeResume', () {
-    test('both kinds are mixed with the newest first', () {
-      final merged = mergeResume(
+    test('all kinds are mixed with the newest first', () {
+      final merged = mergeResume([
         [progress(MediaKindDto.anime, 'Lama', updated: 5)],
         [
           progress(MediaKindDto.manga, 'Baru', updated: 50),
           progress(MediaKindDto.manga, 'Tengah', updated: 20),
         ],
-      );
-      expect(merged.map((item) => item.title), ['Baru', 'Tengah', 'Lama']);
+        [progress(MediaKindDto.novel, 'Novel', updated: 30)],
+      ]);
+      expect(merged.map((item) => item.title), [
+        'Baru',
+        'Novel',
+        'Tengah',
+        'Lama',
+      ]);
     });
 
     test('the list is capped', () {
@@ -147,7 +153,7 @@ void main() {
         for (var i = 0; i < 20; i++)
           progress(MediaKindDto.anime, 'T$i', updated: i),
       ];
-      expect(mergeResume(many, const []).length, resumeLimit);
+      expect(mergeResume([many, const []]).length, resumeLimit);
     });
   });
 

@@ -63,12 +63,14 @@ class SourceStatusSection extends ConsumerWidget {
           onChanged: (value) => _toggle(ref, entry.status.id, value),
         ),
       if (allOff(entries))
-        SettingsNote(
-          kind == MediaKindDto.anime
-              ? 'Semua sumber anime mati, jadi tidak ada yang bisa ditonton.'
-              : 'Semua sumber komik mati, jadi tidak ada yang bisa dibaca.',
-          key: Key('all-off-${kind.name}'),
-        ),
+        SettingsNote(switch (kind) {
+          MediaKindDto.anime =>
+            'Semua sumber anime mati, jadi tidak ada yang bisa ditonton.',
+          MediaKindDto.manga =>
+            'Semua sumber komik mati, jadi tidak ada yang bisa dibaca.',
+          MediaKindDto.novel =>
+            'Semua sumber novel mati, jadi tidak ada yang bisa dibaca.',
+        }, key: Key('all-off-${kind.name}')),
     ];
   }
 }

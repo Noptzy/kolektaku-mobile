@@ -22,7 +22,7 @@ import 'home_mix.dart';
 import 'home_skeleton.dart';
 import 'mixed_home.dart';
 
-const _kinds = MediaKindDto.values;
+const _kinds = [MediaKindDto.anime, MediaKindDto.manga];
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -108,10 +108,10 @@ class HomeScreen extends ConsumerWidget {
       anime: anime.value,
       manga: manga.value,
       prefersAnime: prefersAnime,
-      resume: mergeResume(
-        ref.watch(continueProvider(MediaKindDto.anime)).value ?? const [],
-        ref.watch(continueProvider(MediaKindDto.manga)).value ?? const [],
-      ),
+      resume: mergeResume([
+        for (final kind in MediaKindDto.values)
+          ref.watch(continueProvider(kind)).value ?? const [],
+      ]),
       genres: {
         for (final kind in _kinds)
           kind: ref.watch(genresProvider(kind)).value ?? const [],

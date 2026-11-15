@@ -126,6 +126,22 @@ void main() {
       expect(harness.visits.single.path, Routes.detail);
     });
 
+    testWidgets('a novel that matches appears as its own rail', (tester) async {
+      final harness = await open(
+        tester,
+        prepare: (harness) => harness.catalog.novelSearchResult = page([
+          card(8, title: 'Novel Cocok', format: 'NOVEL'),
+        ]),
+      );
+      await type(tester, 'overlord');
+      expect(find.byKey(const Key('novel-matches')), findsOneWidget);
+      expect(find.byKey(const Key('manga-matches')), findsNothing);
+      expect(find.text('Novel Cocok'), findsOneWidget);
+      await tester.tap(find.text('Novel Cocok'));
+      await tester.pumpAndSettle();
+      expect(harness.visits.single.path, Routes.detail);
+    });
+
     testWidgets('no manga match leaves no rail and no extra heading', (
       tester,
     ) async {
@@ -154,10 +170,8 @@ void main() {
       final harness = await open(tester);
       await type(tester, 'ab');
       expect(harness.catalog.peopleAsks, isEmpty);
-      expect(
-        harness.catalog.searches.where((ask) => ask.startsWith('manga')),
-        isEmpty,
-      );
+      expect(harness.catalog.mangaSearches, isEmpty);
+      expect(harness.catalog.novelSearches, isEmpty);
     });
 
     testWidgets('failures on the side lookups never hide the anime', (

@@ -85,10 +85,16 @@ void main() {
 
   testWidgets('search is its own tab, without scope buttons', (tester) async {
     await open(tester);
-    expect(find.text('Cari anime, komik, karakter, studio'), findsNothing);
+    expect(
+      find.text('Cari anime, komik, novel, karakter, studio'),
+      findsNothing,
+    );
     await tester.tap(bar('Cari'));
     await tester.pumpAndSettle();
-    expect(find.text('Cari anime, komik, karakter, studio'), findsOneWidget);
+    expect(
+      find.text('Cari anime, komik, novel, karakter, studio'),
+      findsOneWidget,
+    );
     for (final scope in ['Komik', 'Karakter', 'Staf', 'Studio']) {
       expect(find.widgetWithText(OptionChip, scope), findsNothing);
     }
