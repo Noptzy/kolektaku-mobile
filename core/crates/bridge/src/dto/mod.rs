@@ -7,6 +7,7 @@ pub mod episodes;
 pub mod library;
 pub mod links;
 pub mod media;
+pub mod novel;
 pub mod profile;
 pub mod profile_facts;
 pub mod profile_summary;

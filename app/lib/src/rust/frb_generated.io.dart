@@ -30,6 +30,7 @@ import 'dto/episodes.dart';
 import 'dto/library.dart';
 import 'dto/links.dart';
 import 'dto/media.dart';
+import 'dto/novel.dart';
 import 'dto/profile.dart';
 import 'dto/profile_facts.dart';
 import 'dto/profile_summary.dart';
@@ -247,6 +248,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<NoticeDto> dco_decode_list_notice_dto(dynamic raw);
 
   @protected
+  List<NovelBlockDto> dco_decode_list_novel_block_dto(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
@@ -323,6 +327,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   NoticeDto dco_decode_notice_dto(dynamic raw);
+
+  @protected
+  NovelBlockDto dco_decode_novel_block_dto(dynamic raw);
+
+  @protected
+  NovelChapterDto dco_decode_novel_chapter_dto(dynamic raw);
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
@@ -741,6 +751,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<NoticeDto> sse_decode_list_notice_dto(SseDeserializer deserializer);
 
   @protected
+  List<NovelBlockDto> sse_decode_list_novel_block_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
@@ -835,6 +850,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   NoticeDto sse_decode_notice_dto(SseDeserializer deserializer);
+
+  @protected
+  NovelBlockDto sse_decode_novel_block_dto(SseDeserializer deserializer);
+
+  @protected
+  NovelChapterDto sse_decode_novel_chapter_dto(SseDeserializer deserializer);
 
   @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
@@ -1355,6 +1376,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_novel_block_dto(
+    List<NovelBlockDto> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
@@ -1479,6 +1506,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_notice_dto(NoticeDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_novel_block_dto(NovelBlockDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_novel_chapter_dto(
+    NovelChapterDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);

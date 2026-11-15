@@ -29,6 +29,7 @@ import 'dto/episodes.dart';
 import 'dto/library.dart';
 import 'dto/links.dart';
 import 'dto/media.dart';
+import 'dto/novel.dart';
 import 'dto/profile.dart';
 import 'dto/profile_facts.dart';
 import 'dto/profile_summary.dart';
@@ -104,7 +105,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => -2087883883;
+  int get rustContentHash => 1046392406;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -270,11 +271,24 @@ abstract class RustLibApi extends BaseApi {
     required List<String> exclude,
   });
 
+  Future<NovelChapterDto> crateApiPlayOpenNovelChapter({
+    required MediaRefDto reference,
+    required double chapter,
+    String? preferred,
+    required List<String> exclude,
+  });
+
   Future<SceneTargetDto> crateApiSceneOpenScene({required SceneMatchDto scene});
 
   Future<StreamSetDto> crateApiPlayParseStreamPayload({
     required String source,
     required String payload,
+  });
+
+  Future<bool> crateApiPlayPreloadNovelChapter({
+    required MediaRefDto reference,
+    required double chapter,
+    String? preferred,
   });
 
   Future<ProfileDto> crateApiPeopleProfile({
@@ -1499,6 +1513,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   );
 
   @override
+  Future<NovelChapterDto> crateApiPlayOpenNovelChapter({
+    required MediaRefDto reference,
+    required double chapter,
+    String? preferred,
+    required List<String> exclude,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_media_ref_dto(reference, serializer);
+          sse_encode_f_64(chapter, serializer);
+          sse_encode_opt_String(preferred, serializer);
+          sse_encode_list_String(exclude, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 36,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_novel_chapter_dto,
+          decodeErrorData: sse_decode_bridge_error,
+        ),
+        constMeta: kCrateApiPlayOpenNovelChapterConstMeta,
+        argValues: [reference, chapter, preferred, exclude],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiPlayOpenNovelChapterConstMeta =>
+      const TaskConstMeta(
+        debugName: "open_novel_chapter",
+        argNames: ["reference", "chapter", "preferred", "exclude"],
+      );
+
+  @override
   Future<SceneTargetDto> crateApiSceneOpenScene({
     required SceneMatchDto scene,
   }) {
@@ -1510,7 +1563,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 36,
+            funcId: 37,
             port: port_,
           );
         },
@@ -1542,7 +1595,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 37,
+            funcId: 38,
             port: port_,
           );
         },
@@ -1564,6 +1617,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<bool> crateApiPlayPreloadNovelChapter({
+    required MediaRefDto reference,
+    required double chapter,
+    String? preferred,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_media_ref_dto(reference, serializer);
+          sse_encode_f_64(chapter, serializer);
+          sse_encode_opt_String(preferred, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 39,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: sse_decode_bridge_error,
+        ),
+        constMeta: kCrateApiPlayPreloadNovelChapterConstMeta,
+        argValues: [reference, chapter, preferred],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiPlayPreloadNovelChapterConstMeta =>
+      const TaskConstMeta(
+        debugName: "preload_novel_chapter",
+        argNames: ["reference", "chapter", "preferred"],
+      );
+
+  @override
   Future<ProfileDto> crateApiPeopleProfile({
     required ProfileKindDto kind,
     required BigInt id,
@@ -1577,7 +1667,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 38,
+            funcId: 40,
             port: port_,
           );
         },
@@ -1607,7 +1697,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 39,
+            funcId: 41,
             port: port_,
           );
         },
@@ -1634,7 +1724,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 40,
+            funcId: 42,
             port: port_,
           );
         },
@@ -1668,7 +1758,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 41,
+            funcId: 43,
             port: port_,
           );
         },
@@ -1702,7 +1792,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 42,
+            funcId: 44,
             port: port_,
           );
         },
@@ -1740,7 +1830,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 43,
+            funcId: 45,
             port: port_,
           );
         },
@@ -1774,7 +1864,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 44,
+            funcId: 46,
             port: port_,
           );
         },
@@ -1809,7 +1899,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 45,
+            funcId: 47,
             port: port_,
           );
         },
@@ -1839,7 +1929,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 46,
+            funcId: 48,
             port: port_,
           );
         },
@@ -1873,7 +1963,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 47,
+            funcId: 49,
             port: port_,
           );
         },
@@ -1905,7 +1995,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 48,
+            funcId: 50,
             port: port_,
           );
         },
@@ -1932,7 +2022,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 49,
+            funcId: 51,
             port: port_,
           );
         },
@@ -1964,7 +2054,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 50,
+            funcId: 52,
             port: port_,
           );
         },
@@ -2504,6 +2594,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<NovelBlockDto> dco_decode_list_novel_block_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_novel_block_dto).toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -2735,6 +2831,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return NoticeDto(
       source: dco_decode_opt_String(arr[0]),
       error: dco_decode_bridge_error(arr[1]),
+    );
+  }
+
+  @protected
+  NovelBlockDto dco_decode_novel_block_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return NovelBlockDto(
+      isImage: dco_decode_bool(arr[0]),
+      text: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  NovelChapterDto dco_decode_novel_chapter_dto(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    return NovelChapterDto(
+      source: dco_decode_String(arr[0]),
+      item: dco_decode_String(arr[1]),
+      unit: dco_decode_unit_dto(arr[2]),
+      language: dco_decode_String(arr[3]),
+      blocks: dco_decode_list_novel_block_dto(arr[4]),
+      translatedLanguage: dco_decode_opt_String(arr[5]),
+      translatedBlocks: dco_decode_list_novel_block_dto(arr[6]),
+      translationFailed: dco_decode_bool(arr[7]),
+      retryAtSecs: dco_decode_opt_box_autoadd_u_64(arr[8]),
+      switchedFrom: dco_decode_opt_String(arr[9]),
     );
   }
 
@@ -4024,6 +4152,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<NovelBlockDto> sse_decode_list_novel_block_dto(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <NovelBlockDto>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_novel_block_dto(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -4407,6 +4549,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_source = sse_decode_opt_String(deserializer);
     var var_error = sse_decode_bridge_error(deserializer);
     return NoticeDto(source: var_source, error: var_error);
+  }
+
+  @protected
+  NovelBlockDto sse_decode_novel_block_dto(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_isImage = sse_decode_bool(deserializer);
+    var var_text = sse_decode_String(deserializer);
+    return NovelBlockDto(isImage: var_isImage, text: var_text);
+  }
+
+  @protected
+  NovelChapterDto sse_decode_novel_chapter_dto(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_source = sse_decode_String(deserializer);
+    var var_item = sse_decode_String(deserializer);
+    var var_unit = sse_decode_unit_dto(deserializer);
+    var var_language = sse_decode_String(deserializer);
+    var var_blocks = sse_decode_list_novel_block_dto(deserializer);
+    var var_translatedLanguage = sse_decode_opt_String(deserializer);
+    var var_translatedBlocks = sse_decode_list_novel_block_dto(deserializer);
+    var var_translationFailed = sse_decode_bool(deserializer);
+    var var_retryAtSecs = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_switchedFrom = sse_decode_opt_String(deserializer);
+    return NovelChapterDto(
+      source: var_source,
+      item: var_item,
+      unit: var_unit,
+      language: var_language,
+      blocks: var_blocks,
+      translatedLanguage: var_translatedLanguage,
+      translatedBlocks: var_translatedBlocks,
+      translationFailed: var_translationFailed,
+      retryAtSecs: var_retryAtSecs,
+      switchedFrom: var_switchedFrom,
+    );
   }
 
   @protected
@@ -5822,6 +5999,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_novel_block_dto(
+    List<NovelBlockDto> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_novel_block_dto(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_loose(
     List<int> self,
     SseSerializer serializer,
@@ -6133,6 +6322,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_opt_String(self.source, serializer);
     sse_encode_bridge_error(self.error, serializer);
+  }
+
+  @protected
+  void sse_encode_novel_block_dto(
+    NovelBlockDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.isImage, serializer);
+    sse_encode_String(self.text, serializer);
+  }
+
+  @protected
+  void sse_encode_novel_chapter_dto(
+    NovelChapterDto self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.source, serializer);
+    sse_encode_String(self.item, serializer);
+    sse_encode_unit_dto(self.unit, serializer);
+    sse_encode_String(self.language, serializer);
+    sse_encode_list_novel_block_dto(self.blocks, serializer);
+    sse_encode_opt_String(self.translatedLanguage, serializer);
+    sse_encode_list_novel_block_dto(self.translatedBlocks, serializer);
+    sse_encode_bool(self.translationFailed, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.retryAtSecs, serializer);
+    sse_encode_opt_String(self.switchedFrom, serializer);
   }
 
   @protected

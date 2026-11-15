@@ -4,6 +4,7 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../dto/media.dart';
+import '../dto/novel.dart';
 import '../dto/sources.dart';
 import '../dto/stream.dart';
 import '../dto/stream_extras.dart';
@@ -52,4 +53,26 @@ Future<ChapterViewDto> openChapter({
   chapter: chapter,
   preferred: preferred,
   exclude: exclude,
+);
+
+Future<NovelChapterDto> openNovelChapter({
+  required MediaRefDto reference,
+  required double chapter,
+  String? preferred,
+  required List<String> exclude,
+}) => RustLib.instance.api.crateApiPlayOpenNovelChapter(
+  reference: reference,
+  chapter: chapter,
+  preferred: preferred,
+  exclude: exclude,
+);
+
+Future<bool> preloadNovelChapter({
+  required MediaRefDto reference,
+  required double chapter,
+  String? preferred,
+}) => RustLib.instance.api.crateApiPlayPreloadNovelChapter(
+  reference: reference,
+  chapter: chapter,
+  preferred: preferred,
 );
