@@ -1,21 +1,22 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'accent_palette.dart';
 import 'kolektaku_color_scheme.dart';
 import 'kolektaku_text.dart';
 import 'kolektaku_tokens.dart';
 
 const _sheetStroke = Color(0xFF3A3A46);
 
-ShadSheetTheme _sheetTheme() {
+ShadSheetTheme _sheetTheme(ShadColorScheme scheme) {
   return ShadSheetTheme(
     radius: const BorderRadius.vertical(top: Radius.circular(Radii.sheet)),
     removeBorderRadiusWhenTiny: false,
-    backgroundColor: kolektakuDarkColorScheme.card,
+    backgroundColor: scheme.card,
     border: Border.all(color: _sheetStroke, width: 1.5),
     shadows: [
       BoxShadow(
-        color: kolektakuDarkColorScheme.primary.withValues(alpha: 0.12),
+        color: scheme.primary.withValues(alpha: 0.12),
         blurRadius: 28,
         offset: const Offset(0, -6),
       ),
@@ -23,12 +24,13 @@ ShadSheetTheme _sheetTheme() {
   );
 }
 
-ShadThemeData kolektakuDarkTheme() {
+ShadThemeData kolektakuDarkTheme({Color accent = defaultAccentColor}) {
+  final scheme = kolektakuColorScheme(accent);
   return ShadThemeData(
     brightness: Brightness.dark,
-    colorScheme: kolektakuDarkColorScheme,
+    colorScheme: scheme,
     textTheme: kolektakuTextTheme(),
     radius: BorderRadius.circular(Radii.poster),
-    sheetTheme: _sheetTheme(),
+    sheetTheme: _sheetTheme(scheme),
   );
 }

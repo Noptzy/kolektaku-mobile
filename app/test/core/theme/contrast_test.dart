@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kolektaku/core/theme/accent_palette.dart';
 import 'package:kolektaku/core/theme/kolektaku_color_scheme.dart';
 
 double _channel(double value) {
@@ -56,5 +57,42 @@ void main() {
     test('score on background', () {
       expect(contrastRatio(scheme.score, scheme.background), greaterThan(3));
     });
+  });
+
+  group('every ready-made accent preset is readable', () {
+    for (final preset in accentPresets) {
+      final built = kolektakuColorScheme(preset.color);
+      test('${preset.label}: accent on background reaches 3:1', () {
+        expect(
+          contrastRatio(built.primary, built.background),
+          greaterThanOrEqualTo(3),
+        );
+      });
+      test('${preset.label}: text on accent reaches 4.5:1', () {
+        expect(
+          contrastRatio(built.primaryForeground, built.primary),
+          greaterThanOrEqualTo(4.5),
+        );
+      });
+    }
+  });
+
+  group('every 15 degrees of the hue slider is readable', () {
+    for (var hue = 0; hue < 360; hue += 15) {
+      final color = accentColorFromHue(hue.toDouble());
+      final built = kolektakuColorScheme(color);
+      test('$hue degrees: accent on background reaches 3:1', () {
+        expect(
+          contrastRatio(built.primary, built.background),
+          greaterThanOrEqualTo(3),
+        );
+      });
+      test('$hue degrees: text on accent reaches 4.5:1', () {
+        expect(
+          contrastRatio(built.primaryForeground, built.primary),
+          greaterThanOrEqualTo(4.5),
+        );
+      });
+    }
   });
 }
