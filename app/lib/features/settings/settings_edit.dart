@@ -12,6 +12,7 @@ extension SettingsEdit on SettingsDto {
     QualityDto? quality,
     bool? autoNext,
     bool? autoSkip,
+    String? accent,
   }) {
     return _build(
       prefersAnime: prefersAnime ?? this.prefersAnime,
@@ -25,6 +26,7 @@ extension SettingsEdit on SettingsDto {
       quality: quality ?? this.quality,
       autoNext: autoNext ?? this.autoNext,
       autoSkip: autoSkip ?? this.autoSkip,
+      accent: accent ?? this.accent,
     );
   }
 
@@ -41,6 +43,7 @@ extension SettingsEdit on SettingsDto {
       quality: quality,
       autoNext: autoNext,
       autoSkip: autoSkip,
+      accent: accent,
     );
   }
 
@@ -67,6 +70,7 @@ SettingsDto _build({
   required QualityDto quality,
   required bool autoNext,
   required bool autoSkip,
+  required String accent,
 }) {
   return SettingsDto(
     prefersAnime: prefersAnime,
@@ -80,5 +84,6 @@ SettingsDto _build({
     quality: quality,
     autoNext: autoNext,
     autoSkip: autoSkip,
+    accent: accent,
   );
 }

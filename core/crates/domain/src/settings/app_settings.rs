@@ -1,3 +1,4 @@
+use super::accent::AccentColor;
 use super::quality::QualityPreference;
 use super::subtitle::{
     SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage,
@@ -16,8 +17,9 @@ const SUBTITLE_BOX_OPACITY: &str = "setting.subtitle_box_opacity";
 const QUALITY: &str = "setting.quality";
 const AUTO_NEXT: &str = "setting.auto_next";
 const AUTO_SKIP: &str = "setting.auto_skip";
+const ACCENT_COLOR: &str = "setting.accent_color";
 
-pub const SETTING_KEYS: [&str; 11] = [
+pub const SETTING_KEYS: [&str; 12] = [
     PREFERS_ANIME,
     ANIME_SOURCE,
     SUBTITLE_LANGUAGE,
@@ -29,6 +31,7 @@ pub const SETTING_KEYS: [&str; 11] = [
     QUALITY,
     AUTO_NEXT,
     AUTO_SKIP,
+    ACCENT_COLOR,
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -44,6 +47,7 @@ pub struct AppSettings {
     pub quality: QualityPreference,
     pub auto_next: bool,
     pub auto_skip: bool,
+    pub accent: AccentColor,
 }
 
 impl Default for AppSettings {
@@ -60,6 +64,7 @@ impl Default for AppSettings {
             quality: QualityPreference::default(),
             auto_next: true,
             auto_skip: false,
+            accent: AccentColor::default(),
         }
     }
 }
@@ -102,6 +107,7 @@ impl AppSettings {
             (QUALITY, self.quality.key().to_string()),
             (AUTO_NEXT, flag(self.auto_next)),
             (AUTO_SKIP, flag(self.auto_skip)),
+            (ACCENT_COLOR, self.accent.hex()),
         ]
     }
 
@@ -137,6 +143,9 @@ impl AppSettings {
                 .unwrap_or(fallback.quality),
             auto_next: read_flag(lookup(AUTO_NEXT), fallback.auto_next),
             auto_skip: read_flag(lookup(AUTO_SKIP), fallback.auto_skip),
+            accent: lookup(ACCENT_COLOR)
+                .and_then(|text| AccentColor::parse(&text))
+                .unwrap_or(fallback.accent),
         }
     }
 }

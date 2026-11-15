@@ -21,6 +21,7 @@ class SettingsDto {
   final QualityDto quality;
   final bool autoNext;
   final bool autoSkip;
+  final String accent;
 
   const SettingsDto({
     required this.prefersAnime,
@@ -34,6 +35,7 @@ class SettingsDto {
     required this.quality,
     required this.autoNext,
     required this.autoSkip,
+    required this.accent,
   });
 
   @override
@@ -48,7 +50,8 @@ class SettingsDto {
       subtitleBoxOpacity.hashCode ^
       quality.hashCode ^
       autoNext.hashCode ^
-      autoSkip.hashCode;
+      autoSkip.hashCode ^
+      accent.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -65,7 +68,8 @@ class SettingsDto {
           subtitleBoxOpacity == other.subtitleBoxOpacity &&
           quality == other.quality &&
           autoNext == other.autoNext &&
-          autoSkip == other.autoSkip;
+          autoSkip == other.autoSkip &&
+          accent == other.accent;
 }
 
 enum SubtitleBoxColorDto { black, gray, navy }

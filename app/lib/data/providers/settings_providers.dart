@@ -14,6 +14,7 @@ const defaultSettings = SettingsDto(
   quality: QualityDto.auto,
   autoNext: true,
   autoSkip: false,
+  accent: '#F5B82E',
 );
 
 class SettingsNotifier extends AsyncNotifier<SettingsDto> {

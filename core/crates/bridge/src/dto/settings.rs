@@ -1,6 +1,6 @@
 use domain::settings::{
-    AppSettings, QualityPreference, SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor,
-    SubtitleEdge, SubtitleLanguage, SubtitleSize,
+    AccentColor, AppSettings, QualityPreference, SubtitleBoxColor, SubtitleBoxOpacity,
+    SubtitleColor, SubtitleEdge, SubtitleLanguage, SubtitleSize,
 };
 use domain::source::SourceId;
 
@@ -50,6 +50,7 @@ pub struct SettingsDto {
     pub quality: QualityDto,
     pub auto_next: bool,
     pub auto_skip: bool,
+    pub accent: String,
 }
 
 impl From<&AppSettings> for SettingsDto {
@@ -66,6 +67,7 @@ impl From<&AppSettings> for SettingsDto {
             quality: settings.quality.into(),
             auto_next: settings.auto_next,
             auto_skip: settings.auto_skip,
+            accent: settings.accent.hex(),
         }
     }
 }
@@ -84,6 +86,7 @@ impl From<&SettingsDto> for AppSettings {
             quality: dto.quality.into(),
             auto_next: dto.auto_next,
             auto_skip: dto.auto_skip,
+            accent: AccentColor::parse(&dto.accent).unwrap_or_default(),
         }
     }
 }
@@ -113,10 +116,31 @@ mod tests {
             quality: QualityPreference::P360,
             auto_next: false,
             auto_skip: true,
+            accent: AccentColor::parse("#00FF00").unwrap(),
         };
         let dto = SettingsDto::from(&changed);
         assert_eq!(dto.anime_source.as_deref(), Some("x"));
         assert_eq!(dto.quality, QualityDto::P360);
         assert_eq!(AppSettings::from(&dto), changed);
+    }
+
+    #[test]
+    fn the_accent_round_trips_as_hex_text() {
+        let changed = AppSettings {
+            accent: AccentColor::parse("#1E90FF").unwrap(),
+            ..AppSettings::default()
+        };
+        let dto = SettingsDto::from(&changed);
+        assert_eq!(dto.accent, "#1E90FF");
+        assert_eq!(AppSettings::from(&dto).accent, changed.accent);
+    }
+
+    #[test]
+    fn a_broken_accent_in_the_dto_falls_back_to_the_default() {
+        let dto = SettingsDto {
+            accent: "not-a-color".into(),
+            ..SettingsDto::from(&AppSettings::default())
+        };
+        assert_eq!(AppSettings::from(&dto).accent, AccentColor::default());
     }
 }

@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use super::accent::AccentColor;
 use super::app_settings::{AppSettings, SETTING_KEYS};
 use super::quality::QualityPreference;
 use super::subtitle::{
@@ -26,6 +27,7 @@ fn changed() -> AppSettings {
         quality: QualityPreference::P720,
         auto_next: false,
         auto_skip: true,
+        accent: AccentColor::parse("#1E90FF").unwrap(),
     }
 }
 
@@ -53,6 +55,7 @@ fn broken_values_fall_back_one_by_one() {
         "setting.subtitle_box_opacity" => Some("full".into()),
         "setting.quality" => Some("720".into()),
         "setting.anime_source" => Some("   ".into()),
+        "setting.accent_color" => Some("notacolor".into()),
         _ => None,
     });
     assert!(restored.prefers_anime);
@@ -62,6 +65,7 @@ fn broken_values_fall_back_one_by_one() {
     assert_eq!(restored.subtitle_box_opacity, SubtitleBoxOpacity::Full);
     assert_eq!(restored.quality, QualityPreference::P720);
     assert_eq!(restored.anime_source, None);
+    assert_eq!(restored.accent, AccentColor::default());
 }
 
 #[test]

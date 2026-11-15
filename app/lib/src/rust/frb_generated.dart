@@ -2899,8 +2899,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SettingsDto dco_decode_settings_dto(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 11)
-      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    if (arr.length != 12)
+      throw Exception('unexpected arr length: expect 12 but see ${arr.length}');
     return SettingsDto(
       prefersAnime: dco_decode_bool(arr[0]),
       animeSource: dco_decode_opt_String(arr[1]),
@@ -2913,6 +2913,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       quality: dco_decode_quality_dto(arr[8]),
       autoNext: dco_decode_bool(arr[9]),
       autoSkip: dco_decode_bool(arr[10]),
+      accent: dco_decode_String(arr[11]),
     );
   }
 
@@ -4668,6 +4669,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_quality = sse_decode_quality_dto(deserializer);
     var var_autoNext = sse_decode_bool(deserializer);
     var var_autoSkip = sse_decode_bool(deserializer);
+    var var_accent = sse_decode_String(deserializer);
     return SettingsDto(
       prefersAnime: var_prefersAnime,
       animeSource: var_animeSource,
@@ -4680,6 +4682,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       quality: var_quality,
       autoNext: var_autoNext,
       autoSkip: var_autoSkip,
+      accent: var_accent,
     );
   }
 
@@ -6298,6 +6301,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_quality_dto(self.quality, serializer);
     sse_encode_bool(self.autoNext, serializer);
     sse_encode_bool(self.autoSkip, serializer);
+    sse_encode_String(self.accent, serializer);
   }
 
   @protected

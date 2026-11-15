@@ -3274,6 +3274,7 @@ impl SseDecode for crate::dto::settings::SettingsDto {
         let mut var_quality = <crate::dto::settings::QualityDto>::sse_decode(deserializer);
         let mut var_autoNext = <bool>::sse_decode(deserializer);
         let mut var_autoSkip = <bool>::sse_decode(deserializer);
+        let mut var_accent = <String>::sse_decode(deserializer);
         return crate::dto::settings::SettingsDto {
             prefers_anime: var_prefersAnime,
             anime_source: var_animeSource,
@@ -3286,6 +3287,7 @@ impl SseDecode for crate::dto::settings::SettingsDto {
             quality: var_quality,
             auto_next: var_autoNext,
             auto_skip: var_autoSkip,
+            accent: var_accent,
         };
     }
 }
@@ -4888,6 +4890,7 @@ impl flutter_rust_bridge::IntoDart for crate::dto::settings::SettingsDto {
             self.quality.into_into_dart().into_dart(),
             self.auto_next.into_into_dart().into_dart(),
             self.auto_skip.into_into_dart().into_dart(),
+            self.accent.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -6605,6 +6608,7 @@ impl SseEncode for crate::dto::settings::SettingsDto {
         <crate::dto::settings::QualityDto>::sse_encode(self.quality, serializer);
         <bool>::sse_encode(self.auto_next, serializer);
         <bool>::sse_encode(self.auto_skip, serializer);
+        <String>::sse_encode(self.accent, serializer);
     }
 }
 
