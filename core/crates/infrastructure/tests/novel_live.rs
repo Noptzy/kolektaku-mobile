@@ -1,12 +1,17 @@
 use std::sync::Arc;
 
+use application::ports::MetadataCatalog;
 use application::ports::{Clock, SourceProvider};
+use application::sources::{ResolveSources, SourceHealth};
 use domain::media::MediaKind;
 use domain::source::{ItemId, SourceSearch, TextBlock};
+use infrastructure::catalog::anilist::AniListCatalog;
 use infrastructure::clock::SystemClock;
 use infrastructure::config::merge;
 use infrastructure::http::{HttpClient, ReqwestClient};
+use infrastructure::http::{RateLimitSettings, RateLimitedClient, SystemPause};
 use infrastructure::sources::registry::{SourceEnv, SourceRegistry, all_defaults};
+use infrastructure::storage::JsonSourceLinkStore;
 
 fn novel_sources() -> Vec<Arc<dyn SourceProvider>> {
     let http: Arc<dyn HttpClient> = Arc::new(ReqwestClient::standard().unwrap());
@@ -120,4 +125,69 @@ async fn the_second_novel_source_lists_every_chapter_of_a_long_novel() {
         .unwrap();
     assert_eq!(text.language, "en");
     assert!(text.paragraphs().count() >= 10);
+}
+
+const TITLES: [&str; 10] = [
+    "Mushoku Tensei: Isekai Ittara Honki Dasu",
+    "Re:Zero kara Hajimeru Isekai Seikatsu",
+    "Overlord",
+    "Sword Art Online",
+    "86",
+    "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e",
+    "Kusuriya no Hitorigoto",
+    "Tensei shitara Slime Datta Ken",
+    "Kono Subarashii Sekai ni Shukufuku wo!",
+    "Ookami to Koushinryou",
+];
+
+#[tokio::test]
+#[ignore = "talks to AniList and the novel sites"]
+async fn ten_light_novels_are_matched_to_the_right_source_and_never_to_fan_fiction() {
+    let transport = Arc::new(ReqwestClient::standard().unwrap());
+    let plain: Arc<dyn HttpClient> = transport.clone();
+    let limited: Arc<dyn HttpClient> = Arc::new(RateLimitedClient::new(
+        transport,
+        Arc::new(SystemPause),
+        RateLimitSettings::default(),
+    ));
+    let clock: Arc<dyn Clock> = Arc::new(SystemClock);
+    let catalog = AniListCatalog::new(limited, clock.clone());
+    let env = SourceEnv {
+        http: plain,
+        clock: clock.clone(),
+    };
+    let registry = SourceRegistry::build(&env, &merge(&all_defaults(), None).settings);
+    let folder = std::env::temp_dir().join(format!("kolektaku-novel-live-{}", std::process::id()));
+    std::fs::create_dir_all(&folder).unwrap();
+    let mut first_source_hits = 0;
+    println!("| judul | katalog | sumber | cocok |");
+    println!("|---|---|---|---|");
+    for title in TITLES {
+        let found = catalog.search(MediaKind::Novel, title, 1).await.unwrap();
+        let media = found
+            .items
+            .into_iter()
+            .find(|item| !item.is_adult)
+            .expect("catalog has the title");
+        for source in registry.for_kind(MediaKind::Novel) {
+            let id = source.info().id.to_string();
+            let store = Arc::new(JsonSourceLinkStore::new(
+                folder.join(format!("{id}-{}.json", media.id.get())),
+            ));
+            let health = Arc::new(SourceHealth::new(clock.clone()));
+            let resolver = ResolveSources::new(vec![source.clone()], store, health, clock.clone());
+            let resolved = resolver.execute(&media).await.unwrap();
+            let matched = resolved.best().map(|link| link.item.to_string());
+            if id == "meionovels" && matched.is_some() {
+                first_source_hits += 1;
+            }
+            println!(
+                "| {title} | {} | {id} | {} |",
+                media.title.romaji,
+                matched.as_deref().unwrap_or("-")
+            );
+        }
+    }
+    let _ = std::fs::remove_dir_all(&folder);
+    assert!(first_source_hits >= 8, "{first_source_hits} of 10");
 }

@@ -11,4 +11,6 @@ pub mod translate;
 mod fixtures;
 
 #[cfg(test)]
+mod novel_regressions;
+#[cfg(test)]
 mod search_regressions;

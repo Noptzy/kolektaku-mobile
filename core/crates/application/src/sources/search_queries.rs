@@ -2,7 +2,9 @@ use domain::media::MediaSummary;
 
 const MAX_SYNONYM_QUERIES: usize = 3;
 const MIN_LETTERS: usize = 3;
-const BRACKETS: [char; 8] = ['[', ']', '(', ')', '{', '}', '【', '】'];
+const PUNCTUATION: [char; 16] = [
+    '[', ']', '(', ')', '{', '}', '【', '】', ':', '!', '?', ';', '~', '！', '？', '：',
+];
 
 fn is_latin_letter(symbol: char) -> bool {
     symbol.is_ascii_alphabetic()
@@ -27,12 +29,12 @@ fn is_new(queries: &[String], candidate: &str) -> bool {
         .any(|known| known.eq_ignore_ascii_case(candidate))
 }
 
-fn without_brackets(text: &str) -> Option<String> {
-    if !text.contains(BRACKETS) {
+fn without_punctuation(text: &str) -> Option<String> {
+    if !text.contains(PUNCTUATION) {
         return None;
     }
     let plain = text
-        .replace(BRACKETS, " ")
+        .replace(PUNCTUATION, " ")
         .split_whitespace()
         .collect::<Vec<_>>()
         .join(" ");
@@ -48,7 +50,7 @@ fn push_title(queries: &mut Vec<String>, title: &str) -> bool {
         return false;
     }
     queries.push(title.to_string());
-    if let Some(plain) = without_brackets(title).filter(|plain| is_new(queries, plain)) {
+    if let Some(plain) = without_punctuation(title).filter(|plain| is_new(queries, plain)) {
         queries.push(plain);
     }
     true

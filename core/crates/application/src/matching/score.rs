@@ -1,6 +1,7 @@
 use domain::media::MediaStatus;
 
 use super::family::{FormatFamily, family_of_format, family_of_type};
+use super::novel_title::{edition_factor, is_novel_target, novel_title_score};
 use super::similarity::title_similarity;
 use super::target::{CandidateFacts, MatchTarget};
 
@@ -16,16 +17,27 @@ pub enum MatchDecision {
 }
 
 pub fn score_title(target: &MatchTarget, candidate_title: &str) -> f64 {
+    if is_novel_target(target) {
+        return novel_title_score(&target.titles, &[candidate_title.to_string()]);
+    }
     title_similarity(&target.titles, candidate_title)
 }
 
 pub fn score_candidate(target: &MatchTarget, facts: &CandidateFacts) -> f64 {
-    let title = facts
-        .titles
-        .iter()
-        .map(|candidate| title_similarity(&target.titles, candidate))
-        .fold(0.0, f64::max);
-    let mut factor = 1.0;
+    let title = if is_novel_target(target) {
+        novel_title_score(&target.titles, &facts.titles)
+    } else {
+        facts
+            .titles
+            .iter()
+            .map(|candidate| title_similarity(&target.titles, candidate))
+            .fold(0.0, f64::max)
+    };
+    let mut factor = if is_novel_target(target) {
+        edition_factor(facts.type_text.as_deref())
+    } else {
+        1.0
+    };
     let mut bonus = 0.0;
 
     let wanted = family_of_format(target.format);

@@ -95,7 +95,12 @@ fn the_variant_without_brackets_sits_next_to_its_title() {
     let queries = search_queries(&media("[Oshi no Ko]", Some("Oshi no Ko: Idol"), &[]));
     assert_eq!(
         queries,
-        vec!["[Oshi no Ko]", "Oshi no Ko", "Oshi no Ko: Idol"]
+        vec![
+            "[Oshi no Ko]",
+            "Oshi no Ko",
+            "Oshi no Ko: Idol",
+            "Oshi no Ko Idol"
+        ]
     );
 }
 
@@ -112,6 +117,26 @@ fn brackets_inside_a_title_leave_single_spaces() {
         queries,
         vec!["Kaiju (No. 8) Special", "Kaiju No. 8 Special"]
     );
+}
+
+#[test]
+fn a_title_with_a_colon_or_an_exclamation_mark_is_also_asked_without_them() {
+    let queries = search_queries(&media("86: Eighty Six", None, &[]));
+    assert_eq!(queries, vec!["86: Eighty Six", "86 Eighty Six"]);
+    let queries = search_queries(&media("Kono Subarashii Sekai ni Shukufuku wo!", None, &[]));
+    assert_eq!(
+        queries,
+        vec![
+            "Kono Subarashii Sekai ni Shukufuku wo!",
+            "Kono Subarashii Sekai ni Shukufuku wo"
+        ]
+    );
+}
+
+#[test]
+fn a_plain_title_gets_no_extra_variant() {
+    let queries = search_queries(&media("Naruto", Some("Naruto Shippuden"), &[]));
+    assert_eq!(queries, vec!["Naruto", "Naruto Shippuden"]);
 }
 
 #[test]
