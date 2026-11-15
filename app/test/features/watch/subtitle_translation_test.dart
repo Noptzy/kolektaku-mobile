@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kolektaku/core/translation_labels.dart';
 import 'package:kolektaku/data/providers/settings_providers.dart';
 import 'package:kolektaku/features/watch/player/cue_loading.dart';
 import 'package:kolektaku/features/watch/player/player_session.dart';

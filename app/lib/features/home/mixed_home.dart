@@ -6,7 +6,6 @@ import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
-import '../../widgets/hero_carousel.dart';
 import '../../widgets/hero_slide.dart';
 import '../../widgets/media_rail.dart';
 import '../../widgets/top10_rail.dart';
@@ -16,6 +15,7 @@ import 'home_mix.dart';
 import 'home_notice.dart';
 import 'home_sections.dart';
 import 'resume_rail.dart';
+import 'translated_hero.dart';
 
 class MixedHome extends StatelessWidget {
   const MixedHome({
@@ -108,7 +108,7 @@ class MixedHome extends StatelessWidget {
       children: [
         if (notices.isNotEmpty) HomeNotice(notices: notices),
         if (hero.isNotEmpty)
-          HeroCarousel(
+          TranslatedHeroCarousel(
             autoPlay: heroAutoPlay,
             slides: [
               for (final item in hero)

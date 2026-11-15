@@ -1,4 +1,5 @@
 import '../../core/theme/accent_palette.dart';
+import '../../core/translation_labels.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/settings.dart';
 import '../../src/rust/dto/sources.dart';
@@ -14,6 +15,9 @@ String appearanceSummary(SettingsDto settings) {
   }
   return 'Kustom';
 }
+
+String translationSummary(SettingsDto settings) =>
+    translationLanguageNames[settings.translation]!;
 
 String animeSourceSummary(
   SettingsDto settings,

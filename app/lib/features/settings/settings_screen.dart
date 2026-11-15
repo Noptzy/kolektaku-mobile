@@ -57,6 +57,11 @@ class SettingsScreen extends ConsumerWidget {
                         SettingsPage.appearance,
                         appearanceSummary(settings),
                       ),
+                      _row(
+                        context,
+                        SettingsPage.translation,
+                        translationSummary(settings),
+                      ),
                     ],
                   ),
                   SettingsGroup(

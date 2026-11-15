@@ -3,7 +3,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../src/rust/dto/stream.dart';
 import '../../../src/rust/dto/stream_extras.dart';
-import 'option_list.dart';
+import '../../../widgets/option_list.dart';
 import 'subtitle_logic.dart';
 import 'video_quality.dart';
 

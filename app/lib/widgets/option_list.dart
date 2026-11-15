@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../widgets/sheet_scroll.dart';
+import 'sheet_scroll.dart';
 
 class OptionList<T> extends StatelessWidget {
   const OptionList({

@@ -13,6 +13,7 @@ import 'source_choice_section.dart';
 import 'source_status_section.dart';
 import 'subtitle_preview.dart';
 import 'subtitle_section.dart';
+import 'translation_section.dart';
 import 'update_panel_section.dart';
 
 class SettingsPageScreen extends ConsumerWidget {
@@ -23,6 +24,7 @@ class SettingsPageScreen extends ConsumerWidget {
   Widget _body() => switch (page) {
     SettingsPage.preference => const PreferenceSection(),
     SettingsPage.appearance => const AppearanceSection(),
+    SettingsPage.translation => const TranslationSection(),
     SettingsPage.sourceChoice => const SourceChoiceSection(),
     SettingsPage.subtitle => const SubtitleSection(),
     SettingsPage.player => const PlayerSection(),

@@ -15,6 +15,7 @@ import 'fake_catalog_gateway.dart';
 import 'fake_library_gateway.dart';
 import 'fake_settings_gateway.dart';
 import 'fake_source_gateway.dart';
+import 'fake_translation_gateway.dart';
 
 class Visit {
   const Visit(this.path, this.extra);
@@ -29,15 +30,18 @@ class ScreenHarness {
     FakeLibraryGateway? library,
     FakeSourceGateway? sources,
     FakeSettingsGateway? settings,
+    FakeTranslationGateway? translation,
   }) : catalog = catalog ?? FakeCatalogGateway(),
        library = library ?? FakeLibraryGateway(),
        sources = sources ?? FakeSourceGateway(),
-       settings = settings ?? FakeSettingsGateway();
+       settings = settings ?? FakeSettingsGateway(),
+       translation = translation ?? FakeTranslationGateway();
 
   final FakeCatalogGateway catalog;
   final FakeLibraryGateway library;
   final FakeSourceGateway sources;
   final FakeSettingsGateway settings;
+  final FakeTranslationGateway translation;
   final List<Visit> visits = [];
 
   static const _stubs = [
@@ -58,6 +62,7 @@ class ScreenHarness {
     libraryGatewayProvider.overrideWithValue(library),
     sourceGatewayProvider.overrideWithValue(sources),
     settingsGatewayProvider.overrideWithValue(settings),
+    translationGatewayProvider.overrideWithValue(translation),
     heroAutoPlayProvider.overrideWithValue(null),
   ];
 

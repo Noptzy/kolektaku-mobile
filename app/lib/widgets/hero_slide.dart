@@ -36,6 +36,17 @@ class HeroSlide {
     );
   }
 
+  HeroSlide withSynopsis(String? synopsis) => HeroSlide(
+    title: title,
+    meta: meta,
+    imageUrl: imageUrl,
+    synopsis: synopsis,
+    label: label,
+    score: score,
+    hasTrailer: hasTrailer,
+    actionLabel: actionLabel,
+  );
+
   final String title;
   final String meta;
   final String? imageUrl;
