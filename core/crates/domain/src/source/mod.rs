@@ -1,4 +1,5 @@
 mod chapter_pages;
+mod chapter_text;
 mod genre;
 mod ids;
 mod info;
@@ -9,6 +10,7 @@ mod query;
 mod unit;
 
 pub use chapter_pages::{ChapterPage, ChapterPages};
+pub use chapter_text::{ChapterText, TextBlock};
 pub use genre::Genre;
 pub use ids::{ItemId, SourceId};
 pub use info::{Capabilities, SourceInfo, StreamSupport};

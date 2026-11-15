@@ -7,8 +7,8 @@ use domain::source::{
     SourcePage, SourceSearch, StreamSupport, Unit,
 };
 
-use super::{CallRecorder, FakeGenres, FakePages, FakeVideo};
-use crate::ports::{BoxFuture, PageSource, SourceProvider, VideoSource};
+use super::{CallRecorder, FakeGenres, FakePages, FakeText, FakeVideo};
+use crate::ports::{BoxFuture, PageSource, SourceProvider, TextSource, VideoSource};
 
 pub struct FakeSource {
     pub(super) info: SourceInfo,
@@ -18,6 +18,7 @@ pub struct FakeSource {
     pub(super) units: HashMap<ItemId, Vec<Unit>>,
     pub(super) video: Option<FakeVideo>,
     pub(super) pages: Option<FakePages>,
+    pub(super) text: Option<FakeText>,
     pub(super) recorder: CallRecorder,
     pub(super) genres: Option<FakeGenres>,
 }
@@ -40,6 +41,7 @@ impl FakeSource {
             units: HashMap::new(),
             video: None,
             pages: None,
+            text: None,
             recorder: CallRecorder::default(),
             genres: None,
         }
@@ -130,6 +132,10 @@ impl SourceProvider for FakeSource {
 
     fn pages(&self) -> Option<&dyn PageSource> {
         self.pages.as_ref().map(|pages| pages as &dyn PageSource)
+    }
+
+    fn texts(&self) -> Option<&dyn TextSource> {
+        self.text.as_ref().map(|text| text as &dyn TextSource)
     }
 
     fn video(&self) -> Option<&dyn VideoSource> {

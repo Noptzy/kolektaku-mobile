@@ -2,7 +2,7 @@ use domain::error::SourceError;
 use domain::source::{ItemId, SourceDetail, SourceItem, StreamSupport, Unit};
 
 use super::fake_source::normalize;
-use super::{FakeGenres, FakePages, FakeSource, FakeVideo};
+use super::{FakeGenres, FakePages, FakeSource, FakeText, FakeVideo};
 
 impl FakeSource {
     pub fn with_priority(mut self, priority: u8) -> Self {
@@ -38,6 +38,11 @@ impl FakeSource {
 
     pub fn with_pages(mut self, pages: FakePages) -> Self {
         self.pages = Some(pages);
+        self
+    }
+
+    pub fn with_text(mut self, text: FakeText) -> Self {
+        self.text = Some(text);
         self
     }
 

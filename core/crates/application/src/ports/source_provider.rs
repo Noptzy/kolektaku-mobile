@@ -3,7 +3,7 @@ use domain::source::{
     Genre, ItemId, SourceDetail, SourceInfo, SourceOrder, SourcePage, SourceSearch, Unit,
 };
 
-use super::{BoxFuture, PageSource, VideoSource};
+use super::{BoxFuture, PageSource, TextSource, VideoSource};
 
 pub trait SourceProvider: Send + Sync {
     fn info(&self) -> &SourceInfo;
@@ -34,6 +34,10 @@ pub trait SourceProvider: Send + Sync {
     }
 
     fn pages(&self) -> Option<&dyn PageSource> {
+        None
+    }
+
+    fn texts(&self) -> Option<&dyn TextSource> {
         None
     }
 }
