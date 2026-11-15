@@ -54,6 +54,13 @@ fn words_of(label: &str) -> String {
     )
 }
 
+const MILD_LABELS: [&str; 1] = ["mature"];
+
+pub fn is_adult_genre(label: &str) -> bool {
+    let lower = label.trim().to_lowercase();
+    !MILD_LABELS.contains(&lower.as_str()) && is_adult_label(label)
+}
+
 pub fn is_adult_label(label: &str) -> bool {
     let lower = label.trim().to_lowercase();
     if ADULT_LABELS.contains(&lower.as_str()) {
@@ -68,6 +75,16 @@ pub fn is_adult_label(label: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_shared_adult_labels_apply_but_mature_alone_does_not() {
+        assert!(is_adult_genre("Adult"));
+        assert!(is_adult_genre("Smut"));
+        assert!(is_adult_genre("Hentai"));
+        assert!(!is_adult_genre("Mature"));
+        assert!(!is_adult_genre("Ecchi"));
+        assert!(!is_adult_genre("Romance"));
+    }
 
     #[test]
     fn adult_labels_are_recognized_in_any_case() {

@@ -1,4 +1,4 @@
-use super::title::{clean_title, is_adult_genre};
+use super::title::clean_title;
 
 #[test]
 fn the_light_and_web_novel_marks_are_removed_from_the_end() {
@@ -33,14 +33,4 @@ fn a_title_that_is_only_a_mark_is_not_emptied() {
 #[test]
 fn a_mark_in_the_middle_is_not_touched() {
     assert_eq!(clean_title("LN Stories Today"), "LN Stories Today");
-}
-
-#[test]
-fn the_shared_adult_labels_apply_but_mature_alone_does_not() {
-    assert!(is_adult_genre("Adult"));
-    assert!(is_adult_genre("Smut"));
-    assert!(is_adult_genre("Hentai"));
-    assert!(!is_adult_genre("Mature"));
-    assert!(!is_adult_genre("Ecchi"));
-    assert!(!is_adult_genre("Romance"));
 }

@@ -80,3 +80,44 @@ async fn the_latest_list_pages_forward() {
     assert!(first.total_pages > 1);
     assert_ne!(first.items[0].item_id, second.items[0].item_id);
 }
+
+#[tokio::test]
+#[ignore = "talks to the novel sites"]
+async fn the_second_novel_source_lists_every_chapter_of_a_long_novel() {
+    let sources = novel_sources();
+    let source = sources
+        .iter()
+        .find(|source| source.info().id.as_str() == "novelphoenix")
+        .expect("the second novel source is registered");
+    let found = source
+        .search(SourceSearch::new("the beginning after the end"))
+        .await
+        .unwrap();
+    assert!(
+        found
+            .items
+            .iter()
+            .any(|item| item.item_id.as_str() == "the-beginning-after-the-end")
+    );
+    let detail = source
+        .detail(ItemId::new("the-beginning-after-the-end"))
+        .await
+        .unwrap();
+    let expected = detail.unit_count.unwrap() as usize;
+    assert!(expected >= 300, "{expected}");
+    let units = source
+        .units(ItemId::new("the-beginning-after-the-end"))
+        .await
+        .unwrap();
+    assert_eq!(units.len(), expected);
+    assert_eq!(units[0].number, 1.0);
+    assert_eq!(units[0].id, "the-beginning-after-the-end/chapter-1");
+    let text = source
+        .texts()
+        .unwrap()
+        .chapter_text(units[0].id.clone())
+        .await
+        .unwrap();
+    assert_eq!(text.language, "en");
+    assert!(text.paragraphs().count() >= 10);
+}

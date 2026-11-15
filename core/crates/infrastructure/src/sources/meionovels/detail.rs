@@ -5,8 +5,10 @@ use domain::source::{ItemId, SourceDetail, SourceItem};
 use scraper::Html;
 use url::Url;
 
-use super::title::{clean_title, is_adult_genre};
-use crate::sources::support::{absolute_url, collapse, known_text, selector, text_of};
+use super::title::clean_title;
+use crate::sources::support::{
+    absolute_url, collapse, is_adult_genre, known_text, selector, text_of,
+};
 
 fn info_rows(document: &Html) -> HashMap<String, String> {
     let mut rows = HashMap::new();

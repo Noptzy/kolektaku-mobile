@@ -11,7 +11,13 @@ fn the_registry_has_unique_ids_and_the_real_sites() {
     unique.sort_unstable();
     unique.dedup();
     assert_eq!(unique.len(), ids.len());
-    for real in ["kuramanime", "komiku", "komikindo", "meionovels"] {
+    for real in [
+        "kuramanime",
+        "komiku",
+        "komikindo",
+        "meionovels",
+        "novelphoenix",
+    ] {
         assert!(ids.contains(&real), "{real}");
     }
 }

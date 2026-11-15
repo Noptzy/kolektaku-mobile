@@ -3,9 +3,9 @@ use domain::source::{ItemId, SourceItem};
 use scraper::{ElementRef, Html};
 use url::Url;
 
-use super::title::{clean_title, is_adult_genre};
+use super::title::clean_title;
 use crate::sources::support::{
-    absolute_url, collapse, is_adult_label, known_text, selector, slug_in, text_of,
+    absolute_url, collapse, is_adult_genre, is_adult_label, known_text, selector, slug_in, text_of,
 };
 
 const NOVEL_PATH: &str = "/novel/";

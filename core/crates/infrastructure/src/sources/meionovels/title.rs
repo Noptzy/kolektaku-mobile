@@ -1,7 +1,6 @@
-use crate::sources::support::{collapse, is_adult_label};
+use crate::sources::support::collapse;
 
 const EDITION_MARKS: [&str; 2] = ["LN", "WN"];
-const MILD_LABELS: [&str; 1] = ["mature"];
 
 pub fn clean_title(raw: &str) -> String {
     let mut title = collapse(raw);
@@ -35,9 +34,4 @@ fn strip_bracketed(text: &str) -> Option<String> {
         }
     }
     None
-}
-
-pub fn is_adult_genre(label: &str) -> bool {
-    let lower = label.trim().to_lowercase();
-    !MILD_LABELS.contains(&lower.as_str()) && is_adult_label(label)
 }
