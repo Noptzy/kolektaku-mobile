@@ -5,6 +5,7 @@ pub mod http;
 pub mod scene;
 pub mod sources;
 pub mod storage;
+pub mod translate;
 
 #[cfg(test)]
 mod fixtures;

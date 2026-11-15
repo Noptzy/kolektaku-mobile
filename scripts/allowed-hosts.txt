@@ -30,3 +30,5 @@ w3.org
 schema.org
 android.com
 apache.org
+
+translate.googleapis.com

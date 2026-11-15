@@ -36,3 +36,7 @@ pub fn trace_moe(name: &str) -> String {
 pub fn mal(name: &str) -> String {
     read("mal", name)
 }
+
+pub fn translate(name: &str) -> String {
+    read("translate", name)
+}
