@@ -35,6 +35,10 @@ impl<S: SceneSearch> FindScene<S> {
         Self { search }
     }
 
+    pub async fn quota_left(&self) -> Option<u32> {
+        self.search.quota_left().await.ok()
+    }
+
     pub async fn execute(&self, image: Vec<u8>) -> Result<SceneFinding, SourceError> {
         let reply = self.search.find(image).await?;
         Ok(SceneFinding {

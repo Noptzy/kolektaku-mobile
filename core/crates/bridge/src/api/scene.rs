@@ -10,3 +10,7 @@ pub async fn find_scene(image: Vec<u8>) -> Result<SceneFindingDto, BridgeError> 
 pub async fn open_scene(scene: SceneMatchDto) -> Result<SceneTargetDto, BridgeError> {
     scene::open_scene(global()?, &scene).await
 }
+
+pub async fn scene_quota() -> Result<Option<u32>, BridgeError> {
+    Ok(scene::scene_quota(global()?).await)
+}

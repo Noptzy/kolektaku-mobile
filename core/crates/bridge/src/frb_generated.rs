@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.13.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1180523819;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1641960645;
 
 // Section: executor
 
@@ -1524,6 +1524,41 @@ fn wire__crate__api__settings__save_settings_impl(
                 transform_result_sse::<_, crate::error::BridgeError>(
                     (move || async move {
                         let output_ok = crate::api::settings::save_settings(api_settings).await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__scene__scene_quota_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "scene_quota",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::scene::scene_quota().await?;
                         std::result::Result::Ok(output_ok)
                     })()
                     .await,
@@ -3830,14 +3865,15 @@ fn pde_ffi_dispatcher_primary_impl(
         37 => wire__crate__api__play__parse_stream_payload_impl(port, ptr, rust_vec_len, data_len),
         38 => wire__crate__api__people__profile_impl(port, ptr, rust_vec_len, data_len),
         39 => wire__crate__api__settings__save_settings_impl(port, ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
-        46 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
-        47 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
+        40 => wire__crate__api__scene__scene_quota_impl(port, ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
+        48 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

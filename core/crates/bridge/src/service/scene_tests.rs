@@ -3,7 +3,7 @@ use std::sync::Arc;
 use application::ports::SourceProvider;
 use infrastructure::http::HttpResponse;
 
-use super::scene::{find_scene, open_scene};
+use super::scene::{find_scene, open_scene, scene_quota};
 use super::service_support::{Folder, ScriptedHttp, offline, state, state_with};
 use crate::dto::scene::{DetailReasonDto, SceneMatchDto, SceneOutcomeKind, SceneTargetKind};
 use crate::error::BridgeErrorKind;
@@ -125,4 +125,24 @@ async fn a_scene_without_a_valid_title_is_refused() {
     let state = state(&folder).await;
     let error = open_scene(&state, &scene(0, Some(1.0))).await.unwrap_err();
     assert_eq!(error.kind, BridgeErrorKind::NotFound);
+}
+
+#[tokio::test]
+async fn the_quota_can_be_read_before_any_search() {
+    let folder = Folder::new();
+    let body = r#"{"id":"x","priority":0,"concurrency":1,"quota":100,"quotaUsed":12}"#;
+    let state = state_with(
+        &folder,
+        Vec::new(),
+        ScriptedHttp(Ok(HttpResponse::new(200, body))),
+    )
+    .await;
+    assert_eq!(scene_quota(&state).await, Some(88));
+}
+
+#[tokio::test]
+async fn an_unreachable_service_leaves_the_quota_unknown() {
+    let folder = Folder::new();
+    let state = state_with(&folder, Vec::new(), offline()).await;
+    assert_eq!(scene_quota(&state).await, None);
 }

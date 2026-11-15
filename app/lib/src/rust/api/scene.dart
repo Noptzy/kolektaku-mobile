@@ -14,3 +14,5 @@ Future<SceneFindingDto> findScene({required List<int> image}) =>
 
 Future<SceneTargetDto> openScene({required SceneMatchDto scene}) =>
     RustLib.instance.api.crateApiSceneOpenScene(scene: scene);
+
+Future<int?> sceneQuota() => RustLib.instance.api.crateApiSceneSceneQuota();

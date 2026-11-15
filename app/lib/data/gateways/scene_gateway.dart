@@ -7,6 +7,8 @@ abstract interface class SceneGateway {
   Future<SceneFindingDto> find(Uint8List image);
 
   Future<SceneTargetDto> open(SceneMatchDto scene);
+
+  Future<int?> quotaLeft();
 }
 
 class BridgeSceneGateway implements SceneGateway {
@@ -18,4 +20,7 @@ class BridgeSceneGateway implements SceneGateway {
   @override
   Future<SceneTargetDto> open(SceneMatchDto scene) =>
       api.openScene(scene: scene);
+
+  @override
+  Future<int?> quotaLeft() => api.sceneQuota();
 }
