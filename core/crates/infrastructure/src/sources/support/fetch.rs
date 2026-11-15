@@ -35,6 +35,16 @@ impl PageFetcher {
         Ok(response.body)
     }
 
+    pub async fn post_form(
+        &self,
+        url: &str,
+        fields: &[(&str, &str)],
+    ) -> Result<String, SourceError> {
+        let response = self.http.send(HttpRequest::post_form(url, fields)).await?;
+        check_status(&response)?;
+        Ok(response.body)
+    }
+
     pub async fn post_json(&self, url: &str, body: &str) -> Result<String, SourceError> {
         let response = self.http.send(HttpRequest::post_json(url, body)).await?;
         check_status(&response)?;

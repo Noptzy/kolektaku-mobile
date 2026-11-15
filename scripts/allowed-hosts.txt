@@ -11,6 +11,7 @@ release-assets.githubusercontent.com
 komiku.org
 api.komiku.org
 komikindo.ch
+meionovels.com
 kuramanime.ing
 animehot.cc
 hianimes.se

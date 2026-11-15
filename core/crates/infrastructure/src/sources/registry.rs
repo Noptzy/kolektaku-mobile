@@ -36,6 +36,7 @@ sources! {
     hianime => "hianime/mod.rs",
     komiku => "komiku/mod.rs",
     komikindo => "komikindo/mod.rs",
+    meionovels => "meionovels/mod.rs",
     #[cfg(test)] example => "example/mod.rs",
 }
 
