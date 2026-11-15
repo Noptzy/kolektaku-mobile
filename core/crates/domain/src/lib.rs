@@ -7,5 +7,6 @@ pub mod scene;
 pub mod settings;
 pub mod source;
 pub mod stream;
+pub mod translation;
 
 pub use app_info::AppInfo;
