@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/providers/gateway_providers.dart';
@@ -28,6 +29,12 @@ class SceneSearchNotifier extends Notifier<SceneSearchState> {
 
   Future<void> pickFromGallery() {
     return _pick((source) => source.fromGallery());
+  }
+
+  Future<void> trySample() async {
+    if (state.busy) return;
+    final sample = await rootBundle.load(sampleScenePath);
+    await search(sample.buffer.asUint8List());
   }
 
   Future<void> takePhoto() {
@@ -98,6 +105,8 @@ class SceneSearchNotifier extends Notifier<SceneSearchState> {
     state = SceneSearchState(quotaLeft: state.quotaLeft);
   }
 }
+
+const sampleScenePath = 'assets/scene/sample.jpg';
 
 final sceneSearchProvider =
     NotifierProvider.autoDispose<SceneSearchNotifier, SceneSearchState>(

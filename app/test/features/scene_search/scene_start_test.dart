@@ -49,6 +49,14 @@ void main() {
     expect(find.byKey(const Key('example-fanart')), findsOneWidget);
   });
 
+  testWidgets('the sample button searches the bundled frame', (tester) async {
+    final gateway = await open(tester);
+    await tester.tap(find.byKey(const Key('try-sample')));
+    await tester.pumpAndSettle();
+    expect(gateway.imageSizes, hasLength(1));
+    expect(gateway.imageSizes.single, greaterThan(1000));
+  });
+
   testWidgets('the remaining quota shows before any search', (tester) async {
     final gateway = await open(tester, quota: 93);
     expect(gateway.quotaReads, 1);

@@ -94,6 +94,7 @@ class _SceneSearchScreenState extends ConsumerState<SceneSearchScreen> {
         SceneStartView(
           onCamera: notifier.takePhoto,
           onFiles: notifier.pickFromGallery,
+          onSample: notifier.trySample,
           quotaLeft: state.quotaLeft,
         ),
       ],
