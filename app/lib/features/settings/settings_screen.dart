@@ -82,6 +82,16 @@ class SettingsScreen extends ConsumerWidget {
                         SettingsPage.player,
                         playerSummary(settings),
                       ),
+                      _row(
+                        context,
+                        SettingsPage.reader,
+                        readerSummary(settings),
+                      ),
+                      _row(
+                        context,
+                        SettingsPage.notifications,
+                        'Episode dan chapter baru',
+                      ),
                     ],
                   ),
                   SettingsGroup(

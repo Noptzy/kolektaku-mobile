@@ -30,11 +30,16 @@ class SourceRow extends StatelessWidget {
                     minSize: Sizes.touchTarget,
                     label: 'Ganti sumber',
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'Ganti sumber',
-                          style: theme.textTheme.small.copyWith(
-                            fontWeight: FontWeight.w700,
+                        Flexible(
+                          child: Text(
+                            'Ganti sumber',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.small.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                         const SizedBox(width: Spacing.xs),

@@ -12,6 +12,7 @@ Future<ServerChoice?> showServerSheet(
   BuildContext context, {
   required List<ServerDto> servers,
   required String? current,
+  CurrentSource? source,
   List<OtherSource> others = const [],
 }) {
   return showSwipeSheet<ServerChoice>(
@@ -25,6 +26,7 @@ Future<ServerChoice?> showServerSheet(
           child: ServerOptions(
             servers: servers,
             current: current,
+            source: source,
             others: others,
             onChoice: (choice) => Navigator.of(sheetContext).pop(choice),
           ),

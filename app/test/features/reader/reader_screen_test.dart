@@ -144,15 +144,31 @@ void main() {
     expect(previous.onPressed, isNotNull);
   });
 
-  testWidgets('the end of a chapter offers the next one', (tester) async {
+  testWidgets('the end of a chapter asks before going on when it is off', (
+    tester,
+  ) async {
     final harness = ReaderHarness(pageCount: 2);
-    await harness.open(tester);
+    await harness.open(tester, autoContinue: false);
     await scrollBy(tester, 3000);
     expect(find.text('Chapter 1 selesai'), findsOneWidget);
+    expect(harness.opened, [1]);
     await tester.tap(find.byKey(const Key('end-next')));
     await tester.pump();
     await tester.pump();
     expect(harness.opened.last, 2);
+  });
+
+  testWidgets('scrolling to the end flows into the next chapter', (
+    tester,
+  ) async {
+    final harness = ReaderHarness(pageCount: 2);
+    await harness.open(tester);
+    await scrollBy(tester, 3000);
+    await tester.pump();
+    await tester.pump();
+    expect(harness.opened, [1, 2]);
+    expect(find.text('Chapter 1 selesai'), findsOneWidget);
+    expect(find.byKey(const Key('end-next')), findsNothing);
   });
 
   testWidgets('the last chapter says there is nothing after it', (

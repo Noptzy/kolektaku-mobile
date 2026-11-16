@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../data/providers/gateway_providers.dart';
 import '../../data/providers/home_providers.dart';
 import '../../data/providers/library_providers.dart';
+import '../../src/rust/dto/highlight.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import 'collection_logic.dart';
@@ -63,6 +64,18 @@ class CollectionActions {
       final still = await library.isFavorite(favorite.kind, favorite.reference);
       if (!still) await library.toggleFavorite(favorite);
     });
+  }
+
+  Future<void> removeHighlight(HighlightDto item) async {
+    final agreed = await confirmSheet(
+      context,
+      title: 'Hapus sorotan?',
+      message: 'Sorotan ini akan dihapus dari Koleksi dan dari novelnya.',
+      confirmLabel: 'Hapus',
+    );
+    if (!agreed) return;
+    await ref.read(highlightGatewayProvider).remove(item.id);
+    ref.invalidate(highlightsProvider);
   }
 
   Future<void> clearHistory() async {

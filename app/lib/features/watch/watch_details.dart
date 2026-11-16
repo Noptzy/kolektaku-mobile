@@ -12,6 +12,7 @@ import 'watch_section_heading.dart';
 import 'server_flow.dart';
 import 'watch_controller.dart';
 import 'watch_info.dart';
+import 'short_film_notice.dart';
 import 'watch_labels.dart';
 
 export 'watch_scroll.dart';
@@ -145,6 +146,7 @@ class _WatchDetailsState extends State<WatchDetails> {
             onNext: () => _go(next),
             onChangeServer: _changeServer,
           ),
+          ShortFilmGuard(controller: _controller),
           Expanded(
             child: CustomScrollView(
               controller: _scroll,

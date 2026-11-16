@@ -69,6 +69,8 @@ class PlaybackDto {
   final UnitDto unit;
   final List<ServerDto> servers;
   final String? switchedFrom;
+  final String? audio;
+  final List<String> audioOptions;
 
   const PlaybackDto({
     required this.source,
@@ -76,6 +78,8 @@ class PlaybackDto {
     required this.unit,
     required this.servers,
     this.switchedFrom,
+    this.audio,
+    required this.audioOptions,
   });
 
   @override
@@ -84,7 +88,9 @@ class PlaybackDto {
       item.hashCode ^
       unit.hashCode ^
       servers.hashCode ^
-      switchedFrom.hashCode;
+      switchedFrom.hashCode ^
+      audio.hashCode ^
+      audioOptions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -95,7 +101,9 @@ class PlaybackDto {
           item == other.item &&
           unit == other.unit &&
           servers == other.servers &&
-          switchedFrom == other.switchedFrom;
+          switchedFrom == other.switchedFrom &&
+          audio == other.audio &&
+          audioOptions == other.audioOptions;
 }
 
 class ServerDto {

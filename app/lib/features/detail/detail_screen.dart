@@ -20,6 +20,8 @@ import 'detail_providers.dart';
 import 'detail_request.dart';
 import 'detail_skeleton.dart';
 import 'detail_tabs.dart';
+import 'maybe_match.dart';
+import 'release_note.dart';
 import 'source_names.dart';
 import 'source_sheet.dart';
 
@@ -130,8 +132,20 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
             units: units.value?.units ?? const [],
             last: last,
             isFilm: info.isFilm,
+            unreleased: isUnreleased(info.status),
+            releaseLabel: releaseDateLabel(info.startDate),
           );
     final manual = links.any((link) => link.manual);
+    final doubt = doubtfulLink(
+      kind: _request.kind,
+      links: links,
+      current: current,
+    );
+    Future<void> guarded(Future<void> Function() play) async {
+      if (doubt != null && !await actions.askBeforePlaying(doubt)) return;
+      await play();
+    }
+
     return Column(
       children: [
         Expanded(
@@ -147,15 +161,18 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
             onTab: (tab) => setState(() => _tab = tab),
             onPickSource: () => _pickSource(links, current),
             onWrong: () => _fix(actions, current, manual),
+            doubt: doubt,
+            onConfirm: () => actions.confirmMatch(doubt!),
             onToggleOrder: () => _toggleOrder(order == UnitOrderDto.desc),
             onRetryUnits: () => ref.invalidate(unitsProvider),
-            onPlay: (unit) => actions.play(unit, source: current),
+            onPlay: (unit) =>
+                guarded(() => actions.play(unit, source: current)),
           ),
         ),
         DetailCtaBar(
           plan: plan,
           isFavorite: favorite,
-          onPlay: () => actions.playPlan(plan, source: current),
+          onPlay: () => guarded(() => actions.playPlan(plan, source: current)),
           onFavorite: actions.toggleFavorite,
         ),
       ],

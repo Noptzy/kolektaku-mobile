@@ -6,7 +6,9 @@ import 'about_section.dart';
 import 'appearance_preview.dart';
 import 'appearance_section.dart';
 import 'player_section.dart';
+import 'notification_section.dart';
 import 'preference_section.dart';
+import 'reader_section.dart';
 import 'settings_page_scaffold.dart';
 import 'settings_pages.dart';
 import 'source_choice_section.dart';
@@ -28,6 +30,8 @@ class SettingsPageScreen extends ConsumerWidget {
     SettingsPage.sourceChoice => const SourceChoiceSection(),
     SettingsPage.subtitle => const SubtitleSection(),
     SettingsPage.player => const PlayerSection(),
+    SettingsPage.reader => const ReaderSection(),
+    SettingsPage.notifications => const NotificationSection(),
     SettingsPage.sources => const SourceStatusSection(),
     SettingsPage.update => const UpdatePanelSection(),
     SettingsPage.about => const AboutSection(),

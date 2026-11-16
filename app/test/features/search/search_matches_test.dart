@@ -126,6 +126,36 @@ void main() {
       expect(harness.visits.single.path, Routes.detail);
     });
 
+    testWidgets(
+      'every comic match is listed in a grid that only scrolls down',
+      (tester) async {
+        await open(
+          tester,
+          prepare: (harness) => harness.catalog.mangaSearchResult = page([
+            for (var i = 0; i < 9; i++)
+              card(100 + i, title: 'Komik $i', format: 'MANGA'),
+          ]),
+        );
+        await type(tester, 'berserk');
+        final grid = find.byKey(const Key('manga-matches'));
+        expect(grid, findsOneWidget);
+        expect(
+          find.descendant(
+            of: grid,
+            matching: find.byWidgetPredicate(
+              (widget) =>
+                  widget is Scrollable &&
+                  widget.axisDirection == AxisDirection.right,
+            ),
+          ),
+          findsNothing,
+        );
+        expect(find.text('Komik 0'), findsOneWidget);
+        expect(find.text('Komik 8'), findsOneWidget);
+        expect(find.byKey(const Key('see-all-Komik')), findsOneWidget);
+      },
+    );
+
     testWidgets('a novel that matches appears as its own rail', (tester) async {
       final harness = await open(
         tester,

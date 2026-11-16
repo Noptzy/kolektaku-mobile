@@ -4,11 +4,13 @@ import 'package:kolektaku/src/rust/frb_generated.dart';
 import 'app.dart';
 import 'app_scope.dart';
 import 'data/core_session.dart';
+import 'features/notifications/notification_boot.dart';
 import 'features/splash/kolektaku_boot.dart';
 
 Future<void> prepareCore() async {
   await RustLib.init();
   await startCore();
+  await setUpNotifications();
 }
 
 void main() {

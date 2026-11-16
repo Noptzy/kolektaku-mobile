@@ -4,7 +4,11 @@ import 'package:kolektaku/features/novel_reader/novel_request.dart';
 
 import 'novel_harness.dart';
 
-NovelController build(NovelHarness harness, {double chapter = 1}) {
+NovelController build(
+  NovelHarness harness, {
+  double chapter = 1,
+  bool autoContinue = true,
+}) {
   final controller = NovelController(
     request: NovelRequest(
       reference: reference,
@@ -14,6 +18,7 @@ NovelController build(NovelHarness harness, {double chapter = 1}) {
     loader: harness.loader,
     progress: harness.progress,
     saveDelay: const Duration(milliseconds: 200),
+    autoContinue: autoContinue,
   );
   addTearDown(controller.dispose);
   return controller;
@@ -92,7 +97,7 @@ void main() {
     tester,
   ) async {
     final harness = NovelHarness(blockCount: 11);
-    final controller = build(harness);
+    final controller = build(harness, autoContinue: false);
     await controller.load();
     await tester.pump();
     controller.onBlock(5);

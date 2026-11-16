@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../src/rust/dto/highlight.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import 'gateway_providers.dart';
@@ -16,4 +17,8 @@ final favoritesProvider =
 
 final historyProvider = FutureProvider.family<List<ProgressDto>, MediaKindDto>(
   (ref, kind) => ref.watch(libraryGatewayProvider).history(kind),
+);
+
+final highlightsProvider = FutureProvider<List<HighlightDto>>(
+  (ref) => ref.watch(highlightGatewayProvider).all(),
 );

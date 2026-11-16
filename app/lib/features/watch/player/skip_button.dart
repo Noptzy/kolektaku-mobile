@@ -20,7 +20,7 @@ class SkipButton extends StatelessWidget {
         return Align(
           alignment: Alignment.bottomRight,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 16, lifted ? 88 : 24),
+            padding: EdgeInsets.fromLTRB(0, 0, 16, lifted ? 100 : 24),
             child: ShadButton.secondary(
               key: const Key('skip-button'),
               size: ShadButtonSize.sm,

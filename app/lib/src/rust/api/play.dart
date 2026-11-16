@@ -18,11 +18,13 @@ Future<PlaybackDto> openEpisode({
   required double episode,
   String? preferred,
   required List<String> exclude,
+  String? audio,
 }) => RustLib.instance.api.crateApiPlayOpenEpisode(
   reference: reference,
   episode: episode,
   preferred: preferred,
   exclude: exclude,
+  audio: audio,
 );
 
 Future<StreamPlanDto> streamPlan({

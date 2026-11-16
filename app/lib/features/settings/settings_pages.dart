@@ -52,6 +52,20 @@ enum SettingsPage {
     icon: LucideIcons.circlePlay,
     intro: 'Atur kualitas awal dan perilaku otomatis saat menonton.',
   ),
+  reader(
+    slug: 'pembaca',
+    title: 'Pembaca',
+    icon: LucideIcons.bookOpen,
+    intro: 'Atur cara membaca komik dan novel.',
+  ),
+  notifications(
+    slug: 'notifikasi',
+    title: 'Notifikasi',
+    icon: LucideIcons.bell,
+    intro:
+        'Kabar saat favoritmu punya episode atau chapter baru, dan saat ada '
+        'versi baru Kolektaku. Aplikasi memeriksanya berkala di latar belakang.',
+  ),
   sources(
     slug: 'kelola-sumber',
     title: 'Kelola sumber',

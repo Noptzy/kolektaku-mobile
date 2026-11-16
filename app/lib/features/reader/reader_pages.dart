@@ -1,41 +1,42 @@
 import 'package:flutter/widgets.dart';
 
-import '../../src/rust/dto/sources.dart';
 import '../../src/rust/dto/stream.dart';
 import '../../widgets/poster.dart';
-import 'chapter_end.dart';
 import 'page_image.dart';
-import 'page_heights.dart';
+import 'stack_metrics.dart';
 
 const readerCacheExtent = 1600.0;
+
+typedef DividerBuilder = Widget Function(int chapter);
 
 class ReaderPages extends StatelessWidget {
   const ReaderPages({
     super.key,
-    required this.view,
+    required this.chapters,
     required this.scroll,
     required this.metrics,
     required this.imageFor,
-    required this.next,
+    required this.dividerAt,
     required this.onAspect,
-    required this.onNext,
     required this.onTap,
     required this.onScroll,
     this.decodeScale = 1,
     this.physics,
   });
 
-  final ChapterViewDto view;
+  final List<ChapterViewDto> chapters;
   final ScrollController scroll;
-  final PageHeights metrics;
+  final StackMetrics metrics;
   final PageImageFactory imageFor;
-  final UnitDto? next;
-  final void Function(int index, double aspect) onAspect;
-  final VoidCallback onNext;
+  final DividerBuilder dividerAt;
+  final void Function(int chapter, int index, double aspect) onAspect;
   final VoidCallback onTap;
   final bool Function(ScrollNotification notification) onScroll;
   final double decodeScale;
   final ScrollPhysics? physics;
+
+  int get _count =>
+      chapters.fold(0, (sum, chapter) => sum + chapter.pages.length + 1);
 
   @override
   Widget build(BuildContext context) {
@@ -48,25 +49,28 @@ class ReaderPages extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: ListView.builder(
-          key: ValueKey(view),
+          key: ValueKey(chapters.first),
           controller: scroll,
           physics: physics,
           cacheExtent: readerCacheExtent,
-          itemCount: view.pages.length + 1,
-          itemBuilder: (context, index) {
-            if (index == view.pages.length) {
-              return ChapterEnd(
-                current: view.unit.number,
-                next: next,
-                onNext: onNext,
-              );
+          itemCount: _count,
+          itemBuilder: (context, flat) {
+            var left = flat;
+            for (var chapter = 0; chapter < chapters.length; chapter++) {
+              final view = chapters[chapter];
+              if (left < view.pages.length) {
+                final index = left;
+                return PageImage(
+                  key: ValueKey('${view.unit.id}#$index'),
+                  provider: imageFor(view.pages[index], decode),
+                  aspect: metrics.heightsOf(chapter).aspectOf(index),
+                  onAspect: (aspect) => onAspect(chapter, index, aspect),
+                );
+              }
+              if (left == view.pages.length) return dividerAt(chapter);
+              left -= view.pages.length + 1;
             }
-            return PageImage(
-              key: ValueKey('${view.unit.id}#$index'),
-              provider: imageFor(view.pages[index], decode),
-              aspect: metrics.aspectOf(index),
-              onAspect: (aspect) => onAspect(index, aspect),
-            );
+            return const SizedBox.shrink();
           },
         ),
       ),

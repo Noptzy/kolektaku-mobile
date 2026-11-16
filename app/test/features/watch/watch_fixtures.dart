@@ -33,6 +33,7 @@ PlaybackDto playbackOn(
       ),
   ],
   switchedFrom: switchedFrom,
+  audioOptions: const [],
 );
 
 ResolvedStream streamOf(String name) => ResolvedStream(

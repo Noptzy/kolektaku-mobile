@@ -6,14 +6,16 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/routes.dart';
 import '../../core/theme/kolektaku_text.dart';
 import '../../core/theme/kolektaku_tokens.dart';
+import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/profile.dart';
 import '../../src/rust/dto/profile_summary.dart';
-import '../../widgets/media_rail.dart';
+import 'match_grid.dart';
 import '../detail/detail_request.dart';
 import '../profile/profile_request.dart';
 import 'people_search_providers.dart';
 import 'person_row.dart';
+import 'search_seed.dart';
 
 const matchMinQuery = 3;
 
@@ -54,35 +56,34 @@ class SearchMatches extends ConsumerWidget {
         _People(title: 'Karakter', people: characters),
         _People(title: 'Staf', people: staff),
         if (manga.isNotEmpty)
-          MediaRail(
-            key: const Key('manga-matches'),
-            title: 'Komik',
-            cards: manga,
-            onTap: (card) => context.push(
-              Routes.detail,
-              extra: DetailRequest(
-                kind: MediaKindDto.manga,
-                reference: card.reference,
-              ),
-            ),
-          ),
+          _grid(context, ref, MediaKindDto.manga, 'Komik', manga, text),
         if (novels.isNotEmpty)
-          MediaRail(
-            key: const Key('novel-matches'),
-            title: 'Novel',
-            cards: novels,
-            onTap: (card) => context.push(
-              Routes.detail,
-              extra: DetailRequest(
-                kind: MediaKindDto.novel,
-                reference: card.reference,
-              ),
-            ),
-          ),
+          _grid(context, ref, MediaKindDto.novel, 'Novel', novels, text),
         const _Heading('Anime'),
       ],
     );
   }
+}
+
+Widget _grid(
+  BuildContext context,
+  WidgetRef ref,
+  MediaKindDto kind,
+  String title,
+  List<MediaCardDto> cards,
+  String text,
+) {
+  return MatchGrid(
+    key: Key('${kind.name}-matches'),
+    title: title,
+    cards: cards,
+    onTap: (card) => context.push(
+      Routes.detail,
+      extra: DetailRequest(kind: kind, reference: card.reference),
+    ),
+    onSeeAll: () =>
+        openSearchWith(context, ref, SearchSeed(kind: kind, query: text)),
+  );
 }
 
 class _People extends StatelessWidget {

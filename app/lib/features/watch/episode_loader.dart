@@ -11,6 +11,7 @@ typedef OpenEpisode = Future<PlaybackDto> Function({
   required double episode,
   String? preferred,
   required List<String> exclude,
+  String? audio,
 });
 
 typedef ResolveServer = Future<ResolvedStream> Function({
@@ -67,12 +68,13 @@ class EpisodeLoader {
     double episode, {
     String? preferred,
     List<String> exclude = const [],
+    String? audio,
   }) async {
     final failed = <String>[...exclude];
     Object? lastError;
     for (var round = 0; round < maxSources; round++) {
       final PlaybackDto playback;
-      final key = EpisodeCache.playback(reference, episode, preferred);
+      final key = EpisodeCache.playback(reference, episode, preferred, audio);
       final cached = failed.isEmpty ? _cache.playbacks.get(key) : null;
       try {
         playback =
@@ -82,6 +84,7 @@ class EpisodeLoader {
               episode: episode,
               preferred: failed.isEmpty ? preferred : null,
               exclude: List.of(failed),
+              audio: audio,
             );
       } on Object catch (error) {
         throw lastError ?? error;

@@ -16,6 +16,7 @@ extension SettingsEdit on SettingsDto {
     TranslationLanguageDto? translation,
     ReadingSizeDto? readingSize,
     ReadingSpacingDto? readingSpacing,
+    bool? continuousReading,
   }) {
     return _build(
       prefersAnime: prefersAnime ?? this.prefersAnime,
@@ -33,6 +34,7 @@ extension SettingsEdit on SettingsDto {
       translation: translation ?? this.translation,
       readingSize: readingSize ?? this.readingSize,
       readingSpacing: readingSpacing ?? this.readingSpacing,
+      continuousReading: continuousReading ?? this.continuousReading,
     );
   }
 
@@ -53,6 +55,7 @@ extension SettingsEdit on SettingsDto {
       translation: translation,
       readingSize: readingSize,
       readingSpacing: readingSpacing,
+      continuousReading: continuousReading,
     );
   }
 
@@ -83,6 +86,7 @@ SettingsDto _build({
   required TranslationLanguageDto translation,
   required ReadingSizeDto readingSize,
   required ReadingSpacingDto readingSpacing,
+  required bool continuousReading,
 }) {
   return SettingsDto(
     prefersAnime: prefersAnime,
@@ -100,5 +104,6 @@ SettingsDto _build({
     translation: translation,
     readingSize: readingSize,
     readingSpacing: readingSpacing,
+    continuousReading: continuousReading,
   );
 }

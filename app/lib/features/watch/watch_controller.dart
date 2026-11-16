@@ -90,6 +90,7 @@ class WatchController extends ChangeNotifier {
         request.episode,
         preferred: request.preferredSource,
         exclude: exclude,
+        audio: request.audio,
       );
       if (generation != _generation) return;
       final explicit = startAt ?? request.startAt;

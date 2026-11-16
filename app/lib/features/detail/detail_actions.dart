@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +7,9 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/routes.dart';
 import '../../data/providers/gateway_providers.dart';
+import '../../platform/notifier.dart';
 import '../../platform/trailer_embed.dart';
+import '../notifications/permission_flow.dart';
 import '../../platform/url_opener.dart';
 import '../../src/rust/dto/credits.dart';
 import '../../src/rust/dto/library.dart';
@@ -20,6 +24,7 @@ import 'detail_info.dart';
 import 'detail_providers.dart';
 import 'detail_request.dart';
 import 'link_style.dart';
+import 'maybe_match_sheet.dart';
 import 'trailer_sheet.dart';
 import 'wrong_match_sheet.dart';
 
@@ -53,6 +58,7 @@ class DetailActions {
           coverUrl: info.coverUrl,
           startAt: startAt,
           preferredSource: source,
+          expectedMinutes: info.isFilm ? info.durationMinutes : null,
           synopsis: info.synopsis,
         ),
       ),
@@ -99,6 +105,9 @@ class DetailActions {
         .read(libraryGatewayProvider)
         .toggleFavorite(favorite);
     ref.invalidate(isFavoriteProvider(request));
+    if (added && Platform.isAndroid && context.mounted) {
+      await askOnFirstFavorite(context, LocalNotifier());
+    }
     if (!context.mounted) return;
     ShadToaster.of(context).show(
       ShadToast(
@@ -130,6 +139,19 @@ class DetailActions {
 
   void openProfile(ProfileRequest profile) {
     context.push(Routes.profile, extra: profile);
+  }
+
+  Future<void> confirmMatch(SourceLinkDto link) async {
+    await ref
+        .read(catalogGatewayProvider)
+        .selectSource(request.kind, request.reference, link.source, link.item);
+    ref.invalidate(detailProvider(request));
+  }
+
+  Future<bool> askBeforePlaying(SourceLinkDto link) async {
+    final answer = await showMaybeMatchSheet(context, link);
+    if (answer == MaybeMatchAnswer.yes) await confirmMatch(link);
+    return answer == MaybeMatchAnswer.yes;
   }
 
   Future<bool> fixMatch({

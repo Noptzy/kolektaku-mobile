@@ -7,6 +7,14 @@ import 'playback_engine.dart';
 import 'player_session.dart';
 import 'subtitle_logic.dart';
 
+const _restingLift = 36.0;
+const _aboveControls = 108.0;
+
+double subtitleBottomPadding({
+  required bool lifted,
+  required double safeBottom,
+}) => (lifted ? _aboveControls : _restingLift) + safeBottom;
+
 class SubtitleOverlay extends StatelessWidget {
   const SubtitleOverlay({
     super.key,
@@ -56,7 +64,15 @@ class _Line extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(24, 0, 24, lifted ? 96 : 36),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          0,
+          24,
+          subtitleBottomPadding(
+            lifted: lifted,
+            safeBottom: MediaQuery.viewPaddingOf(context).bottom,
+          ),
+        ),
         child: SubtitleText(
           text: text,
           settings: settings,

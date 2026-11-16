@@ -7,6 +7,7 @@ import '../../core/routes.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../data/providers/home_providers.dart';
 import '../../data/providers/library_providers.dart';
+import '../../src/rust/dto/highlight.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import '../../widgets/kind_switch.dart';
@@ -15,6 +16,7 @@ import '../detail/detail_request.dart';
 import 'history_launch.dart';
 import 'collection_actions.dart';
 import 'collection_sections.dart';
+import 'highlights_section.dart';
 
 class CollectionScreen extends ConsumerStatefulWidget {
   const CollectionScreen({super.key});
@@ -39,8 +41,14 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
     _refresh();
   }
 
+  Future<void> _openHighlight(HighlightDto item) async {
+    await context.push(Routes.novel, extra: highlightRequest(item));
+    _refresh();
+  }
+
   void _refresh() {
     if (!mounted) return;
+    ref.invalidate(highlightsProvider);
     for (final kind in MediaKindDto.values) {
       ref.invalidate(continueProvider(kind));
       ref.invalidate(favoritesProvider(kind));
@@ -71,6 +79,24 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
             loading: () => const [],
             error: (error, stack) => const [],
           ),
+          if (_kind == MediaKindDto.novel)
+            ...ref
+                .watch(highlightsProvider)
+                .when(
+                  data: (items) => highlightsSection(
+                    items,
+                    _openHighlight,
+                    actions.removeHighlight,
+                  ),
+                  loading: () => const [
+                    SliverToBoxAdapter(child: SectionLoading()),
+                  ],
+                  error: (error, stack) => const [
+                    SliverToBoxAdapter(
+                      child: EmptyNote(text: 'Sorotan belum bisa dimuat.'),
+                    ),
+                  ],
+                ),
           ...favorites.when(
             data: (items) => favoritesSection(
               _kind,

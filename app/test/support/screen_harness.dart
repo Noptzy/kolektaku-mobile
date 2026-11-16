@@ -12,6 +12,7 @@ import 'package:kolektaku/features/home/hero_auto_play.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'fake_catalog_gateway.dart';
+import 'fake_highlight_gateway.dart';
 import 'fake_library_gateway.dart';
 import 'fake_settings_gateway.dart';
 import 'fake_source_gateway.dart';
@@ -31,17 +32,20 @@ class ScreenHarness {
     FakeSourceGateway? sources,
     FakeSettingsGateway? settings,
     FakeTranslationGateway? translation,
+    FakeHighlightGateway? highlights,
   }) : catalog = catalog ?? FakeCatalogGateway(),
        library = library ?? FakeLibraryGateway(),
        sources = sources ?? FakeSourceGateway(),
        settings = settings ?? FakeSettingsGateway(),
-       translation = translation ?? FakeTranslationGateway();
+       translation = translation ?? FakeTranslationGateway(),
+       highlights = highlights ?? FakeHighlightGateway();
 
   final FakeCatalogGateway catalog;
   final FakeLibraryGateway library;
   final FakeSourceGateway sources;
   final FakeSettingsGateway settings;
   final FakeTranslationGateway translation;
+  final FakeHighlightGateway highlights;
   final List<Visit> visits = [];
 
   static const _stubs = [
@@ -64,6 +68,7 @@ class ScreenHarness {
     sourceGatewayProvider.overrideWithValue(sources),
     settingsGatewayProvider.overrideWithValue(settings),
     translationGatewayProvider.overrideWithValue(translation),
+    highlightGatewayProvider.overrideWithValue(highlights),
     heroAutoPlayProvider.overrideWithValue(null),
   ];
 

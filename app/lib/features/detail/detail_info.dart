@@ -24,6 +24,9 @@ class DetailInfo {
     this.catalogId,
     this.format,
     this.unitCount,
+    this.status,
+    this.startDate,
+    this.durationMinutes,
   });
 
   factory DetailInfo.fromView(DetailViewDto view, MediaKindDto kind) {
@@ -61,6 +64,9 @@ class DetailInfo {
       catalogId: summary.id,
       format: summary.format,
       unitCount: summary.unitCount,
+      status: summary.status,
+      startDate: detail.startDate,
+      durationMinutes: detail.durationMinutes,
     );
   }
 
@@ -100,6 +106,9 @@ class DetailInfo {
   final BigInt? catalogId;
   final String? format;
   final int? unitCount;
+  final String? status;
+  final DateDto? startDate;
+  final int? durationMinutes;
 
   bool get isFilm => format?.toUpperCase() == 'MOVIE' || unitCount == 1;
 

@@ -9,21 +9,29 @@ import 'chapter_loader.dart';
 import 'read_progress.dart';
 import 'read_request.dart';
 
+part 'reader_controller_stack.dart';
+
 class ReaderController extends ChangeNotifier {
   ReaderController({
     required this.request,
     required this.loader,
     required this.progress,
     this.saveDelay = const Duration(seconds: 1),
+    this.autoContinue = true,
   });
 
   final ChapterLoader loader;
   final ReadProgress progress;
   final Duration saveDelay;
+  final bool autoContinue;
 
   ReadRequest request;
-  ChapterViewDto? view;
+  List<ChapterViewDto> chapters = const [];
+  int visible = 0;
   Object? error;
+  Object? extendError;
+  bool extending = false;
+  int connected = 0;
   List<UnitDto> units = const [];
   int page = 0;
   int startPage = 0;
@@ -33,6 +41,8 @@ class ReaderController extends ChangeNotifier {
   Timer? _saveTimer;
   bool _dirty = false;
   bool _disposed = false;
+
+  ChapterViewDto? get view => chapters.isEmpty ? null : chapters[visible];
 
   double get current => view?.unit.number ?? request.chapter;
 
@@ -46,7 +56,11 @@ class ReaderController extends ChangeNotifier {
     final generation = ++_generation;
     await flush();
     error = null;
-    view = null;
+    extendError = null;
+    extending = false;
+    connected = 0;
+    visible = 0;
+    chapters = const [];
     page = 0;
     startPage = 0;
     _notify();
@@ -64,7 +78,7 @@ class ReaderController extends ChangeNotifier {
       final last = opened.pages.length - 1;
       startPage = last < 0 ? 0 : (resume ?? 0).clamp(0, last).toInt();
       page = startPage;
-      view = opened;
+      chapters = [opened];
       _notify();
       if (_needsUnits(opened.source)) unawaited(_loadUnits(opened.source));
     } on Object catch (failure) {
@@ -110,12 +124,16 @@ class ReaderController extends ChangeNotifier {
     final opened = view;
     if (!_dirty || opened == null) return;
     _dirty = false;
+    await _save(opened, page);
+  }
+
+  Future<void> _save(ChapterViewDto chapter, int at) async {
     try {
       await progress.save(
         request,
-        opened.unit.number,
-        page: page + 1,
-        total: opened.pages.length,
+        chapter.unit.number,
+        page: at + 1,
+        total: chapter.pages.length,
       );
     } on Object {
       return;

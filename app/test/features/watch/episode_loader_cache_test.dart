@@ -18,6 +18,7 @@ class Rig {
             required double episode,
             String? preferred,
             required List<String> exclude,
+            String? audio,
           }) async {
             opens.add('$episode|${preferred ?? ''}|${exclude.join(',')}');
             final source = ['a', 'b'].firstWhere((id) => !exclude.contains(id));

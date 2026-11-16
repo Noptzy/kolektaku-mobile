@@ -14,6 +14,7 @@ import '../features/home/home_screen.dart';
 import '../features/profile/profile_request.dart';
 import '../features/novel_reader/novel_request.dart';
 import '../features/novel_reader/novel_screen.dart';
+import '../features/reader/continuous_setting.dart';
 import '../features/reader/read_request.dart';
 import '../features/reader/reader_screen.dart';
 import '../features/profile/profile_screen.dart';
@@ -99,18 +100,25 @@ GoRouter createRouter({String initialLocation = startRoute}) {
       ),
       _route(Routes.sceneSearch, (state) {
         final shared = state.extra as Uint8List?;
-        return SceneSearchScreen(
-          initialImage: shared,
-          openCamera: shared == null,
-        );
+        return SceneSearchScreen(initialImage: shared);
       }),
       _route(
         Routes.read,
-        (state) => ReaderScreen(request: state.extra! as ReadRequest),
+        (state) => WithContinuous(
+          builder: (auto) => ReaderScreen(
+            request: state.extra! as ReadRequest,
+            autoContinue: auto,
+          ),
+        ),
       ),
       _route(
         Routes.novel,
-        (state) => NovelScreen(request: state.extra! as NovelRequest),
+        (state) => WithContinuous(
+          builder: (auto) => NovelScreen(
+            request: state.extra! as NovelRequest,
+            autoContinue: auto,
+          ),
+        ),
       ),
       _route(
         Routes.watch,

@@ -131,6 +131,7 @@ class WatchHarness {
           required double episode,
           String? preferred,
           required List<String> exclude,
+          String? audio,
         }) async {
           loads++;
           await hold?.future;

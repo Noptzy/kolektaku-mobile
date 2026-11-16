@@ -16,6 +16,8 @@ class WatchRequest {
     this.coverUrl,
     this.startAt,
     this.preferredSource,
+    this.audio,
+    this.expectedMinutes,
     this.scene,
     this.synopsis,
   });
@@ -27,6 +29,8 @@ class WatchRequest {
   final String? coverUrl;
   final Duration? startAt;
   final String? preferredSource;
+  final String? audio;
+  final int? expectedMinutes;
   final SceneEstimate? scene;
   final String? synopsis;
 
@@ -35,6 +39,8 @@ class WatchRequest {
     Duration? startAt,
     bool clearStart = false,
     String? preferredSource,
+    String? audio,
+    bool clearAudio = false,
   }) {
     return WatchRequest(
       reference: reference,
@@ -44,6 +50,8 @@ class WatchRequest {
       coverUrl: coverUrl,
       startAt: clearStart ? null : (startAt ?? this.startAt),
       preferredSource: preferredSource ?? this.preferredSource,
+      audio: clearAudio ? null : (audio ?? this.audio),
+      expectedMinutes: expectedMinutes,
       scene: clearStart ? null : scene,
       synopsis: synopsis,
     );

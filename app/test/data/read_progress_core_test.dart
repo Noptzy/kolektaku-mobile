@@ -18,7 +18,7 @@ void main() {
 
   tearDownAll(() async {
     if (!hostLibraryMissing && folder.existsSync()) {
-      await folder.delete(recursive: true);
+      await deleteBestEffort(folder);
     }
   });
 

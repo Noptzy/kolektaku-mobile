@@ -16,6 +16,22 @@ String? currentAudioLabel(WatchController controller) {
   return index < 0 ? null : serverLabel(servers, index);
 }
 
+CurrentSource? _currentOf(
+  WatchController controller, {
+  required Map<String, String> sourceNames,
+  required Map<String, String> sourceSummaries,
+}) {
+  final playback = controller.loaded?.playback;
+  final label = playback == null ? null : sourceNames[playback.source];
+  if (playback == null || label == null) return null;
+  return CurrentSource(
+    label: label,
+    summary: sourceSummaries[playback.source],
+    audioOptions: playback.audioOptions,
+    audio: playback.audio,
+  );
+}
+
 List<OtherSource> _othersOf(
   WatchController controller, {
   required List<String> linkedSources,
@@ -39,6 +55,8 @@ Future<void> applyServerChoice(
       await controller.useServer(id);
     case UseSource(:final id):
       await controller.useSource(id);
+    case PickAudio(:final label):
+      await controller.useAudio(label);
     case TryOtherSource():
       await controller.tryOtherSource();
     case null:
@@ -59,6 +77,11 @@ Future<void> changeServer(
     context,
     servers: loaded.playback.servers,
     current: loaded.serverId,
+    source: _currentOf(
+      controller,
+      sourceNames: sourceNames,
+      sourceSummaries: sourceSummaries,
+    ),
     others: _othersOf(
       controller,
       linkedSources: linkedSources,
@@ -94,6 +117,11 @@ Widget serverPage(
         ServerOptions(
           servers: servers,
           current: loaded.serverId,
+          source: _currentOf(
+            controller,
+            sourceNames: sourceNames,
+            sourceSummaries: sourceSummaries,
+          ),
           others: _othersOf(
             controller,
             linkedSources: linkedSources,

@@ -10,6 +10,12 @@ class PickServer extends ServerChoice {
   final String id;
 }
 
+class PickAudio extends ServerChoice {
+  const PickAudio(this.label);
+
+  final String? label;
+}
+
 class TryOtherSource extends ServerChoice {
   const TryOtherSource();
 }
@@ -21,6 +27,20 @@ class UseSource extends ServerChoice {
 }
 
 typedef OtherSource = ({String id, String label, String? summary});
+
+class CurrentSource {
+  const CurrentSource({
+    required this.label,
+    this.summary,
+    this.audioOptions = const [],
+    this.audio,
+  });
+
+  final String label;
+  final String? summary;
+  final List<String> audioOptions;
+  final String? audio;
+}
 
 List<OtherSource> otherSourcesOf({
   required List<String> linked,

@@ -26,8 +26,11 @@ class EpisodeCache {
   static String playback(
     MediaRefDto reference,
     double episode,
-    String? preferred,
-  ) => '${EpisodeCache.reference(reference)}|$episode|${preferred ?? ''}';
+    String? preferred, [
+    String? audio,
+  ]) =>
+      '${EpisodeCache.reference(reference)}|$episode|${preferred ?? ''}|'
+      '${audio ?? ''}';
 
   static String stream(String source, String episodeId, String server) =>
       '$source|$episodeId|$server';

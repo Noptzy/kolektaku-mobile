@@ -25,8 +25,18 @@ CtaPlan planCta({
   required List<UnitDto> units,
   required ProgressDto? last,
   required bool isFilm,
+  bool unreleased = false,
+  String? releaseLabel,
 }) {
   final anime = kind == MediaKindDto.anime;
+  if (unreleased) {
+    return CtaPlan(
+      label: releaseLabel == null
+          ? 'Belum tayang'
+          : 'Belum tayang · $releaseLabel',
+      enabled: false,
+    );
+  }
   if (units.isEmpty) {
     return const CtaPlan(label: 'Belum ada sumber', enabled: false);
   }
