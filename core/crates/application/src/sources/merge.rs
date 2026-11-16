@@ -2,12 +2,14 @@ use domain::error::SourceError;
 use domain::source::{SourceId, SourceLink};
 
 use super::find_link::Found;
+use crate::matching::MATCHER_VERSION;
 
 pub const REVALIDATE_AFTER_SECS: u64 = 14 * 24 * 60 * 60;
 
 pub fn is_fresh(link: &SourceLink, now_secs: u64) -> bool {
     link.manual
         || (link.confidence.is_automatic()
+            && link.matcher_version >= MATCHER_VERSION
             && now_secs.saturating_sub(link.checked_at_secs) < REVALIDATE_AFTER_SECS)
 }
 
@@ -75,6 +77,7 @@ mod tests {
             checked_at,
         );
         link.manual = manual;
+        link.matcher_version = MATCHER_VERSION;
         link
     }
 
@@ -97,6 +100,15 @@ mod tests {
             1_000 + REVALIDATE_AFTER_SECS
         ));
         assert!(!is_fresh(&link("a", "1", 0.84, 1_000, false), 1_001));
+    }
+
+    #[test]
+    fn an_automatic_link_from_an_older_matcher_is_checked_again_but_a_manual_one_is_not() {
+        let mut old = link("a", "1", 0.95, 1_000, false);
+        old.matcher_version = MATCHER_VERSION - 1;
+        assert!(!is_fresh(&old, 1_001));
+        old.manual = true;
+        assert!(is_fresh(&old, 1_001));
     }
 
     #[test]

@@ -10,3 +10,9 @@ members = [
 
 [workspace.package]
 edition = "2024"
+
+[profile.release]
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+strip = true

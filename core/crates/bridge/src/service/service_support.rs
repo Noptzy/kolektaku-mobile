@@ -150,6 +150,7 @@ pub async fn state_with(
         http,
     )
     .await
+    .unwrap()
 }
 
 pub async fn state_with_catalog(folder: &Folder, catalog: FakeCatalog) -> AppState<FakeCatalog> {
@@ -167,6 +168,7 @@ pub async fn state_with_catalog(folder: &Folder, catalog: FakeCatalog) -> AppSta
         http,
     )
     .await
+    .unwrap()
 }
 
 pub async fn state(folder: &Folder) -> AppState<FakeCatalog> {

@@ -61,6 +61,7 @@ pub struct SettingsDto {
     pub translation: TranslationLanguageDto,
     pub reading_size: ReadingSizeDto,
     pub reading_spacing: ReadingSpacingDto,
+    pub continuous_reading: bool,
 }
 
 impl From<&AppSettings> for SettingsDto {
@@ -81,6 +82,7 @@ impl From<&AppSettings> for SettingsDto {
             translation: settings.translation.into(),
             reading_size: settings.reading_size.into(),
             reading_spacing: settings.reading_spacing.into(),
+            continuous_reading: settings.continuous_reading,
         }
     }
 }
@@ -103,6 +105,7 @@ impl From<&SettingsDto> for AppSettings {
             translation: dto.translation.into(),
             reading_size: dto.reading_size.into(),
             reading_spacing: dto.reading_spacing.into(),
+            continuous_reading: dto.continuous_reading,
         }
     }
 }
@@ -136,6 +139,7 @@ mod tests {
             translation: TranslationLanguage::Korean,
             reading_size: ReadingSize::Largest,
             reading_spacing: ReadingSpacing::Tight,
+            continuous_reading: false,
         };
         let dto = SettingsDto::from(&changed);
         assert_eq!(dto.anime_source.as_deref(), Some("x"));

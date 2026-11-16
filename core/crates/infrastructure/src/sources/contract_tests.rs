@@ -12,6 +12,7 @@ fn the_registry_has_unique_ids_and_the_real_sites() {
     unique.dedup();
     assert_eq!(unique.len(), ids.len());
     for real in [
+        "bakatsuki",
         "kuramanime",
         "komiku",
         "komikindo",

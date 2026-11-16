@@ -19,6 +19,7 @@ pub async fn open_episode<C: MetadataCatalog>(
     episode: f64,
     preferred: Option<String>,
     exclude: Vec<String>,
+    audio: Option<String>,
 ) -> Result<PlaybackDto, BridgeError> {
     let open = OpenEpisode::new(
         state.links.clone(),
@@ -27,11 +28,12 @@ pub async fn open_episode<C: MetadataCatalog>(
     );
     let preferred = preferred.map(SourceId::new);
     let playback = open
-        .execute(
+        .execute_audio(
             &target.require()?,
             episode,
             preferred.as_ref(),
             &ids(exclude),
+            audio.as_deref(),
         )
         .await?;
     Ok(PlaybackDto::from(&playback))

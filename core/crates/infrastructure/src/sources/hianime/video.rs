@@ -23,7 +23,7 @@ impl HianimeVideo {
     }
 
     async fn choices(&self, episode: &str) -> Result<Vec<ServerChoice>, SourceError> {
-        let body = self.pages.fetch(&self.urls.episode(episode)?).await?;
+        let body = self.pages.fetch_live(&self.urls.episode(episode)?).await?;
         let response: RawEpisodeResponse = parse_json(&body, "episode")?;
         let links = response
             .episode

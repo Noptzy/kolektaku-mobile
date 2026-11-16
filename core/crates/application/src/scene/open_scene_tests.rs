@@ -36,6 +36,16 @@ fn source_with_title() -> FakeSource {
         .with_units("a-usagi", vec![Unit::new("a-ep-1", 1.0, "Episode 1")])
 }
 
+fn film_source() -> FakeSource {
+    let mut detail = SourceDetail::new(SourceItem::new(ItemId::new("a-usagi"), TITLE));
+    detail.year = Some(2015);
+    detail.unit_count = Some(1);
+    FakeSource::new("a", MediaKind::Anime)
+        .with_search(TITLE, vec![SourceItem::new(ItemId::new("a-usagi"), TITLE)])
+        .with_detail(detail)
+        .with_units("a-usagi", vec![Unit::new("a-ep-1", 1.0, "Episode 1")])
+}
+
 fn empty_source() -> FakeSource {
     FakeSource::new("a", MediaKind::Anime)
 }
@@ -104,7 +114,7 @@ async fn the_start_never_goes_before_the_beginning() {
 
 #[tokio::test]
 async fn a_film_without_an_episode_number_is_episode_one() {
-    let target = opener(catalog(MediaFormat::Movie), source_with_title())
+    let target = opener(catalog(MediaFormat::Movie), film_source())
         .execute(&scene(None, 600.0))
         .await
         .unwrap();

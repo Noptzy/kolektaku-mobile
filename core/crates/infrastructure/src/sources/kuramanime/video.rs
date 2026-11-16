@@ -25,7 +25,7 @@ impl VideoSource for KuramanimeVideo {
     fn servers(&self, episode: String) -> BoxFuture<'_, Result<Vec<EpisodeServer>, SourceError>> {
         Box::pin(async move {
             let url = self.urls.episode(&episode)?;
-            parse_episode_servers(&self.pages.fetch(&url).await?)
+            parse_episode_servers(&self.pages.fetch_live(&url).await?)
         })
     }
 

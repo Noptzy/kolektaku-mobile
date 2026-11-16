@@ -75,6 +75,7 @@ pub fn map_summary(raw: RawSummary) -> MediaSummary {
         genres: raw.genres.unwrap_or_default(),
         country_of_origin: raw.country_of_origin,
         is_adult: raw.is_adult.unwrap_or(false),
+        id_mal: raw.id_mal,
     }
 }
 

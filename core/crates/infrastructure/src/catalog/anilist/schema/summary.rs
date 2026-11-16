@@ -46,6 +46,7 @@ pub struct RawPrequelEdges {
 #[serde(rename_all = "camelCase")]
 pub struct RawSummary {
     pub id: MediaId,
+    pub id_mal: Option<u64>,
     #[serde(rename = "type")]
     pub kind: RawKind,
     pub title: RawTitle,

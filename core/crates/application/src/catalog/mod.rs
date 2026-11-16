@@ -1,6 +1,7 @@
 mod card;
 mod compose;
 mod compose_feed;
+mod compose_variants;
 mod discover_media;
 mod genre_browse;
 mod genre_covers;
@@ -28,6 +29,8 @@ mod home_feed_weekly_tests;
 mod search_media_tests;
 #[cfg(test)]
 mod search_resilience_tests;
+#[cfg(test)]
+mod search_slow_site_tests;
 #[cfg(test)]
 mod search_test_support;
 

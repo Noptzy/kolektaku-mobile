@@ -18,7 +18,7 @@ async fn clearing_without_a_cache_does_nothing() {
 async fn clearing_forgets_what_the_cache_held() {
     let folder = Folder::new();
     let cache = Arc::new(ResponseCache::new(
-        folder.0.join("cache"),
+        folder.0.join("pages"),
         Arc::new(FakeClock::at(5)),
         10,
     ));
@@ -27,4 +27,19 @@ async fn clearing_forgets_what_the_cache_held() {
     assert!(cache.lookup("page").await.is_some());
     browse::clear_catalog_cache(&state).await;
     assert!(cache.lookup("page").await.is_none());
+}
+
+#[tokio::test]
+async fn the_old_cache_folders_are_removed_when_the_database_takes_over() {
+    let folder = Folder::new();
+    let legacy = folder.0.join("cache").join("catalog");
+    std::fs::create_dir_all(&legacy).unwrap();
+    std::fs::write(
+        legacy.join("x.cache"),
+        "1
+body",
+    )
+    .unwrap();
+    let _state = state(&folder).await;
+    assert!(!folder.0.join("cache").exists());
 }

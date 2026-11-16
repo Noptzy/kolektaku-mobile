@@ -126,7 +126,18 @@ async fn three_failures_in_a_row_make_the_site_skipped_for_ten_minutes() {
 
 #[tokio::test]
 async fn a_doubtful_match_is_flagged_so_the_person_can_correct_it() {
-    let rig = rig(vec![site_with("a", 1, "a-spy", 2010, 12)]);
+    use domain::media::MediaKind;
+    use domain::source::{ItemId, SourceItem};
+
+    use super::resolve_support::{TITLE, detail};
+    use crate::testing::FakeSource;
+
+    let near = "Spy x Family Kids";
+    let site = FakeSource::new("a", MediaKind::Anime)
+        .with_priority(1)
+        .with_search(TITLE, vec![SourceItem::new(ItemId::new("a-spy"), near)])
+        .with_detail(detail("a-spy", near, 2022, 12));
+    let rig = rig(vec![site]);
     let resolved = rig.use_case.execute(&media()).await.unwrap();
     let link = resolved.best().unwrap();
     assert!(!link.confidence.is_automatic());

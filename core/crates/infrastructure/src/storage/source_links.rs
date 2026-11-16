@@ -8,19 +8,19 @@ use serde::{Deserialize, Serialize};
 use super::JsonFile;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct LinkEntry {
-    media: MediaRef,
-    links: Vec<SourceLink>,
+pub(crate) struct LinkEntry {
+    pub(crate) media: MediaRef,
+    pub(crate) links: Vec<SourceLink>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 #[serde(default)]
-struct LinkDocument {
+pub(crate) struct LinkDocument {
     entries: Vec<serde_json::Value>,
 }
 
 impl LinkDocument {
-    fn typed(&self) -> Vec<LinkEntry> {
+    pub(crate) fn typed(&self) -> Vec<LinkEntry> {
         self.entries
             .iter()
             .filter_map(|entry| serde_json::from_value(entry.clone()).ok())

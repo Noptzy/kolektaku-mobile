@@ -7,6 +7,7 @@ mod source_provider;
 mod text_source;
 mod translation_health;
 mod translator;
+mod update_ledger;
 mod video_source;
 
 pub use box_future::BoxFuture;
@@ -18,4 +19,5 @@ pub use source_provider::SourceProvider;
 pub use text_source::TextSource;
 pub use translation_health::TranslationHealth;
 pub use translator::Translator;
+pub use update_ledger::{LedgerEntry, UpdateLedger};
 pub use video_source::VideoSource;

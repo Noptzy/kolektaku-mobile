@@ -123,5 +123,6 @@ pub fn parse_detail(html: &str, item_id: &str, base: &Url) -> Result<SourceDetai
             .unwrap_or_default(),
         genres: read_genres(&document),
         catalog_id: None,
+        mal_id: None,
     })
 }

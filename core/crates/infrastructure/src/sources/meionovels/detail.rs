@@ -99,5 +99,6 @@ pub fn parse_detail(html: &str, slug: &str, base: &Url) -> Result<SourceDetail, 
         synopsis: synopsis_of(&document),
         genres,
         catalog_id: None,
+        mal_id: None,
     })
 }

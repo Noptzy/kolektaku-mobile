@@ -50,6 +50,16 @@ fn a_chapter_listed_twice_is_kept_once_and_foreign_links_are_ignored() {
 }
 
 #[test]
+fn chapters_filed_under_a_group_keep_the_group_in_their_id() {
+    let html = r#"<ul class="main"><li class="wp-manga-chapter"><a href="https://s.test/novel/ngnl/htl/volume-12-chapter-5/">V12 C5</a></li>
+        <li class="wp-manga-chapter"><a href="https://s.test/novel/ngnl/htl/volume-12-chapter-4/">V12 C4</a></li>
+        <li class="wp-manga-chapter"><a href="https://s.test/novel/ngnl/../escape/">Bad</a></li></ul>"#;
+    let units = parse_chapter_list(html, "ngnl");
+    let ids: Vec<&str> = units.iter().map(|unit| unit.id.as_str()).collect();
+    assert_eq!(ids, vec!["ngnl/htl/volume-12-chapter-4", "ngnl/htl/volume-12-chapter-5"]);
+}
+
+#[test]
 fn a_page_without_chapters_gives_an_empty_list() {
     assert!(parse_chapter_list("<main>redesigned</main>", SLUG).is_empty());
 }
@@ -109,4 +119,20 @@ fn a_page_without_the_reading_area_is_a_markup_change() {
         &site(),
     );
     assert!(matches!(empty, Err(SourceError::MarkupChanged(_))));
+}
+
+#[test]
+fn a_lazy_loaded_illustration_uses_its_real_address() {
+    let html = r#"<div class="reading-content"><div class="text-left"><p>Awal.</p>
+        <p><img class="lazy" src="data:image/gif;base64,R0lGOD" data-src="https://cdn.test/vol1.jpg"></p>
+        <p>Akhir.</p></div></div>"#;
+    let text = parse_chapter_text(html, &site()).unwrap();
+    assert_eq!(
+        text.blocks,
+        vec![
+            TextBlock::Paragraph("Awal.".into()),
+            TextBlock::Image("https://cdn.test/vol1.jpg".into()),
+            TextBlock::Paragraph("Akhir.".into()),
+        ]
+    );
 }

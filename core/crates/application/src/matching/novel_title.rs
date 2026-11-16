@@ -1,9 +1,12 @@
 use domain::media::MediaFormat;
 
+use super::dice::dice_coefficient;
 use super::normalize::normalize_title;
 use super::target::MatchTarget;
 
 const MIN_LETTERS: usize = 5;
+const NEAR_EQUAL_MIN_LETTERS: usize = 20;
+const NEAR_EQUAL_DICE: f64 = 0.9;
 const WEB_NOVEL_FACTOR: f64 = 0.9;
 const SUBTITLE_MARKS: [char; 5] = [':', '-', '~', '\u{2013}', '\u{ff1a}'];
 const NOISE_PHRASES: [&str; 5] = [
@@ -44,7 +47,18 @@ fn strip_trailing_noise(text: &str) -> String {
 }
 
 fn is_prefix_of(short: &[String], long: &[String]) -> bool {
-    short.len() < long.len() && long[..short.len()] == *short
+    let wanted = short.concat();
+    let mut seen = String::new();
+    for (index, token) in long.iter().enumerate() {
+        if seen == wanted {
+            return index > 0;
+        }
+        seen.push_str(token);
+        if !wanted.starts_with(&seen) {
+            return false;
+        }
+    }
+    false
 }
 
 fn folded(tokens: &[String]) -> Vec<String> {
@@ -58,6 +72,17 @@ fn folded(tokens: &[String]) -> Vec<String> {
             }
         })
         .collect()
+}
+
+fn digits_of(text: &str) -> String {
+    text.chars().filter(char::is_ascii_digit).collect()
+}
+
+fn is_near_equal(left: &[String], right: &[String]) -> bool {
+    let (left, right) = (left.concat(), right.concat());
+    left.chars().count() >= NEAR_EQUAL_MIN_LETTERS
+        && digits_of(&left) == digits_of(&right)
+        && dice_coefficient(&left, &right) >= NEAR_EQUAL_DICE
 }
 
 fn is_short_main_title(wanted: &str, target: &str) -> bool {
@@ -82,8 +107,11 @@ pub fn is_novel_title_of(targets: &[String], candidate: &str) -> bool {
     let letters = wanted.text.chars().filter(|c| c.is_alphanumeric()).count();
     targets.iter().any(|target| {
         let known_tokens = folded(&normalize_title(target).tokens);
-        if known_tokens == wanted_tokens {
+        if known_tokens.concat() == wanted_tokens.concat() {
             return letters >= MIN_LETTERS;
+        }
+        if is_near_equal(&known_tokens, &wanted_tokens) {
+            return true;
         }
         if !is_prefix_of(&wanted_tokens, &known_tokens) {
             return false;

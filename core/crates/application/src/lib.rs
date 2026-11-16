@@ -12,5 +12,6 @@ pub mod streaming;
 #[cfg(any(test, feature = "testing"))]
 pub mod testing;
 pub mod translation;
+pub mod updates;
 
 pub use greeting::greet;

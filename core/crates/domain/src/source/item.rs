@@ -32,6 +32,8 @@ pub struct SourceDetail {
     pub synopsis: String,
     pub genres: Vec<String>,
     pub catalog_id: Option<u64>,
+    #[serde(default)]
+    pub mal_id: Option<u64>,
 }
 
 impl SourceDetail {
@@ -46,6 +48,7 @@ impl SourceDetail {
             synopsis: String::new(),
             genres: Vec::new(),
             catalog_id: None,
+            mal_id: None,
         }
     }
 }

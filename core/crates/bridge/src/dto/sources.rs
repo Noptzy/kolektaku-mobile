@@ -15,6 +15,8 @@ pub struct SourceLinkDto {
     pub unit_count: Option<u32>,
     pub manual: bool,
     pub needs_hint: bool,
+    pub matched_title: Option<String>,
+    pub variants: Vec<String>,
 }
 
 pub fn link_dto(link: &SourceLink, directory: &SourceDirectory) -> SourceLinkDto {
@@ -30,6 +32,12 @@ pub fn link_dto(link: &SourceLink, directory: &SourceDirectory) -> SourceLinkDto
         unit_count: link.unit_count,
         manual: link.manual,
         needs_hint: !link.manual && !link.confidence.is_automatic(),
+        matched_title: link.title.clone(),
+        variants: link
+            .variants
+            .iter()
+            .map(|variant| variant.audio.clone())
+            .collect(),
     }
 }
 

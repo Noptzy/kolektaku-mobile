@@ -1,5 +1,6 @@
 const SUMMARY_FIELDS: &str = "
   id
+  idMal
   type
   title { romaji english native }
   synonyms
@@ -39,7 +40,6 @@ const DETAIL_BODY: &str = "
 query ($id: Int, $type: MediaType) {
   Media(id: $id, type: $type) {
     ...S
-    idMal
     externalLinks { site url type isDisabled }
     coverImage { extraLarge }
     bannerImage

@@ -33,6 +33,7 @@ fn changed() -> AppSettings {
         translation: TranslationLanguage::Japanese,
         reading_size: ReadingSize::Largest,
         reading_spacing: ReadingSpacing::Loose,
+        continuous_reading: false,
     }
 }
 
@@ -41,6 +42,7 @@ fn nothing_stored_means_the_defaults() {
     let settings = AppSettings::from_lookup(|_| None);
     assert_eq!(settings, AppSettings::default());
     assert!(settings.prefers_anime && settings.auto_next && !settings.auto_skip);
+    assert!(settings.continuous_reading);
     assert_eq!(settings.anime_source, None);
 }
 

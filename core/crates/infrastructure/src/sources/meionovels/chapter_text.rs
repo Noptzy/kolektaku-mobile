@@ -3,7 +3,7 @@ use domain::source::{ChapterText, TextBlock};
 use scraper::{ElementRef, Html};
 use url::Url;
 
-use crate::sources::support::{absolute_url, collapse, selector};
+use crate::sources::support::{collapse, image_of, selector};
 
 const LANGUAGE: &str = "id";
 
@@ -28,9 +28,7 @@ fn push_text(blocks: &mut Vec<TextBlock>, element: ElementRef) {
 
 fn push_images(blocks: &mut Vec<TextBlock>, element: ElementRef, base: &Url) {
     for image in element.select(&selector("img")) {
-        let value = image.value();
-        let source = value.attr("src").or(value.attr("data-src"));
-        if let Some(url) = source.and_then(|source| absolute_url(source, base)) {
+        if let Some(url) = image_of(image, base) {
             blocks.push(TextBlock::Image(url));
         }
     }

@@ -1,5 +1,7 @@
 pub mod browse;
 pub mod detail;
+pub mod follow;
+pub mod highlights;
 pub mod library;
 pub mod people;
 pub mod play;
@@ -12,6 +14,10 @@ pub mod update;
 
 #[cfg(test)]
 mod cache_tests;
+#[cfg(test)]
+mod follow_tests;
+#[cfg(test)]
+mod highlights_tests;
 #[cfg(test)]
 mod people_search_tests;
 #[cfg(test)]

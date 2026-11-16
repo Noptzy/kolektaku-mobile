@@ -7,11 +7,16 @@ fn chapter_slug(href: &str, slug: &str) -> Option<String> {
     let prefix = format!("/novel/{slug}/");
     let start = href.find(&prefix)? + prefix.len();
     let rest = href[start..].trim_end_matches('/');
-    let valid = !rest.is_empty()
-        && rest
-            .chars()
-            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '.' | '_' | '%'));
-    valid.then(|| rest.to_string())
+    let segment_ok = |segment: &str| {
+        !segment.is_empty()
+            && !segment.chars().all(|c| c == '.')
+            && segment
+                .chars()
+                .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '.' | '_' | '%'))
+    };
+    rest.split('/')
+        .all(segment_ok)
+        .then(|| rest.to_string())
 }
 
 pub fn parse_chapter_list(html: &str, slug: &str) -> Vec<Unit> {

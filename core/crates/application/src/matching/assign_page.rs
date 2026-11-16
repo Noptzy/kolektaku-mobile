@@ -3,6 +3,7 @@ use std::collections::HashSet;
 use domain::media::MediaSummary;
 use domain::source::SourceId;
 
+use super::audio_variant::audio_variant_of;
 use super::score::MINIMUM_CONFIDENCE;
 use super::similarity::title_similarity;
 
@@ -34,6 +35,10 @@ fn pair_score(media: &MediaSummary, title: &str) -> f64 {
     best_against(main, title, 1.0).max(best_against(synonyms, title, SYNONYM_WEIGHT))
 }
 
+fn is_twin(items: &[PageItem], assignment: &Assignment) -> bool {
+    audio_variant_of(&items[assignment.item_index].title).is_some()
+}
+
 pub fn assign_page(media: &[MediaSummary], items: &[PageItem]) -> Vec<Assignment> {
     let mut candidates: Vec<Assignment> = Vec::new();
     for (media_index, entry) in media.iter().enumerate() {
@@ -52,6 +57,7 @@ pub fn assign_page(media: &[MediaSummary], items: &[PageItem]) -> Vec<Assignment
         right
             .score
             .total_cmp(&left.score)
+            .then(is_twin(items, left).cmp(&is_twin(items, right)))
             .then(left.media_index.cmp(&right.media_index))
             .then(left.item_index.cmp(&right.item_index))
     });

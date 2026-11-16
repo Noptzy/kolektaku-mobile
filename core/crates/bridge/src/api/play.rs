@@ -10,8 +10,9 @@ pub async fn open_episode(
     episode: f64,
     preferred: Option<String>,
     exclude: Vec<String>,
+    audio: Option<String>,
 ) -> Result<PlaybackDto, BridgeError> {
-    play::open_episode(global()?, &reference, episode, preferred, exclude).await
+    play::open_episode(global()?, &reference, episode, preferred, exclude, audio).await
 }
 
 pub async fn stream_plan(
