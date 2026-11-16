@@ -7,6 +7,8 @@
 
 Aplikasi Android pribadi untuk menonton anime serta membaca komik dan novel, dengan katalog dari AniList dan MyAnimeList. Subtitle, sinopsis, dan teks novel berbahasa asing diterjemahkan otomatis ke bahasa pilihan (Indonesia dari awal), dan warna aksen aplikasi bisa dipilih. Antarmuka ditulis dengan Flutter, logika dan pengambilan data dengan Rust.
 
+Kolektaku mengabari saat favoritmu punya episode atau chapter baru, membaca komik dan novel dengan gulir tersambung antar chapter, dan membiarkanmu menyorot kalimat di novel untuk disimpan di Koleksi.
+
 Tanpa server sendiri: semua pekerjaan berjalan di ponsel, dan pembaruan diambil dari rilis GitHub repo ini.
 
 ## Memasang
