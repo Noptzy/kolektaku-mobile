@@ -1,10 +1,12 @@
 const aboutNotes = (
-  version: '0.2.2',
+  version: '0.3.0',
   lines: [
-    'Hero Beranda berupa kartu poster yang tajam, tanpa lapisan blur.',
-    'Riwayat di Koleksi memakai kartu poster yang sama dengan Favorit.',
-    'Pengaturan pemutar membuka pilihan di sheet yang sama, dengan tombol kembali.',
-    'Halaman Tentang memuat catatan versi dan sumber data.',
+    'Terjemahan otomatis untuk subtitle, sinopsis, dan teks novel, dengan bahasa tujuan yang bisa dipilih di Pengaturan.',
+    'Novel menjadi kategori sendiri: ada di Cari, Koleksi, dan Beranda, dengan pembaca teks yang ukuran huruf dan jarak barisnya bisa diatur.',
+    'Sumber komik ketiga berbahasa Inggris untuk judul yang tidak ada di sumber Indonesia.',
+    'Warna aksen aplikasi bisa dipilih di Pengaturan.',
+    'Pencarian komik juga mencoba judul tanpa tanda kurung dan titik dua, sehingga judul seperti Oshi no Ko kini ketemu.',
+    'Logo di halaman detail memakai logo asli situs dan jejaring sosial.',
   ],
 );
 
@@ -12,8 +14,9 @@ const aboutLines = [
   'Katalog, skor, dan data karakter dari AniList.',
   'Judul episode dari MyAnimeList.',
   'Pencarian dari gambar oleh trace.moe.',
-  'Video dan komik diambil dari situs pihak ketiga yang bisa dimatikan di '
-      'Kelola sumber.',
+  'Video, komik, dan novel diambil dari situs pihak ketiga yang bisa '
+      'dimatikan di Kelola sumber.',
+  'Terjemahan otomatis memakai layanan terjemahan daring.',
   'Pembaruan aplikasi diambil dari halaman Releases di GitHub.',
 ];
 
