@@ -1,14 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/dev/gallery/sample_media.dart';
 import 'package:kolektaku/features/home/genre_cover.dart';
-import 'package:kolektaku/features/home/home_notice.dart';
 import 'package:kolektaku/features/home/home_sections.dart';
 import 'package:kolektaku/features/home/resume_card.dart';
 import 'package:kolektaku/src/rust/dto/cards.dart';
 import 'package:kolektaku/src/rust/dto/library.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
 import 'package:kolektaku/src/rust/dto/sources.dart';
-import 'package:kolektaku/src/rust/error.dart';
 
 HomeDto home() => HomeDto(
   sections: [
@@ -140,20 +138,6 @@ void main() {
       expect(card.title, 'Judul');
       expect(card.latestLabel, 'Episode 5');
       expect(card.limited, isFalse);
-    });
-  });
-
-  group('notices', () {
-    test('equal messages collapse into one', () {
-      final error = BridgeError(kind: BridgeErrorKind.unavailable, detail: 'a');
-      final text = noticeText([
-        NoticeDto(source: 'a', error: error),
-        NoticeDto(source: 'b', error: error),
-      ]);
-      expect(
-        text,
-        'Sumber sedang tidak bisa dijangkau. Coba lagi sebentar lagi.',
-      );
     });
   });
 }

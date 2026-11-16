@@ -12,7 +12,6 @@ import '../../widgets/top10_rail.dart';
 import 'genre_grid.dart';
 import 'home_actions.dart';
 import 'home_mix.dart';
-import 'home_notice.dart';
 import 'home_sections.dart';
 import 'resume_rail.dart';
 import 'translated_hero.dart';
@@ -106,12 +105,10 @@ class MixedHome extends StatelessWidget {
       manga: manga,
       prefersAnime: prefersAnime,
     );
-    final notices = [...?anime?.notices, ...?manga?.notices];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: Spacing.xl,
       children: [
-        if (notices.isNotEmpty) HomeNotice(notices: notices),
         if (hero.isNotEmpty)
           TranslatedHeroCarousel(
             autoPlay: heroAutoPlay,
