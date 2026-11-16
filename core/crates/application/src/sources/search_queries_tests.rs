@@ -122,7 +122,10 @@ fn brackets_inside_a_title_leave_single_spaces() {
 #[test]
 fn a_title_with_a_colon_or_an_exclamation_mark_is_also_asked_without_them() {
     let queries = search_queries(&media("86: Eighty Six", None, &[]));
-    assert_eq!(queries, vec!["86: Eighty Six", "86 Eighty Six"]);
+    assert_eq!(
+        queries,
+        vec!["86: Eighty Six", "86 Eighty Six", "Eighty Six"]
+    );
     let queries = search_queries(&media("Kono Subarashii Sekai ni Shukufuku wo!", None, &[]));
     assert_eq!(
         queries,
