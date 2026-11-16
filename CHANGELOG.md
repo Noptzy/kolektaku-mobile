@@ -2,7 +2,7 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
-## [0.3.0] — belum dirilis
+## [0.3.0] — 2026-11-16
 
 ### Ditambahkan
 - Terjemahan otomatis: subtitle bahasa asing, sinopsis, dan teks novel diterjemahkan ke bahasa pilihan (Indonesia dari awal), dengan teks asli tampil dulu dan pilihan "Tampilkan teks asli". Bisa dimatikan atau diganti bahasanya di Pengaturan > Terjemahan otomatis; hasilnya disimpan agar tidak diminta dua kali.
@@ -14,6 +14,7 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan
 - Logo asli situs dan jejaring sosial pada tautan di halaman detail.
 
 ### Diubah
+- Rilis berupa satu berkas `kolektaku-mobile-<versi>.apk` untuk ponsel ARM 64-bit dan 32-bit; varian per ABI dan varian emulator tidak lagi dibagikan.
 - Pencarian komik juga mencoba judul tanpa tanda kurung, titik dua, dan tanda seru, sehingga judul seperti "[Oshi no Ko]" kini ketemu di kedua sumber komik.
 - Halaman "tidak ada hasil" Komiku dibaca sebagai daftar kosong, bukan sebagai situs yang berubah.
 - Novel tidak lagi muncul di daftar Komik. Favorit dan riwayat Komik yang ternyata novel dipindahkan otomatis ke Novel saat aplikasi dibuka dengan internet; berkas lama dicadangkan lebih dulu.
