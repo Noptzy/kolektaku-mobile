@@ -5,6 +5,8 @@ abstract interface class SourceGateway {
   Future<List<SourceStatusDto>> status();
 
   Future<void> setEnabled(String id, bool enabled);
+
+  Future<SourcePingDto> ping(String id);
 }
 
 class BridgeSourceGateway implements SourceGateway {
@@ -16,4 +18,7 @@ class BridgeSourceGateway implements SourceGateway {
   @override
   Future<void> setEnabled(String id, bool enabled) =>
       api.setSourceEnabled(id: id, enabled: enabled);
+
+  @override
+  Future<SourcePingDto> ping(String id) => api.pingSource(id: id);
 }
