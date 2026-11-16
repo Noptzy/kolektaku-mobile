@@ -2,7 +2,7 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
-## [0.4.0] — belum terbit
+## [0.4.0] — 2026-11-16
 
 ### Ditambahkan
 - Notifikasi episode dan chapter baru untuk judul favorit (bunyi "tuturu"), serta notifikasi saat ada versi baru Kolektaku. Diatur di Pengaturan > Notifikasi; izin diminta saat pertama kali memfavoritkan.
@@ -19,7 +19,7 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan
 - Daftar chapter novel yang dikelompokkan situs kini terbaca, dan judul novel yang hanya beda spasi atau ejaan kini cocok.
 - Hasil cari Komik dan Novel tampil ke bawah (bukan menyamping), keadaan kosong tidak terpotong, subtitle naik di atas kontrol pemutar.
 - Data (favorit, riwayat, tautan, cache) disimpan dalam satu basis data SQLite; data lama dipindahkan otomatis dan berkasnya disimpan dengan akhiran `.migrated`.
-- Pencarian tidak lagi menunggu situs yang lambat lebih dari 6 detik; halaman situs yang pernah dibuka disimpan 15 menit.
+- Pencarian tidak lagi menunggu situs yang lambat lebih dari 4 detik; halaman situs yang pernah dibuka disimpan 15 menit.
 - Ukuran paket turun dari 59,4 MB ke sekitar 25 MB (pustaka terkompresi, profil rilis Rust, paket tak terpakai dilepas).
 - Pencarian dari gambar tidak lagi membuka kamera otomatis; harus ditekan dulu.
 
