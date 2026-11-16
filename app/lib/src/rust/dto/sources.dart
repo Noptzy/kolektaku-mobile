@@ -75,6 +75,8 @@ class GenreDto {
           name == other.name;
 }
 
+enum PingVerdictDto { online, changed, offline }
+
 class SiteDetailDto {
   final String source;
   final String item;
@@ -222,6 +224,30 @@ class SourceLinkDto {
           needsHint == other.needsHint &&
           matchedTitle == other.matchedTitle &&
           variants == other.variants;
+}
+
+class SourcePingDto {
+  final String id;
+  final PingVerdictDto verdict;
+  final int millis;
+
+  const SourcePingDto({
+    required this.id,
+    required this.verdict,
+    required this.millis,
+  });
+
+  @override
+  int get hashCode => id.hashCode ^ verdict.hashCode ^ millis.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SourcePingDto &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          verdict == other.verdict &&
+          millis == other.millis;
 }
 
 class SourceStatusDto {

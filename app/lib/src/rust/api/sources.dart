@@ -13,6 +13,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 Future<List<SourceStatusDto>> sourcesStatus() =>
     RustLib.instance.api.crateApiSourcesSourcesStatus();
 
+Future<SourcePingDto> pingSource({required String id}) =>
+    RustLib.instance.api.crateApiSourcesPingSource(id: id);
+
 Future<void> setSourceEnabled({required String id, required bool enabled}) =>
     RustLib.instance.api.crateApiSourcesSetSourceEnabled(
       id: id,

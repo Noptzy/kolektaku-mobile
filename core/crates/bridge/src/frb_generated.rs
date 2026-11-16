@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.13.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1113243389;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -164460636;
 
 // Section: executor
 
@@ -1691,6 +1691,42 @@ fn wire__crate__api__play__parse_stream_payload_impl(
                     (move || async move {
                         let output_ok =
                             crate::api::play::parse_stream_payload(api_source, api_payload).await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__sources__ping_source_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ping_source",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::sources::ping_source(api_id).await?;
                         std::result::Result::Ok(output_ok)
                     })()
                     .await,
@@ -3567,6 +3603,19 @@ impl SseDecode for Option<crate::dto::update::UpdateOfferDto> {
     }
 }
 
+impl SseDecode for crate::dto::sources::PingVerdictDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::sources::PingVerdictDto::Online,
+            1 => crate::dto::sources::PingVerdictDto::Changed,
+            2 => crate::dto::sources::PingVerdictDto::Offline,
+            _ => unreachable!("Invalid variant for PingVerdictDto: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for crate::dto::stream::PlaybackDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3994,6 +4043,20 @@ impl SseDecode for crate::service::browse::SourceOrderDto {
     }
 }
 
+impl SseDecode for crate::dto::sources::SourcePingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_verdict = <crate::dto::sources::PingVerdictDto>::sse_decode(deserializer);
+        let mut var_millis = <u32>::sse_decode(deserializer);
+        return crate::dto::sources::SourcePingDto {
+            id: var_id,
+            verdict: var_verdict,
+            millis: var_millis,
+        };
+    }
+}
+
 impl SseDecode for crate::dto::sources::SourceStatusDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4039,6 +4102,7 @@ impl SseDecode for crate::dto::stream::StreamPlanDto {
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_script = <String>::sse_decode(deserializer);
         let mut var_allowedHost = <String>::sse_decode(deserializer);
+        let mut var_referer = <String>::sse_decode(deserializer);
         return crate::dto::stream::StreamPlanDto {
             kind: var_kind,
             sources: var_sources,
@@ -4046,6 +4110,7 @@ impl SseDecode for crate::dto::stream::StreamPlanDto {
             url: var_url,
             script: var_script,
             allowed_host: var_allowedHost,
+            referer: var_referer,
         };
     }
 }
@@ -4507,25 +4572,26 @@ fn pde_ffi_dispatcher_primary_impl(
         41 => wire__crate__api__play__open_novel_chapter_impl(port, ptr, rust_vec_len, data_len),
         42 => wire__crate__api__scene__open_scene_impl(port, ptr, rust_vec_len, data_len),
         43 => wire__crate__api__play__parse_stream_payload_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__play__preload_novel_chapter_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__people__profile_impl(port, ptr, rust_vec_len, data_len),
-        46 => wire__crate__api__settings__save_settings_impl(port, ptr, rust_vec_len, data_len),
-        47 => wire__crate__api__scene__scene_quota_impl(port, ptr, rust_vec_len, data_len),
-        48 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
-        49 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
-        50 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
-        51 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
-        52 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
-        54 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
-        55 => wire__crate__api__translate__translate_texts_impl(port, ptr, rust_vec_len, data_len),
-        56 => wire__crate__api__translate__translation_paused_until_impl(
+        44 => wire__crate__api__sources__ping_source_impl(port, ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__play__preload_novel_chapter_impl(port, ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__people__profile_impl(port, ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__settings__save_settings_impl(port, ptr, rust_vec_len, data_len),
+        48 => wire__crate__api__scene__scene_quota_impl(port, ptr, rust_vec_len, data_len),
+        49 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
+        51 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
+        56 => wire__crate__api__translate__translate_texts_impl(port, ptr, rust_vec_len, data_len),
+        57 => wire__crate__api__translate__translation_paused_until_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        57 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
+        58 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5366,6 +5432,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::novel::NovelChapterDto>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::sources::PingVerdictDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Online => 0.into_dart(),
+            Self::Changed => 1.into_dart(),
+            Self::Offline => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::sources::PingVerdictDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::sources::PingVerdictDto>
+    for crate::dto::sources::PingVerdictDto
+{
+    fn into_into_dart(self) -> crate::dto::sources::PingVerdictDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::dto::stream::PlaybackDto {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5907,6 +5995,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::service::browse::SourceOrderDto>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::sources::SourcePingDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.verdict.into_into_dart().into_dart(),
+            self.millis.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::sources::SourcePingDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::sources::SourcePingDto>
+    for crate::dto::sources::SourcePingDto
+{
+    fn into_into_dart(self) -> crate::dto::sources::SourcePingDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::dto::sources::SourceStatusDto {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5961,6 +6071,7 @@ impl flutter_rust_bridge::IntoDart for crate::dto::stream::StreamPlanDto {
             self.url.into_into_dart().into_dart(),
             self.script.into_into_dart().into_dart(),
             self.allowed_host.into_into_dart().into_dart(),
+            self.referer.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -7470,6 +7581,23 @@ impl SseEncode for Option<crate::dto::update::UpdateOfferDto> {
     }
 }
 
+impl SseEncode for crate::dto::sources::PingVerdictDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::sources::PingVerdictDto::Online => 0,
+                crate::dto::sources::PingVerdictDto::Changed => 1,
+                crate::dto::sources::PingVerdictDto::Offline => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for crate::dto::stream::PlaybackDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7790,6 +7918,15 @@ impl SseEncode for crate::service::browse::SourceOrderDto {
     }
 }
 
+impl SseEncode for crate::dto::sources::SourcePingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <crate::dto::sources::PingVerdictDto>::sse_encode(self.verdict, serializer);
+        <u32>::sse_encode(self.millis, serializer);
+    }
+}
+
 impl SseEncode for crate::dto::sources::SourceStatusDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7821,6 +7958,7 @@ impl SseEncode for crate::dto::stream::StreamPlanDto {
         <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.script, serializer);
         <String>::sse_encode(self.allowed_host, serializer);
+        <String>::sse_encode(self.referer, serializer);
     }
 }
 
