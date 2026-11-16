@@ -127,6 +127,20 @@ pub struct SourceStatusDto {
     pub summary: String,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PingVerdictDto {
+    Online,
+    Changed,
+    Offline,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourcePingDto {
+    pub id: String,
+    pub verdict: PingVerdictDto,
+    pub millis: u32,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct SiteDetailDto {
     pub source: String,

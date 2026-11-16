@@ -35,6 +35,8 @@ mod service_tests;
 #[cfg(test)]
 mod settings_tests;
 #[cfg(test)]
+mod sources_ping_tests;
+#[cfg(test)]
 mod subtitle_tests;
 #[cfg(test)]
 mod subtitle_translation_tests;
