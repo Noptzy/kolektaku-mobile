@@ -4,6 +4,8 @@ pub mod credits;
 pub mod cues;
 pub mod discover;
 pub mod episodes;
+pub mod follow;
+pub mod highlight;
 pub mod library;
 pub mod links;
 pub mod media;

@@ -152,6 +152,7 @@ pub fn detail_of(raw: &RawAnime) -> Option<SourceDetail> {
     detail.type_text = raw.kind.clone().filter(|kind| !kind.trim().is_empty());
     detail.year = raw.aired.as_deref().and_then(year_of);
     detail.unit_count = raw.total_episodes.as_ref().and_then(number_of);
+    detail.mal_id = raw.mal_id.as_ref().and_then(number_of).map(u64::from);
     detail.synopsis = raw.synopsis.clone().unwrap_or_default().trim().to_string();
     detail.genres = raw.genres.clone().unwrap_or_default();
     Some(detail)

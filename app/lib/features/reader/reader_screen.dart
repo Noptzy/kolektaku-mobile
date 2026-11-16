@@ -1,24 +1,23 @@
 import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../src/rust/dto/stream.dart';
 import '../watch/episodes_sheet.dart';
-import '../watch/player/standby_panel.dart';
 import 'chapter_loader.dart';
 import 'page_image.dart';
-import 'page_heights.dart';
-import 'read_failure.dart';
 import 'read_progress.dart';
 import 'read_request.dart';
 import 'reader_controller.dart';
+import 'reader_divider.dart';
 import 'reader_layers.dart';
 import 'reader_pages.dart';
+import 'reader_standby.dart';
 import 'reader_zoom.dart';
-
-const _probeDepth = 0.3;
+import 'scroll_anchor.dart';
+import 'source_switch_notice.dart';
+import 'stack_metrics.dart';
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({
@@ -28,8 +27,10 @@ class ReaderScreen extends StatefulWidget {
     this.progress = const CoreReadProgress(),
     this.imageFor = networkPageImage,
     this.saveDelay = const Duration(seconds: 1),
+    this.autoContinue = true,
   });
 
+  final bool autoContinue;
   final ReadRequest request;
   final ChapterLoader? loader;
   final ReadProgress progress;
@@ -46,12 +47,14 @@ class _ReaderScreenState extends State<ReaderScreen> {
     loader: widget.loader ?? ChapterLoader(),
     progress: widget.progress,
     saveDelay: widget.saveDelay,
+    autoContinue: widget.autoContinue,
   );
   ScrollController _scroll = ScrollController();
-  PageHeights _metrics = PageHeights();
+  final StackMetrics _metrics = StackMetrics();
   final ReaderZoom _zoom = ReaderZoom();
-  double _appliedZoom = 1;
+  late final ScrollAnchor _anchor = ScrollAnchor(metrics: _metrics);
   ChapterViewDto? _shown;
+  int _known = 0;
   bool _bars = true;
 
   @override
@@ -64,37 +67,40 @@ class _ReaderScreenState extends State<ReaderScreen> {
 
   double get _width => _zoom.widthOf(MediaQuery.sizeOf(context).width);
 
-  void _onZoom() {
-    if (_zoom.zoom == _appliedZoom) return;
-    if (_scroll.hasClients) {
-      _scroll.jumpTo(_scroll.position.pixels * _zoom.zoom / _appliedZoom);
-    }
-    _appliedZoom = _zoom.zoom;
-  }
+  void _onZoom() => _anchor.followZoom(_scroll, _zoom.zoom);
 
   void _onChange() {
-    final view = _controller.view;
-    if (view == null || identical(view, _shown) || !mounted) return;
-    _shown = view;
-    _metrics = PageHeights();
+    final chapters = _controller.chapters;
+    if (chapters.isEmpty || !mounted) return;
+    final first = chapters.first;
+    if (identical(first, _shown)) {
+      while (_known < chapters.length) {
+        _metrics.append(chapters[_known++].pages.length);
+      }
+      return;
+    }
+    _shown = first;
+    _metrics.reset(first.pages.length);
+    _known = 1;
     _scroll.dispose();
     _scroll = ScrollController(
-      initialScrollOffset: _metrics.offsetOf(_controller.startPage, _width),
+      initialScrollOffset: _metrics.offsetOf(0, _controller.startPage, _width),
     );
     _bars = true;
-    if (view.switchedFrom != null) {
-      ShadToaster.of(context)
-          .show(const ShadToast(description: Text('Dibaca dari sumber lain.')));
-    }
+    announceSourceSwitch(context, first.switchedFrom);
   }
 
-  void _onAspect(int index, double aspect) {
-    final before = _metrics.heightOf(index, _width);
-    if (!_metrics.record(index, aspect)) return;
-    final shift = _metrics.heightOf(index, _width) - before;
-    if (index < _controller.page && _scroll.hasClients) {
-      _scroll.jumpTo(_scroll.position.pixels + shift);
-    }
+  void _onAspect(int chapter, int index, double aspect) {
+    _anchor.keepPlace(
+      scroll: _scroll,
+      width: _width,
+      chapter: chapter,
+      index: index,
+      aspect: aspect,
+      above:
+          chapter < _controller.visible ||
+          (chapter == _controller.visible && index < _controller.page),
+    );
   }
 
   bool _onScroll(ScrollNotification notification) {
@@ -105,9 +111,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
     }
     if (notification is ScrollUpdateNotification ||
         notification is ScrollEndNotification) {
-      final metrics = notification.metrics;
-      final probe = metrics.pixels + metrics.viewportDimension * _probeDepth;
-      _controller.onPage(_metrics.indexAt(probe, _width, _controller.total));
+      final spot = _metrics.spotAt(notification.metrics, _width);
+      _controller.onSpot(spot.chapter, spot.page);
     }
     return false;
   }
@@ -156,14 +161,12 @@ class _ReaderScreenState extends State<ReaderScreen> {
   Widget _body() {
     final view = _controller.view;
     if (_controller.error != null || view == null) {
-      final failed = _controller.error != null;
-      return StandbyPanel(
+      return readerStandby(
         title: _title(),
-        imageUrl: widget.request.coverUrl,
+        coverUrl: widget.request.coverUrl,
         onBack: _back,
-        message: failed ? 'Chapter tidak bisa dibuka' : 'Menyiapkan chapter…',
-        detail: failed ? readFailureMessage(_controller.error) : null,
-        onRetry: failed ? _controller.load : null,
+        error: _controller.error,
+        onRetry: _controller.load,
       );
     }
     return ReaderLayers(
@@ -180,13 +183,12 @@ class _ReaderScreenState extends State<ReaderScreen> {
       pages: ZoomSurface(
         model: _zoom,
         builder: (context, width) => ReaderPages(
-          view: view,
+          chapters: _controller.chapters,
           scroll: _scroll,
           metrics: _metrics,
           imageFor: widget.imageFor,
-          next: _controller.next,
+          dividerAt: (chapter) => readerDivider(_controller, chapter),
           onAspect: _onAspect,
-          onNext: () => _go(_controller.next),
           onTap: () => setState(() => _bars = !_bars),
           onScroll: _onScroll,
           decodeScale: _zoom.decodeScale,

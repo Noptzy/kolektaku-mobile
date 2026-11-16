@@ -50,6 +50,7 @@ class ReaderHarness {
     this.failFirst = false,
     this.switchedFrom,
     this.hold,
+    this.failOn,
   });
 
   final int pageCount;
@@ -59,6 +60,7 @@ class ReaderHarness {
   final bool failFirst;
   final String? switchedFrom;
   final Completer<void>? hold;
+  double? failOn;
   final List<double> opened = [];
   final List<List<String>> excluded = [];
   late final FakeReadProgress progress = FakeReadProgress(resume: resume);
@@ -77,6 +79,7 @@ class ReaderHarness {
           excluded.add(List.of(exclude));
           await hold?.future;
           if (failFirst && loads == 1) throw StateError('no source');
+          if (failOn == chapter) throw StateError('no chapter');
           return ChapterViewDto(
             source: 'k',
             item: 'k-item',
@@ -102,7 +105,10 @@ class ReaderHarness {
     ),
   );
 
-  Widget app({Duration saveDelay = const Duration(milliseconds: 200)}) {
+  Widget app({
+    Duration saveDelay = const Duration(milliseconds: 200),
+    bool autoContinue = true,
+  }) {
     return ShadApp(
       darkTheme: kolektakuDarkTheme(),
       themeMode: ThemeMode.dark,
@@ -116,15 +122,16 @@ class ReaderHarness {
         progress: progress,
         imageFor: (url, width) => MemoryImage(tinyPng),
         saveDelay: saveDelay,
+        autoContinue: autoContinue,
       ),
     );
   }
 
-  Future<void> open(WidgetTester tester) async {
+  Future<void> open(WidgetTester tester, {bool autoContinue = true}) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(app());
+    await tester.pumpWidget(app(autoContinue: autoContinue));
     await tester.pump();
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));

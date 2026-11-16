@@ -32,6 +32,7 @@ macro_rules! sources {
 }
 
 sources! {
+    bakatsuki => "bakatsuki/mod.rs",
     kuramanime => "kuramanime/mod.rs",
     hianime => "hianime/mod.rs",
     komiku => "komiku/mod.rs",

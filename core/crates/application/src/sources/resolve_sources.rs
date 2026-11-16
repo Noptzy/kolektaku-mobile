@@ -7,14 +7,21 @@ use domain::source::{ItemId, SourceId, SourceLink, SourceLinkStore};
 use tokio::task::JoinSet;
 
 use super::SourceHealth;
-use super::find_link::{find_in_source, verify_item};
+use super::find_link::{Found, find_in_source, verify_item};
 use super::merge::{Answer, is_fresh, merge_answers};
 use super::rank::rank_links;
 use super::resolved_sources::ResolvedSources;
 use super::search_queries::search_queries;
-use crate::matching::MatchTarget;
+use crate::matching::{CatalogIds, MATCHER_VERSION, MatchTarget};
 use crate::ports::{Clock, SourceProvider};
 use crate::settings::AppSettingsStore;
+
+fn keep_variants(mut found: Found, previous: &SourceLink) -> Found {
+    if found.link.item == previous.item {
+        found.link.variants = previous.variants.clone();
+    }
+    found
+}
 
 pub struct ResolveSources<S: SourceLinkStore> {
     sources: Vec<Arc<dyn SourceProvider>>,
@@ -72,18 +79,22 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
         source: SourceId,
         item: ItemId,
     ) -> Result<ResolvedSources, StorageError> {
-        let mut links: Vec<SourceLink> = self
-            .store
-            .links_for(reference)
-            .await?
+        let stored = self.store.links_for(reference).await?;
+        let previous = stored
+            .iter()
+            .find(|link| link.source == source && link.item == item)
+            .cloned();
+        let mut links: Vec<SourceLink> = stored
             .into_iter()
             .filter(|link| link.source != source)
             .collect();
-        links.push(SourceLink::chosen_by_user(
-            source,
-            item,
-            self.clock.now_secs(),
-        ));
+        let mut chosen = SourceLink::chosen_by_user(source, item, self.clock.now_secs());
+        if let Some(known) = previous {
+            chosen.variants = known.variants;
+            chosen.title = known.title;
+            chosen.unit_count = known.unit_count;
+        }
+        links.push(chosen);
         self.store.save_all(reference, links.clone()).await?;
         Ok(self.ranked(
             links
@@ -138,7 +149,7 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
         now: u64,
     ) -> Vec<Answer> {
         let target = MatchTarget::of(media);
-        let catalog_id = media.id.get();
+        let ids = CatalogIds::of(media);
         let queries = search_queries(media);
         let mut tasks = JoinSet::new();
         for source in &self.sources {
@@ -149,21 +160,28 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
             {
                 continue;
             }
-            let unverified = existing.map(|link| link.item.clone());
+            let unverified = existing
+                .filter(|link| link.matcher_version >= MATCHER_VERSION)
+                .cloned();
             let (source, target, queries) = (Arc::clone(source), target.clone(), queries.clone());
             tasks.spawn(async move {
                 let verified = match unverified {
-                    Some(item) => {
-                        verify_item(Arc::clone(&source), target.clone(), catalog_id, item, now)
-                            .await
-                            .ok()
-                            .flatten()
-                    }
+                    Some(link) => verify_item(
+                        Arc::clone(&source),
+                        target.clone(),
+                        ids,
+                        link.item.clone(),
+                        now,
+                    )
+                    .await
+                    .ok()
+                    .flatten()
+                    .map(|found| keep_variants(found, &link)),
                     None => None,
                 };
                 let result = match verified {
                     Some(found) => Ok(Some(found)),
-                    None => find_in_source(source, target, catalog_id, queries, now).await,
+                    None => find_in_source(source, target, ids, queries, now).await,
                 };
                 Answer { source: id, result }
             });

@@ -1,10 +1,12 @@
 use super::dice::dice_coefficient;
 use super::marks::TitleMarks;
 use super::normalize::{NormalizedTitle, normalize_title};
+use super::subtitle::distinct_parts_conflict;
 
 const HARD_PENALTY: f64 = 0.3;
 const SOFT_PENALTY: f64 = 0.7;
 const EXTRA_WORDS_PENALTY: f64 = 0.75;
+const DIFFERENT_ARC_PENALTY: f64 = 0.6;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Disagreement {
@@ -71,6 +73,9 @@ fn similarity(left: &NormalizedTitle, right: &NormalizedTitle) -> f64 {
     {
         score *= EXTRA_WORDS_PENALTY;
     }
+    if distinct_parts_conflict(&left.tokens, &right.tokens) {
+        score *= DIFFERENT_ARC_PENALTY;
+    }
     score
 }
 
@@ -114,6 +119,23 @@ mod tests {
     fn a_title_that_merely_contains_another_is_not_the_same_entry() {
         let wanted = titles(&["Kimetsu no Yaiba: Yuukaku-hen"]);
         assert!(title_similarity(&wanted, "Kimetsu no Yaiba") < 0.6);
+    }
+
+    #[test]
+    fn another_arc_of_the_same_franchise_stays_below_the_shortlist() {
+        let mugenjou = titles(&[
+            "Kimetsu no Yaiba: Mugenjou-hen",
+            "Demon Slayer: Infinity Castle",
+        ]);
+        assert!(title_similarity(&mugenjou, "Kimetsu no Yaiba: Katanakaji no Sato-hen") < 0.6);
+        assert!(
+            title_similarity(
+                &mugenjou,
+                "Demon Slayer: Kimetsu no Yaiba Swordsmith Village Arc"
+            ) < 0.6
+        );
+        let yuukaku = titles(&["Kimetsu no Yaiba: Yuukaku-hen"]);
+        assert!(title_similarity(&yuukaku, "Demon Slayer: Kimetsu no Yaiba Mugen Train Arc") < 0.6);
     }
 
     #[test]

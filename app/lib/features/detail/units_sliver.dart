@@ -24,6 +24,9 @@ class UnitsSliver extends StatelessWidget {
     required this.onToggleOrder,
     required this.onRetry,
     required this.onPlay,
+    this.onWrong,
+    this.unreleased = false,
+    this.releaseLabel,
   });
 
   final AsyncValue<UnitsDto> units;
@@ -35,15 +38,18 @@ class UnitsSliver extends StatelessWidget {
   final VoidCallback onToggleOrder;
   final VoidCallback onRetry;
   final ValueChanged<UnitDto> onPlay;
+  final VoidCallback? onWrong;
+  final bool unreleased;
+  final String? releaseLabel;
 
   Widget _failure(Object error) {
     if (_isMissing(error)) {
       return StateView.empty(
         key: const Key('units-missing'),
         title: missingUnitsTitle(kind),
-        message:
-            'Judul ini belum ada di sumber mana pun. Coba "Bukan ini?" atau '
-            'cek lagi nanti.',
+        message: missingUnitsMessage(kind),
+        actionLabel: onWrong == null ? null : 'Bukan ini?',
+        onAction: onWrong,
       );
     }
     if (error is BridgeError) {
@@ -57,23 +63,33 @@ class UnitsSliver extends StatelessWidget {
     );
   }
 
+  Widget _empty() {
+    if (unreleased) {
+      return StateView.empty(
+        key: const Key('units-unreleased'),
+        title: 'Belum tayang',
+        message: releaseLabel == null
+            ? 'Episodenya akan muncul setelah judul ini tayang.'
+            : 'Episodenya akan muncul setelah tayang, sekitar $releaseLabel.',
+      );
+    }
+    return StateView.empty(
+      key: const Key('units-empty'),
+      title: 'Belum ada daftar',
+      message: missingUnitsMessage(kind),
+      actionLabel: onWrong == null ? null : 'Bukan ini?',
+      onAction: onWrong,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return units.when(
       loading: () => const _Loading(),
-      error: (error, stack) => SliverToBoxAdapter(
-        child: SizedBox(height: 320, child: _failure(error)),
-      ),
+      error: (error, stack) =>
+          SliverToBoxAdapter(child: _Roomy(child: _failure(error))),
       data: (data) => data.units.isEmpty
-          ? const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 280,
-                child: StateView.empty(
-                  title: 'Belum ada daftar',
-                  message: 'Sumber ini belum punya daftar. Coba "Bukan ini?".',
-                ),
-              ),
-            )
+          ? SliverToBoxAdapter(child: _Roomy(child: _empty()))
           : EpisodeSection(
               units: data.units,
               kind: kind,
@@ -89,12 +105,38 @@ class UnitsSliver extends StatelessWidget {
   }
 }
 
+String missingUnitsMessage(MediaKindDto kind) => switch (kind) {
+  MediaKindDto.anime =>
+    'Judul ini belum ada di sumber mana pun. Coba "Bukan ini?" atau cek '
+        'lagi nanti.',
+  MediaKindDto.manga =>
+    'Komik ini belum ada di sumber komik yang tersedia. Coba "Bukan ini?" '
+        'untuk mencari judulnya sendiri.',
+  MediaKindDto.novel =>
+    'Novel ini belum ada di sumber novel yang tersedia. Coba "Bukan ini?" '
+        'untuk mencari judulnya sendiri.',
+};
+
 bool _isMissing(Object error) =>
     error is BridgeError && error.kind == BridgeErrorKind.notFound;
 
 String missingUnitsTitle(MediaKindDto kind) => kind == MediaKindDto.anime
     ? 'Episode tidak ditemukan'
     : 'Chapter tidak ditemukan';
+
+class _Roomy extends StatelessWidget {
+  const _Roomy({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 260),
+      child: child,
+    );
+  }
+}
 
 class _Loading extends StatelessWidget {
   const _Loading();

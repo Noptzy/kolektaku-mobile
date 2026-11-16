@@ -2,6 +2,7 @@ use domain::matching::Confidence;
 use domain::source::{ItemId, SourceId, SourceLink, SourceLinkStore};
 
 use super::resolve_support::{empty_site, media, order, reference, rig, site_with};
+use crate::matching::MATCHER_VERSION;
 
 #[tokio::test]
 async fn a_manual_choice_wins_over_a_better_automatic_match() {
@@ -76,7 +77,8 @@ async fn a_link_taken_from_a_list_is_verified_by_the_detail_instead_of_searching
         ItemId::new("a-spy"),
         Confidence::new(0.84),
         rig.clock_now(),
-    );
+    )
+    .with_matcher_version(MATCHER_VERSION);
     rig.store
         .save_all(&reference(), vec![from_list])
         .await
@@ -84,6 +86,26 @@ async fn a_link_taken_from_a_list_is_verified_by_the_detail_instead_of_searching
     let resolved = rig.use_case.execute(&media()).await.unwrap();
     assert!(resolved.best().unwrap().confidence.is_automatic());
     assert_eq!(rig.sources[0].calls(), vec!["detail a-spy"]);
+}
+
+#[tokio::test]
+async fn a_link_made_by_an_older_matcher_is_searched_again_instead_of_verified() {
+    let rig = rig(vec![site_with("a", 1, "a-spy", 2022, 12)]);
+    let old = SourceLink::matched(
+        SourceId::new("a"),
+        ItemId::new("a-spy"),
+        Confidence::new(0.95),
+        rig.clock_now(),
+    );
+    rig.store.save_all(&reference(), vec![old]).await.unwrap();
+    let resolved = rig.use_case.execute(&media()).await.unwrap();
+    assert_eq!(resolved.best().unwrap().matcher_version, MATCHER_VERSION);
+    assert!(
+        rig.sources[0]
+            .calls()
+            .iter()
+            .any(|call| call.starts_with("search"))
+    );
 }
 
 #[tokio::test]
@@ -116,4 +138,34 @@ async fn a_site_without_a_title_match_stays_out_even_when_it_answers() {
     let rig = rig(vec![empty_site("a", 1)]);
     let resolved = rig.use_case.execute(&media()).await.unwrap();
     assert!(resolved.links.is_empty());
+}
+
+#[tokio::test]
+async fn confirming_the_current_match_keeps_its_dub_variants_and_title() {
+    let rig = rig(vec![site_with("a", 1, "a-spy", 2022, 12)]);
+    let with_dub = SourceLink::matched(
+        SourceId::new("a"),
+        ItemId::new("a-spy"),
+        Confidence::new(0.7),
+        rig.clock_now(),
+    )
+    .with_title("Spy x Family")
+    .with_variants(vec![domain::source::LinkVariant::new(
+        ItemId::new("a-spy-dub"),
+        "Dub Indonesia",
+    )])
+    .with_matcher_version(MATCHER_VERSION);
+    rig.store
+        .save_all(&reference(), vec![with_dub])
+        .await
+        .unwrap();
+    let resolved = rig
+        .use_case
+        .choose(&reference(), SourceId::new("a"), ItemId::new("a-spy"))
+        .await
+        .unwrap();
+    let kept = resolved.best().unwrap();
+    assert!(kept.manual);
+    assert_eq!(kept.variants.len(), 1);
+    assert_eq!(kept.title.as_deref(), Some("Spy x Family"));
 }

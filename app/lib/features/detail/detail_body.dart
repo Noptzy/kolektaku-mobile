@@ -18,6 +18,8 @@ import 'detail_tabs.dart';
 import '../search/search_seed.dart';
 import 'info_links.dart';
 import 'info_section.dart';
+import 'maybe_match_note.dart';
+import 'release_note.dart';
 import 'related_section.dart';
 import 'source_note.dart';
 import 'source_row.dart';
@@ -37,6 +39,8 @@ class DetailBody extends ConsumerWidget {
     required this.onTab,
     required this.onPickSource,
     required this.onWrong,
+    required this.doubt,
+    required this.onConfirm,
     required this.onToggleOrder,
     required this.onRetryUnits,
     required this.onPlay,
@@ -53,6 +57,8 @@ class DetailBody extends ConsumerWidget {
   final ValueChanged<DetailTab> onTab;
   final VoidCallback onPickSource;
   final VoidCallback onWrong;
+  final SourceLinkDto? doubt;
+  final VoidCallback onConfirm;
   final VoidCallback onToggleOrder;
   final VoidCallback onRetryUnits;
   final ValueChanged<UnitDto> onPlay;
@@ -104,6 +110,14 @@ class DetailBody extends ConsumerWidget {
             onWrong: onWrong,
           ),
         ),
+        if (doubt != null)
+          SliverToBoxAdapter(
+            child: MaybeMatchNote(
+              link: doubt!,
+              onYes: onConfirm,
+              onNo: onWrong,
+            ),
+          ),
         SliverToBoxAdapter(
           child: SourceNote(
             kind: request.kind,
@@ -144,6 +158,9 @@ class DetailBody extends ConsumerWidget {
           onToggleOrder: onToggleOrder,
           onRetry: onRetryUnits,
           onPlay: onPlay,
+          onWrong: onWrong,
+          unreleased: isUnreleased(info.status),
+          releaseLabel: releaseDateLabel(info.startDate),
         ),
       ],
       DetailTab.characters => [

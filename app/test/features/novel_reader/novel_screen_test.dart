@@ -118,9 +118,23 @@ void main() {
     expect(next.onPressed, isNotNull);
   });
 
-  testWidgets('the end of the chapter offers the next chapter', (tester) async {
+  testWidgets('the end of the chapter flows into the next one', (tester) async {
     final harness = NovelHarness(blockCount: 8);
     await harness.open(tester);
+    await tester.pump();
+    await tester.drag(find.byType(ListView), const Offset(0, -9000));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump();
+    expect(harness.opened, [1.0, 2.0]);
+    expect(find.text('Chapter 1 selesai'), findsOneWidget);
+    expect(find.byKey(const Key('end-next')), findsNothing);
+  });
+
+  testWidgets('with continuing off the end of the chapter asks', (
+    tester,
+  ) async {
+    final harness = NovelHarness(blockCount: 8);
+    await harness.open(tester, autoContinue: false);
     await tester.pump();
     await tester.drag(find.byType(ListView), const Offset(0, -9000));
     await tester.pump(const Duration(milliseconds: 400));

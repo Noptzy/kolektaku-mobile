@@ -201,3 +201,11 @@ fn the_detail_carries_alternative_titles_year_and_counts() {
         ]
     );
 }
+
+#[test]
+fn the_detail_carries_the_mal_number_of_the_site_entry() {
+    let with = detail_of(&raw(json!({ "title": "A", "slug": "a", "mal_id": "38000" }))).unwrap();
+    assert_eq!(with.mal_id, Some(38000));
+    let without = detail_of(&raw(json!({ "title": "A", "slug": "a" }))).unwrap();
+    assert_eq!(without.mal_id, None);
+}

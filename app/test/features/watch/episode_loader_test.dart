@@ -23,6 +23,7 @@ EpisodeLoader loader(
           required double episode,
           String? preferred,
           required List<String> exclude,
+          String? audio,
         }) async {
           calls.excluded.add(exclude);
           final next = sourceOrder.where((id) => !exclude.contains(id));
@@ -137,6 +138,7 @@ void main() {
             required double episode,
             String? preferred,
             required List<String> exclude,
+            String? audio,
           }) async {
             asked.add(preferred);
             return playbackOn(exclude.isEmpty ? 'a' : 'b');

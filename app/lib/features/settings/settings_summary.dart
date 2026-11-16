@@ -49,6 +49,10 @@ String playerSummary(SettingsDto settings) {
   return parts.join(' · ');
 }
 
+String readerSummary(SettingsDto settings) => settings.continuousReading
+    ? 'Chapter tersambung otomatis'
+    : 'Pilih chapter berikutnya sendiri';
+
 String sourcesSummary(List<SourceStatusDto> statuses) {
   if (statuses.isEmpty) return 'Memuat daftar sumber';
   final active = statuses.where((status) => status.enabled).length;

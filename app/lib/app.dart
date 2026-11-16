@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:forui/forui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'core/router.dart';
@@ -25,10 +24,8 @@ class KolektakuApp extends ConsumerWidget {
       themeMode: ThemeMode.dark,
       darkTheme: kolektakuDarkTheme(accent: accent),
       routerConfig: kolektakuRouter,
-      builder: (context, child) => ShareListener(
-        router: kolektakuRouter,
-        child: FTheme(data: FTheme.neutral.dark.touch, child: child!),
-      ),
+      builder: (context, child) =>
+          ShareListener(router: kolektakuRouter, child: child!),
     );
   }
 }

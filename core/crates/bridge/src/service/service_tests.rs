@@ -98,7 +98,7 @@ async fn an_episode_opens_with_servers_then_a_plan_and_a_payload() {
     detail::media_detail(&state, MediaKindDto::Anime, &catalog_ref())
         .await
         .unwrap();
-    let playback = play::open_episode(&state, &catalog_ref(), 1.0, None, Vec::new())
+    let playback = play::open_episode(&state, &catalog_ref(), 1.0, None, Vec::new(), None)
         .await
         .unwrap();
     assert_eq!(playback.source, "a");

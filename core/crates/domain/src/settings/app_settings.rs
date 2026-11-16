@@ -23,8 +23,9 @@ const ACCENT_COLOR: &str = "setting.accent_color";
 const TRANSLATION_LANGUAGE: &str = "setting.translation_language";
 const READING_SIZE: &str = "setting.reading_size";
 const READING_SPACING: &str = "setting.reading_spacing";
+const CONTINUOUS_READING: &str = "setting.continuous_reading";
 
-pub const SETTING_KEYS: [&str; 15] = [
+pub const SETTING_KEYS: [&str; 16] = [
     PREFERS_ANIME,
     ANIME_SOURCE,
     SUBTITLE_LANGUAGE,
@@ -40,6 +41,7 @@ pub const SETTING_KEYS: [&str; 15] = [
     TRANSLATION_LANGUAGE,
     READING_SIZE,
     READING_SPACING,
+    CONTINUOUS_READING,
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -59,6 +61,7 @@ pub struct AppSettings {
     pub translation: TranslationLanguage,
     pub reading_size: ReadingSize,
     pub reading_spacing: ReadingSpacing,
+    pub continuous_reading: bool,
 }
 
 impl Default for AppSettings {
@@ -79,6 +82,7 @@ impl Default for AppSettings {
             translation: TranslationLanguage::default(),
             reading_size: ReadingSize::default(),
             reading_spacing: ReadingSpacing::default(),
+            continuous_reading: true,
         }
     }
 }
@@ -125,6 +129,7 @@ impl AppSettings {
             (TRANSLATION_LANGUAGE, self.translation.key().to_string()),
             (READING_SIZE, self.reading_size.key().to_string()),
             (READING_SPACING, self.reading_spacing.key().to_string()),
+            (CONTINUOUS_READING, flag(self.continuous_reading)),
         ]
     }
 
@@ -172,6 +177,7 @@ impl AppSettings {
             reading_spacing: lookup(READING_SPACING)
                 .and_then(|text| ReadingSpacing::parse(&text))
                 .unwrap_or(fallback.reading_spacing),
+            continuous_reading: read_flag(lookup(CONTINUOUS_READING), fallback.continuous_reading),
         }
     }
 }

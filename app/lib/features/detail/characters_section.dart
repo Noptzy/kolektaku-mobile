@@ -1,15 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../core/labels.dart';
-import '../../core/theme/kolektaku_text.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../src/rust/dto/credits.dart';
-import '../../widgets/poster.dart';
-import '../../widgets/pressable.dart';
+import 'character_sides.dart';
 
 const characterRowHeight = 80.0;
-const _photoSize = 56.0;
 
 VoiceActorDto? preferredVoiceActor(CharacterDto character) {
   if (character.voiceActors.isEmpty) return null;
@@ -63,7 +59,7 @@ class CharactersSection extends StatelessWidget {
             spacing: Spacing.md,
             children: [
               Expanded(
-                child: _CharacterSide(
+                child: CharacterSide(
                   character: character,
                   onTap: onCharacter == null
                       ? null
@@ -72,7 +68,7 @@ class CharactersSection extends StatelessWidget {
               ),
               if (actor != null)
                 Expanded(
-                  child: _VoiceSide(
+                  child: VoiceSide(
                     actor: actor,
                     onTap: onVoiceActor == null
                         ? null
@@ -83,113 +79,6 @@ class CharactersSection extends StatelessWidget {
           ),
         );
       }),
-    );
-  }
-}
-
-class _Photo extends StatelessWidget {
-  const _Photo({required this.url});
-
-  final String? url;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: _photoSize,
-      child: Poster(url: url, aspectRatio: 1, radius: Radii.chip),
-    );
-  }
-}
-
-class _CharacterSide extends StatelessWidget {
-  const _CharacterSide({required this.character, required this.onTap});
-
-  final CharacterDto character;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    return Pressable(
-      key: Key('character-${character.id}'),
-      onTap: onTap,
-      label: character.name,
-      minSize: Sizes.touchTarget,
-      child: Row(
-        spacing: Spacing.md,
-        children: [
-          _Photo(url: character.imageUrl),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  character.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.cardTitle,
-                ),
-                Text(
-                  roleLabel(character.role),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.cardMeta.copyWith(
-                    color: theme.colorScheme.mutedForeground,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _VoiceSide extends StatelessWidget {
-  const _VoiceSide({required this.actor, required this.onTap});
-
-  final VoiceActorDto actor;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    return Pressable(
-      key: Key('voice-${actor.id}'),
-      onTap: onTap,
-      label: 'Pengisi suara ${actor.name}',
-      minSize: Sizes.touchTarget,
-      child: Row(
-        spacing: Spacing.md,
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  actor.name,
-                  maxLines: 2,
-                  textAlign: TextAlign.end,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.cardTitle,
-                ),
-                Text(
-                  languageLabel(actor.language),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.cardMeta.copyWith(
-                    color: theme.colorScheme.mutedForeground,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _Photo(url: actor.imageUrl),
-        ],
-      ),
     );
   }
 }

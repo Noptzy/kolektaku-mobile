@@ -17,6 +17,7 @@ LoadedEpisode episode() => LoadedEpisode(
     item: 'i',
     unit: const UnitDto(id: '1', number: 1, label: 'Episode 1'),
     servers: const [],
+    audioOptions: const [],
   ),
   stream: const ResolvedStream(
     set: StreamSetDto(sources: [], headers: [], subtitles: [], skips: []),

@@ -12,4 +12,5 @@ mod move_entries_tests;
 #[cfg(test)]
 mod repository_tests;
 
+pub(crate) use document::LibraryDocument;
 pub use repository::JsonLibraryRepository;

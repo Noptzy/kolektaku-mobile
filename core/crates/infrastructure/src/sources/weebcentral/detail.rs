@@ -87,5 +87,6 @@ pub fn parse_detail(html: &str, item_id: &str, base: &Url) -> Result<SourceDetai
         synopsis: description(&document),
         genres,
         catalog_id: catalog_number(&document),
+        mal_id: None,
     })
 }

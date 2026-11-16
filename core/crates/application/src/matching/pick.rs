@@ -1,7 +1,11 @@
+use super::refusal::refusal_of;
 use super::score::{
     MatchDecision, TITLE_SHORTLIST_SCORE, decide_match, score_candidate, score_title,
 };
 use super::target::{CandidateFacts, MatchTarget};
+use super::tie_break::{TieRank, tie_rank};
+
+const TIE_EPSILON: f64 = 1e-9;
 
 const SHORTLIST_SIZE: usize = 3;
 
@@ -45,21 +49,31 @@ pub fn pick_best_candidate(
     target: &MatchTarget,
     verified: &[VerifiedCandidate],
 ) -> Option<PickedCandidate> {
-    let mut best: Option<PickedCandidate> = None;
+    let mut best: Option<(PickedCandidate, TieRank)> = None;
     for candidate in verified {
+        if refusal_of(target, &candidate.facts).is_some() {
+            continue;
+        }
         let confidence = score_candidate(target, &candidate.facts);
-        if best
-            .as_ref()
-            .is_none_or(|current| confidence > current.confidence)
-        {
-            best = Some(PickedCandidate {
+        let rank = tie_rank(target, &candidate.facts);
+        let better = best.as_ref().is_none_or(|(current, current_rank)| {
+            if (confidence - current.confidence).abs() > TIE_EPSILON {
+                confidence > current.confidence
+            } else {
+                rank < *current_rank
+            }
+        });
+        if better {
+            let picked = PickedCandidate {
                 key: candidate.key.clone(),
                 confidence,
                 decision: decide_match(confidence),
-            });
+            };
+            best = Some((picked, rank));
         }
     }
-    best.filter(|picked| picked.decision != MatchDecision::None)
+    best.map(|(picked, _)| picked)
+        .filter(|picked| picked.decision != MatchDecision::None)
 }
 
 #[cfg(test)]
@@ -123,6 +137,26 @@ mod tests {
         .unwrap();
         assert_eq!(picked.key, "first");
         assert_eq!(picked.decision, MatchDecision::Auto);
+    }
+
+    #[test]
+    fn an_equally_good_plain_entry_beats_its_dub_twin_whatever_the_order() {
+        let twins = [
+            verified("a-dub", "Naruto (Dub ID)"),
+            verified("z-plain", "Naruto"),
+        ];
+        let picked = pick_best_candidate(&target("Naruto"), &twins).unwrap();
+        assert_eq!(picked.key, "z-plain");
+    }
+
+    #[test]
+    fn a_refused_candidate_is_never_picked_however_well_the_title_fits() {
+        let mut wanted = target("Naruto");
+        wanted.status = Some(domain::media::MediaStatus::NotYetReleased);
+        assert_eq!(
+            pick_best_candidate(&wanted, &[verified("same", "Naruto")]),
+            None
+        );
     }
 
     #[test]

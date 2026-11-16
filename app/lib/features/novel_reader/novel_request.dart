@@ -7,6 +7,7 @@ class NovelRequest {
     required this.chapter,
     this.coverUrl,
     this.preferredSource,
+    this.block,
   });
 
   final MediaRefDto reference;
@@ -14,6 +15,7 @@ class NovelRequest {
   final double chapter;
   final String? coverUrl;
   final String? preferredSource;
+  final int? block;
 
   NovelRequest copyWith({double? chapter, String? preferredSource}) {
     return NovelRequest(
@@ -22,6 +24,7 @@ class NovelRequest {
       chapter: chapter ?? this.chapter,
       coverUrl: coverUrl,
       preferredSource: preferredSource ?? this.preferredSource,
+      block: chapter == null ? block : null,
     );
   }
 }

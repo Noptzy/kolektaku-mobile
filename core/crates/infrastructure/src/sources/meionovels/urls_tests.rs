@@ -76,10 +76,18 @@ fn bad_ids_never_become_addresses() {
             "{bad}"
         );
     }
-    for bad in ["only-one-part", "a/../b", "a/b/c", "/b", "a/"] {
+    for bad in ["only-one-part", "a/../b", "a/b//c", "/b", "a/", "a/b/"] {
         assert!(
             matches!(urls().chapter(bad), Err(SourceError::NotFound(_))),
             "{bad}"
         );
     }
+}
+
+#[test]
+fn a_chapter_filed_under_a_group_becomes_a_nested_address() {
+    assert_eq!(
+        urls().chapter("ngnl-ln/htl/volume-12-chapter-5").unwrap(),
+        format!("{BASE}/novel/ngnl-ln/htl/volume-12-chapter-5/")
+    );
 }

@@ -1,6 +1,12 @@
 param(
     [Parameter(Mandatory = $true)][string]$Apk,
-    [string]$AllowedHosts = (Join-Path $PSScriptRoot "allowed-hosts.txt")
+    [string]$AllowedHosts = (Join-Path $PSScriptRoot "allowed-hosts.txt"),
+    [string]$AllowedPermissions = (Join-Path $PSScriptRoot "allowed-permissions.txt"),
+    [string]$PermissionDump = "",
+    [switch]$SkipPermissions,
+    [long]$MinBytes = 15000000,
+    [long]$MaxBytes = 49999999,
+    [string[]]$RequiredAbis = @("arm64-v8a", "armeabi-v7a")
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,17 +28,44 @@ function Test-AllowedHost($candidate, $allowed) {
     return $false
 }
 
+function Find-Aapt {
+    $roots = @($env:ANDROID_SDK_ROOT, $env:ANDROID_HOME) | Where-Object { $_ -and (Test-Path -LiteralPath $_) }
+    foreach ($root in $roots) {
+        $tools = Join-Path $root "build-tools"
+        if (-not (Test-Path -LiteralPath $tools)) { continue }
+        foreach ($folder in (Get-ChildItem -LiteralPath $tools -Directory | Sort-Object Name -Descending)) {
+            $candidate = Join-Path $folder.FullName "aapt2.exe"
+            if (Test-Path -LiteralPath $candidate) { return $candidate }
+        }
+    }
+    return $null
+}
+
+function Get-RequestedPermissions($apk, $dump) {
+    if ($dump -ne "") { return Get-Content -LiteralPath $dump }
+    $aapt = Find-Aapt
+    if (-not $aapt) { throw "aapt2 tidak ditemukan; setel ANDROID_HOME ke folder Android SDK" }
+    $lines = & $aapt dump permissions $apk 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "aapt2 gagal membaca izin: $($lines -join ' ')" }
+    return $lines
+}
+
 $allowed = Get-Content -LiteralPath $AllowedHosts |
     ForEach-Object { $_.Trim().ToLower() } |
     Where-Object { $_ -ne "" -and -not $_.StartsWith("#") }
 
 $problems = @()
 $unknownHosts = @{}
+$size = (Get-Item -LiteralPath $Apk).Length
+if ($size -lt $MinBytes) { $problems += "ukuran $size byte di bawah batas bawah $MinBytes (isi tidak lengkap?)" }
+if ($size -gt $MaxBytes) { $problems += "ukuran $size byte melewati batas atas $MaxBytes (harus kurang dari 50 MB)" }
+$present = @{}
 $latin1 = [System.Text.Encoding]::GetEncoding("ISO-8859-1")
 $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path -LiteralPath $Apk))
 try {
     foreach ($entry in $archive.Entries) {
         $leaf = Split-Path $entry.FullName -Leaf
+        $present[$entry.FullName] = $true
         foreach ($name in $bannedNames) {
             if ($leaf -like $name) { $problems += "berkas terlarang di APK: $($entry.FullName)" }
         }
@@ -59,6 +92,23 @@ try {
     $archive.Dispose()
 }
 
+foreach ($abi in $RequiredAbis) {
+    if (-not $present.ContainsKey("lib/$abi/libbridge.so")) { $problems += "lib/$abi/libbridge.so tidak ada di APK" }
+}
+
+if (-not $SkipPermissions) {
+    $permitted = Get-Content -LiteralPath $AllowedPermissions |
+        ForEach-Object { $_.Trim() } |
+        Where-Object { $_ -ne "" -and -not $_.StartsWith("#") }
+    $pattern = [regex]"^uses-permission(-sdk-23)?: name='([^']+)'"
+    foreach ($line in (Get-RequestedPermissions (Resolve-Path -LiteralPath $Apk) $PermissionDump)) {
+        $match = $pattern.Match([string]$line)
+        if (-not $match.Success) { continue }
+        $name = $match.Groups[2].Value
+        if ($permitted -notcontains $name) { $problems += "izin di luar daftar: $name" }
+    }
+}
+
 foreach ($found in ($unknownHosts.Keys | Sort-Object)) {
     Write-Output "host di luar daftar: $found ($($unknownHosts[$found]))"
 }
@@ -68,4 +118,4 @@ if ($problems.Count -gt 0) {
     Write-Error "check-apk gagal untuk $Apk"
     exit 1
 }
-Write-Output "check-apk: tidak ada rahasia atau berkas terlarang di $Apk"
+Write-Output "check-apk: $Apk ($size byte) lolos: ukuran, inti Rust, izin, rahasia, dan berkas terlarang"

@@ -91,11 +91,15 @@ class _Segment extends StatelessWidget {
             spacing: Spacing.sm,
             children: [
               Icon(kindSwitchIcon(kind), size: 20, color: ink),
-              Text(
-                kindSwitchLabel(kind),
-                style: theme.textTheme.small.copyWith(
-                  color: ink,
-                  fontWeight: FontWeight.w700,
+              Flexible(
+                child: Text(
+                  kindSwitchLabel(kind),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.small.copyWith(
+                    color: ink,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],

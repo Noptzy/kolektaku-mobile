@@ -1,13 +1,14 @@
 const aboutNotes = (
-  version: '0.3.1',
+  version: '0.4.0',
   lines: [
-    'Memperbaiki pembaruan dari versi 0.2.x yang gagal terpasang dengan pesan paket tidak valid.',
-    'Terjemahan otomatis untuk subtitle, sinopsis, dan teks novel, dengan bahasa tujuan yang bisa dipilih di Pengaturan.',
-    'Novel menjadi kategori sendiri: ada di Cari, Koleksi, dan Beranda, dengan pembaca teks yang ukuran huruf dan jarak barisnya bisa diatur.',
-    'Sumber komik ketiga berbahasa Inggris untuk judul yang tidak ada di sumber Indonesia.',
-    'Warna aksen aplikasi bisa dipilih di Pengaturan.',
-    'Pencarian komik juga mencoba judul tanpa tanda kurung dan titik dua, sehingga judul seperti Oshi no Ko kini ketemu.',
-    'Logo di halaman detail memakai logo asli situs dan jejaring sosial.',
+    'Notifikasi saat favoritmu punya episode atau chapter baru, dan saat ada versi baru Kolektaku.',
+    'Komik dan novel mengalir tersambung: chapter berikutnya muncul di bawah dengan pembatas.',
+    'Sorot kalimat di novel, lalu temukan lagi di Koleksi.',
+    'Pencocokan judul diperketat: film yang belum tayang tidak lagi memutar film lain, dan dub tidak lagi jadi kartu ganda.',
+    'Novel yang tidak ada di dua sumber utama kini dicari di sumber cadangan.',
+    'Gambar di dalam chapter novel tampil dan bisa diperbesar.',
+    'Pencarian lebih cepat dan data disimpan lebih rapi; datamu dipindahkan otomatis.',
+    'Pencarian dari gambar tidak lagi membuka kamera sendiri.',
   ],
 );
 

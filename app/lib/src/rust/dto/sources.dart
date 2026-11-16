@@ -181,6 +181,8 @@ class SourceLinkDto {
   final int? unitCount;
   final bool manual;
   final bool needsHint;
+  final String? matchedTitle;
+  final List<String> variants;
 
   const SourceLinkDto({
     required this.source,
@@ -190,6 +192,8 @@ class SourceLinkDto {
     this.unitCount,
     required this.manual,
     required this.needsHint,
+    this.matchedTitle,
+    required this.variants,
   });
 
   @override
@@ -200,7 +204,9 @@ class SourceLinkDto {
       confidence.hashCode ^
       unitCount.hashCode ^
       manual.hashCode ^
-      needsHint.hashCode;
+      needsHint.hashCode ^
+      matchedTitle.hashCode ^
+      variants.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -213,7 +219,9 @@ class SourceLinkDto {
           confidence == other.confidence &&
           unitCount == other.unitCount &&
           manual == other.manual &&
-          needsHint == other.needsHint;
+          needsHint == other.needsHint &&
+          matchedTitle == other.matchedTitle &&
+          variants == other.variants;
 }
 
 class SourceStatusDto {

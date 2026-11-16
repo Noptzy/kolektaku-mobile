@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::time::Duration;
 
 use domain::error::SourceError;
 use domain::media::{MediaKind, MediaPage};
@@ -26,6 +27,8 @@ impl Ask {
         !self.catalog && !self.sources.iter().any(|asked| *asked)
     }
 }
+
+pub const SITE_SEARCH_LIMIT: Duration = Duration::from_secs(4);
 
 pub struct Replies {
     pub media: Option<Result<MediaPage, SourceError>>,
@@ -61,7 +64,15 @@ pub async fn ask_participants<C: MetadataCatalog + 'static>(
             page,
             ..SourceSearch::new(query)
         };
-        tasks.spawn(async move { Reply::Items(index, source.search(search).await) });
+        tasks.spawn(async move {
+            let answer = tokio::time::timeout(SITE_SEARCH_LIMIT, source.search(search)).await;
+            let result = answer.unwrap_or_else(|_| {
+                Err(SourceError::Network(
+                    "the site took too long to answer".into(),
+                ))
+            });
+            Reply::Items(index, result)
+        });
     }
     let mut replies = Replies {
         media: None,

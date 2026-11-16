@@ -11,3 +11,4 @@ mod contract_tests;
 mod registry_tests;
 
 pub use registry::{hianime, komikindo, komiku, kuramanime};
+pub use support::share_page_cache;

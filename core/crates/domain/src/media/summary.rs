@@ -21,6 +21,8 @@ pub struct MediaSummary {
     pub genres: Vec<String>,
     pub country_of_origin: Option<String>,
     pub is_adult: bool,
+    #[serde(default)]
+    pub id_mal: Option<u64>,
 }
 
 impl MediaSummary {
@@ -41,6 +43,7 @@ impl MediaSummary {
             genres: Vec::new(),
             country_of_origin: None,
             is_adult: false,
+            id_mal: None,
         }
     }
 }

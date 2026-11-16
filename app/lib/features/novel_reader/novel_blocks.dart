@@ -4,8 +4,9 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../src/rust/dto/novel.dart';
 import '../../src/rust/dto/settings.dart';
-import '../../src/rust/dto/sources.dart';
-import '../reader/chapter_end.dart';
+import 'highlight_ranges.dart';
+import 'illustration_view.dart';
+import 'marked_paragraph.dart';
 import 'reading_look.dart';
 
 typedef NovelImageFactory = ImageProvider Function(String url);
@@ -19,12 +20,18 @@ class NovelBlock extends StatelessWidget {
     required this.size,
     required this.spacing,
     this.imageFor = networkIllustration,
+    this.marks = const [],
+    this.onHighlight,
+    this.onTapMark,
   });
 
   final NovelBlockDto block;
   final ReadingSizeDto size;
   final ReadingSpacingDto spacing;
   final NovelImageFactory imageFor;
+  final List<Marked> marks;
+  final HighlightPicked? onHighlight;
+  final ValueChanged<int>? onTapMark;
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +48,25 @@ class NovelBlock extends StatelessWidget {
         fontSizeOf(size) * 0.9,
       ),
       child: block.isImage
-          ? Image(
-              image: imageFor(block.text),
-              fit: BoxFit.fitWidth,
-              errorBuilder: (context, error, stack) => Text(
-                'Gambar tidak bisa dimuat.',
-                style: ShadTheme.of(context).textTheme.muted,
+          ? GestureDetector(
+              key: const Key('illustration'),
+              onTap: () => showIllustration(context, imageFor(block.text)),
+              child: Image(
+                image: imageFor(block.text),
+                fit: BoxFit.fitWidth,
+                errorBuilder: (context, error, stack) => Text(
+                  'Gambar tidak bisa dimuat.',
+                  style: ShadTheme.of(context).textTheme.muted,
+                ),
               ),
             )
-          : Text(block.text, style: style),
+          : MarkedParagraph(
+              text: block.text,
+              style: style,
+              marks: marks,
+              onHighlight: onHighlight,
+              onTapMark: onTapMark,
+            ),
     );
   }
 }
@@ -59,26 +76,29 @@ class NovelBlockList extends StatelessWidget {
     super.key,
     required this.listKey,
     required this.scroll,
-    required this.blocks,
+    required this.chapters,
     required this.size,
     required this.spacing,
-    required this.current,
-    required this.next,
-    required this.onNext,
+    required this.dividerAt,
     required this.onTap,
     this.imageFor = networkIllustration,
+    this.marksFor,
+    this.onHighlight,
+    this.onTapMark,
   });
 
   final Key listKey;
   final ScrollController scroll;
-  final List<NovelBlockDto> blocks;
+  final List<List<NovelBlockDto>> chapters;
   final ReadingSizeDto size;
   final ReadingSpacingDto spacing;
-  final double current;
-  final UnitDto? next;
-  final VoidCallback onNext;
+  final Widget Function(int chapter) dividerAt;
   final VoidCallback onTap;
   final NovelImageFactory imageFor;
+  final List<Marked> Function(int chapter, int block, String text)? marksFor;
+  final void Function(int chapter, int block, int start, int end, String quote)?
+  onHighlight;
+  final void Function(int chapter, int id)? onTapMark;
 
   @override
   Widget build(BuildContext context) {
@@ -93,18 +113,40 @@ class NovelBlockList extends StatelessWidget {
           top: inset.top + 88,
           bottom: inset.bottom + 96,
         ),
-        itemCount: blocks.length + 1,
-        itemBuilder: (context, index) {
-          if (index == blocks.length) {
-            return ChapterEnd(current: current, next: next, onNext: onNext);
+        itemCount: chapters.fold<int>(
+          0,
+          (sum, blocks) => sum + blocks.length + 1,
+        ),
+        itemBuilder: (context, flat) {
+          var left = flat;
+          for (var chapter = 0; chapter < chapters.length; chapter++) {
+            final blocks = chapters[chapter];
+            if (left < blocks.length) {
+              final index = left;
+              final owner = chapter;
+              final block = blocks[index];
+              return NovelBlock(
+                key: ValueKey('block-$owner-$index'),
+                block: block,
+                size: size,
+                spacing: spacing,
+                imageFor: imageFor,
+                marks: block.isImage
+                    ? const []
+                    : marksFor?.call(owner, index, block.text) ?? const [],
+                onHighlight: onHighlight == null
+                    ? null
+                    : (start, end, quote) =>
+                          onHighlight!(owner, index, start, end, quote),
+                onTapMark: onTapMark == null
+                    ? null
+                    : (id) => onTapMark!(owner, id),
+              );
+            }
+            if (left == blocks.length) return dividerAt(chapter);
+            left -= blocks.length + 1;
           }
-          return NovelBlock(
-            key: ValueKey('block-$index'),
-            block: blocks[index],
-            size: size,
-            spacing: spacing,
-            imageFor: imageFor,
-          );
+          return const SizedBox.shrink();
         },
       ),
     );

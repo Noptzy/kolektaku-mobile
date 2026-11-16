@@ -2,6 +2,27 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.4.0] — 2026-11-16
+
+### Ditambahkan
+- Notifikasi episode dan chapter baru untuk judul favorit (bunyi "tuturu"), serta notifikasi saat ada versi baru Kolektaku. Diatur di Pengaturan > Notifikasi; izin diminta saat pertama kali memfavoritkan.
+- Gulir tersambung di pembaca komik dan novel: chapter berikutnya muncul di bawah dengan pembatas, bisa dimatikan di Pengaturan > Pembaca.
+- Gambar di dalam chapter novel (termasuk yang dimuat belakangan) tampil dan bisa diketuk untuk diperbesar.
+- Sorotan novel: tahan kata atau kalimat di pembaca novel lalu pilih Sorot; tersimpan di Koleksi → Novel dan membuka paragrafnya lagi bila diketuk.
+- Sumber novel cadangan berbahasa Inggris untuk judul yang tidak ada di dua sumber utama (misalnya Hyouka).
+- Pilihan suara (dub) di lembar server, dikelompokkan di bawah sumbernya.
+- Tombol "Mungkin ini?" bila sumber belum yakin judul yang cocok, dan "Belum tayang" untuk judul yang belum rilis.
+- Peringatan "Video ini mungkin bukan filmnya" bila durasi video jauh di bawah durasi film.
+
+### Diubah
+- Pencocokan judul ke sumber diperketat: nomor katalog (AniList dan MAL) dipakai lebih dulu; format, tahun, dan status yang beda menolak kecocokan; kembaran dub tidak lagi menimpa entri aslinya. Memperbaiki film belum tayang yang memutar film lain dan kartu ganda "Data terbatas".
+- Daftar chapter novel yang dikelompokkan situs kini terbaca, dan judul novel yang hanya beda spasi atau ejaan kini cocok.
+- Hasil cari Komik dan Novel tampil ke bawah (bukan menyamping), keadaan kosong tidak terpotong, subtitle naik di atas kontrol pemutar.
+- Data (favorit, riwayat, tautan, cache) disimpan dalam satu basis data SQLite; data lama dipindahkan otomatis dan berkasnya disimpan dengan akhiran `.migrated`.
+- Pencarian tidak lagi menunggu situs yang lambat lebih dari 4 detik; halaman situs yang pernah dibuka disimpan 15 menit.
+- Ukuran paket turun dari 59,4 MB ke sekitar 25 MB (pustaka terkompresi, profil rilis Rust, paket tak terpakai dilepas).
+- Pencarian dari gambar tidak lagi membuka kamera otomatis; harus ditekan dulu.
+
 ## [0.3.1] — 2026-11-16
 
 ### Diperbaiki

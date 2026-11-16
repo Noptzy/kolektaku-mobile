@@ -32,6 +32,8 @@ pub struct PlaybackDto {
     pub unit: UnitDto,
     pub servers: Vec<ServerDto>,
     pub switched_from: Option<String>,
+    pub audio: Option<String>,
+    pub audio_options: Vec<String>,
 }
 
 impl From<&Playback> for PlaybackDto {
@@ -42,6 +44,8 @@ impl From<&Playback> for PlaybackDto {
             unit: (&playback.unit).into(),
             servers: playback.servers.iter().map(Into::into).collect(),
             switched_from: playback.switched_from.as_ref().map(ToString::to_string),
+            audio: playback.audio.clone(),
+            audio_options: playback.audio_options.clone(),
         }
     }
 }

@@ -69,7 +69,9 @@ impl MeionovelsUrls {
             .split_once('/')
             .ok_or_else(|| not_found("chapter id", id))?;
         self.checked(slug, "chapter id")?;
-        self.checked(chapter, "chapter id")?;
+        for segment in chapter.split('/') {
+            self.checked(segment, "chapter id")?;
+        }
         Ok(self.at(&format!("/novel/{slug}/{chapter}/")).into())
     }
 

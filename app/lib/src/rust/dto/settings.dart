@@ -29,6 +29,7 @@ class SettingsDto {
   final TranslationLanguageDto translation;
   final ReadingSizeDto readingSize;
   final ReadingSpacingDto readingSpacing;
+  final bool continuousReading;
 
   const SettingsDto({
     required this.prefersAnime,
@@ -46,6 +47,7 @@ class SettingsDto {
     required this.translation,
     required this.readingSize,
     required this.readingSpacing,
+    required this.continuousReading,
   });
 
   @override
@@ -64,7 +66,8 @@ class SettingsDto {
       accent.hashCode ^
       translation.hashCode ^
       readingSize.hashCode ^
-      readingSpacing.hashCode;
+      readingSpacing.hashCode ^
+      continuousReading.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -85,7 +88,8 @@ class SettingsDto {
           accent == other.accent &&
           translation == other.translation &&
           readingSize == other.readingSize &&
-          readingSpacing == other.readingSpacing;
+          readingSpacing == other.readingSpacing &&
+          continuousReading == other.continuousReading;
 }
 
 enum SubtitleBoxColorDto { black, gray, navy }

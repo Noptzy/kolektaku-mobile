@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../gateways/bridge_catalog_gateway.dart';
 import '../gateways/bridge_library_gateway.dart';
 import '../gateways/catalog_gateway.dart';
+import '../gateways/highlight_gateway.dart';
 import '../gateways/library_gateway.dart';
 import '../gateways/scene_gateway.dart';
 import '../gateways/settings_gateway.dart';
@@ -31,4 +32,8 @@ final settingsGatewayProvider = Provider<SettingsGateway>(
 
 final translationGatewayProvider = Provider<TranslationGateway>(
   (ref) => const BridgeTranslationGateway(),
+);
+
+final highlightGatewayProvider = Provider<HighlightGateway>(
+  (ref) => const BridgeHighlightGateway(),
 );

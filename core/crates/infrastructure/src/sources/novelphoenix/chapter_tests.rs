@@ -1,4 +1,6 @@
 use domain::error::SourceError;
+use domain::source::TextBlock;
+use url::Url;
 
 use super::chapter_text::parse_chapter_text;
 use super::chapters::{page_count, parse_chapter_pages};
@@ -8,6 +10,10 @@ const SLUG: &str = "the-beginning-after-the-end";
 
 fn page() -> String {
     fixtures::novelphoenix("chapters.html")
+}
+
+fn site() -> Url {
+    Url::parse("https://novelphoenix.com").unwrap()
 }
 
 #[test]
@@ -44,7 +50,7 @@ fn the_link_to_the_latest_chapter_outside_the_list_is_not_counted() {
 
 #[test]
 fn the_text_is_the_paragraphs_of_the_content_area_in_english() {
-    let text = parse_chapter_text(&fixtures::novelphoenix("chapter.html")).unwrap();
+    let text = parse_chapter_text(&fixtures::novelphoenix("chapter.html"), &site()).unwrap();
     assert_eq!(text.language, "en");
     let first = text.paragraphs().next().unwrap();
     assert!(first.contains("The Continent of Dicathen comprises"));
@@ -56,8 +62,33 @@ fn the_text_is_the_paragraphs_of_the_content_area_in_english() {
 fn a_page_without_text_is_a_markup_change() {
     for html in ["<main>redesigned</main>", r#"<div id="content"><p> </p></div>"#] {
         assert!(matches!(
-            parse_chapter_text(html),
+            parse_chapter_text(html, &site()),
             Err(SourceError::MarkupChanged(_))
         ));
     }
+}
+
+#[test]
+fn illustrations_keep_their_place_between_paragraphs_even_when_lazy_loaded() {
+    let html = r#"<div id="content"><p>Satu.</p>
+        <img class="lazy" src="data:image/gif;base64,R0lGOD" data-src="/img/ilustrasi-1.jpg">
+        <p>Dua.</p><p><img src="https://cdn.test/dua.png"></p><p>Tiga.</p></div>"#;
+    let text = parse_chapter_text(html, &site()).unwrap();
+    assert_eq!(
+        text.blocks,
+        vec![
+            TextBlock::Paragraph("Satu.".into()),
+            TextBlock::Image("https://novelphoenix.com/img/ilustrasi-1.jpg".into()),
+            TextBlock::Paragraph("Dua.".into()),
+            TextBlock::Image("https://cdn.test/dua.png".into()),
+            TextBlock::Paragraph("Tiga.".into()),
+        ]
+    );
+}
+
+#[test]
+fn a_chapter_with_only_an_illustration_is_still_a_chapter() {
+    let html = r#"<div id="content"><img data-src="/a.jpg" src=""></div>"#;
+    let text = parse_chapter_text(html, &site()).unwrap();
+    assert_eq!(text.blocks.len(), 1);
 }

@@ -1,4 +1,5 @@
 import '../../core/routes.dart';
+import '../../src/rust/dto/highlight.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import '../novel_reader/novel_request.dart';
@@ -40,3 +41,11 @@ Object historyRequest(ProgressDto item) => switch (item.kind) {
     coverUrl: item.coverUrl,
   ),
 };
+
+NovelRequest highlightRequest(HighlightDto item) => NovelRequest(
+  reference: item.reference,
+  title: item.title,
+  chapter: item.chapter,
+  coverUrl: item.coverUrl,
+  block: item.block,
+);

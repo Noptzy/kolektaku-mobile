@@ -1,5 +1,6 @@
 pub mod app_info;
 pub mod error;
+pub mod highlight;
 pub mod library;
 pub mod matching;
 pub mod media;

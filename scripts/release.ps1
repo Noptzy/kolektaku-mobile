@@ -52,7 +52,7 @@ Invoke-Step "verify" { & "$PSScriptRoot\verify.ps1" }
 
 Invoke-Step "build APK rilis" {
     Push-Location $app
-    try { flutter build apk --release --target-platform android-arm,android-arm64 } finally { Pop-Location }
+    try { flutter build apk --release --target-platform android-arm,android-arm64 --obfuscate --split-debug-info=build\symbols } finally { Pop-Location }
 }
 
 $source = Join-Path $app "build\app\outputs\flutter-apk\app-release.apk"

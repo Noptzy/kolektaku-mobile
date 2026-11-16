@@ -1,6 +1,8 @@
 pub mod browse;
 pub mod detail;
+pub mod follow;
 pub mod foundation;
+pub mod highlights;
 pub mod library;
 pub mod people;
 pub mod play;

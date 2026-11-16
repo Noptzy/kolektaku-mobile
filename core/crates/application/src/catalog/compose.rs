@@ -3,7 +3,10 @@ use domain::media::{MediaRef, MediaSummary};
 use domain::source::{SourceId, SourceItem, SourceLink};
 
 use super::MediaCard;
-use crate::matching::{AUTO_CONFIDENCE, Assignment, PageItem, assign_page, title_similarity};
+use super::compose_variants::{attach_variant, is_twin};
+use crate::matching::{
+    AUTO_CONFIDENCE, Assignment, MATCHER_VERSION, PageItem, assign_page, title_similarity,
+};
 
 pub struct SiteItems {
     pub source: SourceId,
@@ -22,6 +25,8 @@ pub(super) fn link(source: &SourceId, item: &SourceItem, score: f64, now_secs: u
         Confidence::new(score as f32).capped_for_list(),
         now_secs,
     )
+    .with_title(item.title.clone())
+    .with_matcher_version(MATCHER_VERSION)
 }
 
 pub(super) fn catalog_card(
@@ -145,14 +150,23 @@ pub fn compose_cards(
         .iter()
         .map(|assignment| assignment.item_index)
         .collect();
-    let unassigned = flat
+    let (twins, plain): (Vec<&Flat>, Vec<&Flat>) = flat
         .iter()
         .enumerate()
         .filter(|(index, _)| !taken.contains(index))
-        .map(|(_, entry)| entry);
-    for entry in unassigned {
+        .map(|(_, entry)| entry)
+        .partition(|entry| is_twin(entry.item));
+    for entry in plain {
         let site = &sites[entry.site];
         if !fold_into_group(&mut cards, site, entry.item, now_secs) {
+            cards.push(site_card(site, entry.item, now_secs));
+        }
+    }
+    for entry in twins {
+        let site = &sites[entry.site];
+        if !attach_variant(&mut cards, site, entry.item)
+            && !fold_into_group(&mut cards, site, entry.item, now_secs)
+        {
             cards.push(site_card(site, entry.item, now_secs));
         }
     }

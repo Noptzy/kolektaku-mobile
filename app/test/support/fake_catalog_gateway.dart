@@ -52,6 +52,7 @@ class FakeCatalogGateway with FakeCacheClearing implements CatalogGateway {
   onPeople;
   final List<String> peopleAsks = [];
   UnitsDto? unitsResult;
+  Object? unitsError;
   List<SourceLinkDto> selectResult = const [];
   List<SourceItemDto> candidateResult = const [];
   int homeCalls = 0;
@@ -200,6 +201,8 @@ class FakeCatalogGateway with FakeCacheClearing implements CatalogGateway {
   @override
   Future<UnitsDto> units(MediaRefDto reference, {String? source}) async {
     unitSources.add(source);
+    final error = unitsError;
+    if (error != null) throw error;
     return unitsResult!;
   }
 

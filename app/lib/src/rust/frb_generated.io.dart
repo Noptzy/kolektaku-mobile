@@ -5,7 +5,9 @@
 
 import 'api/browse.dart';
 import 'api/detail.dart';
+import 'api/follow.dart';
 import 'api/foundation.dart';
+import 'api/highlights.dart';
 import 'api/library.dart';
 import 'api/people.dart';
 import 'api/play.dart';
@@ -27,6 +29,8 @@ import 'dto/credits.dart';
 import 'dto/cues.dart';
 import 'dto/discover.dart';
 import 'dto/episodes.dart';
+import 'dto/follow.dart';
+import 'dto/highlight.dart';
 import 'dto/library.dart';
 import 'dto/links.dart';
 import 'dto/media.dart';
@@ -93,6 +97,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FavoriteDto dco_decode_box_autoadd_favorite_dto(dynamic raw);
+
+  @protected
+  HighlightInputDto dco_decode_box_autoadd_highlight_input_dto(dynamic raw);
 
   @protected
   MediaRefDto dco_decode_box_autoadd_media_ref_dto(dynamic raw);
@@ -197,6 +204,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   HeaderDto dco_decode_header_dto(dynamic raw);
 
   @protected
+  HighlightDto dco_decode_highlight_dto(dynamic raw);
+
+  @protected
+  HighlightInputDto dco_decode_highlight_input_dto(dynamic raw);
+
+  @protected
   HomeDto dco_decode_home_dto(dynamic raw);
 
   @protected
@@ -204,6 +217,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int dco_decode_i_32(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
@@ -234,6 +250,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<HeaderDto> dco_decode_list_header_dto(dynamic raw);
+
+  @protected
+  List<HighlightDto> dco_decode_list_highlight_dto(dynamic raw);
 
   @protected
   List<HomeSectionDto> dco_decode_list_home_section_dto(dynamic raw);
@@ -300,6 +319,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<UnitDto> dco_decode_list_unit_dto(dynamic raw);
+
+  @protected
+  List<UpdateEventDto> dco_decode_list_update_event_dto(dynamic raw);
 
   @protected
   List<VoiceActorDto> dco_decode_list_voice_actor_dto(dynamic raw);
@@ -524,6 +546,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   UnitsDto dco_decode_units_dto(dynamic raw);
 
   @protected
+  UpdateEventDto dco_decode_update_event_dto(dynamic raw);
+
+  @protected
   UpdateOfferDto dco_decode_update_offer_dto(dynamic raw);
 
   @protected
@@ -574,6 +599,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FavoriteDto sse_decode_box_autoadd_favorite_dto(SseDeserializer deserializer);
+
+  @protected
+  HighlightInputDto sse_decode_box_autoadd_highlight_input_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   MediaRefDto sse_decode_box_autoadd_media_ref_dto(
@@ -690,6 +720,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   HeaderDto sse_decode_header_dto(SseDeserializer deserializer);
 
   @protected
+  HighlightDto sse_decode_highlight_dto(SseDeserializer deserializer);
+
+  @protected
+  HighlightInputDto sse_decode_highlight_input_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   HomeDto sse_decode_home_dto(SseDeserializer deserializer);
 
   @protected
@@ -697,6 +735,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
@@ -737,6 +778,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<HeaderDto> sse_decode_list_header_dto(SseDeserializer deserializer);
+
+  @protected
+  List<HighlightDto> sse_decode_list_highlight_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<HomeSectionDto> sse_decode_list_home_section_dto(
@@ -827,6 +873,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<UnitDto> sse_decode_list_unit_dto(SseDeserializer deserializer);
+
+  @protected
+  List<UpdateEventDto> sse_decode_list_update_event_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<VoiceActorDto> sse_decode_list_voice_actor_dto(
@@ -1085,6 +1136,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   UnitsDto sse_decode_units_dto(SseDeserializer deserializer);
 
   @protected
+  UpdateEventDto sse_decode_update_event_dto(SseDeserializer deserializer);
+
+  @protected
   UpdateOfferDto sse_decode_update_offer_dto(SseDeserializer deserializer);
 
   @protected
@@ -1149,6 +1203,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_favorite_dto(
     FavoriteDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_highlight_input_dto(
+    HighlightInputDto self,
     SseSerializer serializer,
   );
 
@@ -1303,6 +1363,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_header_dto(HeaderDto self, SseSerializer serializer);
 
   @protected
+  void sse_encode_highlight_dto(HighlightDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_highlight_input_dto(
+    HighlightInputDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_home_dto(HomeDto self, SseSerializer serializer);
 
   @protected
@@ -1313,6 +1382,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
@@ -1362,6 +1434,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_header_dto(
     List<HeaderDto> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_highlight_dto(
+    List<HighlightDto> self,
     SseSerializer serializer,
   );
 
@@ -1484,6 +1562,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_unit_dto(List<UnitDto> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_update_event_dto(
+    List<UpdateEventDto> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_voice_actor_dto(
@@ -1808,6 +1892,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_units_dto(UnitsDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_update_event_dto(
+    UpdateEventDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_update_offer_dto(

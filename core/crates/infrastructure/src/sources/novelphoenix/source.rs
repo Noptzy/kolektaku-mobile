@@ -133,7 +133,7 @@ impl TextSource for NovelPhoenixSource {
     fn chapter_text(&self, chapter: String) -> BoxFuture<'_, Result<ChapterText, SourceError>> {
         Box::pin(async move {
             let html = self.pages.fetch(&self.urls.chapter(&chapter)?).await?;
-            parse_chapter_text(&html)
+            parse_chapter_text(&html, self.urls.base())
         })
     }
 }

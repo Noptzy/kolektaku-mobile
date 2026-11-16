@@ -18,6 +18,7 @@ const defaultSettings = SettingsDto(
   translation: TranslationLanguageDto.indonesian,
   readingSize: ReadingSizeDto.medium,
   readingSpacing: ReadingSpacingDto.normal,
+  continuousReading: true,
 );
 
 class SettingsNotifier extends AsyncNotifier<SettingsDto> {

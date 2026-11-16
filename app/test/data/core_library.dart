@@ -17,3 +17,11 @@ Future<Directory> startHostCore() async {
   await core.init(appDir: folder.path, appVersion: '0.0.0-test');
   return folder;
 }
+
+Future<void> deleteBestEffort(Directory folder) async {
+  try {
+    await folder.delete(recursive: true);
+  } on FileSystemException {
+    return;
+  }
+}

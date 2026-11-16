@@ -4,6 +4,8 @@ use domain::source::{SourceId, SourceLink};
 
 use super::SourceHealth;
 
+pub const FALLBACK_PRIORITY: u8 = 10;
+
 pub fn rank_links(
     mut links: Vec<SourceLink>,
     priorities: &HashMap<SourceId, u8>,
@@ -15,6 +17,7 @@ pub fn rank_links(
             std::cmp::Reverse(link.manual),
             std::cmp::Reverse(link.confidence.is_automatic()),
             std::cmp::Reverse(preferred == Some(&link.source)),
+            priorities.get(&link.source).copied().unwrap_or(u8::MAX) >= FALLBACK_PRIORITY,
             std::cmp::Reverse(link.unit_count.unwrap_or(0)),
             priorities.get(&link.source).copied().unwrap_or(u8::MAX),
             health.recent_failures(&link.source),
@@ -64,6 +67,36 @@ mod tests {
             .iter()
             .map(|link| link.source.to_string())
             .collect()
+    }
+
+    #[test]
+    fn a_fallback_source_comes_after_the_others_even_with_more_units() {
+        let links = vec![
+            link("backup", 0.9, Some(500), false),
+            link("main", 0.9, Some(10), false),
+        ];
+        assert_eq!(
+            order(links, &[("backup", FALLBACK_PRIORITY), ("main", 5)]),
+            vec!["main", "backup"]
+        );
+    }
+
+    #[test]
+    fn a_fallback_is_still_used_when_it_is_the_only_one_or_chosen() {
+        let only = vec![link("backup", 0.9, Some(5), false)];
+        assert_eq!(
+            order(only, &[("backup", FALLBACK_PRIORITY)]),
+            vec!["backup"]
+        );
+        let both = vec![
+            link("main", 0.9, Some(10), false),
+            link("backup", 0.9, Some(5), false),
+        ];
+        let table = [("backup", FALLBACK_PRIORITY), ("main", 5)];
+        assert_eq!(
+            order_preferring(both, &table, Some("backup")),
+            vec!["backup", "main"]
+        );
     }
 
     #[test]

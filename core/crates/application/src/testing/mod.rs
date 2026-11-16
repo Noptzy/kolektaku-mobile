@@ -19,6 +19,7 @@ mod memory_library;
 mod memory_library_tests;
 mod memory_link_store;
 mod memory_state;
+mod memory_update_ledger;
 
 use call_recorder::CallRecorder;
 
@@ -33,3 +34,4 @@ pub use fake_translator::FakeTranslator;
 pub use fake_video::FakeVideo;
 pub use memory_library::MemoryLibrary;
 pub use memory_link_store::MemoryLinkStore;
+pub use memory_update_ledger::MemoryUpdateLedger;

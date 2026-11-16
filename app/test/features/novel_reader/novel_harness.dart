@@ -7,6 +7,7 @@ import 'package:kolektaku/src/rust/dto/media.dart';
 import 'package:kolektaku/src/rust/dto/novel.dart';
 import 'package:kolektaku/src/rust/dto/sources.dart';
 
+import '../../support/fake_highlight_gateway.dart';
 import '../../support/screen_harness.dart';
 
 final reference = MediaRefDto(
@@ -48,8 +49,10 @@ class NovelHarness {
     this.failFirst = false,
     this.translationFailed = false,
     this.switchedFrom,
-  });
+    FakeHighlightGateway? highlights,
+  }) : highlights = highlights ?? FakeHighlightGateway();
 
+  final FakeHighlightGateway highlights;
   final int blockCount;
   final int unitCount;
   final double chapter;
@@ -116,7 +119,10 @@ class NovelHarness {
     ),
   );
 
-  NovelScreen screen({Duration saveDelay = const Duration(milliseconds: 200)}) {
+  NovelScreen screen({
+    Duration saveDelay = const Duration(milliseconds: 200),
+    bool autoContinue = true,
+  }) {
     return NovelScreen(
       request: NovelRequest(
         reference: reference,
@@ -126,12 +132,20 @@ class NovelHarness {
       loader: loader,
       progress: progress,
       saveDelay: saveDelay,
+      autoContinue: autoContinue,
     );
   }
 
-  Future<ScreenHarness> open(WidgetTester tester) async {
-    final harness = ScreenHarness();
-    await harness.pump(tester, screen(), settle: false);
+  Future<ScreenHarness> open(
+    WidgetTester tester, {
+    bool autoContinue = true,
+  }) async {
+    final harness = ScreenHarness(highlights: highlights);
+    await harness.pump(
+      tester,
+      screen(autoContinue: autoContinue),
+      settle: false,
+    );
     await tester.pump();
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));

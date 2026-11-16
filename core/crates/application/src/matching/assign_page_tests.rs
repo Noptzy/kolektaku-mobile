@@ -123,3 +123,28 @@ fn nothing_in_nothing_out() {
     assert!(assign_page(&[], &[item("a", "x")]).is_empty());
     assert!(assign_page(&[media(1, "x", &[])], &[]).is_empty());
 }
+
+#[test]
+fn a_dub_twin_never_takes_the_slot_of_its_plain_entry_even_when_listed_first() {
+    use domain::media::{MediaId, MediaKind, MediaTitle};
+    use domain::source::SourceId;
+
+    let media = vec![MediaSummary::new(
+        MediaId::new(101922).unwrap(),
+        MediaKind::Anime,
+        MediaTitle::new("Kimetsu no Yaiba"),
+    )];
+    let items = vec![
+        PageItem {
+            source: SourceId::new("a"),
+            title: "Kimetsu no Yaiba (Dub ID)".into(),
+        },
+        PageItem {
+            source: SourceId::new("a"),
+            title: "Kimetsu no Yaiba".into(),
+        },
+    ];
+    let chosen = assign_page(&media, &items);
+    assert_eq!(chosen.len(), 1);
+    assert_eq!(chosen[0].item_index, 1);
+}

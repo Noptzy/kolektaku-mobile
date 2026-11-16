@@ -35,6 +35,28 @@ async fn match_chunk(
         .collect())
 }
 
+type Outcome = Result<Vec<Vec<MediaSummary>>, SourceError>;
+
+async fn two_at_once(
+    graphql: &GraphQl,
+    kind: MediaKind,
+    pair: &[&[String]],
+) -> Vec<(usize, Outcome)> {
+    let first = match_chunk(graphql, kind, pair[0]);
+    let second = async {
+        match pair.get(1) {
+            Some(chunk) => Some(match_chunk(graphql, kind, chunk).await),
+            None => None,
+        }
+    };
+    let (one, two) = tokio::join!(first, second);
+    let mut done = vec![(pair[0].len(), one)];
+    if let (Some(chunk), Some(outcome)) = (pair.get(1), two) {
+        done.push((chunk.len(), outcome));
+    }
+    done
+}
+
 pub async fn match_all(
     graphql: &GraphQl,
     kind: MediaKind,
@@ -43,15 +65,18 @@ pub async fn match_all(
     let mut found: Vec<Vec<MediaSummary>> = Vec::with_capacity(titles.len());
     let mut failure: Option<SourceError> = None;
     let mut served = 0usize;
-    for chunk in titles.chunks(MATCH_CHUNK) {
-        match match_chunk(graphql, kind, chunk).await {
-            Ok(part) => {
-                served += 1;
-                found.extend(part);
-            }
-            Err(error) => {
-                failure.get_or_insert(error);
-                found.extend(chunk.iter().map(|_| Vec::new()));
+    let chunks: Vec<&[String]> = titles.chunks(MATCH_CHUNK).collect();
+    for pair in chunks.chunks(2) {
+        for (size, outcome) in two_at_once(graphql, kind, pair).await {
+            match outcome {
+                Ok(part) => {
+                    served += 1;
+                    found.extend(part);
+                }
+                Err(error) => {
+                    failure.get_or_insert(error);
+                    found.extend((0..size).map(|_| Vec::new()));
+                }
             }
         }
     }

@@ -93,6 +93,7 @@ SourceLinkDto link(
     unitCount: units,
     manual: manual,
     needsHint: false,
+    variants: const [],
   );
 }
 

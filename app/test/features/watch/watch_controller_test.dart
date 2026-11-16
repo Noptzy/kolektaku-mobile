@@ -84,6 +84,7 @@ void main() {
             required double episode,
             String? preferred,
             required List<String> exclude,
+            String? audio,
           }) async {
             if (episode == 2) await slow.future;
             return playbackOn('a', episode: episode);
@@ -116,6 +117,7 @@ void main() {
         required double episode,
         String? preferred,
         required List<String> exclude,
+        String? audio,
       }) async => playbackOn('a'),
       resolve: ({
         required String source,

@@ -35,6 +35,13 @@ extension WatchSwitching on WatchController {
     return load(startAt: _position);
   }
 
+  Future<void> useAudio(String? audio) {
+    request = audio == null
+        ? request.copyWith(clearAudio: true)
+        : request.copyWith(audio: audio);
+    return load(startAt: _position);
+  }
+
   Future<void> tryOtherSource() {
     final current = loaded;
     if (current == null) return load();

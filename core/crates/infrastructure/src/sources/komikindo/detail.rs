@@ -137,5 +137,6 @@ pub fn parse_detail(html: &str, item_id: &str, base: &Url) -> Result<SourceDetai
             .filter(|genre| !genre.is_empty())
             .collect(),
         catalog_id: None,
+        mal_id: None,
     })
 }
