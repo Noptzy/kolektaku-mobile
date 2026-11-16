@@ -67,7 +67,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
 
   double get _width => _zoom.widthOf(MediaQuery.sizeOf(context).width);
 
-  void _onZoom() => _anchor.followZoom(_scroll, _zoom.zoom);
+  void _onZoom() =>
+      _anchor.followZoom(_scroll, _zoom.zoom, focalY: _zoom.focalY);
 
   void _onChange() {
     final chapters = _controller.chapters;

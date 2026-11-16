@@ -12,11 +12,13 @@ class SceneStartView extends StatelessWidget {
     super.key,
     required this.onCamera,
     required this.onFiles,
+    required this.onSample,
     required this.quotaLeft,
   });
 
   final VoidCallback onCamera;
   final VoidCallback onFiles;
+  final VoidCallback onSample;
   final int? quotaLeft;
 
   @override
@@ -35,6 +37,14 @@ class SceneStartView extends StatelessWidget {
           ),
           Center(
             child: PictureButtons(onCamera: onCamera, onFiles: onFiles),
+          ),
+          Center(
+            child: ShadButton.ghost(
+              key: const Key('try-sample'),
+              onPressed: onSample,
+              leading: const Icon(LucideIcons.sparkles, size: 18),
+              child: const Text('Coba dengan contoh'),
+            ),
           ),
           QuotaNote(left: quotaLeft, padded: false),
           const SceneSteps(),

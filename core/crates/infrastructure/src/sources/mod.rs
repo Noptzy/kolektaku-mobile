@@ -10,5 +10,5 @@ mod contract_tests;
 #[cfg(test)]
 mod registry_tests;
 
-pub use registry::{hianime, komikindo, komiku, kuramanime};
+pub use registry::{gogoanime, hianime, komikindo, komiku, kuramanime};
 pub use support::share_page_cache;

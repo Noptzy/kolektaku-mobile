@@ -9,6 +9,7 @@ const _decodeSteps = [1.0, 1.5, 2.0, maxReaderZoom];
 class ReaderZoom extends ChangeNotifier {
   double zoom = 1;
   double pan = 0;
+  double focalY = 0;
   bool pinching = false;
 
   bool get zoomed => zoom > 1;
@@ -23,8 +24,15 @@ class ReaderZoom extends ChangeNotifier {
   double _clampPan(double value, double screen) =>
       value.clamp(-(screen * zoom - screen), 0.0).toDouble();
 
-  void setZoom(double value, double screen) {
+  void setZoom(double value, double screen, {Offset? focal}) {
+    final before = zoom;
     zoom = value.clamp(1.0, maxReaderZoom).toDouble();
+    if (focal == null) {
+      focalY = 0;
+    } else {
+      pan = focal.dx - (focal.dx - pan) * (zoom / before);
+      focalY = focal.dy;
+    }
     pan = _clampPan(pan, screen);
     notifyListeners();
   }
@@ -79,8 +87,13 @@ class _ZoomSurfaceState extends State<ZoomSurface> {
     return (points[0] - points[1]).distance;
   }
 
+  Offset _midpoint() {
+    final points = _touches.values.toList();
+    return (points[0] + points[1]) / 2;
+  }
+
   void _down(PointerDownEvent event) {
-    _touches[event.pointer] = event.position;
+    _touches[event.pointer] = event.localPosition;
     if (_touches.length != 2) return;
     _startDistance = math.max(_distance(), 1);
     _startZoom = widget.model.zoom;
@@ -90,11 +103,15 @@ class _ZoomSurfaceState extends State<ZoomSurface> {
   void _move(PointerMoveEvent event) {
     final before = _touches[event.pointer];
     if (before == null) return;
-    _touches[event.pointer] = event.position;
+    _touches[event.pointer] = event.localPosition;
     if (_touches.length == 2) {
-      widget.model.setZoom(_startZoom * _distance() / _startDistance, _screen);
+      widget.model.setZoom(
+        _startZoom * _distance() / _startDistance,
+        _screen,
+        focal: _midpoint(),
+      );
     } else if (_touches.length == 1) {
-      widget.model.panBy(event.position.dx - before.dx, _screen);
+      widget.model.panBy(event.localPosition.dx - before.dx, _screen);
     }
   }
 

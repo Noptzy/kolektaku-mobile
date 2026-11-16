@@ -141,6 +141,7 @@ class StreamPlanDto {
   final String url;
   final String script;
   final String allowedHost;
+  final String referer;
 
   const StreamPlanDto({
     required this.kind,
@@ -149,6 +150,7 @@ class StreamPlanDto {
     required this.url,
     required this.script,
     required this.allowedHost,
+    required this.referer,
   });
 
   @override
@@ -158,7 +160,8 @@ class StreamPlanDto {
       headers.hashCode ^
       url.hashCode ^
       script.hashCode ^
-      allowedHost.hashCode;
+      allowedHost.hashCode ^
+      referer.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -170,7 +173,8 @@ class StreamPlanDto {
           headers == other.headers &&
           url == other.url &&
           script == other.script &&
-          allowedHost == other.allowedHost;
+          allowedHost == other.allowedHost &&
+          referer == other.referer;
 }
 
 enum StreamPlanKind { direct, needsWebView }

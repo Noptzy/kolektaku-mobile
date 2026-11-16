@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../src/rust/dto/stream_extras.dart';
 import 'playback_engine.dart';
+import 'seek_bubble.dart';
 import 'seek_painter.dart';
 import 'skip_logic.dart';
 
@@ -14,11 +15,13 @@ class SeekBar extends StatefulWidget {
     super.key,
     required this.snapshot,
     required this.onSeek,
+    this.onScrub,
     this.skips,
   });
 
   final ValueListenable<PlaybackSnapshot> snapshot;
   final ValueChanged<double> onSeek;
+  final VoidCallback? onScrub;
   final ValueListenable<List<SkipDto>>? skips;
 
   @override
@@ -36,6 +39,7 @@ class _SeekBarState extends State<SeekBar> {
 
   void _dragTo(double dx, double width) {
     setState(() => _drag = _fractionAt(dx, width));
+    widget.onScrub?.call();
   }
 
   void _finishDrag() {
@@ -58,40 +62,60 @@ class _SeekBarState extends State<SeekBar> {
         return Semantics(
           label: 'Posisi video',
           slider: true,
-          child: GestureDetector(
-            key: const Key('seek-bar'),
-            behavior: HitTestBehavior.opaque,
-            onTapUp: (details) =>
-                widget.onSeek(_fractionAt(details.localPosition.dx, width)),
-            onHorizontalDragStart: (details) =>
-                _dragTo(details.localPosition.dx, width),
-            onHorizontalDragUpdate: (details) =>
-                _dragTo(details.localPosition.dx, width),
-            onHorizontalDragEnd: (details) => _finishDrag(),
-            onHorizontalDragCancel: () => setState(() => _drag = null),
-            child: SizedBox(
-              height: 32,
-              width: double.infinity,
-              child: ListenableBuilder(
-                listenable: Listenable.merge([widget.snapshot, ?widget.skips]),
-                builder: (context, child) {
-                  final snapshot = widget.snapshot.value;
-                  return CustomPaint(
-                    painter: SeekPainter(
-                      fraction: _drag ?? snapshot.fraction,
-                      marks: _marks(snapshot),
-                      dragging: _drag != null,
-                      trackColor: scheme.secondary,
-                      playedColor: scheme.primary,
-                      markColor: skipMarkColor,
-                    ),
-                  );
-                },
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              GestureDetector(
+                key: const Key('seek-bar'),
+                behavior: HitTestBehavior.opaque,
+                onTapUp: (details) =>
+                    widget.onSeek(_fractionAt(details.localPosition.dx, width)),
+                onHorizontalDragStart: (details) =>
+                    _dragTo(details.localPosition.dx, width),
+                onHorizontalDragUpdate: (details) =>
+                    _dragTo(details.localPosition.dx, width),
+                onHorizontalDragEnd: (details) => _finishDrag(),
+                onHorizontalDragCancel: () => setState(() => _drag = null),
+                child: SizedBox(
+                  height: 32,
+                  width: double.infinity,
+                  child: ListenableBuilder(
+                    listenable: Listenable.merge([
+                      widget.snapshot,
+                      ?widget.skips,
+                    ]),
+                    builder: (context, child) {
+                      final snapshot = widget.snapshot.value;
+                      return CustomPaint(
+                        painter: SeekPainter(
+                          fraction: _drag ?? snapshot.fraction,
+                          marks: _marks(snapshot),
+                          dragging: _drag != null,
+                          trackColor: scheme.secondary,
+                          playedColor: scheme.primary,
+                          markColor: skipMarkColor,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
+              if (_drag != null) _bubble(width),
+            ],
           ),
         );
       },
+    );
+  }
+
+  Widget _bubble(double width) {
+    final snapshot = widget.snapshot.value;
+    final fraction = _drag ?? 0;
+    return SeekBubble(
+      target: snapshot.duration * fraction,
+      current: snapshot.position,
+      thumbX: seekInset + (width - seekInset * 2) * fraction,
+      trackWidth: width,
     );
   }
 }

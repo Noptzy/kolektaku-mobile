@@ -405,6 +405,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   UpdateOfferDto? dco_decode_opt_box_autoadd_update_offer_dto(dynamic raw);
 
   @protected
+  PingVerdictDto dco_decode_ping_verdict_dto(dynamic raw);
+
+  @protected
   PlaybackDto dco_decode_playback_dto(dynamic raw);
 
   @protected
@@ -469,6 +472,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SourceOrderDto dco_decode_source_order_dto(dynamic raw);
+
+  @protected
+  SourcePingDto dco_decode_source_ping_dto(dynamic raw);
 
   @protected
   SourceStatusDto dco_decode_source_status_dto(dynamic raw);
@@ -981,6 +987,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  PingVerdictDto sse_decode_ping_verdict_dto(SseDeserializer deserializer);
+
+  @protected
   PlaybackDto sse_decode_playback_dto(SseDeserializer deserializer);
 
   @protected
@@ -1049,6 +1058,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SourceOrderDto sse_decode_source_order_dto(SseDeserializer deserializer);
+
+  @protected
+  SourcePingDto sse_decode_source_ping_dto(SseDeserializer deserializer);
 
   @protected
   SourceStatusDto sse_decode_source_status_dto(SseDeserializer deserializer);
@@ -1690,6 +1702,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_ping_verdict_dto(
+    PingVerdictDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_playback_dto(PlaybackDto self, SseSerializer serializer);
 
   @protected
@@ -1784,6 +1802,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     SourceOrderDto self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_source_ping_dto(SourcePingDto self, SseSerializer serializer);
 
   @protected
   void sse_encode_source_status_dto(

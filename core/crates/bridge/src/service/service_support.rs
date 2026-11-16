@@ -66,6 +66,7 @@ pub fn site() -> FakeSource {
                 url: "https://a.test/ep1".into(),
                 script: "1".into(),
                 allowed_host: "a.test".into(),
+                referer: None,
             },
         );
     FakeSource::new("a", MediaKind::Anime)

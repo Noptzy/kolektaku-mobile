@@ -19,7 +19,10 @@ class WebViewStreamRunner {
     InAppWebViewController? controller;
     final headless = HeadlessInAppWebView(
       initialSize: const Size(1, 1),
-      initialUrlRequest: URLRequest(url: WebUri.uri(page)),
+      initialUrlRequest: URLRequest(
+        url: WebUri.uri(page),
+        headers: plan.referer.isEmpty ? null : {'Referer': plan.referer},
+      ),
       initialSettings: InAppWebViewSettings(
         javaScriptEnabled: true,
         domStorageEnabled: true,

@@ -13,6 +13,8 @@ import 'resume_point.dart';
 import 'video_quality.dart';
 
 typedef Refetch = Future<ResolvedStream> Function();
+const holdSpeed = 2.0;
+
 typedef ProgressSink = void Function(Duration position, Duration length);
 
 class PlayerSession {
@@ -134,6 +136,19 @@ class PlayerSession {
   }
 
   Future<void> setSpeed(double speed) => engine.setSpeed(speed);
+
+  double? _speedBeforeHold;
+
+  Future<void> holdFast() {
+    _speedBeforeHold ??= engine.snapshot.value.speed;
+    return engine.setSpeed(holdSpeed);
+  }
+
+  Future<void> releaseFast() {
+    final before = _speedBeforeHold;
+    _speedBeforeHold = null;
+    return before == null ? Future.value() : engine.setSpeed(before);
+  }
 
   Future<void> selectQuality(int index) async {
     if (index == quality.value || index < 0 || index >= sources.length) return;

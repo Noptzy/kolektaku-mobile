@@ -2,6 +2,9 @@ use domain::media::MediaSummary;
 
 const MAX_SYNONYM_QUERIES: usize = 3;
 const MIN_LETTERS: usize = 3;
+const MAX_FRAGMENTS: usize = 3;
+const MIN_FRAGMENT_LETTERS: usize = 5;
+const NOISE_WORDS: [&str; 7] = ["movie", "season", "part", "film", "ova", "special", "tv"];
 const PUNCTUATION: [char; 16] = [
     '[', ']', '(', ')', '{', '}', '【', '】', ':', '!', '?', ';', '~', '！', '？', '：',
 ];
@@ -56,6 +59,49 @@ fn push_title(queries: &mut Vec<String>, title: &str) -> bool {
     true
 }
 
+fn quiet(segment: &str) -> String {
+    segment
+        .split_whitespace()
+        .filter(|word| {
+            let lower = word.to_lowercase();
+            !NOISE_WORDS.contains(&lower.as_str()) && !word.chars().all(|c| c.is_ascii_digit())
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn fragments_of(title: &str) -> Vec<String> {
+    let segments: Vec<String> = title
+        .split([':', '：'])
+        .flat_map(|part| part.split(" - "))
+        .map(|part| part.split_whitespace().collect::<Vec<_>>().join(" "))
+        .filter(|part| !part.is_empty())
+        .collect();
+    if segments.len() < 2 {
+        return Vec::new();
+    }
+    let tails = segments.iter().skip(1).rev().map(|part| quiet(part));
+    let head = std::iter::once(segments[0].clone());
+    tails
+        .chain(head)
+        .filter(|part| {
+            part.chars().filter(|symbol| symbol.is_alphabetic()).count() >= MIN_FRAGMENT_LETTERS
+        })
+        .collect()
+}
+
+fn push_fragments(queries: &mut Vec<String>, title: &str, added: &mut usize) {
+    for fragment in fragments_of(title) {
+        if *added == MAX_FRAGMENTS {
+            return;
+        }
+        if is_latin_title(&fragment) && is_new(queries, &fragment) {
+            queries.push(fragment);
+            *added += 1;
+        }
+    }
+}
+
 pub fn search_queries(media: &MediaSummary) -> Vec<String> {
     let mut queries = Vec::new();
     push_title(&mut queries, &media.title.romaji);
@@ -76,6 +122,11 @@ pub fn search_queries(media: &MediaSummary) -> Vec<String> {
         if is_latin_title(synonym) && push_title(&mut queries, synonym) {
             synonyms += 1;
         }
+    }
+    let mut fragments = 0;
+    push_fragments(&mut queries, &media.title.romaji, &mut fragments);
+    if let Some(name) = english {
+        push_fragments(&mut queries, name, &mut fragments);
     }
     queries
 }

@@ -76,6 +76,11 @@ class WatchPlayerView extends StatelessWidget {
           session.skip(delta);
           onInteract();
         },
+        onTogglePlay: () {
+          session.togglePlay();
+          onInteract();
+        },
+        onHold: (held) => held ? session.holdFast() : session.releaseFast(),
       ),
       _buffering(),
       AnimatedOpacity(
