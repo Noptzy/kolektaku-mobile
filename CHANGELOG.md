@@ -2,6 +2,24 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.4.1] — 2026-11-16
+
+### Ditambahkan
+- Pemutar ala YouTube: ketuk dua kali di sisi kiri atau kanan melompat 10 detik, ketukan berikutnya menambah (+20, +30 detik) dengan penanda di layar; ketuk dua kali di tengah memutar atau menjeda; tahan di layar memutar 2x selama ditahan; tombol putar atau jeda besar di tengah.
+- Geser bilah posisi memperlihatkan gelembung waktu tujuan beserta selisihnya (misalnya 12:34 +0:45), dan kontrol tidak lagi hilang saat bilah sedang digeser.
+- Pencarian dari gambar: tombol "Coba dengan contoh" yang mencari satu frame bawaan, untuk melihat hasilnya tanpa memilih gambar.
+- Pengaturan > Notifikasi: tombol "Periksa sekarang" yang langsung memeriksa favoritmu dan mengirim notifikasi bila ada episode atau chapter baru.
+- Sumber anime ke-3 sebagai cadangan bila salah satu sumber sedang mati: daftar episode, sub dan dub, beberapa server, subtitle, serta tombol lewati intro dan outro.
+- Pengaturan → Kelola sumber: tombol "Cek koneksi semua sumber" yang menunjukkan tiap sumber aktif (dengan waktu jawabnya), berubah tampilannya, atau tidak bisa dijangkau.
+
+### Diubah
+- Kartu "Sumber sedang tidak bisa dijangkau" di Beranda dihapus; sumber yang mati cukup dilewati tanpa mengganggu.
+- "Coba notifikasi" kini meminta izin lebih dulu bila belum diberikan dan menjelaskan bila gagal, tidak lagi mati diam-diam. File bunyi "tuturu" dijaga agar tidak ikut terbuang saat paket dikecilkan.
+
+### Diperbaiki
+- Memperbesar halaman komik dengan dua jari kini berpusat di antara jari, tidak lagi selalu bergeser ke pojok kiri bawah.
+- Judul bersubjudul (misalnya film Kimetsu no Yaiba: Mugen Jou-hen) kini ikut dicari lewat bagian khasnya, sehingga ketemu di sumber yang tidak menjawab judul panjang.
+
 ## [0.4.0] — 2026-11-16
 
 ### Ditambahkan
