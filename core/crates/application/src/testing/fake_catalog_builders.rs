@@ -1,7 +1,7 @@
 use domain::error::SourceError;
 use domain::media::{
-    EpisodeInfo, MediaDetail, MediaId, MediaKind, MediaListKind, MediaSummary, Profile,
-    ProfileKind, ProfileSummary,
+    EpisodeInfo, MediaDetail, MediaFormat, MediaId, MediaKind, MediaListKind, MediaSummary,
+    Profile, ProfileKind, ProfileSummary,
 };
 
 use super::fake_catalog::FakeCatalog;
@@ -13,6 +13,11 @@ impl FakeCatalog {
 
     pub fn with_detail(mut self, detail: MediaDetail) -> Self {
         self.details.insert(detail.summary.id, detail);
+        self
+    }
+
+    pub fn with_format(mut self, id: MediaId, format: MediaFormat) -> Self {
+        self.formats.insert(id, format);
         self
     }
 

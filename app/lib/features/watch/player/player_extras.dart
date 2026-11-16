@@ -2,23 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../src/rust/api/subtitle.dart' as core;
 import '../../../src/rust/dto/cues.dart';
 import '../../../src/rust/dto/settings.dart';
 import '../../../src/rust/dto/stream.dart';
 import '../../../src/rust/dto/stream_extras.dart';
+import 'cue_loading.dart';
 import 'playback_engine.dart';
 import 'skip_logic.dart';
+import 'subtitle_cues.dart';
 import 'subtitle_logic.dart';
 import 'video_quality.dart';
 
-typedef CueLoader = Future<List<CueDto>> Function(
-  String url,
-  List<HeaderDto> headers,
-);
-
-Future<List<CueDto>> loadCuesFromCore(String url, List<HeaderDto> headers) =>
-    core.fetchCues(url: url, headers: headers);
+export 'cue_loading.dart';
 
 class PlayerExtras {
   PlayerExtras({
@@ -36,15 +31,21 @@ class PlayerExtras {
   final ValueNotifier<List<VideoQuality>> tracks = ValueNotifier(const []);
   final ValueNotifier<String?> trackId = ValueNotifier(null);
   final ValueNotifier<SubtitleDto?> subtitle = ValueNotifier(null);
-  final ValueNotifier<List<CueDto>> cues = ValueNotifier(const []);
   final ValueNotifier<SkipDto?> current = ValueNotifier(null);
   final ValueNotifier<List<SkipDto>> marks = ValueNotifier(const []);
+
+  late final SubtitleCues subtitleCues = SubtitleCues(
+    loader: cueLoader,
+    settings: settings,
+    position: () => engine.snapshot.value.position,
+  );
+
+  ValueNotifier<List<CueDto>> get cues => subtitleCues.cues;
 
   List<SubtitleDto> available = const [];
   List<SkipDto> _skips = const [];
   List<HeaderDto> _headers = const [];
   final Set<String> _taken = {};
-  int _cueRequest = 0;
   bool _closed = false;
 
   bool get hasSubtitles => available.isNotEmpty;
@@ -56,8 +57,15 @@ class PlayerExtras {
     _headers = set.headers;
     _taken.clear();
     current.value = null;
+    subtitleCues.newEpisode();
     unawaited(
-      selectSubtitle(chooseSubtitle(available, settings.subtitleLanguage)),
+      selectSubtitle(
+        chooseSubtitle(
+          available,
+          settings.subtitleLanguage,
+          translation: settings.translation,
+        ),
+      ),
     );
   }
 
@@ -86,16 +94,12 @@ class PlayerExtras {
   }
 
   Future<void> selectSubtitle(SubtitleDto? track) async {
-    final request = ++_cueRequest;
     subtitle.value = track;
-    cues.value = const [];
-    if (track == null) return;
-    try {
-      final loaded = await cueLoader(track.url, _headers);
-      if (request == _cueRequest && !_closed) cues.value = loaded;
-    } on Object {
-      if (request == _cueRequest && !_closed) cues.value = const [];
+    if (track == null) {
+      subtitleCues.clear();
+      return;
     }
+    await subtitleCues.load(track, _headers);
   }
 
   void onPosition(Duration position) {
@@ -122,7 +126,7 @@ class PlayerExtras {
     tracks.dispose();
     trackId.dispose();
     subtitle.dispose();
-    cues.dispose();
+    subtitleCues.dispose();
     current.dispose();
     marks.dispose();
   }

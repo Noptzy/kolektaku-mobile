@@ -187,4 +187,39 @@ impl LibraryRepository for MemoryLibrary {
         self.state.lock().unwrap().searches.remove(&kind);
         Ok(())
     }
+
+    async fn move_entries(
+        &self,
+        from: MediaKind,
+        to: MediaKind,
+        media: &[MediaRef],
+    ) -> Result<usize, StorageError> {
+        let mut state = self.state.lock().unwrap();
+        let mut moved = 0;
+        for item in state.favorites.iter_mut() {
+            if item.entry.kind == from && media.contains(&item.entry.media) {
+                item.entry.kind = to;
+                moved += 1;
+            }
+        }
+        for item in state.history.iter_mut() {
+            if item.entry.kind == from && media.contains(&item.entry.media) {
+                item.entry.kind = to;
+                moved += 1;
+            }
+        }
+        let orders: Vec<_> = state
+            .orders
+            .keys()
+            .filter(|(kind, reference)| *kind == from && media.contains(reference))
+            .cloned()
+            .collect();
+        for key in orders {
+            if let Some(order) = state.orders.remove(&key) {
+                state.orders.insert((to, key.1), order);
+                moved += 1;
+            }
+        }
+        Ok(moved)
+    }
 }

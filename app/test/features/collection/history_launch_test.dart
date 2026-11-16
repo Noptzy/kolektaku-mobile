@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/core/routes.dart';
 import 'package:kolektaku/features/collection/history_launch.dart';
+import 'package:kolektaku/features/novel_reader/novel_request.dart';
 import 'package:kolektaku/features/reader/read_request.dart';
 import 'package:kolektaku/features/watch/watch_request.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
@@ -13,6 +14,22 @@ void main() {
     test('anime goes to the player and comics to the reader', () {
       expect(historyRoute(progress(1)), Routes.watch);
       expect(historyRoute(progress(1, kind: MediaKindDto.manga)), Routes.read);
+    });
+
+    test('a novel opens the text reader at the chapter it was left at', () {
+      final item = progress(
+        4,
+        kind: MediaKindDto.novel,
+        title: 'Novel',
+        unit: 9,
+      );
+      expect(historyRoute(item), Routes.novel);
+      final request = historyRequest(item);
+      expect(request, isA<NovelRequest>());
+      final novel = request as NovelRequest;
+      expect(novel.chapter, 9);
+      expect(novel.title, 'Novel');
+      expect(novel.reference, ref(4));
     });
 
     test('a saved position becomes the start of the episode', () {

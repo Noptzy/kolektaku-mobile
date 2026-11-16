@@ -7,6 +7,7 @@ pub mod episodes;
 pub mod library;
 pub mod links;
 pub mod media;
+pub mod novel;
 pub mod profile;
 pub mod profile_facts;
 pub mod profile_summary;
@@ -16,6 +17,7 @@ pub mod sources;
 pub mod stream;
 pub mod stream_extras;
 pub mod studio;
+pub mod translate;
 pub mod update;
 
 #[cfg(test)]

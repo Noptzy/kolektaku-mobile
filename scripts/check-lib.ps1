@@ -23,6 +23,12 @@ $englishWords = @(
     "Select", "Choose", "Done", "Confirm", "Submit", "Open"
 )
 $wordPattern = "'[^'\r\n]*\b(" + ($englishWords -join "|") + ")\b[^'\r\n]*'"
+$translationTechWords = @(
+    "model", "mesin", "Google", "DeepL", "ML Kit", "LibreTranslate", "Bing",
+    "Microsoft Translator"
+)
+$translationTechPattern = "'[^'\r\n]*\b(" + ($translationTechWords -join "|") + ")\b[^'\r\n]*'"
+$aiPattern = "'[^'\r\n]*\bAI\b[^'\r\n]*'"
 
 $problems = @()
 foreach ($file in $files) {
@@ -45,6 +51,9 @@ foreach ($file in $files) {
         if ($line -match "Key\(|ValueKey\(|MethodChannel\(|Uri\.parse|RegExp\(|https?://") { continue }
         if ($line -match $wordPattern) {
             $problems += "kata Inggris di teks layar: ${relative}:$($index + 1): $($line.Trim())"
+        }
+        if (($line -match $translationTechPattern) -or ($line -cmatch $aiPattern)) {
+            $problems += "teknologi terjemahan disebut di teks layar: ${relative}:$($index + 1): $($line.Trim())"
         }
     }
 }

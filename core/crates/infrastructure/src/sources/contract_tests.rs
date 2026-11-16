@@ -5,13 +5,20 @@ use super::contract::{each_site, serving, source_over};
 use super::registry::REGISTRATIONS;
 
 #[test]
-fn the_registry_has_unique_ids_and_the_three_real_sites() {
+fn the_registry_has_unique_ids_and_the_real_sites() {
     let ids: Vec<&str> = REGISTRATIONS.iter().map(|item| item.defaults.id).collect();
     let mut unique = ids.clone();
     unique.sort_unstable();
     unique.dedup();
     assert_eq!(unique.len(), ids.len());
-    for real in ["kuramanime", "komiku", "komikindo"] {
+    for real in [
+        "kuramanime",
+        "komiku",
+        "komikindo",
+        "meionovels",
+        "novelphoenix",
+        "weebcentral",
+    ] {
         assert!(ids.contains(&real), "{real}");
     }
 }
@@ -33,6 +40,11 @@ fn every_source_describes_itself_consistently() {
         assert_eq!(
             source.pages().is_some(),
             info.kind == MediaKind::Manga,
+            "{id}"
+        );
+        assert_eq!(
+            source.texts().is_some(),
+            info.kind == MediaKind::Novel,
             "{id}"
         );
     }

@@ -5,6 +5,7 @@ import '../../core/theme/kolektaku_text.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/pressable.dart';
 import '../../widgets/swipe_sheet.dart';
+import '../../widgets/translated_text.dart';
 
 class WatchHeading extends StatelessWidget {
   const WatchHeading({
@@ -90,8 +91,9 @@ class _Synopsis extends StatelessWidget {
       label: 'Sinopsis, buka selengkapnya',
       child: Padding(
         padding: const EdgeInsets.only(top: Spacing.xs),
-        child: Text(
-          text,
+        child: TranslatedText(
+          text: text,
+          showNote: false,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.cardMeta.copyWith(
@@ -121,9 +123,9 @@ Future<void> showSynopsisSheet(
             maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.5,
           ),
           child: SingleChildScrollView(
-            child: Text(
-              text,
-              key: const Key('synopsis-full'),
+            child: TranslatedText(
+              text: text,
+              textKey: const Key('synopsis-full'),
               style: ShadTheme.of(sheetContext).textTheme.p
                   .copyWith(height: 1.5),
             ),

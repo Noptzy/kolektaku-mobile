@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../core/kind_names.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 
@@ -23,8 +24,7 @@ List<SourceEntry> numberedSources(
 }
 
 String sourceLabel(MediaKindDto kind, int number) {
-  final name = kind == MediaKindDto.anime ? 'anime' : 'komik';
-  return 'Sumber $name $number';
+  return 'Sumber ${kindNoun(kind)} $number';
 }
 
 String sourceHint(SourceStatusDto status) {

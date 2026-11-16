@@ -37,6 +37,11 @@ void main() {
       expect(kindSwitchIcon(MediaKindDto.anime), LucideIcons.film);
       expect(kindSwitchIcon(MediaKindDto.manga), LucideIcons.bookOpen);
     });
+
+    test('novels are named and get their own icon', () {
+      expect(kindSwitchLabel(MediaKindDto.novel), 'Novel');
+      expect(kindSwitchIcon(MediaKindDto.novel), LucideIcons.bookText);
+    });
   });
 
   group('KindSwitch', () {
@@ -51,6 +56,18 @@ void main() {
       final anime = tester.getSize(find.byKey(const Key('kind-anime')));
       final comic = tester.getSize(find.byKey(const Key('kind-manga')));
       expect(anime.width, comic.width);
+    });
+
+    testWidgets('novels are the third equal part', (tester) async {
+      await show(tester, MediaKindDto.novel);
+      expect(find.text('Novel'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.bookText), findsOneWidget);
+      final anime = tester.getSize(find.byKey(const Key('kind-anime')));
+      final novel = tester.getSize(find.byKey(const Key('kind-novel')));
+      expect(novel.width, anime.width);
+      final comicAt = tester.getTopLeft(find.byKey(const Key('kind-manga')));
+      final novelAt = tester.getTopLeft(find.byKey(const Key('kind-novel')));
+      expect(novelAt.dx, greaterThan(comicAt.dx));
     });
 
     testWidgets('the active half is yellow and the other one is dark', (

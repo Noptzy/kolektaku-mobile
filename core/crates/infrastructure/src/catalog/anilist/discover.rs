@@ -1,7 +1,9 @@
 use domain::media::{Discover, DiscoverSort, MediaKind, YearSpan};
 use serde_json::{Value, json};
 
+use super::catalog::media_type;
 use super::covers::anilist_name;
+use super::format_scope::apply_format_scope;
 
 const GENRES: [&str; 19] = [
     "Action",
@@ -83,10 +85,7 @@ pub fn discover_variables(
     let mut variables = json!({
         "page": page,
         "perPage": per_page,
-        "type": match kind {
-            MediaKind::Anime => "ANIME",
-            MediaKind::Manga => "MANGA",
-        },
+        "type": media_type(kind),
         "sort": [sort_of(filter, query.is_some())],
     });
     if let Some(text) = query {
@@ -101,6 +100,7 @@ pub fn discover_variables(
         add_years(&mut variables, years);
     }
     add_facets(&mut variables, filter);
+    apply_format_scope(&mut variables, kind);
     if let Some(code) = country {
         variables["country"] = json!(code);
     }

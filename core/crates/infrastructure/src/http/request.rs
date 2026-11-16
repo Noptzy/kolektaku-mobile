@@ -48,6 +48,21 @@ impl HttpRequest {
         .with_header("accept", "application/json")
     }
 
+    pub fn post_form(url: impl Into<String>, fields: &[(&str, &str)]) -> Self {
+        let body = url::form_urlencoded::Serializer::new(String::new())
+            .extend_pairs(fields)
+            .finish();
+        Self {
+            method: HttpMethod::Post,
+            url: url.into(),
+            headers: Vec::new(),
+            body: Some(body),
+            bytes: None,
+        }
+        .with_header("content-type", "application/x-www-form-urlencoded")
+        .with_header("accept", "application/json")
+    }
+
     pub fn with_header(mut self, name: &str, value: &str) -> Self {
         self.headers.push((name.to_lowercase(), value.to_string()));
         self
@@ -91,6 +106,30 @@ mod tests {
         assert_eq!(request.bytes.as_deref(), Some(&[1u8, 2, 3][..]));
         assert_eq!(request.body, None);
         assert_eq!(request.header("content-type"), Some("image/jpeg"));
+    }
+
+    #[test]
+    fn post_form_encodes_repeated_fields_in_order() {
+        let request = HttpRequest::post_form(
+            "https://example.test/f",
+            &[("q", "a b"), ("q", "c&d=e"), ("q", "é<i>")],
+        );
+        assert_eq!(request.method, HttpMethod::Post);
+        assert_eq!(
+            request.body.as_deref(),
+            Some("q=a+b&q=c%26d%3De&q=%C3%A9%3Ci%3E")
+        );
+        assert_eq!(
+            request.header("content-type"),
+            Some("application/x-www-form-urlencoded")
+        );
+        assert_eq!(request.bytes, None);
+    }
+
+    #[test]
+    fn post_form_without_fields_has_an_empty_body() {
+        let request = HttpRequest::post_form("https://example.test/f", &[]);
+        assert_eq!(request.body.as_deref(), Some(""));
     }
 
     #[test]

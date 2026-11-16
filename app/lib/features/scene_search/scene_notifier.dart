@@ -11,7 +11,20 @@ class SceneSearchNotifier extends Notifier<SceneSearchState> {
   int _request = 0;
 
   @override
-  SceneSearchState build() => const SceneSearchState();
+  SceneSearchState build() {
+    Future.microtask(_loadQuota);
+    return const SceneSearchState();
+  }
+
+  Future<void> _loadQuota() async {
+    try {
+      final left = await ref.read(sceneGatewayProvider).quotaLeft();
+      if (!ref.mounted || left == null || state.quotaLeft != null) return;
+      state = state.copyWith(quotaLeft: left);
+    } on Object {
+      return;
+    }
+  }
 
   Future<void> pickFromGallery() {
     return _pick((source) => source.fromGallery());
@@ -31,7 +44,11 @@ class SceneSearchNotifier extends Notifier<SceneSearchState> {
 
   Future<void> search(Uint8List image) async {
     final request = ++_request;
-    state = SceneSearchState(status: SceneStatus.searching, image: image);
+    state = SceneSearchState(
+      status: SceneStatus.searching,
+      image: image,
+      quotaLeft: state.quotaLeft,
+    );
     try {
       final finding = await ref.read(sceneGatewayProvider).find(image);
       if (request != _request) return;
@@ -78,7 +95,7 @@ class SceneSearchNotifier extends Notifier<SceneSearchState> {
 
   void reset() {
     _request++;
-    state = const SceneSearchState();
+    state = SceneSearchState(quotaLeft: state.quotaLeft);
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../widgets/sheet_scroll.dart';
+import 'sheet_scroll.dart';
 
 class OptionList<T> extends StatelessWidget {
   const OptionList({
@@ -9,11 +9,13 @@ class OptionList<T> extends StatelessWidget {
     required this.options,
     required this.selected,
     required this.onPicked,
+    this.footer = const [],
   });
 
   final List<(String, T)> options;
   final T selected;
   final ValueChanged<T> onPicked;
+  final List<Widget> footer;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class OptionList<T> extends StatelessWidget {
                 ),
               ),
             ),
+          ...footer,
         ],
       ),
     );

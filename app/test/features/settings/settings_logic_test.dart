@@ -44,6 +44,7 @@ void main() {
       expect(label, 'Sumber anime 2');
       expect(label, isNot(contains('Nama Situs')));
       expect(sourceLabel(MediaKindDto.manga, 1), 'Sumber komik 1');
+      expect(sourceLabel(MediaKindDto.novel, 2), 'Sumber novel 2');
     });
   });
 

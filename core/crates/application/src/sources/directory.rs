@@ -4,7 +4,7 @@ use std::sync::Arc;
 use domain::error::SourceError;
 use domain::source::SourceId;
 
-use crate::ports::{PageSource, SourceProvider, VideoSource};
+use crate::ports::{PageSource, SourceProvider, TextSource, VideoSource};
 use crate::settings::AppSettingsStore;
 
 #[derive(Clone)]
@@ -51,6 +51,12 @@ impl SourceDirectory {
             .ok_or_else(|| SourceError::Unsupported(format!("{id} has no pages")))
     }
 
+    pub fn texts(&self, id: &SourceId) -> Result<&dyn TextSource, SourceError> {
+        self.get(id)?
+            .texts()
+            .ok_or_else(|| SourceError::Unsupported(format!("{id} has no text")))
+    }
+
     pub fn priorities(&self) -> HashMap<SourceId, u8> {
         self.sources
             .iter()
@@ -64,14 +70,19 @@ mod tests {
     use domain::media::MediaKind;
 
     use super::*;
-    use crate::testing::{FakeSource, FakeVideo};
+    use crate::testing::{FakeSource, FakeText, FakeVideo};
 
     fn directory() -> SourceDirectory {
         let plain: Arc<dyn SourceProvider> =
             Arc::new(FakeSource::new("plain", MediaKind::Manga).with_priority(7));
         let streaming: Arc<dyn SourceProvider> =
             Arc::new(FakeSource::new("streaming", MediaKind::Anime).with_video(FakeVideo::new()));
-        SourceDirectory::new(vec![plain, streaming])
+        let reading: Arc<dyn SourceProvider> =
+            Arc::new(
+                FakeSource::new("reading", MediaKind::Novel)
+                    .with_text(FakeText::new().with_chapter("c1", "id", &["Halo"])),
+            );
+        SourceDirectory::new(vec![plain, streaming, reading])
     }
 
     #[test]
@@ -99,6 +110,22 @@ mod tests {
     }
 
     #[test]
+    fn text_is_only_available_where_declared() {
+        let directory = directory();
+        assert!(directory.texts(&SourceId::new("reading")).is_ok());
+        for id in ["plain", "streaming"] {
+            assert!(matches!(
+                directory.texts(&SourceId::new(id)),
+                Err(SourceError::Unsupported(_))
+            ));
+        }
+        assert!(matches!(
+            directory.texts(&SourceId::new("ghost")),
+            Err(SourceError::NotFound(_))
+        ));
+    }
+
+    #[test]
     fn the_preferred_source_comes_from_the_settings_when_attached() {
         use domain::settings::AppSettings;
 
@@ -115,6 +142,6 @@ mod tests {
     fn priorities_are_listed_per_source() {
         let priorities = directory().priorities();
         assert_eq!(priorities[&SourceId::new("plain")], 7);
-        assert_eq!(priorities.len(), 2);
+        assert_eq!(priorities.len(), 3);
     }
 }

@@ -1,7 +1,18 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kolektaku/features/detail/link_style.dart';
 import 'package:kolektaku/src/rust/dto/links.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
+const _ink = Color(0xFFFFFFFF);
+
+Future<T> _pumpIcon<T extends Widget>(WidgetTester tester, Widget icon) async {
+  await tester.pumpWidget(
+    Directionality(textDirection: TextDirection.ltr, child: icon),
+  );
+  return tester.widget<T>(find.byType(T));
+}
 
 ExternalLinkDto link(String site, String url) =>
     ExternalLinkDto(site: site, url: url, kind: 'SOCIAL');
@@ -20,17 +31,43 @@ void main() {
     });
   });
 
-  group('linkIcon', () {
-    test('known sites have their own icon, ignoring case', () {
-      expect(linkIcon('Official Site'), LucideIcons.globe);
-      expect(linkIcon('TWITTER'), linkIcon('x'));
-      expect(linkIcon('Instagram'), isNot(linkIcon('Twitter')));
-      expect(linkIcon('TikTok'), LucideIcons.music);
+  group('brandIconFor', () {
+    test('known social sites map to their own brand icon, ignoring case', () {
+      expect(brandIconFor('Official Site'), isNull);
+      expect(brandIconFor('TWITTER'), brandIconFor('x'));
+      expect(brandIconFor('Instagram'), isNot(brandIconFor('Twitter')));
+      expect(brandIconFor('TikTok'), FontAwesomeIcons.tiktok);
     });
 
-    test('an unknown site gets the plain link icon', () {
-      expect(linkIcon('Mastodon'), LucideIcons.link);
-      expect(linkIcon(''), LucideIcons.link);
+    test('an unknown or official site has no brand icon', () {
+      expect(brandIconFor('Mastodon'), isNull);
+      expect(brandIconFor(''), isNull);
+    });
+  });
+
+  group('siteIcon', () {
+    testWidgets('a known brand renders its own FaIcon', (tester) async {
+      final icon = await _pumpIcon<FaIcon>(
+        tester,
+        siteIcon('Twitter', size: 16, color: _ink),
+      );
+      expect(icon.icon, FontAwesomeIcons.xTwitter.data);
+    });
+
+    testWidgets('the official site keeps the globe icon', (tester) async {
+      final icon = await _pumpIcon<Icon>(
+        tester,
+        siteIcon('Official Site', size: 16, color: _ink),
+      );
+      expect(icon.icon, LucideIcons.globe);
+    });
+
+    testWidgets('an unknown site gets the plain link icon', (tester) async {
+      final icon = await _pumpIcon<Icon>(
+        tester,
+        siteIcon('Mastodon', size: 16, color: _ink),
+      );
+      expect(icon.icon, LucideIcons.link);
     });
   });
 

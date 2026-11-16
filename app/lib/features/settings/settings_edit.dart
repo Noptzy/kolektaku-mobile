@@ -12,6 +12,10 @@ extension SettingsEdit on SettingsDto {
     QualityDto? quality,
     bool? autoNext,
     bool? autoSkip,
+    String? accent,
+    TranslationLanguageDto? translation,
+    ReadingSizeDto? readingSize,
+    ReadingSpacingDto? readingSpacing,
   }) {
     return _build(
       prefersAnime: prefersAnime ?? this.prefersAnime,
@@ -25,6 +29,10 @@ extension SettingsEdit on SettingsDto {
       quality: quality ?? this.quality,
       autoNext: autoNext ?? this.autoNext,
       autoSkip: autoSkip ?? this.autoSkip,
+      accent: accent ?? this.accent,
+      translation: translation ?? this.translation,
+      readingSize: readingSize ?? this.readingSize,
+      readingSpacing: readingSpacing ?? this.readingSpacing,
     );
   }
 
@@ -41,6 +49,10 @@ extension SettingsEdit on SettingsDto {
       quality: quality,
       autoNext: autoNext,
       autoSkip: autoSkip,
+      accent: accent,
+      translation: translation,
+      readingSize: readingSize,
+      readingSpacing: readingSpacing,
     );
   }
 
@@ -67,6 +79,10 @@ SettingsDto _build({
   required QualityDto quality,
   required bool autoNext,
   required bool autoSkip,
+  required String accent,
+  required TranslationLanguageDto translation,
+  required ReadingSizeDto readingSize,
+  required ReadingSpacingDto readingSpacing,
 }) {
   return SettingsDto(
     prefersAnime: prefersAnime,
@@ -80,5 +96,9 @@ SettingsDto _build({
     quality: quality,
     autoNext: autoNext,
     autoSkip: autoSkip,
+    accent: accent,
+    translation: translation,
+    readingSize: readingSize,
+    readingSpacing: readingSpacing,
   );
 }

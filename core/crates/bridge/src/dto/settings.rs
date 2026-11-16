@@ -1,6 +1,7 @@
 use domain::settings::{
-    AppSettings, QualityPreference, SubtitleBoxColor, SubtitleBoxOpacity, SubtitleColor,
-    SubtitleEdge, SubtitleLanguage, SubtitleSize,
+    AccentColor, AppSettings, QualityPreference, ReadingSize, ReadingSpacing, SubtitleBoxColor,
+    SubtitleBoxOpacity, SubtitleColor, SubtitleEdge, SubtitleLanguage, SubtitleSize,
+    TranslationLanguage,
 };
 use domain::source::SourceId;
 
@@ -36,6 +37,12 @@ mirror_enum!(SubtitleEdgeDto <-> SubtitleEdge { None, Shadow, Outline });
 mirror_enum!(SubtitleBoxColorDto <-> SubtitleBoxColor { Black, Gray, Navy });
 mirror_enum!(SubtitleBoxOpacityDto <-> SubtitleBoxOpacity { Off, Light, Medium, Full });
 mirror_enum!(QualityDto <-> QualityPreference { Auto, P1080, P720, P480, P360 });
+mirror_enum!(ReadingSizeDto <-> ReadingSize { Smallest, Small, Medium, Large, Largest });
+mirror_enum!(ReadingSpacingDto <-> ReadingSpacing { Tight, Normal, Loose });
+mirror_enum!(TranslationLanguageDto <-> TranslationLanguage {
+    Off, Indonesian, English, Malay, Japanese, Korean, Chinese, Arabic, Thai, Vietnamese,
+    Filipino, Spanish, Portuguese, French, German, Russian, Hindi, Turkish
+});
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SettingsDto {
@@ -50,6 +57,10 @@ pub struct SettingsDto {
     pub quality: QualityDto,
     pub auto_next: bool,
     pub auto_skip: bool,
+    pub accent: String,
+    pub translation: TranslationLanguageDto,
+    pub reading_size: ReadingSizeDto,
+    pub reading_spacing: ReadingSpacingDto,
 }
 
 impl From<&AppSettings> for SettingsDto {
@@ -66,6 +77,10 @@ impl From<&AppSettings> for SettingsDto {
             quality: settings.quality.into(),
             auto_next: settings.auto_next,
             auto_skip: settings.auto_skip,
+            accent: settings.accent.hex(),
+            translation: settings.translation.into(),
+            reading_size: settings.reading_size.into(),
+            reading_spacing: settings.reading_spacing.into(),
         }
     }
 }
@@ -84,6 +99,10 @@ impl From<&SettingsDto> for AppSettings {
             quality: dto.quality.into(),
             auto_next: dto.auto_next,
             auto_skip: dto.auto_skip,
+            accent: AccentColor::parse(&dto.accent).unwrap_or_default(),
+            translation: dto.translation.into(),
+            reading_size: dto.reading_size.into(),
+            reading_spacing: dto.reading_spacing.into(),
         }
     }
 }
@@ -113,10 +132,49 @@ mod tests {
             quality: QualityPreference::P360,
             auto_next: false,
             auto_skip: true,
+            accent: AccentColor::parse("#00FF00").unwrap(),
+            translation: TranslationLanguage::Korean,
+            reading_size: ReadingSize::Largest,
+            reading_spacing: ReadingSpacing::Tight,
         };
         let dto = SettingsDto::from(&changed);
         assert_eq!(dto.anime_source.as_deref(), Some("x"));
         assert_eq!(dto.quality, QualityDto::P360);
+        assert_eq!(dto.translation, TranslationLanguageDto::Korean);
+        assert_eq!(dto.reading_size, ReadingSizeDto::Largest);
+        assert_eq!(dto.reading_spacing, ReadingSpacingDto::Tight);
         assert_eq!(AppSettings::from(&dto), changed);
+    }
+
+    #[test]
+    fn every_translation_language_survives_the_dto_and_back() {
+        for language in TranslationLanguage::ALL {
+            let settings = AppSettings {
+                translation: language,
+                ..AppSettings::default()
+            };
+            let back = AppSettings::from(&SettingsDto::from(&settings));
+            assert_eq!(back.translation, language);
+        }
+    }
+
+    #[test]
+    fn the_accent_round_trips_as_hex_text() {
+        let changed = AppSettings {
+            accent: AccentColor::parse("#1E90FF").unwrap(),
+            ..AppSettings::default()
+        };
+        let dto = SettingsDto::from(&changed);
+        assert_eq!(dto.accent, "#1E90FF");
+        assert_eq!(AppSettings::from(&dto).accent, changed.accent);
+    }
+
+    #[test]
+    fn a_broken_accent_in_the_dto_falls_back_to_the_default() {
+        let dto = SettingsDto {
+            accent: "not-a-color".into(),
+            ..SettingsDto::from(&AppSettings::default())
+        };
+        assert_eq!(AppSettings::from(&dto).accent, AccentColor::default());
     }
 }

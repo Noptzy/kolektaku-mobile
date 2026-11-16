@@ -25,10 +25,13 @@ class SwatchRow<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final scheme = theme.colorScheme;
-    final chosen = options.firstWhere(
-      (option) => option.$1 == value,
-      orElse: () => options.first,
-    );
+    Swatch<T>? chosen;
+    for (final option in options) {
+      if (option.$1 == value) {
+        chosen = option;
+        break;
+      }
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.screenGutter,
@@ -41,12 +44,13 @@ class SwatchRow<T> extends StatelessWidget {
           Row(
             children: [
               Expanded(child: Text(title, style: theme.textTheme.cardTitle)),
-              Text(
-                chosen.$3,
-                style: theme.textTheme.cardMeta.copyWith(
-                  color: scheme.mutedForeground,
+              if (chosen != null)
+                Text(
+                  chosen.$3,
+                  style: theme.textTheme.cardMeta.copyWith(
+                    color: scheme.mutedForeground,
+                  ),
                 ),
-              ),
             ],
           ),
           Wrap(

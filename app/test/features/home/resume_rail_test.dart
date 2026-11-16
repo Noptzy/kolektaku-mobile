@@ -19,6 +19,7 @@ List<ProgressDto> mixed() => [
   progress(1, title: 'Tontonan Satu'),
   progress(2, kind: MediaKindDto.manga, title: 'Bacaan Dua'),
   progress(3, title: 'Tontonan Tiga'),
+  progress(4, kind: MediaKindDto.novel, title: 'Novel Empat'),
 ];
 
 void main() {
@@ -28,6 +29,7 @@ void main() {
         'Tontonan Satu',
         'Bacaan Dua',
         'Tontonan Tiga',
+        'Novel Empat',
       ]);
     });
 
@@ -36,6 +38,9 @@ void main() {
         'Bacaan Dua',
       ]);
       expect(resumeOf(mixed(), MediaKindDto.anime), hasLength(2));
+      expect(resumeOf(mixed(), MediaKindDto.novel).map((item) => item.title), [
+        'Novel Empat',
+      ]);
     });
   });
 
@@ -60,11 +65,15 @@ void main() {
       final anime = tester.getTopLeft(
         find.byKey(const Key('resume-filter-anime')),
       );
-      final comic = tester.getTopRight(
+      final comic = tester.getTopLeft(
         find.byKey(const Key('resume-filter-manga')),
       );
+      final novel = tester.getTopRight(
+        find.byKey(const Key('resume-filter-novel')),
+      );
       expect(anime.dx, greaterThan(title.dx));
-      expect(comic.dx, greaterThan(300));
+      expect(comic.dx, greaterThan(anime.dx));
+      expect(novel.dx, greaterThan(300));
       expect((anime.dy - title.dy).abs(), lessThan(20));
     });
 
@@ -82,6 +91,15 @@ void main() {
         expect(find.text('Bacaan Dua'), findsOneWidget);
       },
     );
+
+    testWidgets('the novel filter shows only novels', (tester) async {
+      await show(tester);
+      await tester.tap(find.byKey(const Key('resume-filter-novel')));
+      await tester.pump();
+      expect(find.text('Novel Empat'), findsOneWidget);
+      expect(find.text('Bacaan Dua'), findsNothing);
+      expect(find.text('Tontonan Satu'), findsNothing);
+    });
 
     testWidgets('a card reports the progress it belongs to', (tester) async {
       final opened = await show(tester);

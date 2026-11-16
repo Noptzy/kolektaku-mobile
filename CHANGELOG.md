@@ -2,6 +2,23 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.3.0] — 2026-11-16
+
+### Ditambahkan
+- Terjemahan otomatis: subtitle bahasa asing, sinopsis, dan teks novel diterjemahkan ke bahasa pilihan (Indonesia dari awal), dengan teks asli tampil dulu dan pilihan "Tampilkan teks asli". Bisa dimatikan atau diganti bahasanya di Pengaturan > Terjemahan otomatis; hasilnya disimpan agar tidak diminta dua kali.
+- Novel sebagai kategori ketiga: cakupan di Cari, pengalih Anime · Komik · Novel di Koleksi, rel "Novel populer" di Beranda, dan tombol "Baca novelnya" di detail anime dan komik yang berasal dari light novel.
+- Pembaca teks untuk novel: paragraf dan ilustrasi, bar yang bisa disembunyikan, daftar chapter, lembar Tampilan baca (lima ukuran huruf, tiga jarak baris), progres tersimpan per paragraf, dan chapter berikutnya disiapkan lebih dulu.
+- Dua sumber novel (Indonesia dan Inggris) dengan pencocokan ketat yang menolak judul fanfiksi, light novel didahulukan daripada web novel.
+- Sumber komik ketiga berbahasa Inggris untuk judul yang tidak ada di Komiku dan KomikIndo (misalnya Medalist, Monster, dan Tower of God); dicocokkan lewat nomor katalog yang tercantum di halamannya.
+- Warna aksen aplikasi bisa dipilih di Pengaturan > Tampilan, dengan pratinjau langsung.
+- Logo asli situs dan jejaring sosial pada tautan di halaman detail.
+
+### Diubah
+- Rilis berupa satu berkas `kolektaku-mobile-<versi>.apk` untuk ponsel ARM 64-bit dan 32-bit; varian per ABI dan varian emulator tidak lagi dibagikan.
+- Pencarian komik juga mencoba judul tanpa tanda kurung, titik dua, dan tanda seru, sehingga judul seperti "[Oshi no Ko]" kini ketemu di kedua sumber komik.
+- Halaman "tidak ada hasil" Komiku dibaca sebagai daftar kosong, bukan sebagai situs yang berubah.
+- Novel tidak lagi muncul di daftar Komik. Favorit dan riwayat Komik yang ternyata novel dipindahkan otomatis ke Novel saat aplikasi dibuka dengan internet; berkas lama dicadangkan lebih dulu.
+
 ## [0.2.2] — 2026-11-15
 
 ### Diubah

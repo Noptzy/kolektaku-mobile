@@ -9,7 +9,7 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $app = Join-Path $root "app"
 $repo = "Noptzy/kolektaku-mobile"
-$abis = @("arm64-v8a", "armeabi-v7a", "x86_64")
+$abis = @("arm64-v8a", "armeabi-v7a")
 
 function Invoke-Step($name, $scriptBlock) {
     Write-Output "=== $name ==="
@@ -50,30 +50,29 @@ New-Item -ItemType Directory -Path $dist | Out-Null
 
 Invoke-Step "verify" { & "$PSScriptRoot\verify.ps1" }
 
-Invoke-Step "build APK rilis per ABI" {
+Invoke-Step "build APK rilis" {
     Push-Location $app
-    try { flutter build apk --release --split-per-abi } finally { Pop-Location }
+    try { flutter build apk --release --target-platform android-arm,android-arm64 } finally { Pop-Location }
 }
 
+$source = Join-Path $app "build\app\outputs\flutter-apk\app-release.apk"
+if (-not (Test-Path -LiteralPath $source)) {
+    Write-Error "APK rilis tidak ditemukan di $source"
+    exit 1
+}
+$name = "kolektaku-mobile-$Version.apk"
+$target = Join-Path $dist $name
+Copy-Item -LiteralPath $source -Destination $target
+$hash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLower()
+$entry = [ordered]@{
+    url    = "https://github.com/$repo/releases/download/v$Version/$name"
+    size   = (Get-Item -LiteralPath $target).Length
+    sha256 = $hash
+}
 $assets = [ordered]@{}
-foreach ($abi in $abis) {
-    $source = Join-Path $app "build\app\outputs\flutter-apk\app-$abi-release.apk"
-    if (-not (Test-Path -LiteralPath $source)) {
-        Write-Error "APK $abi tidak ditemukan di $source"
-        exit 1
-    }
-    $name = "kolektaku-$Version-$abi.apk"
-    $target = Join-Path $dist $name
-    Copy-Item -LiteralPath $source -Destination $target
-    $hash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLower()
-    $assets[$abi] = [ordered]@{
-        url    = "https://github.com/$repo/releases/download/v$Version/$name"
-        size   = (Get-Item -LiteralPath $target).Length
-        sha256 = $hash
-    }
-    Invoke-Step "periksa $name" {
-        & "$PSScriptRoot\check-apk.ps1" -Apk $target
-    }
+foreach ($abi in $abis) { $assets[$abi] = $entry }
+Invoke-Step "periksa $name" {
+    & "$PSScriptRoot\check-apk.ps1" -Apk $target
 }
 
 $manifest = [ordered]@{

@@ -24,6 +24,7 @@ class ProfileDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final shown = shownLinks(links);
     if (facts.isEmpty && shown.isEmpty) return const SizedBox.shrink();
+    final ink = ShadTheme.of(context).colorScheme.primary;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.screenGutter,
@@ -43,7 +44,7 @@ class ProfileDetails extends StatelessWidget {
                   ShadButton.outline(
                     key: Key('link-${link.url}'),
                     onPressed: () => onOpenLink(link.url),
-                    leading: Icon(linkIcon(link.site), size: 16),
+                    leading: siteIcon(link.site, size: 16, color: ink),
                     child: Flexible(
                       child: Text(
                         linkLabel(link.site),

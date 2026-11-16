@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/core/routes.dart';
 import 'package:kolektaku/features/detail/detail_request.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
+import 'package:kolektaku/src/rust/dto/cards.dart';
 
 import 'home_support.dart';
 
@@ -44,6 +45,46 @@ void main() {
     ]) {
       expect(find.text(title), findsOneWidget, reason: title);
     }
+  });
+
+  testWidgets('a rail of popular novels closes the home', (tester) async {
+    await openHome(
+      tester,
+      prepare: (harness) =>
+          harness.catalog.onHome = (kind) async =>
+              homeOf(kind == MediaKindDto.novel ? 'N' : 'A'),
+    );
+    expect(find.text('Novel populer'), findsOneWidget);
+    final novel = tester.getTopLeft(find.text('Novel populer')).dy;
+    final comics = tester.getTopLeft(find.text('Komik populer')).dy;
+    expect(novel, greaterThan(comics));
+  });
+
+  testWidgets('without novels there is no novel rail', (tester) async {
+    await openHome(
+      tester,
+      prepare: (harness) => harness.catalog.onHome = (kind) async =>
+          kind == MediaKindDto.novel
+          ? const HomeDto(sections: [], notices: [])
+          : homeOf('A'),
+    );
+    expect(find.text('Novel populer'), findsNothing);
+    expect(find.text('Anime populer'), findsOneWidget);
+  });
+
+  testWidgets('a failing novel feed leaves the rest of the home alone', (
+    tester,
+  ) async {
+    await openHome(
+      tester,
+      prepare: (harness) => harness.catalog.onHome = (kind) async {
+        if (kind == MediaKindDto.novel) throw StateError('down');
+        return homeOf('A');
+      },
+    );
+    expect(find.text('Novel populer'), findsNothing);
+    expect(find.text('Top 10 anime'), findsOneWidget);
+    expect(find.text('Coba lagi'), findsNothing);
   });
 
   testWidgets('liking anime puts the anime rails above the manga rails', (

@@ -13,6 +13,7 @@ pub fn tag<T: Serialize>(value: &T) -> String {
 pub enum MediaKindDto {
     Anime,
     Manga,
+    Novel,
 }
 
 impl From<MediaKindDto> for MediaKind {
@@ -20,6 +21,7 @@ impl From<MediaKindDto> for MediaKind {
         match kind {
             MediaKindDto::Anime => Self::Anime,
             MediaKindDto::Manga => Self::Manga,
+            MediaKindDto::Novel => Self::Novel,
         }
     }
 }
@@ -29,6 +31,7 @@ impl From<MediaKind> for MediaKindDto {
         match kind {
             MediaKind::Anime => Self::Anime,
             MediaKind::Manga => Self::Manga,
+            MediaKind::Novel => Self::Novel,
         }
     }
 }
@@ -165,7 +168,7 @@ mod tests {
 
     #[test]
     fn kinds_convert_both_ways() {
-        for kind in [MediaKind::Anime, MediaKind::Manga] {
+        for kind in [MediaKind::Anime, MediaKind::Manga, MediaKind::Novel] {
             assert_eq!(MediaKind::from(MediaKindDto::from(kind)), kind);
         }
     }

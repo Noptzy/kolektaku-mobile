@@ -55,6 +55,27 @@ void main() {
     expect(find.text('Chapter 2'), findsOneWidget);
   });
 
+  testWidgets('novels have their own part of the collection', (tester) async {
+    final harness = await open(
+      tester,
+      history: [
+        progress(1, title: 'Tontonan'),
+        progress(2, kind: MediaKindDto.novel, title: 'Bacaan Novel'),
+      ],
+      favorites: [favorite(3, kind: MediaKindDto.novel, title: 'Novel Fav')],
+    );
+    await tester.tap(find.byKey(const Key('kind-novel')));
+    await tester.pumpAndSettle();
+    expect(find.text('Bacaan Novel'), findsOneWidget);
+    expect(find.text('Novel Fav'), findsOneWidget);
+    expect(find.text('Tontonan'), findsNothing);
+    expect(find.text('Chapter 2'), findsOneWidget);
+    await tester.tap(find.text('Novel Fav'));
+    await tester.pumpAndSettle();
+    final request = harness.visits.single.extra! as DetailRequest;
+    expect(request.kind, MediaKindDto.novel);
+  });
+
   testWidgets('a favorite opens its detail too', (tester) async {
     final harness = await open(tester, favorites: [favorite(6, title: 'Fav')]);
     await tester.tap(find.text('Fav'));

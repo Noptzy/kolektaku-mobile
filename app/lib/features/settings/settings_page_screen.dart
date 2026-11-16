@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/providers/settings_providers.dart';
 import 'about_section.dart';
+import 'appearance_preview.dart';
+import 'appearance_section.dart';
 import 'player_section.dart';
 import 'preference_section.dart';
 import 'settings_page_scaffold.dart';
@@ -11,6 +13,7 @@ import 'source_choice_section.dart';
 import 'source_status_section.dart';
 import 'subtitle_preview.dart';
 import 'subtitle_section.dart';
+import 'translation_section.dart';
 import 'update_panel_section.dart';
 
 class SettingsPageScreen extends ConsumerWidget {
@@ -20,6 +23,8 @@ class SettingsPageScreen extends ConsumerWidget {
 
   Widget _body() => switch (page) {
     SettingsPage.preference => const PreferenceSection(),
+    SettingsPage.appearance => const AppearanceSection(),
+    SettingsPage.translation => const TranslationSection(),
     SettingsPage.sourceChoice => const SourceChoiceSection(),
     SettingsPage.subtitle => const SubtitleSection(),
     SettingsPage.player => const PlayerSection(),
@@ -30,9 +35,13 @@ class SettingsPageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pinned = page == SettingsPage.subtitle
-        ? SubtitlePreview(settings: ref.watch(currentSettingsProvider))
-        : null;
+    final pinned = switch (page) {
+      SettingsPage.subtitle => SubtitlePreview(
+        settings: ref.watch(currentSettingsProvider),
+      ),
+      SettingsPage.appearance => const AppearancePreview(),
+      _ => null,
+    };
     return SettingsPageScaffold(
       title: page.title,
       intro: page.intro,

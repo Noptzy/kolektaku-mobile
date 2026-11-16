@@ -15,6 +15,10 @@ pub async fn find_scene<C: MetadataCatalog>(
     Ok(SceneFindingDto::from(&finder.execute(image).await?))
 }
 
+pub async fn scene_quota<C: MetadataCatalog>(state: &AppState<C>) -> Option<u32> {
+    FindScene::new(state.scene.clone()).quota_left().await
+}
+
 pub async fn open_scene<C: MetadataCatalog + 'static>(
     state: &AppState<C>,
     scene: &SceneMatchDto,

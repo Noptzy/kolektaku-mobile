@@ -1,3 +1,4 @@
+import '../../core/kind_names.dart';
 import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
@@ -18,8 +19,7 @@ double? historyFraction(ProgressDto progress) {
   return (progress.position / progress.length).clamp(0.0, 1.0);
 }
 
-String collectionTitle(MediaKindDto kind) =>
-    kind == MediaKindDto.anime ? 'Anime' : 'Komik';
+String collectionTitle(MediaKindDto kind) => kindTitle(kind);
 
 String emptyFavorites(MediaKindDto kind) =>
     'Belum ada ${collectionTitle(kind).toLowerCase()} favorit. Ketuk ikon hati di halaman detail.';

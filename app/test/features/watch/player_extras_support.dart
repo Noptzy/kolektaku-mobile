@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/data/providers/settings_providers.dart';
+import 'package:kolektaku/features/watch/player/cue_loading.dart';
 import 'package:kolektaku/features/watch/player/player_session.dart';
 import 'package:kolektaku/platform/stream_resolver.dart';
 import 'package:kolektaku/src/rust/dto/cues.dart';
@@ -25,6 +26,18 @@ SubtitleDto sub(String label, String language, {bool isDefault = false}) =>
 
 CueDto cue(int start, int end, String text) =>
     CueDto(startMs: BigInt.from(start), endMs: BigInt.from(end), text: text);
+
+CuePlanDto plan(
+  List<CueDto> cues, {
+  bool translated = false,
+  bool failed = false,
+  int? retryAt,
+}) => CuePlanDto(
+  cues: cues,
+  translated: translated,
+  failed: failed,
+  retryAtSecs: retryAt == null ? null : BigInt.from(retryAt),
+);
 
 SkipDto skip(String kind, int start, int end) =>
     SkipDto(kind: kind, startMs: BigInt.from(start), endMs: BigInt.from(end));
@@ -67,11 +80,15 @@ class Rig {
       stream: stream ?? hlsStream(),
       refetch: () async => hlsStream(),
       settings: settings ?? defaultSettings,
-      cueLoader: (url, headers) async {
-        asked.add(url);
-        sentHeaders.add({for (final h in headers) h.name: h.value});
+      cueLoader: (request) async {
+        if (request.translate) {
+          translateAsks.add(request);
+          return plan(cues[request.url] ?? const []);
+        }
+        asked.add(request.url);
+        sentHeaders.add({for (final h in request.headers) h.name: h.value});
         if (failLoads) throw StateError('no subtitle');
-        return cues[url] ?? const [];
+        return plan(cues[request.url] ?? const []);
       },
     );
   }
@@ -80,6 +97,7 @@ class Rig {
   final Map<String, List<CueDto>> cues;
   final bool failLoads;
   final List<String> asked = [];
+  final List<CueRequest> translateAsks = [];
   final List<Map<String, String>> sentHeaders = [];
   late final PlayerSession session;
 

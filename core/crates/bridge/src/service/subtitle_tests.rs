@@ -61,9 +61,13 @@ async fn the_file_is_fetched_with_only_the_forwarded_headers_and_parsed() {
             header("cookie", "secret=1"),
             header("authorization", "Bearer x"),
         ],
+        Some("id"),
+        0,
+        true,
     )
     .await
-    .unwrap();
+    .unwrap()
+    .cues;
     assert_eq!(found.len(), 2);
     assert_eq!((found[0].start_ms, found[0].end_ms), (12_095, 16_015));
     assert_eq!(found[0].text, "Halo dunia");
@@ -86,7 +90,9 @@ async fn an_address_that_is_not_https_is_never_requested() {
         "",
         "https://",
     ] {
-        let error = cues(&state, bad, &[]).await.unwrap_err();
+        let error = cues(&state, bad, &[], Some("id"), 0, true)
+            .await
+            .unwrap_err();
         assert_eq!(error.kind, BridgeErrorKind::NotFound, "{bad:?}");
     }
     assert!(recording.seen.lock().unwrap().is_empty());
@@ -97,7 +103,7 @@ async fn failures_map_to_typed_errors() {
     let folder = Folder::new();
     let (state, _) = state_over(&folder, Ok(HttpResponse::new(404, ""))).await;
     assert_eq!(
-        cues(&state, "https://subs.test/a.vtt", &[])
+        cues(&state, "https://subs.test/a.vtt", &[], Some("id"), 0, true)
             .await
             .unwrap_err()
             .kind,
@@ -105,7 +111,7 @@ async fn failures_map_to_typed_errors() {
     );
     let (state, _) = state_over(&folder, Ok(HttpResponse::new(500, ""))).await;
     assert_eq!(
-        cues(&state, "https://subs.test/a.vtt", &[])
+        cues(&state, "https://subs.test/a.vtt", &[], Some("id"), 0, true)
             .await
             .unwrap_err()
             .kind,
@@ -113,7 +119,7 @@ async fn failures_map_to_typed_errors() {
     );
     let (state, _) = state_over(&folder, Err(SourceError::Network("down".into()))).await;
     assert_eq!(
-        cues(&state, "https://subs.test/a.vtt", &[])
+        cues(&state, "https://subs.test/a.vtt", &[], Some("id"), 0, true)
             .await
             .unwrap_err()
             .kind,
@@ -126,9 +132,10 @@ async fn a_file_that_is_not_a_subtitle_gives_no_cues() {
     let folder = Folder::new();
     let (state, _) = state_over(&folder, Ok(HttpResponse::new(200, "<html>oops</html>"))).await;
     assert!(
-        cues(&state, "https://subs.test/a.vtt", &[])
+        cues(&state, "https://subs.test/a.vtt", &[], Some("id"), 0, true)
             .await
             .unwrap()
+            .cues
             .is_empty()
     );
 }

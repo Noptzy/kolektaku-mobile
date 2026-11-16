@@ -70,26 +70,26 @@ query ($id: Int, $type: MediaType) {
 }";
 
 const LIST_BODY: &str = "
-query ($page: Int, $perPage: Int, $type: MediaType, $sort: [MediaSort], $country: CountryCode, $season: MediaSeason, $year: Int, $status: MediaStatus, $startFrom: FuzzyDateInt, $endFrom: FuzzyDateInt) {
+query ($page: Int, $perPage: Int, $type: MediaType, $sort: [MediaSort], $country: CountryCode, $season: MediaSeason, $year: Int, $status: MediaStatus, $startFrom: FuzzyDateInt, $endFrom: FuzzyDateInt, $formats: [MediaFormat], $notFormats: [MediaFormat]) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { currentPage hasNextPage }
-    media(type: $type, sort: $sort, isAdult: false, countryOfOrigin: $country, season: $season, seasonYear: $year, status: $status, startDate_greater: $startFrom, endDate_greater: $endFrom) { ...S }
+    media(type: $type, sort: $sort, isAdult: false, countryOfOrigin: $country, season: $season, seasonYear: $year, status: $status, startDate_greater: $startFrom, endDate_greater: $endFrom, format_in: $formats, format_not_in: $notFormats) { ...S }
   }
 }";
 
 const SEARCH_BODY: &str = "
-query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $country: CountryCode) {
+query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $country: CountryCode, $formats: [MediaFormat], $notFormats: [MediaFormat]) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { currentPage hasNextPage }
-    media(type: $type, search: $search, sort: [SEARCH_MATCH], isAdult: false, countryOfOrigin: $country) { ...S }
+    media(type: $type, search: $search, sort: [SEARCH_MATCH], isAdult: false, countryOfOrigin: $country, format_in: $formats, format_not_in: $notFormats) { ...S }
   }
 }";
 
 const DISCOVER_BODY: &str = "
-query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $genre: String, $tag: String, $from: FuzzyDateInt, $to: FuzzyDateInt, $sort: [MediaSort], $country: CountryCode, $formats: [MediaFormat], $status: MediaStatus, $source: MediaSource) {
+query ($page: Int, $perPage: Int, $type: MediaType, $search: String, $genre: String, $tag: String, $from: FuzzyDateInt, $to: FuzzyDateInt, $sort: [MediaSort], $country: CountryCode, $formats: [MediaFormat], $notFormats: [MediaFormat], $status: MediaStatus, $source: MediaSource) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { currentPage hasNextPage }
-    media(type: $type, search: $search, genre: $genre, tag: $tag, minimumTagRank: 60, startDate_greater: $from, startDate_lesser: $to, format_in: $formats, status: $status, source: $source, sort: $sort, isAdult: false, countryOfOrigin: $country) { ...S }
+    media(type: $type, search: $search, genre: $genre, tag: $tag, minimumTagRank: 60, startDate_greater: $from, startDate_lesser: $to, format_in: $formats, format_not_in: $notFormats, status: $status, source: $source, sort: $sort, isAdult: false, countryOfOrigin: $country) { ...S }
   }
 }";
 

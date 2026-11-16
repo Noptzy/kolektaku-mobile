@@ -4,6 +4,7 @@ mod family;
 mod marks;
 mod noise;
 mod normalize;
+mod novel_title;
 mod numbers;
 mod pick;
 mod relax;
@@ -18,6 +19,8 @@ mod assign_page_tests;
 mod case_support;
 #[cfg(test)]
 mod fallback_cases;
+#[cfg(test)]
+mod novel_title_tests;
 #[cfg(test)]
 mod relax_tests;
 #[cfg(test)]

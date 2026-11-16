@@ -46,6 +46,7 @@ fn lists_for(kind: MediaKind) -> Vec<MediaListKind> {
             MediaListKind::NewThisWeek,
             MediaListKind::FinishedThisWeek,
         ],
+        MediaKind::Novel => vec![MediaListKind::Popular],
     }
 }
 

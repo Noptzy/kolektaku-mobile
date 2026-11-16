@@ -5,6 +5,7 @@ import '../../core/genre_names.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/limited_data_label.dart';
 import '../../widgets/pressable.dart';
+import '../../widgets/translated_text.dart';
 import 'detail_info.dart';
 
 class DetailSynopsis extends StatefulWidget {
@@ -50,8 +51,8 @@ class _DetailSynopsisState extends State<DetailSynopsis> {
               children: [for (final genre in info.genres) _genre(genre)],
             ),
           if (text.isNotEmpty) ...[
-            Text(
-              text,
+            TranslatedText(
+              text: text,
               maxLines: _expanded ? null : 4,
               overflow: _expanded
                   ? TextOverflow.visible

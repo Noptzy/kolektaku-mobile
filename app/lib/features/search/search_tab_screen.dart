@@ -13,7 +13,7 @@ import 'search_notifier.dart';
 import 'search_seed.dart';
 import 'search_tab_header.dart';
 
-const searchPlaceholder = 'Cari anime, komik, karakter, studio';
+const searchPlaceholder = 'Cari anime, komik, novel, karakter, studio';
 
 class SearchTabScreen extends ConsumerStatefulWidget {
   const SearchTabScreen({super.key});

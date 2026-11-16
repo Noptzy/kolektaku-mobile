@@ -3,14 +3,15 @@ use std::sync::Arc;
 use application::ports::{Clock, MetadataCatalog};
 use domain::error::SourceError;
 use domain::media::{
-    Discover, EpisodeInfo, MediaDetail, MediaId, MediaKind, MediaListKind, MediaPage, MediaSummary,
-    Profile, ProfileKind, ProfileSummary,
+    Discover, EpisodeInfo, MediaDetail, MediaFormat, MediaId, MediaKind, MediaListKind, MediaPage,
+    MediaSummary, Profile, ProfileKind, ProfileSummary,
 };
 use serde::de::DeserializeOwned;
 use serde_json::{Value, json};
 
 use super::covers::fetch_covers;
 use super::discover::discover_variables;
+use super::format_lookup::fetch_comic_formats;
 use super::graphql::GraphQl;
 use super::list_request::list_request;
 use super::mapper::{map_detail, visible_summaries};
@@ -18,6 +19,7 @@ use super::matching::match_all;
 use super::profile_fetch::{fetch_people, fetch_profile};
 use super::queries::{detail_query, discover_query, list_query, search_query};
 use super::schema::{RawDetailResponse, RawListResponse, RawSummary};
+use super::search_request::search_variables;
 use crate::catalog::mal::titled_episodes;
 use crate::http::HttpClient;
 
@@ -74,7 +76,7 @@ impl AniListCatalog {
 pub(super) fn media_type(kind: MediaKind) -> &'static str {
     match kind {
         MediaKind::Anime => "ANIME",
-        MediaKind::Manga => "MANGA",
+        MediaKind::Manga | MediaKind::Novel => "MANGA",
     }
 }
 
@@ -135,15 +137,7 @@ impl MetadataCatalog for AniListCatalog {
         query: &str,
         page: u32,
     ) -> Result<MediaPage, SourceError> {
-        let mut variables = json!({
-            "page": page,
-            "perPage": PAGE_SIZE,
-            "type": media_type(kind),
-            "search": query.trim(),
-        });
-        if kind == MediaKind::Anime {
-            variables["country"] = json!(ANIME_COUNTRY);
-        }
+        let variables = search_variables(kind, query, page, PAGE_SIZE);
         self.page(search_query(), variables, page).await
     }
 
@@ -184,5 +178,12 @@ impl MetadataCatalog for AniListCatalog {
         let country = (kind == MediaKind::Anime).then_some(ANIME_COUNTRY);
         let variables = discover_variables(kind, filter, page, PAGE_SIZE, country);
         self.page(discover_query(), variables, page).await
+    }
+
+    async fn comic_formats(
+        &self,
+        ids: &[MediaId],
+    ) -> Result<Vec<(MediaId, Option<MediaFormat>)>, SourceError> {
+        fetch_comic_formats(&self.graphql, ids).await
     }
 }

@@ -7,6 +7,7 @@ pub mod scene;
 pub mod settings;
 pub mod sources;
 pub mod subtitle;
+pub mod translate;
 pub mod update;
 
 #[cfg(test)]
@@ -18,6 +19,10 @@ mod scene_tests;
 #[cfg(test)]
 mod service_library_tests;
 #[cfg(test)]
+mod service_novel_chapter_tests;
+#[cfg(test)]
+mod service_novel_tests;
+#[cfg(test)]
 mod service_support;
 #[cfg(test)]
 mod service_tests;
@@ -25,6 +30,10 @@ mod service_tests;
 mod settings_tests;
 #[cfg(test)]
 mod subtitle_tests;
+#[cfg(test)]
+mod subtitle_translation_tests;
+#[cfg(test)]
+mod translate_tests;
 #[cfg(test)]
 mod update_check_tests;
 #[cfg(test)]

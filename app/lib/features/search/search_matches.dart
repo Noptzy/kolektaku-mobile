@@ -39,11 +39,13 @@ class SearchMatches extends ConsumerWidget {
     final characters = _people(ref, ProfileKindDto.character, text);
     final staff = _people(ref, ProfileKindDto.staff, text);
     final manga = ref.watch(mangaMatchesProvider(text)).value ?? const [];
+    final novels = ref.watch(novelMatchesProvider(text)).value ?? const [];
     final found =
         studios.isNotEmpty ||
         characters.isNotEmpty ||
         staff.isNotEmpty ||
-        manga.isNotEmpty;
+        manga.isNotEmpty ||
+        novels.isNotEmpty;
     if (!found) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,6 +62,19 @@ class SearchMatches extends ConsumerWidget {
               Routes.detail,
               extra: DetailRequest(
                 kind: MediaKindDto.manga,
+                reference: card.reference,
+              ),
+            ),
+          ),
+        if (novels.isNotEmpty)
+          MediaRail(
+            key: const Key('novel-matches'),
+            title: 'Novel',
+            cards: novels,
+            onTap: (card) => context.push(
+              Routes.detail,
+              extra: DetailRequest(
+                kind: MediaKindDto.novel,
                 reference: card.reference,
               ),
             ),

@@ -14,6 +14,10 @@ const defaultSettings = SettingsDto(
   quality: QualityDto.auto,
   autoNext: true,
   autoSkip: false,
+  accent: '#F5B82E',
+  translation: TranslationLanguageDto.indonesian,
+  readingSize: ReadingSizeDto.medium,
+  readingSpacing: ReadingSpacingDto.normal,
 );
 
 class SettingsNotifier extends AsyncNotifier<SettingsDto> {

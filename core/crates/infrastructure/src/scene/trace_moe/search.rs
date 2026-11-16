@@ -6,6 +6,7 @@ use domain::scene::SceneReply;
 use tokio::sync::Mutex;
 
 use super::mapper::to_reply;
+use super::quota::{QUOTA_ENDPOINT, read_quota};
 use super::schema::RawReply;
 use crate::http::{HttpClient, HttpRequest, HttpResponse, Pause};
 
@@ -81,6 +82,17 @@ impl SceneSearch for TraceMoeSceneSearch {
                 400 => return Err(SourceError::Unsupported("image was rejected".into())),
                 status => return Err(SourceError::Unavailable(format!("http {status}"))),
             }
+        }
+    }
+
+    async fn quota_left(&self) -> Result<u32, SourceError> {
+        let response = self.http.send(HttpRequest::get(QUOTA_ENDPOINT)).await?;
+        match response.status {
+            200..=299 => read_quota(&response.body),
+            429 | 503 => Err(SourceError::RateLimited {
+                retry_after_secs: response.header_number("retry-after"),
+            }),
+            status => Err(SourceError::Unavailable(format!("http {status}"))),
         }
     }
 }

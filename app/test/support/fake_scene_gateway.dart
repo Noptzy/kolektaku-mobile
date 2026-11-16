@@ -85,6 +85,8 @@ class FakeSceneGateway implements SceneGateway {
   SceneTargetDto target = watchTarget();
   Object? findError;
   Object? openError;
+  int? quota;
+  int quotaReads = 0;
   Future<SceneFindingDto> Function(Uint8List image)? onFind;
   final List<int> imageSizes = [];
   final List<SceneMatchDto> opened = [];
@@ -105,6 +107,12 @@ class FakeSceneGateway implements SceneGateway {
     final error = openError;
     if (error != null) throw error;
     return target;
+  }
+
+  @override
+  Future<int?> quotaLeft() async {
+    quotaReads++;
+    return quota;
   }
 }
 

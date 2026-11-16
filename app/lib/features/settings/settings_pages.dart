@@ -12,6 +12,24 @@ enum SettingsPage {
         'Atur isi Beranda: lebih banyak anime atau lebih banyak komik. '
         'Keduanya tetap tampil, hanya porsinya yang berubah.',
   ),
+  appearance(
+    slug: 'tampilan',
+    title: 'Tampilan',
+    icon: LucideIcons.palette,
+    intro:
+        'Pilih warna aksen aplikasi. Tombol utama, tab aktif, tautan, dan '
+        'elemen lain yang berwarna aksen ikut berubah.',
+  ),
+  translation(
+    slug: 'terjemahan',
+    title: 'Terjemahan otomatis',
+    icon: LucideIcons.languages,
+    intro:
+        'Subtitle, sinopsis, dan teks novel berbahasa asing diterjemahkan '
+        'otomatis ke bahasa pilihanmu. Butuh internet dan hasilnya bisa '
+        'kurang tepat; teks aslinya selalu bisa dilihat. Teks dikirim ke '
+        'layanan terjemahan daring, tanpa data pribadi.',
+  ),
   sourceChoice(
     slug: 'sumber-video',
     title: 'Sumber video anime',

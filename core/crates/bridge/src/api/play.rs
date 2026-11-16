@@ -1,4 +1,5 @@
 use crate::dto::media::MediaRefDto;
+use crate::dto::novel::NovelChapterDto;
 use crate::dto::stream::{ChapterViewDto, PlaybackDto, StreamPlanDto, StreamSetDto};
 use crate::error::BridgeError;
 use crate::service::play;
@@ -35,4 +36,21 @@ pub async fn open_chapter(
     exclude: Vec<String>,
 ) -> Result<ChapterViewDto, BridgeError> {
     play::open_chapter(global()?, &reference, chapter, preferred, exclude).await
+}
+
+pub async fn open_novel_chapter(
+    reference: MediaRefDto,
+    chapter: f64,
+    preferred: Option<String>,
+    exclude: Vec<String>,
+) -> Result<NovelChapterDto, BridgeError> {
+    play::open_novel_chapter(global()?, &reference, chapter, preferred, exclude).await
+}
+
+pub async fn preload_novel_chapter(
+    reference: MediaRefDto,
+    chapter: f64,
+    preferred: Option<String>,
+) -> Result<bool, BridgeError> {
+    Ok(play::preload_novel_chapter(global()?, &reference, chapter, preferred).await)
 }

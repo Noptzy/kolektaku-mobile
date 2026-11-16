@@ -170,3 +170,18 @@ async fn a_failure_of_the_search_is_passed_on() {
     let result = FindScene::new(search).execute(vec![1]).await;
     assert_eq!(result, Err(SourceError::QuotaExceeded));
 }
+
+#[tokio::test]
+async fn the_remaining_quota_can_be_read_without_searching() {
+    let search = Arc::new(FakeSceneSearch::returning(Vec::new()).with_quota(Ok(87)));
+    assert_eq!(FindScene::new(search.clone()).quota_left().await, Some(87));
+    assert!(search.image_sizes().is_empty());
+}
+
+#[tokio::test]
+async fn an_unreadable_quota_is_simply_unknown() {
+    let search = Arc::new(
+        FakeSceneSearch::returning(Vec::new()).with_quota(Err(SourceError::QuotaExceeded)),
+    );
+    assert_eq!(FindScene::new(search).quota_left().await, None);
+}

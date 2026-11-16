@@ -8,6 +8,7 @@ abstract final class Routes {
   static const profile = '/profil';
   static const watch = '/watch';
   static const read = '/baca';
+  static const novel = '/baca-novel';
   static const settings = '/pengaturan';
   static const settingsPage = '/pengaturan/:page';
   static const sceneSearch = '/cari-gambar';

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../core/kind_names.dart';
 import '../core/theme/kolektaku_tokens.dart';
 import '../src/rust/dto/media.dart';
 import 'pressable.dart';
@@ -9,11 +10,13 @@ const _outerRadius = 16.0;
 const _innerRadius = 12.0;
 const _frameWidth = 2.0;
 
-String kindSwitchLabel(MediaKindDto kind) =>
-    kind == MediaKindDto.anime ? 'Anime' : 'Komik';
+String kindSwitchLabel(MediaKindDto kind) => kindTitle(kind);
 
-IconData kindSwitchIcon(MediaKindDto kind) =>
-    kind == MediaKindDto.anime ? LucideIcons.film : LucideIcons.bookOpen;
+IconData kindSwitchIcon(MediaKindDto kind) => switch (kind) {
+  MediaKindDto.anime => LucideIcons.film,
+  MediaKindDto.manga => LucideIcons.bookOpen,
+  MediaKindDto.novel => LucideIcons.bookText,
+};
 
 class KindSwitch extends StatelessWidget {
   const KindSwitch({super.key, required this.value, required this.onChanged});

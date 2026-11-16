@@ -23,7 +23,8 @@ enum SearchFormat {
 
   static List<SearchFormat> forKind(MediaKindDto kind) => switch (kind) {
     MediaKindDto.anime => const [all, tv, movie, ova, music],
-    MediaKindDto.manga => const [all, manga, oneShot, novel],
+    MediaKindDto.manga => const [all, manga, oneShot],
+    MediaKindDto.novel => const [all],
   };
 }
 

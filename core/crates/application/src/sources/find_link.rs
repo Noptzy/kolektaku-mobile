@@ -107,9 +107,32 @@ async fn details_of(
     details
 }
 
+enum Verdict {
+    Certain,
+    Refused,
+    Judge,
+}
+
+fn verdict(detail: &SourceDetail, catalog_id: u64) -> Verdict {
+    match detail.catalog_id {
+        Some(known) if known == catalog_id => Verdict::Certain,
+        Some(_) => Verdict::Refused,
+        None => Verdict::Judge,
+    }
+}
+
+fn certain(key: String) -> PickedCandidate {
+    PickedCandidate {
+        key,
+        confidence: 1.0,
+        decision: MatchDecision::Auto,
+    }
+}
+
 pub async fn find_in_source(
     source: Arc<dyn SourceProvider>,
     target: MatchTarget,
+    catalog_id: u64,
     queries: Vec<String>,
     now_secs: u64,
 ) -> Result<Option<Found>, SourceError> {
@@ -121,14 +144,28 @@ pub async fn find_in_source(
         .collect();
     let mut unit_counts: HashMap<String, Option<u32>> = HashMap::new();
     let mut verified = Vec::new();
+    let mut sure: Vec<String> = Vec::new();
     for (key, detail) in details_of(&source, keys).await {
-        if let Ok(detail) = detail {
-            unit_counts.insert(key.clone(), detail.unit_count);
-            verified.push(VerifiedCandidate {
+        let Ok(detail) = detail else { continue };
+        unit_counts.insert(key.clone(), detail.unit_count);
+        match verdict(&detail, catalog_id) {
+            Verdict::Certain => sure.push(key),
+            Verdict::Refused => {}
+            Verdict::Judge => verified.push(VerifiedCandidate {
                 key,
                 facts: facts_of(&detail),
-            });
+            }),
         }
+    }
+    sure.sort();
+    if let Some(key) = sure.into_iter().next() {
+        let units = unit_counts.get(&key).copied().flatten();
+        return Ok(Some(found_from(
+            source.as_ref(),
+            certain(key),
+            units,
+            now_secs,
+        )));
     }
     verified.sort_by(|left, right| left.key.cmp(&right.key));
     Ok(pick_best_candidate(&target, &verified).map(|picked| {
@@ -140,10 +177,24 @@ pub async fn find_in_source(
 pub async fn verify_item(
     source: Arc<dyn SourceProvider>,
     target: MatchTarget,
+    catalog_id: u64,
     item: ItemId,
     now_secs: u64,
 ) -> Result<Option<Found>, SourceError> {
     let detail = source.detail(item.clone()).await?;
+    match verdict(&detail, catalog_id) {
+        Verdict::Certain => {
+            let picked = certain(item.to_string());
+            return Ok(Some(found_from(
+                source.as_ref(),
+                picked,
+                detail.unit_count,
+                now_secs,
+            )));
+        }
+        Verdict::Refused => return Ok(None),
+        Verdict::Judge => {}
+    }
     let candidate = VerifiedCandidate {
         key: item.to_string(),
         facts: facts_of(&detail),

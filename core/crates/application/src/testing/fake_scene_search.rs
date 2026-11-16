@@ -7,6 +7,7 @@ use crate::ports::SceneSearch;
 
 pub struct FakeSceneSearch {
     result: Result<SceneReply, SourceError>,
+    quota: Result<u32, SourceError>,
     image_sizes: Mutex<Vec<usize>>,
 }
 
@@ -21,13 +22,20 @@ impl FakeSceneSearch {
     pub fn replying(reply: SceneReply) -> Self {
         Self {
             result: Ok(reply),
+            quota: Err(SourceError::Unsupported("no quota scripted".into())),
             image_sizes: Mutex::new(Vec::new()),
         }
+    }
+
+    pub fn with_quota(mut self, quota: Result<u32, SourceError>) -> Self {
+        self.quota = quota;
+        self
     }
 
     pub fn failing_with(error: SourceError) -> Self {
         Self {
             result: Err(error),
+            quota: Err(SourceError::Unsupported("no quota scripted".into())),
             image_sizes: Mutex::new(Vec::new()),
         }
     }
@@ -42,6 +50,10 @@ impl SceneSearch for FakeSceneSearch {
         self.image_sizes.lock().unwrap().push(image.len());
         self.result.clone()
     }
+
+    async fn quota_left(&self) -> Result<u32, SourceError> {
+        self.quota.clone()
+    }
 }
 
 #[cfg(test)]
@@ -53,6 +65,12 @@ mod tests {
         let search = FakeSceneSearch::returning(Vec::new());
         assert!(search.find(vec![0; 10]).await.unwrap().matches.is_empty());
         assert_eq!(search.image_sizes(), vec![10]);
+    }
+
+    #[tokio::test]
+    async fn returns_the_scripted_quota() {
+        let search = FakeSceneSearch::returning(Vec::new()).with_quota(Ok(42));
+        assert_eq!(search.quota_left().await, Ok(42));
     }
 
     #[tokio::test]

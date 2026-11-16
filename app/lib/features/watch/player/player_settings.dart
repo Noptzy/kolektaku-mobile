@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'player_menus.dart';
 import 'player_session.dart';
 import 'subtitle_logic.dart';
+import 'translation_logic.dart';
 
 typedef SettingPage = Widget Function(VoidCallback close);
 
@@ -54,15 +55,7 @@ List<SettingChoice> settingChoices({
         label: 'Subtitle',
         title: 'Subtitle',
         value: _subtitleValue(session),
-        page: (close) => subtitleOptions(
-          tracks: session.extras.available,
-          current: session.extras.subtitle.value,
-          onPicked: (track) {
-            session.extras.selectSubtitle(track);
-            onInteract();
-            close();
-          },
-        ),
+        page: (close) => _subtitlePage(session, onInteract, close),
       ),
     if (audioPage != null)
       (
@@ -91,9 +84,48 @@ List<SettingChoice> settingChoices({
   ];
 }
 
+String? _translationLabel(PlayerSession session) {
+  final cues = session.extras.subtitleCues;
+  final target = session.settings.translation;
+  return switch (cues.status.value) {
+    TranslationStatus.translated => translatedTitle(target),
+    TranslationStatus.working => translatingTitle(target),
+    _ => null,
+  };
+}
+
 String _subtitleValue(PlayerSession session) {
   final current = session.extras.subtitle.value;
-  return current == null ? 'Mati' : subtitleTitle(current);
+  if (current == null) return 'Mati';
+  return _translationLabel(session) ?? subtitleTitle(current);
+}
+
+Widget _subtitlePage(
+  PlayerSession session,
+  VoidCallback onInteract,
+  VoidCallback close,
+) {
+  final cues = session.extras.subtitleCues;
+  return subtitleOptions(
+    tracks: session.extras.available,
+    current: session.extras.subtitle.value,
+    currentLabel: _translationLabel(session),
+    originalToggle: cues.canToggleOriginal
+        ? originalTextToggle(
+            showingOriginal: cues.showingOriginal.value,
+            onPressed: () {
+              cues.toggleOriginal();
+              onInteract();
+              close();
+            },
+          )
+        : null,
+    onPicked: (track) {
+      session.extras.selectSubtitle(track);
+      onInteract();
+      close();
+    },
+  );
 }
 
 Widget _resolutionPage(

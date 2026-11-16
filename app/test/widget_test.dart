@@ -6,6 +6,7 @@ import 'package:kolektaku/data/providers/gateway_providers.dart';
 import 'support/fake_catalog_gateway.dart';
 import 'support/fake_library_gateway.dart';
 import 'support/fake_settings_gateway.dart';
+import 'support/fake_translation_gateway.dart';
 import 'support/fake_source_gateway.dart';
 
 void main() {
@@ -19,6 +20,9 @@ void main() {
           libraryGatewayProvider.overrideWithValue(FakeLibraryGateway()),
           sourceGatewayProvider.overrideWithValue(FakeSourceGateway()),
           settingsGatewayProvider.overrideWithValue(FakeSettingsGateway()),
+          translationGatewayProvider.overrideWithValue(
+            FakeTranslationGateway(),
+          ),
         ],
         child: const KolektakuApp(),
       ),

@@ -66,6 +66,12 @@ class FakeCatalogGateway with FakeCacheClearing implements CatalogGateway {
     hasNextPage: false,
     notices: [],
   );
+  final List<String> novelSearches = [];
+  CardPageDto novelSearchResult = const CardPageDto(
+    cards: [],
+    hasNextPage: false,
+    notices: [],
+  );
   final List<String> genrePages = [];
   final List<String> selected = [];
   final List<String> forgotten = [];
@@ -85,6 +91,10 @@ class FakeCatalogGateway with FakeCacheClearing implements CatalogGateway {
     if (kind == MediaKindDto.manga) {
       mangaSearches.add('$query|$page');
       return mangaSearchResult;
+    }
+    if (kind == MediaKindDto.novel) {
+      novelSearches.add('$query|$page');
+      return novelSearchResult;
     }
     searches.add('${kind.name}|$query|$page');
     final handler = onSearch;

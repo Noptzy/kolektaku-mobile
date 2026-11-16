@@ -1,3 +1,5 @@
+import '../../core/theme/accent_palette.dart';
+import '../../core/translation_labels.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/settings.dart';
 import '../../src/rust/dto/sources.dart';
@@ -6,6 +8,16 @@ import 'settings_logic.dart';
 
 String preferenceSummary(SettingsDto settings) =>
     settings.prefersAnime ? 'Lebih banyak anime' : 'Lebih banyak komik';
+
+String appearanceSummary(SettingsDto settings) {
+  for (final preset in accentPresets) {
+    if (accentToHex(preset.color) == settings.accent) return preset.label;
+  }
+  return 'Kustom';
+}
+
+String translationSummary(SettingsDto settings) =>
+    translationLanguageNames[settings.translation]!;
 
 String animeSourceSummary(
   SettingsDto settings,

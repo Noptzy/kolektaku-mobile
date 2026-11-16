@@ -22,7 +22,7 @@ import 'home_mix.dart';
 import 'home_skeleton.dart';
 import 'mixed_home.dart';
 
-const _kinds = MediaKindDto.values;
+const _kinds = [MediaKindDto.anime, MediaKindDto.manga];
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -32,9 +32,11 @@ class HomeScreen extends ConsumerWidget {
         .read(catalogGatewayProvider)
         .clearCache()
         .catchError((Object _) {});
-    for (final kind in _kinds) {
+    for (final kind in MediaKindDto.values) {
       ref.invalidate(homeProvider(kind));
       ref.invalidate(continueProvider(kind));
+    }
+    for (final kind in _kinds) {
       ref.invalidate(genresProvider(kind));
     }
     try {
@@ -47,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
   }
 
   void _refreshLibrary(WidgetRef ref) {
-    for (final kind in _kinds) {
+    for (final kind in MediaKindDto.values) {
       ref.invalidate(continueProvider(kind));
     }
   }
@@ -76,6 +78,7 @@ class HomeScreen extends ConsumerWidget {
     final prefersAnime = ref.watch(currentSettingsProvider).prefersAnime;
     final anime = ref.watch(homeProvider(MediaKindDto.anime));
     final manga = ref.watch(homeProvider(MediaKindDto.manga));
+    final novel = ref.watch(homeProvider(MediaKindDto.novel));
     return RefreshOnVisible(
       onVisible: () => _refreshLibrary(ref),
       child: CustomScrollView(
@@ -85,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
         slivers: [
           CupertinoSliverRefreshControl(onRefresh: () => _refresh(ref)),
           SliverToBoxAdapter(
-            child: _body(context, ref, anime, manga, prefersAnime),
+            child: _body(context, ref, anime, manga, novel.value, prefersAnime),
           ),
         ],
       ),
@@ -97,6 +100,7 @@ class HomeScreen extends ConsumerWidget {
     WidgetRef ref,
     AsyncValue<HomeDto> anime,
     AsyncValue<HomeDto> manga,
+    HomeDto? novel,
     bool prefersAnime,
   ) {
     final waiting = anime.isLoading && manga.isLoading;
@@ -107,11 +111,12 @@ class HomeScreen extends ConsumerWidget {
     return MixedHome(
       anime: anime.value,
       manga: manga.value,
+      novel: novel,
       prefersAnime: prefersAnime,
-      resume: mergeResume(
-        ref.watch(continueProvider(MediaKindDto.anime)).value ?? const [],
-        ref.watch(continueProvider(MediaKindDto.manga)).value ?? const [],
-      ),
+      resume: mergeResume([
+        for (final kind in MediaKindDto.values)
+          ref.watch(continueProvider(kind)).value ?? const [],
+      ]),
       genres: {
         for (final kind in _kinds)
           kind: ref.watch(genresProvider(kind)).value ?? const [],

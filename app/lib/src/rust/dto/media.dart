@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-enum MediaKindDto { anime, manga }
+enum MediaKindDto { anime, manga, novel }
 
 class MediaRefDto {
   final MediaRefKind kind;

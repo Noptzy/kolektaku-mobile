@@ -6,7 +6,6 @@ import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
-import '../../widgets/hero_carousel.dart';
 import '../../widgets/hero_slide.dart';
 import '../../widgets/media_rail.dart';
 import '../../widgets/top10_rail.dart';
@@ -16,12 +15,14 @@ import 'home_mix.dart';
 import 'home_notice.dart';
 import 'home_sections.dart';
 import 'resume_rail.dart';
+import 'translated_hero.dart';
 
 class MixedHome extends StatelessWidget {
   const MixedHome({
     super.key,
     required this.anime,
     required this.manga,
+    this.novel,
     required this.prefersAnime,
     required this.resume,
     required this.genres,
@@ -32,6 +33,7 @@ class MixedHome extends StatelessWidget {
 
   final HomeDto? anime;
   final HomeDto? manga;
+  final HomeDto? novel;
   final bool prefersAnime;
   final List<ProgressDto> resume;
   final Map<MediaKindDto, List<GenreDto>> genres;
@@ -39,8 +41,11 @@ class MixedHome extends StatelessWidget {
   final HomeActions actions;
   final Duration? heroAutoPlay;
 
-  HomeDto? _home(MediaKindDto kind) =>
-      kind == MediaKindDto.anime ? anime : manga;
+  HomeDto? _home(MediaKindDto kind) => switch (kind) {
+    MediaKindDto.anime => anime,
+    MediaKindDto.manga => manga,
+    MediaKindDto.novel => novel,
+  };
 
   Widget _top(MediaKindDto kind) {
     final home = _home(kind);
@@ -108,7 +113,7 @@ class MixedHome extends StatelessWidget {
       children: [
         if (notices.isNotEmpty) HomeNotice(notices: notices),
         if (hero.isNotEmpty)
-          HeroCarousel(
+          TranslatedHeroCarousel(
             autoPlay: heroAutoPlay,
             slides: [
               for (final item in hero)
@@ -130,6 +135,7 @@ class MixedHome extends StatelessWidget {
         _rail(other, 'latest', fresh: true),
         _rail(favored, 'popular'),
         _rail(other, 'popular'),
+        _rail(MediaKindDto.novel, 'popular'),
         _otherGenres(other),
         const SizedBox(height: Spacing.xl),
       ],

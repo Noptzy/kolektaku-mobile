@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kolektaku/features/search/search_filter_menu.dart';
 import 'package:kolektaku/features/search/search_filters.dart';
 import 'package:kolektaku/src/rust/dto/media.dart';
 
@@ -34,6 +35,14 @@ void main() {
         SearchFormat.forKind(MediaKindDto.manga),
         contains(SearchFormat.oneShot),
       );
+    });
+
+    test('novels have their own place so comics no longer offer them', () {
+      expect(
+        SearchFormat.forKind(MediaKindDto.manga),
+        isNot(contains(SearchFormat.novel)),
+      );
+      expect(SearchFormat.forKind(MediaKindDto.novel), [SearchFormat.all]);
     });
   });
 
@@ -75,5 +84,22 @@ void main() {
     ];
     final result = filterCards(cards, SearchFormat.movie, SearchOrder.score);
     expect([for (final c in result) c.title], ['Judul 3', 'Judul 1']);
+  });
+
+  group('searchSections', () {
+    List<String> keys(MediaKindDto kind) => [
+      for (final section in searchSections(kind, 2026)) section.key,
+    ];
+
+    test('anime and comics offer a format filter', () {
+      expect(keys(MediaKindDto.anime), contains('format'));
+      expect(keys(MediaKindDto.manga), contains('format'));
+    });
+
+    test('novels have no format to choose from but keep the other filters', () {
+      final novel = keys(MediaKindDto.novel);
+      expect(novel, isNot(contains('format')));
+      expect(novel, containsAll(['genre', 'airing', 'order', 'year']));
+    });
   });
 }

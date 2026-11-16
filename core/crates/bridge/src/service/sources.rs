@@ -8,7 +8,7 @@ use crate::state::AppState;
 
 pub fn status<C: MetadataCatalog>(state: &AppState<C>) -> Vec<SourceStatusDto> {
     let mut statuses = Vec::new();
-    for kind in [MediaKind::Anime, MediaKind::Manga] {
+    for kind in [MediaKind::Anime, MediaKind::Manga, MediaKind::Novel] {
         for source in state.registry.for_kind(kind) {
             let info = source.info();
             statuses.push(SourceStatusDto {

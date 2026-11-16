@@ -2,8 +2,8 @@ use std::future::Future;
 
 use domain::error::SourceError;
 use domain::media::{
-    Discover, EpisodeInfo, MediaDetail, MediaId, MediaKind, MediaListKind, MediaPage, MediaSummary,
-    Profile, ProfileKind, ProfileSummary,
+    Discover, EpisodeInfo, MediaDetail, MediaFormat, MediaId, MediaKind, MediaListKind, MediaPage,
+    MediaSummary, Profile, ProfileKind, ProfileSummary,
 };
 
 pub trait MetadataCatalog: Send + Sync {
@@ -73,4 +73,9 @@ pub trait MetadataCatalog: Send + Sync {
         filter: &Discover,
         page: u32,
     ) -> impl Future<Output = Result<MediaPage, SourceError>> + Send;
+
+    fn comic_formats(
+        &self,
+        ids: &[MediaId],
+    ) -> impl Future<Output = Result<Vec<(MediaId, Option<MediaFormat>)>, SourceError>> + Send;
 }

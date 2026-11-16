@@ -9,6 +9,10 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 enum QualityDto { auto, p1080, p720, p480, p360 }
 
+enum ReadingSizeDto { smallest, small, medium, large, largest }
+
+enum ReadingSpacingDto { tight, normal, loose }
+
 class SettingsDto {
   final bool prefersAnime;
   final String? animeSource;
@@ -21,6 +25,10 @@ class SettingsDto {
   final QualityDto quality;
   final bool autoNext;
   final bool autoSkip;
+  final String accent;
+  final TranslationLanguageDto translation;
+  final ReadingSizeDto readingSize;
+  final ReadingSpacingDto readingSpacing;
 
   const SettingsDto({
     required this.prefersAnime,
@@ -34,6 +42,10 @@ class SettingsDto {
     required this.quality,
     required this.autoNext,
     required this.autoSkip,
+    required this.accent,
+    required this.translation,
+    required this.readingSize,
+    required this.readingSpacing,
   });
 
   @override
@@ -48,7 +60,11 @@ class SettingsDto {
       subtitleBoxOpacity.hashCode ^
       quality.hashCode ^
       autoNext.hashCode ^
-      autoSkip.hashCode;
+      autoSkip.hashCode ^
+      accent.hashCode ^
+      translation.hashCode ^
+      readingSize.hashCode ^
+      readingSpacing.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -65,7 +81,11 @@ class SettingsDto {
           subtitleBoxOpacity == other.subtitleBoxOpacity &&
           quality == other.quality &&
           autoNext == other.autoNext &&
-          autoSkip == other.autoSkip;
+          autoSkip == other.autoSkip &&
+          accent == other.accent &&
+          translation == other.translation &&
+          readingSize == other.readingSize &&
+          readingSpacing == other.readingSpacing;
 }
 
 enum SubtitleBoxColorDto { black, gray, navy }
@@ -79,3 +99,24 @@ enum SubtitleEdgeDto { none, shadow, outline }
 enum SubtitleLanguageDto { indonesian, english, off }
 
 enum SubtitleSizeDto { small, medium, large, huge }
+
+enum TranslationLanguageDto {
+  off,
+  indonesian,
+  english,
+  malay,
+  japanese,
+  korean,
+  chinese,
+  arabic,
+  thai,
+  vietnamese,
+  filipino,
+  spanish,
+  portuguese,
+  french,
+  german,
+  russian,
+  hindi,
+  turkish,
+}

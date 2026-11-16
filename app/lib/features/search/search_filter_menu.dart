@@ -39,14 +39,15 @@ List<FilterSection> searchSections(MediaKindDto kind, int currentYear) {
           FilterOption(genre, genreLabel(genre)),
       ],
     ),
-    FilterSection(
-      key: _formatKey,
-      title: 'Format',
-      options: [
-        for (final format in SearchFormat.forKind(kind))
-          FilterOption(format.name, format.label),
-      ],
-    ),
+    if (SearchFormat.forKind(kind).length > 1)
+      FilterSection(
+        key: _formatKey,
+        title: 'Format',
+        options: [
+          for (final format in SearchFormat.forKind(kind))
+            FilterOption(format.name, format.label),
+        ],
+      ),
     FilterSection(
       key: _airingKey,
       title: anime ? 'Status tayang' : 'Status terbit',

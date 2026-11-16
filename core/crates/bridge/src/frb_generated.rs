@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.13.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1180523819;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1046392406;
 
 // Section: executor
 
@@ -271,12 +271,21 @@ fn wire__crate__api__subtitle__fetch_cues_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_url = <String>::sse_decode(&mut deserializer);
             let api_headers = <Vec<crate::dto::stream::HeaderDto>>::sse_decode(&mut deserializer);
+            let api_language = <Option<String>>::sse_decode(&mut deserializer);
+            let api_position_ms = <u64>::sse_decode(&mut deserializer);
+            let api_translate = <bool>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::error::BridgeError>(
                     (move || async move {
-                        let output_ok =
-                            crate::api::subtitle::fetch_cues(api_url, api_headers).await?;
+                        let output_ok = crate::api::subtitle::fetch_cues(
+                            api_url,
+                            api_headers,
+                            api_language,
+                            api_position_ms,
+                            api_translate,
+                        )
+                        .await?;
                         std::result::Result::Ok(output_ok)
                     })()
                     .await,
@@ -1385,6 +1394,51 @@ fn wire__crate__api__play__open_episode_impl(
         },
     )
 }
+fn wire__crate__api__play__open_novel_chapter_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "open_novel_chapter",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_reference = <crate::dto::media::MediaRefDto>::sse_decode(&mut deserializer);
+            let api_chapter = <f64>::sse_decode(&mut deserializer);
+            let api_preferred = <Option<String>>::sse_decode(&mut deserializer);
+            let api_exclude = <Vec<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::play::open_novel_chapter(
+                            api_reference,
+                            api_chapter,
+                            api_preferred,
+                            api_exclude,
+                        )
+                        .await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__scene__open_scene_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1459,6 +1513,49 @@ fn wire__crate__api__play__parse_stream_payload_impl(
         },
     )
 }
+fn wire__crate__api__play__preload_novel_chapter_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "preload_novel_chapter",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_reference = <crate::dto::media::MediaRefDto>::sse_decode(&mut deserializer);
+            let api_chapter = <f64>::sse_decode(&mut deserializer);
+            let api_preferred = <Option<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::play::preload_novel_chapter(
+                            api_reference,
+                            api_chapter,
+                            api_preferred,
+                        )
+                        .await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__people__profile_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1524,6 +1621,41 @@ fn wire__crate__api__settings__save_settings_impl(
                 transform_result_sse::<_, crate::error::BridgeError>(
                     (move || async move {
                         let output_ok = crate::api::settings::save_settings(api_settings).await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__scene__scene_quota_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "scene_quota",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::scene::scene_quota().await?;
                         std::result::Result::Ok(output_ok)
                     })()
                     .await,
@@ -1805,6 +1937,77 @@ fn wire__crate__api__play__stream_plan_impl(
         },
     )
 }
+fn wire__crate__api__translate__translate_texts_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "translate_texts",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_texts = <Vec<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::translate::translate_texts(api_texts).await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__translate__translation_paused_until_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "translation_paused_until",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::BridgeError>(
+                    (move || async move {
+                        let output_ok = crate::api::translate::translation_paused_until().await?;
+                        std::result::Result::Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__detail__units_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -2007,6 +2210,22 @@ impl SseDecode for crate::dto::cues::CueDto {
             start_ms: var_startMs,
             end_ms: var_endMs,
             text: var_text,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::cues::CuePlanDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_cues = <Vec<crate::dto::cues::CueDto>>::sse_decode(deserializer);
+        let mut var_translated = <bool>::sse_decode(deserializer);
+        let mut var_failed = <bool>::sse_decode(deserializer);
+        let mut var_retryAtSecs = <Option<u64>>::sse_decode(deserializer);
+        return crate::dto::cues::CuePlanDto {
+            cues: var_cues,
+            translated: var_translated,
+            failed: var_failed,
+            retry_at_secs: var_retryAtSecs,
         };
     }
 }
@@ -2420,6 +2639,18 @@ impl SseDecode for Vec<crate::dto::cards::NoticeDto> {
     }
 }
 
+impl SseDecode for Vec<crate::dto::novel::NovelBlockDto> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::dto::novel::NovelBlockDto>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2732,6 +2963,7 @@ impl SseDecode for crate::dto::media::MediaKindDto {
         return match inner {
             0 => crate::dto::media::MediaKindDto::Anime,
             1 => crate::dto::media::MediaKindDto::Manga,
+            2 => crate::dto::media::MediaKindDto::Novel,
             _ => unreachable!("Invalid variant for MediaKindDto: {}", inner),
         };
     }
@@ -2821,6 +3053,47 @@ impl SseDecode for crate::dto::cards::NoticeDto {
         return crate::dto::cards::NoticeDto {
             source: var_source,
             error: var_error,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::novel::NovelBlockDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_isImage = <bool>::sse_decode(deserializer);
+        let mut var_text = <String>::sse_decode(deserializer);
+        return crate::dto::novel::NovelBlockDto {
+            is_image: var_isImage,
+            text: var_text,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::novel::NovelChapterDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_source = <String>::sse_decode(deserializer);
+        let mut var_item = <String>::sse_decode(deserializer);
+        let mut var_unit = <crate::dto::sources::UnitDto>::sse_decode(deserializer);
+        let mut var_language = <String>::sse_decode(deserializer);
+        let mut var_blocks = <Vec<crate::dto::novel::NovelBlockDto>>::sse_decode(deserializer);
+        let mut var_translatedLanguage = <Option<String>>::sse_decode(deserializer);
+        let mut var_translatedBlocks =
+            <Vec<crate::dto::novel::NovelBlockDto>>::sse_decode(deserializer);
+        let mut var_translationFailed = <bool>::sse_decode(deserializer);
+        let mut var_retryAtSecs = <Option<u64>>::sse_decode(deserializer);
+        let mut var_switchedFrom = <Option<String>>::sse_decode(deserializer);
+        return crate::dto::novel::NovelChapterDto {
+            source: var_source,
+            item: var_item,
+            unit: var_unit,
+            language: var_language,
+            blocks: var_blocks,
+            translated_language: var_translatedLanguage,
+            translated_blocks: var_translatedBlocks,
+            translation_failed: var_translationFailed,
+            retry_at_secs: var_retryAtSecs,
+            switched_from: var_switchedFrom,
         };
     }
 }
@@ -3139,6 +3412,34 @@ impl SseDecode for crate::dto::settings::QualityDto {
     }
 }
 
+impl SseDecode for crate::dto::settings::ReadingSizeDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::ReadingSizeDto::Smallest,
+            1 => crate::dto::settings::ReadingSizeDto::Small,
+            2 => crate::dto::settings::ReadingSizeDto::Medium,
+            3 => crate::dto::settings::ReadingSizeDto::Large,
+            4 => crate::dto::settings::ReadingSizeDto::Largest,
+            _ => unreachable!("Invalid variant for ReadingSizeDto: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::dto::settings::ReadingSpacingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::ReadingSpacingDto::Tight,
+            1 => crate::dto::settings::ReadingSpacingDto::Normal,
+            2 => crate::dto::settings::ReadingSpacingDto::Loose,
+            _ => unreachable!("Invalid variant for ReadingSpacingDto: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for crate::dto::credits::RelationDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3274,6 +3575,12 @@ impl SseDecode for crate::dto::settings::SettingsDto {
         let mut var_quality = <crate::dto::settings::QualityDto>::sse_decode(deserializer);
         let mut var_autoNext = <bool>::sse_decode(deserializer);
         let mut var_autoSkip = <bool>::sse_decode(deserializer);
+        let mut var_accent = <String>::sse_decode(deserializer);
+        let mut var_translation =
+            <crate::dto::settings::TranslationLanguageDto>::sse_decode(deserializer);
+        let mut var_readingSize = <crate::dto::settings::ReadingSizeDto>::sse_decode(deserializer);
+        let mut var_readingSpacing =
+            <crate::dto::settings::ReadingSpacingDto>::sse_decode(deserializer);
         return crate::dto::settings::SettingsDto {
             prefers_anime: var_prefersAnime,
             anime_source: var_animeSource,
@@ -3286,6 +3593,10 @@ impl SseDecode for crate::dto::settings::SettingsDto {
             quality: var_quality,
             auto_next: var_autoNext,
             auto_skip: var_autoSkip,
+            accent: var_accent,
+            translation: var_translation,
+            reading_size: var_readingSize,
+            reading_spacing: var_readingSpacing,
         };
     }
 }
@@ -3607,6 +3918,20 @@ impl SseDecode for crate::dto::settings::SubtitleSizeDto {
     }
 }
 
+impl SseDecode for crate::dto::translate::TextTranslationDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_texts = <Vec<String>>::sse_decode(deserializer);
+        let mut var_translated = <bool>::sse_decode(deserializer);
+        let mut var_failed = <bool>::sse_decode(deserializer);
+        return crate::dto::translate::TextTranslationDto {
+            texts: var_texts,
+            translated: var_translated,
+            failed: var_failed,
+        };
+    }
+}
+
 impl SseDecode for crate::dto::credits::TrailerDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3617,6 +3942,34 @@ impl SseDecode for crate::dto::credits::TrailerDto {
             site: var_site,
             video_id: var_videoId,
             thumbnail_url: var_thumbnailUrl,
+        };
+    }
+}
+
+impl SseDecode for crate::dto::settings::TranslationLanguageDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::dto::settings::TranslationLanguageDto::Off,
+            1 => crate::dto::settings::TranslationLanguageDto::Indonesian,
+            2 => crate::dto::settings::TranslationLanguageDto::English,
+            3 => crate::dto::settings::TranslationLanguageDto::Malay,
+            4 => crate::dto::settings::TranslationLanguageDto::Japanese,
+            5 => crate::dto::settings::TranslationLanguageDto::Korean,
+            6 => crate::dto::settings::TranslationLanguageDto::Chinese,
+            7 => crate::dto::settings::TranslationLanguageDto::Arabic,
+            8 => crate::dto::settings::TranslationLanguageDto::Thai,
+            9 => crate::dto::settings::TranslationLanguageDto::Vietnamese,
+            10 => crate::dto::settings::TranslationLanguageDto::Filipino,
+            11 => crate::dto::settings::TranslationLanguageDto::Spanish,
+            12 => crate::dto::settings::TranslationLanguageDto::Portuguese,
+            13 => crate::dto::settings::TranslationLanguageDto::French,
+            14 => crate::dto::settings::TranslationLanguageDto::German,
+            15 => crate::dto::settings::TranslationLanguageDto::Russian,
+            16 => crate::dto::settings::TranslationLanguageDto::Hindi,
+            17 => crate::dto::settings::TranslationLanguageDto::Turkish,
+            _ => unreachable!("Invalid variant for TranslationLanguageDto: {}", inner),
         };
     }
 }
@@ -3824,18 +4177,28 @@ fn pde_ffi_dispatcher_primary_impl(
         33 => wire__crate__api__detail__media_detail_impl(port, ptr, rust_vec_len, data_len),
         34 => wire__crate__api__play__open_chapter_impl(port, ptr, rust_vec_len, data_len),
         35 => wire__crate__api__play__open_episode_impl(port, ptr, rust_vec_len, data_len),
-        36 => wire__crate__api__scene__open_scene_impl(port, ptr, rust_vec_len, data_len),
-        37 => wire__crate__api__play__parse_stream_payload_impl(port, ptr, rust_vec_len, data_len),
-        38 => wire__crate__api__people__profile_impl(port, ptr, rust_vec_len, data_len),
-        39 => wire__crate__api__settings__save_settings_impl(port, ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
-        46 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
-        47 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
+        36 => wire__crate__api__play__open_novel_chapter_impl(port, ptr, rust_vec_len, data_len),
+        37 => wire__crate__api__scene__open_scene_impl(port, ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__play__parse_stream_payload_impl(port, ptr, rust_vec_len, data_len),
+        39 => wire__crate__api__play__preload_novel_chapter_impl(port, ptr, rust_vec_len, data_len),
+        40 => wire__crate__api__people__profile_impl(port, ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__settings__save_settings_impl(port, ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__scene__scene_quota_impl(port, ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__browse__search_impl(port, ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__people__search_people_impl(port, ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__detail__select_source_impl(port, ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__sources__set_source_enabled_impl(port, ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__browse__source_candidates_impl(port, ptr, rust_vec_len, data_len),
+        48 => wire__crate__api__sources__sources_status_impl(port, ptr, rust_vec_len, data_len),
+        49 => wire__crate__api__play__stream_plan_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__translate__translate_texts_impl(port, ptr, rust_vec_len, data_len),
+        51 => wire__crate__api__translate__translation_paused_until_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        52 => wire__crate__api__detail__units_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -4027,6 +4390,26 @@ impl flutter_rust_bridge::IntoDart for crate::dto::cues::CueDto {
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::dto::cues::CueDto {}
 impl flutter_rust_bridge::IntoIntoDart<crate::dto::cues::CueDto> for crate::dto::cues::CueDto {
     fn into_into_dart(self) -> crate::dto::cues::CueDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::cues::CuePlanDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.cues.into_into_dart().into_dart(),
+            self.translated.into_into_dart().into_dart(),
+            self.failed.into_into_dart().into_dart(),
+            self.retry_at_secs.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::dto::cues::CuePlanDto {}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::cues::CuePlanDto>
+    for crate::dto::cues::CuePlanDto
+{
+    fn into_into_dart(self) -> crate::dto::cues::CuePlanDto {
         self
     }
 }
@@ -4412,6 +4795,7 @@ impl flutter_rust_bridge::IntoDart for crate::dto::media::MediaKindDto {
         match self {
             Self::Anime => 0.into_dart(),
             Self::Manga => 1.into_dart(),
+            Self::Novel => 2.into_dart(),
             _ => unreachable!(),
         }
     }
@@ -4540,6 +4924,56 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::cards::NoticeDto>
     for crate::dto::cards::NoticeDto
 {
     fn into_into_dart(self) -> crate::dto::cards::NoticeDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::novel::NovelBlockDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.is_image.into_into_dart().into_dart(),
+            self.text.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::novel::NovelBlockDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::novel::NovelBlockDto>
+    for crate::dto::novel::NovelBlockDto
+{
+    fn into_into_dart(self) -> crate::dto::novel::NovelBlockDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::novel::NovelChapterDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.source.into_into_dart().into_dart(),
+            self.item.into_into_dart().into_dart(),
+            self.unit.into_into_dart().into_dart(),
+            self.language.into_into_dart().into_dart(),
+            self.blocks.into_into_dart().into_dart(),
+            self.translated_language.into_into_dart().into_dart(),
+            self.translated_blocks.into_into_dart().into_dart(),
+            self.translation_failed.into_into_dart().into_dart(),
+            self.retry_at_secs.into_into_dart().into_dart(),
+            self.switched_from.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::novel::NovelChapterDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::novel::NovelChapterDto>
+    for crate::dto::novel::NovelChapterDto
+{
+    fn into_into_dart(self) -> crate::dto::novel::NovelChapterDto {
         self
     }
 }
@@ -4710,6 +5144,52 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::QualityDto>
     for crate::dto::settings::QualityDto
 {
     fn into_into_dart(self) -> crate::dto::settings::QualityDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::ReadingSizeDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Smallest => 0.into_dart(),
+            Self::Small => 1.into_dart(),
+            Self::Medium => 2.into_dart(),
+            Self::Large => 3.into_dart(),
+            Self::Largest => 4.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::ReadingSizeDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::ReadingSizeDto>
+    for crate::dto::settings::ReadingSizeDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::ReadingSizeDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::ReadingSpacingDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Tight => 0.into_dart(),
+            Self::Normal => 1.into_dart(),
+            Self::Loose => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::ReadingSpacingDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::ReadingSpacingDto>
+    for crate::dto::settings::ReadingSpacingDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::ReadingSpacingDto {
         self
     }
 }
@@ -4888,6 +5368,10 @@ impl flutter_rust_bridge::IntoDart for crate::dto::settings::SettingsDto {
             self.quality.into_into_dart().into_dart(),
             self.auto_next.into_into_dart().into_dart(),
             self.auto_skip.into_into_dart().into_dart(),
+            self.accent.into_into_dart().into_dart(),
+            self.translation.into_into_dart().into_dart(),
+            self.reading_size.into_into_dart().into_dart(),
+            self.reading_spacing.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5350,6 +5834,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::SubtitleSizeDto>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::translate::TextTranslationDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.texts.into_into_dart().into_dart(),
+            self.translated.into_into_dart().into_dart(),
+            self.failed.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::translate::TextTranslationDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::translate::TextTranslationDto>
+    for crate::dto::translate::TextTranslationDto
+{
+    fn into_into_dart(self) -> crate::dto::translate::TextTranslationDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::dto::credits::TrailerDto {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5368,6 +5874,43 @@ impl flutter_rust_bridge::IntoIntoDart<crate::dto::credits::TrailerDto>
     for crate::dto::credits::TrailerDto
 {
     fn into_into_dart(self) -> crate::dto::credits::TrailerDto {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::dto::settings::TranslationLanguageDto {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Off => 0.into_dart(),
+            Self::Indonesian => 1.into_dart(),
+            Self::English => 2.into_dart(),
+            Self::Malay => 3.into_dart(),
+            Self::Japanese => 4.into_dart(),
+            Self::Korean => 5.into_dart(),
+            Self::Chinese => 6.into_dart(),
+            Self::Arabic => 7.into_dart(),
+            Self::Thai => 8.into_dart(),
+            Self::Vietnamese => 9.into_dart(),
+            Self::Filipino => 10.into_dart(),
+            Self::Spanish => 11.into_dart(),
+            Self::Portuguese => 12.into_dart(),
+            Self::French => 13.into_dart(),
+            Self::German => 14.into_dart(),
+            Self::Russian => 15.into_dart(),
+            Self::Hindi => 16.into_dart(),
+            Self::Turkish => 17.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::dto::settings::TranslationLanguageDto
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::dto::settings::TranslationLanguageDto>
+    for crate::dto::settings::TranslationLanguageDto
+{
+    fn into_into_dart(self) -> crate::dto::settings::TranslationLanguageDto {
         self
     }
 }
@@ -5624,6 +6167,16 @@ impl SseEncode for crate::dto::cues::CueDto {
         <u64>::sse_encode(self.start_ms, serializer);
         <u64>::sse_encode(self.end_ms, serializer);
         <String>::sse_encode(self.text, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::cues::CuePlanDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::dto::cues::CueDto>>::sse_encode(self.cues, serializer);
+        <bool>::sse_encode(self.translated, serializer);
+        <bool>::sse_encode(self.failed, serializer);
+        <Option<u64>>::sse_encode(self.retry_at_secs, serializer);
     }
 }
 
@@ -5949,6 +6502,16 @@ impl SseEncode for Vec<crate::dto::cards::NoticeDto> {
     }
 }
 
+impl SseEncode for Vec<crate::dto::novel::NovelBlockDto> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::dto::novel::NovelBlockDto>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6171,6 +6734,7 @@ impl SseEncode for crate::dto::media::MediaKindDto {
             match self {
                 crate::dto::media::MediaKindDto::Anime => 0,
                 crate::dto::media::MediaKindDto::Manga => 1,
+                crate::dto::media::MediaKindDto::Novel => 2,
                 _ => {
                     unimplemented!("");
                 }
@@ -6239,6 +6803,30 @@ impl SseEncode for crate::dto::cards::NoticeDto {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.source, serializer);
         <crate::error::BridgeError>::sse_encode(self.error, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::novel::NovelBlockDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_image, serializer);
+        <String>::sse_encode(self.text, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::novel::NovelChapterDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.source, serializer);
+        <String>::sse_encode(self.item, serializer);
+        <crate::dto::sources::UnitDto>::sse_encode(self.unit, serializer);
+        <String>::sse_encode(self.language, serializer);
+        <Vec<crate::dto::novel::NovelBlockDto>>::sse_encode(self.blocks, serializer);
+        <Option<String>>::sse_encode(self.translated_language, serializer);
+        <Vec<crate::dto::novel::NovelBlockDto>>::sse_encode(self.translated_blocks, serializer);
+        <bool>::sse_encode(self.translation_failed, serializer);
+        <Option<u64>>::sse_encode(self.retry_at_secs, serializer);
+        <Option<String>>::sse_encode(self.switched_from, serializer);
     }
 }
 
@@ -6497,6 +7085,42 @@ impl SseEncode for crate::dto::settings::QualityDto {
     }
 }
 
+impl SseEncode for crate::dto::settings::ReadingSizeDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::ReadingSizeDto::Smallest => 0,
+                crate::dto::settings::ReadingSizeDto::Small => 1,
+                crate::dto::settings::ReadingSizeDto::Medium => 2,
+                crate::dto::settings::ReadingSizeDto::Large => 3,
+                crate::dto::settings::ReadingSizeDto::Largest => 4,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::dto::settings::ReadingSpacingDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::ReadingSpacingDto::Tight => 0,
+                crate::dto::settings::ReadingSpacingDto::Normal => 1,
+                crate::dto::settings::ReadingSpacingDto::Loose => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for crate::dto::credits::RelationDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6605,6 +7229,10 @@ impl SseEncode for crate::dto::settings::SettingsDto {
         <crate::dto::settings::QualityDto>::sse_encode(self.quality, serializer);
         <bool>::sse_encode(self.auto_next, serializer);
         <bool>::sse_encode(self.auto_skip, serializer);
+        <String>::sse_encode(self.accent, serializer);
+        <crate::dto::settings::TranslationLanguageDto>::sse_encode(self.translation, serializer);
+        <crate::dto::settings::ReadingSizeDto>::sse_encode(self.reading_size, serializer);
+        <crate::dto::settings::ReadingSpacingDto>::sse_encode(self.reading_spacing, serializer);
     }
 }
 
@@ -6874,12 +7502,53 @@ impl SseEncode for crate::dto::settings::SubtitleSizeDto {
     }
 }
 
+impl SseEncode for crate::dto::translate::TextTranslationDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<String>>::sse_encode(self.texts, serializer);
+        <bool>::sse_encode(self.translated, serializer);
+        <bool>::sse_encode(self.failed, serializer);
+    }
+}
+
 impl SseEncode for crate::dto::credits::TrailerDto {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.site, serializer);
         <String>::sse_encode(self.video_id, serializer);
         <Option<String>>::sse_encode(self.thumbnail_url, serializer);
+    }
+}
+
+impl SseEncode for crate::dto::settings::TranslationLanguageDto {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::dto::settings::TranslationLanguageDto::Off => 0,
+                crate::dto::settings::TranslationLanguageDto::Indonesian => 1,
+                crate::dto::settings::TranslationLanguageDto::English => 2,
+                crate::dto::settings::TranslationLanguageDto::Malay => 3,
+                crate::dto::settings::TranslationLanguageDto::Japanese => 4,
+                crate::dto::settings::TranslationLanguageDto::Korean => 5,
+                crate::dto::settings::TranslationLanguageDto::Chinese => 6,
+                crate::dto::settings::TranslationLanguageDto::Arabic => 7,
+                crate::dto::settings::TranslationLanguageDto::Thai => 8,
+                crate::dto::settings::TranslationLanguageDto::Vietnamese => 9,
+                crate::dto::settings::TranslationLanguageDto::Filipino => 10,
+                crate::dto::settings::TranslationLanguageDto::Spanish => 11,
+                crate::dto::settings::TranslationLanguageDto::Portuguese => 12,
+                crate::dto::settings::TranslationLanguageDto::French => 13,
+                crate::dto::settings::TranslationLanguageDto::German => 14,
+                crate::dto::settings::TranslationLanguageDto::Russian => 15,
+                crate::dto::settings::TranslationLanguageDto::Hindi => 16,
+                crate::dto::settings::TranslationLanguageDto::Turkish => 17,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 

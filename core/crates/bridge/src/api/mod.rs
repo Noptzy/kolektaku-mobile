@@ -9,4 +9,5 @@ pub mod session;
 pub mod settings;
 pub mod sources;
 pub mod subtitle;
+pub mod translate;
 pub mod update;

@@ -11,6 +11,8 @@ use domain::media::{MediaKind, MediaRef};
 use super::document::{FORMAT_VERSION, LibraryDocument};
 use crate::storage::JsonFile;
 
+const BACKUP_LABEL: &str = "before-novel";
+
 pub struct JsonLibraryRepository {
     file: JsonFile,
     clock: Arc<dyn Clock>,
@@ -134,5 +136,19 @@ impl LibraryRepository for JsonLibraryRepository {
 
     async fn clear_searches(&self, kind: MediaKind) -> Result<(), StorageError> {
         self.change(|document| document.clear_searches(kind)).await
+    }
+
+    async fn move_entries(
+        &self,
+        from: MediaKind,
+        to: MediaKind,
+        media: &[MediaRef],
+    ) -> Result<usize, StorageError> {
+        if self.document().await.movable(from, media) == 0 {
+            return Ok(0);
+        }
+        self.file.keep_copy(BACKUP_LABEL).await?;
+        self.change(|document| document.move_entries(from, to, media))
+            .await
     }
 }

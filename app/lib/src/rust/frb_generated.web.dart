@@ -17,6 +17,7 @@ import 'api/session.dart';
 import 'api/settings.dart';
 import 'api/sources.dart';
 import 'api/subtitle.dart';
+import 'api/translate.dart';
 import 'api/update.dart';
 
 import 'dart:async';
@@ -31,6 +32,7 @@ import 'dto/episodes.dart';
 import 'dto/library.dart';
 import 'dto/links.dart';
 import 'dto/media.dart';
+import 'dto/novel.dart';
 import 'dto/profile.dart';
 import 'dto/profile_facts.dart';
 import 'dto/profile_summary.dart';
@@ -40,6 +42,7 @@ import 'dto/sources.dart';
 import 'dto/stream.dart';
 import 'dto/stream_extras.dart';
 import 'dto/studio.dart';
+import 'dto/translate.dart';
 import 'dto/update.dart';
 import 'error.dart';
 import 'frb_generated.dart';
@@ -151,6 +154,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CueDto dco_decode_cue_dto(dynamic raw);
 
   @protected
+  CuePlanDto dco_decode_cue_plan_dto(dynamic raw);
+
+  @protected
   DateDto dco_decode_date_dto(dynamic raw);
 
   @protected
@@ -244,6 +250,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<NoticeDto> dco_decode_list_notice_dto(dynamic raw);
 
   @protected
+  List<NovelBlockDto> dco_decode_list_novel_block_dto(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
@@ -322,6 +331,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   NoticeDto dco_decode_notice_dto(dynamic raw);
 
   @protected
+  NovelBlockDto dco_decode_novel_block_dto(dynamic raw);
+
+  @protected
+  NovelChapterDto dco_decode_novel_chapter_dto(dynamic raw);
+
+  @protected
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
@@ -389,6 +404,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   QualityDto dco_decode_quality_dto(dynamic raw);
+
+  @protected
+  ReadingSizeDto dco_decode_reading_size_dto(dynamic raw);
+
+  @protected
+  ReadingSpacingDto dco_decode_reading_spacing_dto(dynamic raw);
 
   @protected
   RelationDto dco_decode_relation_dto(dynamic raw);
@@ -472,7 +493,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SubtitleSizeDto dco_decode_subtitle_size_dto(dynamic raw);
 
   @protected
+  TextTranslationDto dco_decode_text_translation_dto(dynamic raw);
+
+  @protected
   TrailerDto dco_decode_trailer_dto(dynamic raw);
+
+  @protected
+  TranslationLanguageDto dco_decode_translation_language_dto(dynamic raw);
 
   @protected
   int dco_decode_u_16(dynamic raw);
@@ -618,6 +645,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CueDto sse_decode_cue_dto(SseDeserializer deserializer);
 
   @protected
+  CuePlanDto sse_decode_cue_plan_dto(SseDeserializer deserializer);
+
+  @protected
   DateDto sse_decode_date_dto(SseDeserializer deserializer);
 
   @protected
@@ -729,6 +759,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<NoticeDto> sse_decode_list_notice_dto(SseDeserializer deserializer);
 
   @protected
+  List<NovelBlockDto> sse_decode_list_novel_block_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
@@ -825,6 +860,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   NoticeDto sse_decode_notice_dto(SseDeserializer deserializer);
 
   @protected
+  NovelBlockDto sse_decode_novel_block_dto(SseDeserializer deserializer);
+
+  @protected
+  NovelChapterDto sse_decode_novel_chapter_dto(SseDeserializer deserializer);
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
@@ -914,6 +955,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   QualityDto sse_decode_quality_dto(SseDeserializer deserializer);
 
   @protected
+  ReadingSizeDto sse_decode_reading_size_dto(SseDeserializer deserializer);
+
+  @protected
+  ReadingSpacingDto sse_decode_reading_spacing_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   RelationDto sse_decode_relation_dto(SseDeserializer deserializer);
 
   @protected
@@ -1001,7 +1050,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SubtitleSizeDto sse_decode_subtitle_size_dto(SseDeserializer deserializer);
 
   @protected
+  TextTranslationDto sse_decode_text_translation_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   TrailerDto sse_decode_trailer_dto(SseDeserializer deserializer);
+
+  @protected
+  TranslationLanguageDto sse_decode_translation_language_dto(
+    SseDeserializer deserializer,
+  );
 
   @protected
   int sse_decode_u_16(SseDeserializer deserializer);
@@ -1186,6 +1245,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_cue_dto(CueDto self, SseSerializer serializer);
 
   @protected
+  void sse_encode_cue_plan_dto(CuePlanDto self, SseSerializer serializer);
+
+  @protected
   void sse_encode_date_dto(DateDto self, SseSerializer serializer);
 
   @protected
@@ -1330,6 +1392,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_novel_block_dto(
+    List<NovelBlockDto> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
@@ -1456,6 +1524,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_notice_dto(NoticeDto self, SseSerializer serializer);
 
   @protected
+  void sse_encode_novel_block_dto(NovelBlockDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_novel_chapter_dto(
+    NovelChapterDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
@@ -1559,6 +1636,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_quality_dto(QualityDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_reading_size_dto(
+    ReadingSizeDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_reading_spacing_dto(
+    ReadingSpacingDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_relation_dto(RelationDto self, SseSerializer serializer);
@@ -1684,7 +1773,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_text_translation_dto(
+    TextTranslationDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_trailer_dto(TrailerDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_translation_language_dto(
+    TranslationLanguageDto self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_u_16(int self, SseSerializer serializer);

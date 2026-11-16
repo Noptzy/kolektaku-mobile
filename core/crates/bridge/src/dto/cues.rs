@@ -17,9 +17,41 @@ impl From<&Cue> for CueDto {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CuePlanDto {
+    pub cues: Vec<CueDto>,
+    pub translated: bool,
+    pub failed: bool,
+    pub retry_at_secs: Option<u64>,
+}
+
+impl CuePlanDto {
+    pub fn plain(cues: &[Cue]) -> Self {
+        Self {
+            cues: cues.iter().map(CueDto::from).collect(),
+            translated: false,
+            failed: false,
+            retry_at_secs: None,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_plain_plan_is_untranslated_and_has_no_retry_time() {
+        let cue = Cue {
+            start_ms: 1,
+            end_ms: 2,
+            text: "a".into(),
+        };
+        let plan = CuePlanDto::plain(&[cue]);
+        assert_eq!(plan.cues.len(), 1);
+        assert!(!plan.translated && !plan.failed);
+        assert_eq!(plan.retry_at_secs, None);
+    }
 
     #[test]
     fn a_cue_keeps_its_times_and_text() {

@@ -1,20 +1,31 @@
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../src/rust/dto/links.dart';
 
 const maxShownLinks = 6;
 
-IconData linkIcon(String site) {
+FaIconData? brandIconFor(String site) {
   return switch (site.toLowerCase().trim()) {
-    'twitter' || 'x' => LucideIcons.messageCircle,
-    'instagram' => LucideIcons.camera,
-    'facebook' => LucideIcons.share2,
-    'youtube' => LucideIcons.squarePlay,
-    'tiktok' => LucideIcons.music,
-    'official site' => LucideIcons.globe,
-    _ => LucideIcons.link,
+    'twitter' || 'x' => FontAwesomeIcons.xTwitter,
+    'youtube' => FontAwesomeIcons.youtube,
+    'instagram' => FontAwesomeIcons.instagram,
+    'facebook' => FontAwesomeIcons.facebookF,
+    'tiktok' => FontAwesomeIcons.tiktok,
+    _ => null,
   };
+}
+
+Widget siteIcon(String site, {required double size, required Color color}) {
+  final brand = brandIconFor(site);
+  if (brand != null) {
+    return FaIcon(brand, size: size, color: color);
+  }
+  final icon = site.toLowerCase().trim() == 'official site'
+      ? LucideIcons.globe
+      : LucideIcons.link;
+  return Icon(icon, size: size, color: color);
 }
 
 String linkLabel(String site) {

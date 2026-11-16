@@ -25,6 +25,18 @@ pub fn komiku(name: &str) -> String {
     read("komiku", name)
 }
 
+pub fn weebcentral(name: &str) -> String {
+    read("weebcentral", name)
+}
+
+pub fn novelphoenix(name: &str) -> String {
+    read("novelphoenix", name)
+}
+
+pub fn meionovels(name: &str) -> String {
+    read("meionovels", name)
+}
+
 pub fn komikindo(name: &str) -> String {
     read("komikindo", name)
 }
@@ -35,4 +47,8 @@ pub fn trace_moe(name: &str) -> String {
 
 pub fn mal(name: &str) -> String {
     read("mal", name)
+}
+
+pub fn translate(name: &str) -> String {
+    read("translate", name)
 }

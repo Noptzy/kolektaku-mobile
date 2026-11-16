@@ -10,6 +10,7 @@ typedef PeopleQuery = ({ProfileKindDto kind, String text});
 
 const matchLimit = 3;
 const mangaMatchLimit = 12;
+const novelMatchLimit = 12;
 
 List<ProfileSummaryDto> namesMatching(
   List<ProfileSummaryDto> found,
@@ -47,6 +48,18 @@ final mangaMatchesProvider = FutureProvider.autoDispose
             .watch(catalogGatewayProvider)
             .search(MediaKindDto.manga, text, 1);
         return page.cards.take(mangaMatchLimit).toList();
+      } on Object {
+        return const [];
+      }
+    });
+
+final novelMatchesProvider = FutureProvider.autoDispose
+    .family<List<MediaCardDto>, String>((ref, text) async {
+      try {
+        final page = await ref
+            .watch(catalogGatewayProvider)
+            .search(MediaKindDto.novel, text, 1);
+        return page.cards.take(novelMatchLimit).toList();
       } on Object {
         return const [];
       }
