@@ -69,7 +69,7 @@ void main() {
     expect(listWidth(tester), _width);
   });
 
-  testWidgets('zooming keeps the reader at the same place in the chapter', (
+  testWidgets('zooming keeps the point between the fingers where it was', (
     tester,
   ) async {
     await ReaderHarness().open(tester);
@@ -79,7 +79,7 @@ void main() {
     final before = scrolled(tester);
     expect(before, greaterThan(300));
     await pinchOut(tester);
-    expect(scrolled(tester), closeTo(before * 2, before * 0.15));
+    expect(scrolled(tester), closeTo((before + 400) * 2 - 400, before * 0.15));
   });
 
   testWidgets('a tap on a zoomed page still shows or hides the bars', (

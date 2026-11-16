@@ -8,10 +8,11 @@ class ScrollAnchor {
   final StackMetrics metrics;
   double _appliedZoom = 1;
 
-  void followZoom(ScrollController scroll, double zoom) {
+  void followZoom(ScrollController scroll, double zoom, {double focalY = 0}) {
     if (zoom == _appliedZoom) return;
     if (scroll.hasClients) {
-      scroll.jumpTo(scroll.position.pixels * zoom / _appliedZoom);
+      final ratio = zoom / _appliedZoom;
+      scroll.jumpTo((scroll.position.pixels + focalY) * ratio - focalY);
     }
     _appliedZoom = zoom;
   }
