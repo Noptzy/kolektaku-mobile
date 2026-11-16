@@ -13,6 +13,7 @@ api.komiku.org
 komikindo.ch
 meionovels.com
 novelphoenix.com
+baka-tsuki.org
 weebcentral.com
 kuramanime.ing
 animehot.cc

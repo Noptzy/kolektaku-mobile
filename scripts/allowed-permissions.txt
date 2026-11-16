@@ -1,0 +1,14 @@
+# Izin yang boleh ada di manifest APK (spec §8.5). Menambah baris = keputusan pemilik.
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.REQUEST_INSTALL_PACKAGES
+android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION
+android.permission.POST_NOTIFICATIONS
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.WAKE_LOCK
+# dibawa paket notifikasi dan tugas latar; izin biasa, tanpa dialog
+android.permission.VIBRATE
+android.permission.FOREGROUND_SERVICE
+android.permission.FOREGROUND_SERVICE_SHORT_SERVICE
+# dibawa AndroidX, bernama sesuai paket aplikasi
+app.kolektaku.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
