@@ -13,6 +13,8 @@ pub enum StreamPlan {
         url: String,
         script: String,
         allowed_host: String,
+        #[serde(default)]
+        referer: Option<String>,
     },
 }
 
@@ -31,6 +33,7 @@ mod tests {
             url: "https://x/ep/1".into(),
             script: "s".into(),
             allowed_host: "x".into(),
+            referer: None,
         }
     }
 

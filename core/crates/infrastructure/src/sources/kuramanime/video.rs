@@ -42,6 +42,7 @@ impl VideoSource for KuramanimeVideo {
                 url: self.urls.episode(&episode)?,
                 script: stream_script(&server),
                 allowed_host: self.urls.host(),
+                referer: None,
             })
         })
     }
@@ -91,6 +92,7 @@ mod tests {
             url,
             script,
             allowed_host,
+            ..
         } = plan
         else {
             panic!("expected a web view plan");

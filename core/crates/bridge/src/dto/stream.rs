@@ -119,6 +119,7 @@ pub struct StreamPlanDto {
     pub url: String,
     pub script: String,
     pub allowed_host: String,
+    pub referer: String,
 }
 
 impl From<&StreamPlan> for StreamPlanDto {
@@ -137,11 +138,13 @@ impl From<&StreamPlan> for StreamPlanDto {
                 url: String::new(),
                 script: String::new(),
                 allowed_host: String::new(),
+                referer: String::new(),
             },
             StreamPlan::NeedsWebView {
                 url,
                 script,
                 allowed_host,
+                referer,
             } => Self {
                 kind: StreamPlanKind::NeedsWebView,
                 sources: Vec::new(),
@@ -149,6 +152,7 @@ impl From<&StreamPlan> for StreamPlanDto {
                 url: url.clone(),
                 script: script.clone(),
                 allowed_host: allowed_host.clone(),
+                referer: referer.clone().unwrap_or_default(),
             },
         }
     }

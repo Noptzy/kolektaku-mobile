@@ -17,6 +17,10 @@ pub fn kuramanime(name: &str) -> String {
     read("kuramanime", name)
 }
 
+pub fn gogoanime(name: &str) -> String {
+    read("gogoanime", name)
+}
+
 pub fn hianime(name: &str) -> String {
     read("hianime", name)
 }

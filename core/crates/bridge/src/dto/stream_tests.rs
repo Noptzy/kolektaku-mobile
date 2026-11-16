@@ -9,8 +9,10 @@ fn a_web_view_plan_keeps_url_script_and_host() {
         url: "https://site.test/ep".into(),
         script: "(() => 1)()".into(),
         allowed_host: "site.test".into(),
+        referer: Some("https://player.test/".into()),
     };
     let dto = StreamPlanDto::from(&plan);
+    assert_eq!(dto.referer, "https://player.test/");
     let (url, script, allowed_host) = (dto.url, dto.script, dto.allowed_host);
     assert_eq!(dto.kind, StreamPlanKind::NeedsWebView);
     assert!(dto.sources.is_empty() && dto.headers.is_empty());

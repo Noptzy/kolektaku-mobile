@@ -69,6 +69,7 @@ impl VideoSource for HianimeVideo {
                 url: choice.url,
                 script: stream_script().to_string(),
                 allowed_host: choice.host,
+                referer: None,
             })
         })
     }

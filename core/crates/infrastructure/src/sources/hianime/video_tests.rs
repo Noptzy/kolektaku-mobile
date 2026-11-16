@@ -56,6 +56,7 @@ async fn the_plan_opens_the_chosen_embed_in_a_web_view_pinned_to_its_host() {
         url,
         script,
         allowed_host,
+        ..
     } = plan
     else {
         panic!("expected a web view plan");
