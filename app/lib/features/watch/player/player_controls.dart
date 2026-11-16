@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'center_play_button.dart';
 import 'clock_format.dart';
 import 'playback_engine.dart';
 import 'player_session.dart';
@@ -55,6 +56,13 @@ class PlayerControls extends StatelessWidget {
             ),
           ),
         ),
+        CenterPlayButton(
+          snapshot: session.engine.snapshot,
+          onPressed: () {
+            session.togglePlay();
+            onInteract();
+          },
+        ),
         Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -64,6 +72,7 @@ class PlayerControls extends StatelessWidget {
               SeekBar(
                 snapshot: session.engine.snapshot,
                 skips: session.extras.marks,
+                onScrub: onInteract,
                 onSeek: (fraction) {
                   session.seekToFraction(fraction);
                   onInteract();
@@ -129,22 +138,17 @@ class PlayerControls extends StatelessWidget {
       valueListenable: session.engine.snapshot,
       builder: (context, snapshot, child) => Row(
         children: [
-          ShadIconButton.ghost(
-            key: const Key('play-pause'),
-            icon: Icon(snapshot.playing ? LucideIcons.pause : LucideIcons.play),
-            onPressed: () {
-              session.togglePlay();
-              onInteract();
-            },
-          ),
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(
-                  '${formatClock(snapshot.position)} / ${formatClock(snapshot.duration)}',
-                  maxLines: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    '${formatClock(snapshot.position)} / ${formatClock(snapshot.duration)}',
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ),
