@@ -1,6 +1,7 @@
 const aboutNotes = (
-  version: '0.3.0',
+  version: '0.3.1',
   lines: [
+    'Memperbaiki pembaruan dari versi 0.2.x yang gagal terpasang dengan pesan paket tidak valid.',
     'Terjemahan otomatis untuk subtitle, sinopsis, dan teks novel, dengan bahasa tujuan yang bisa dipilih di Pengaturan.',
     'Novel menjadi kategori sendiri: ada di Cari, Koleksi, dan Beranda, dengan pembaca teks yang ukuran huruf dan jarak barisnya bisa diatur.',
     'Sumber komik ketiga berbahasa Inggris untuk judul yang tidak ada di sumber Indonesia.',
