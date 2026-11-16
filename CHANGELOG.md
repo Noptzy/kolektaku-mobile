@@ -2,6 +2,12 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.3.1] — 2026-11-16
+
+### Diperbaiki
+- Pembaruan dari versi 0.2.x gagal terpasang dengan pesan "paket tampaknya tidak valid". Penyebabnya nomor build internal 0.3.0 lebih rendah daripada build 0.2.x per-ABI yang terpasang, sehingga Android menolaknya sebagai penurunan versi. Nomor build kini dimulai dari 5001 dan dijaga oleh tes agar selalu di atas semua build lama.
+- Rilis 0.3.0 dicabut karena tidak bisa dipasang di atas versi lama; 0.3.1 memuat semua isinya.
+
 ## [0.3.0] — 2026-11-16
 
 ### Ditambahkan
