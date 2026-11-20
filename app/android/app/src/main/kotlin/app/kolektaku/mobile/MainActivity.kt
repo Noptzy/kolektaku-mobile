@@ -20,6 +20,7 @@ class MainActivity : FlutterActivity() {
             this,
             MethodChannel(messenger, ScreenAwakePlugin.CHANNEL_NAME),
         )
+        DownloadPlugin(this, MethodChannel(messenger, DownloadPlugin.CHANNEL_NAME))
         share = ShareReceiverPlugin(
             this,
             MethodChannel(messenger, ShareReceiverPlugin.CHANNEL_NAME),
