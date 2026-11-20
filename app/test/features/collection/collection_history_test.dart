@@ -51,7 +51,7 @@ void main() {
     expect((visit.extra! as ReadRequest).chapter, 7);
   });
 
-  testWidgets('history uses the same poster cards as favorites', (
+  testWidgets('history is a list with the watch time beside the episode', (
     tester,
   ) async {
     await open(
@@ -59,23 +59,26 @@ void main() {
       history: [progress(1, title: 'Satu')],
       favorites: [favorite(2, title: 'Dua')],
     );
-    expect(find.byType(MediaCard), findsNWidgets(2));
-    expect(find.text('Episode 2'), findsOneWidget);
+    expect(find.byType(MediaCard), findsOneWidget);
+    final episode = tester.getCenter(find.text('Episode 2'));
+    final time = tester.getCenter(find.text('10:00 / 20:00'));
+    expect((episode.dy - time.dy).abs(), lessThan(2));
+    expect(time.dx, greaterThan(episode.dx));
   });
 
-  testWidgets('a long history is one page that scrolls, not a box', (
-    tester,
-  ) async {
+  testWidgets('a long history scrolls inside its own box', (tester) async {
     await open(
       tester,
       history: [for (var i = 1; i <= 30; i++) progress(i, title: 'Judul $i')],
     );
-    expect(find.byKey(const Key('history-box')), findsNothing);
+    final box = find.byKey(const Key('history-list'));
+    expect(box, findsOneWidget);
+    expect(tester.getSize(box).height, lessThan(7 * 80));
     expect(find.text('Judul 30'), findsNothing);
     await tester.scrollUntilVisible(
       find.text('Judul 30'),
-      400,
-      scrollable: find.byType(Scrollable).first,
+      300,
+      scrollable: find.descendant(of: box, matching: find.byType(Scrollable)),
     );
     expect(find.text('Judul 30'), findsOneWidget);
   });
