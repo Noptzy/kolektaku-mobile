@@ -4,6 +4,7 @@ use std::sync::{Arc, Mutex};
 use domain::error::SourceError;
 use domain::source::SourceId;
 
+use super::misses::SearchMisses;
 use crate::ports::Clock;
 
 const FAILURES_BEFORE_SKIPPING: u32 = 3;
@@ -18,6 +19,7 @@ struct Record {
 pub struct SourceHealth {
     clock: Arc<dyn Clock>,
     records: Mutex<HashMap<SourceId, Record>>,
+    misses: SearchMisses,
 }
 
 impl SourceHealth {
@@ -25,7 +27,12 @@ impl SourceHealth {
         Self {
             clock,
             records: Mutex::new(HashMap::new()),
+            misses: SearchMisses::default(),
         }
+    }
+
+    pub fn misses(&self) -> &SearchMisses {
+        &self.misses
     }
 
     pub fn record_success(&self, source: &SourceId) {

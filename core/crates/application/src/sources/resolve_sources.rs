@@ -4,24 +4,14 @@ use std::sync::Arc;
 use domain::error::{SourceError, StorageError};
 use domain::media::{MediaRef, MediaSummary};
 use domain::source::{ItemId, SourceId, SourceLink, SourceLinkStore};
-use tokio::task::JoinSet;
 
 use super::SourceHealth;
-use super::find_link::{Found, find_in_source, verify_item};
-use super::merge::{Answer, is_fresh, merge_answers};
+use super::merge::{is_fresh, merge_answers};
 use super::rank::rank_links;
+use super::resolve_search::{search_sources, unlinked_sources};
 use super::resolved_sources::ResolvedSources;
-use super::search_queries::search_queries;
-use crate::matching::{CatalogIds, MATCHER_VERSION, MatchTarget};
 use crate::ports::{Clock, SourceProvider};
 use crate::settings::AppSettingsStore;
-
-fn keep_variants(mut found: Found, previous: &SourceLink) -> Found {
-    if found.link.item == previous.item {
-        found.link.variants = previous.variants.clone();
-    }
-    found
-}
 
 pub struct ResolveSources<S: SourceLinkStore> {
     sources: Vec<Arc<dyn SourceProvider>>,
@@ -59,10 +49,13 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
             .into_iter()
             .partition(|link| self.is_active(&link.source));
         let now = self.clock.now_secs();
-        if !active.is_empty() && active.iter().all(|link| is_fresh(link, now)) {
+        if !active.is_empty()
+            && active.iter().all(|link| is_fresh(link, now))
+            && unlinked_sources(&self.sources, &self.health, &reference, &active, now).is_empty()
+        {
             return Ok(self.ranked(active));
         }
-        let answers = self.search_sources(media, &active, now).await;
+        let answers = search_sources(&self.sources, &self.health, media, &active, now).await;
         let merged = merge_answers(&active, answers);
         if merged.links.is_empty() {
             return self.without_new_links(active, merged.answered, merged.first_error);
@@ -140,60 +133,5 @@ impl<S: SourceLinkStore + 'static> ResolveSources<S> {
             (false, Some(error)) => Err(error),
             _ => Ok(ResolvedSources { links: Vec::new() }),
         }
-    }
-
-    async fn search_sources(
-        &self,
-        media: &MediaSummary,
-        stored: &[SourceLink],
-        now: u64,
-    ) -> Vec<Answer> {
-        let target = MatchTarget::of(media);
-        let ids = CatalogIds::of(media);
-        let queries = search_queries(media);
-        let mut tasks = JoinSet::new();
-        for source in &self.sources {
-            let id = source.info().id.clone();
-            let existing = stored.iter().find(|link| link.source == id);
-            if self.health.is_skipped(&id)
-                || existing.is_some_and(|link| link.manual || is_fresh(link, now))
-            {
-                continue;
-            }
-            let unverified = existing
-                .filter(|link| link.matcher_version >= MATCHER_VERSION)
-                .cloned();
-            let (source, target, queries) = (Arc::clone(source), target.clone(), queries.clone());
-            tasks.spawn(async move {
-                let verified = match unverified {
-                    Some(link) => verify_item(
-                        Arc::clone(&source),
-                        target.clone(),
-                        ids,
-                        link.item.clone(),
-                        now,
-                    )
-                    .await
-                    .ok()
-                    .flatten()
-                    .map(|found| keep_variants(found, &link)),
-                    None => None,
-                };
-                let result = match verified {
-                    Some(found) => Ok(Some(found)),
-                    None => find_in_source(source, target, ids, queries, now).await,
-                };
-                Answer { source: id, result }
-            });
-        }
-        let mut answers = Vec::new();
-        while let Some(Ok(answer)) = tasks.join_next().await {
-            match &answer.result {
-                Ok(_) => self.health.record_success(&answer.source),
-                Err(error) => self.health.record_failure(&answer.source, error),
-            }
-            answers.push(answer);
-        }
-        answers
     }
 }
