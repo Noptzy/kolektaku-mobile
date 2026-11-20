@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:kolektaku/app_scope.dart';
 import 'package:kolektaku/core/routes.dart';
 import 'package:kolektaku/core/theme/kolektaku_theme.dart';
+import 'package:kolektaku/data/providers/download_providers.dart';
 import 'package:kolektaku/data/providers/gateway_providers.dart';
 import 'package:kolektaku/features/home/hero_auto_play.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'fake_catalog_gateway.dart';
+import 'fake_download_gateway.dart';
 import 'fake_highlight_gateway.dart';
 import 'fake_library_gateway.dart';
 import 'fake_settings_gateway.dart';
@@ -46,6 +48,8 @@ class ScreenHarness {
   final FakeSettingsGateway settings;
   final FakeTranslationGateway translation;
   final FakeHighlightGateway highlights;
+  final FakeDownloadGateway downloads = FakeDownloadGateway();
+  final FakeDownloadDevice device = FakeDownloadDevice();
   final List<Visit> visits = [];
 
   static const _stubs = [
@@ -60,6 +64,7 @@ class ScreenHarness {
     Routes.settingsPage,
     Routes.search,
     Routes.sceneSearch,
+    Routes.downloads,
   ];
 
   List<Override> get overrides => [
@@ -70,6 +75,8 @@ class ScreenHarness {
     translationGatewayProvider.overrideWithValue(translation),
     highlightGatewayProvider.overrideWithValue(highlights),
     heroAutoPlayProvider.overrideWithValue(null),
+    downloadGatewayProvider.overrideWithValue(downloads),
+    downloadDeviceProvider.overrideWithValue(device),
   ];
 
   ProviderContainer container() => ProviderContainer(overrides: overrides);

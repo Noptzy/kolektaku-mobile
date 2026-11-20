@@ -16,6 +16,7 @@ import 'package:kolektaku/src/rust/dto/media.dart';
 import 'package:kolektaku/src/rust/dto/sources.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../support/fake_download_gateway.dart';
 import 'fake_engine.dart';
 import 'watch_fixtures.dart';
 
@@ -167,7 +168,11 @@ class WatchHarness {
     ),
   );
 
-  Widget app() {
+  final FakeDownloadGateway downloads = FakeDownloadGateway();
+
+  Widget app() => withDownloadFakes(_shad(), downloads);
+
+  Widget _shad() {
     return ShadApp(
       darkTheme: kolektakuDarkTheme(),
       themeMode: ThemeMode.dark,

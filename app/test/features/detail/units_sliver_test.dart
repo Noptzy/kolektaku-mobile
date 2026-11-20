@@ -12,8 +12,9 @@ import 'detail_support.dart';
 Future<void> show(
   WidgetTester tester,
   AsyncValue<UnitsDto> units,
-  MediaKindDto kind,
-) {
+  MediaKindDto kind, {
+  ValueChanged<List<UnitDto>>? onDownload,
+}) {
   return ScreenHarness().pump(
     tester,
     CustomScrollView(
@@ -28,6 +29,7 @@ Future<void> show(
           onToggleOrder: () {},
           onRetry: () {},
           onPlay: (_) {},
+          onDownload: onDownload,
         ),
       ],
     ),
@@ -82,5 +84,34 @@ void main() {
       expect(find.text('Daftar belum bisa dimuat.'), findsOneWidget);
       expect(find.text('Coba lagi'), findsOneWidget);
     });
+  });
+
+  testWidgets('an anime list offers to download its episodes', (tester) async {
+    List<UnitDto>? asked;
+    final units = UnitsDto(
+      source: 'a',
+      item: 'a-1',
+      units: const [UnitDto(id: 'u1', number: 1, label: 'Episode 1')],
+    );
+    await show(
+      tester,
+      AsyncData(units),
+      MediaKindDto.anime,
+      onDownload: (list) => asked = list,
+    );
+    await tester.tap(find.byKey(const Key('open-download-picker')));
+    expect(asked!.single.number, 1);
+  });
+
+  testWidgets('without a download action there is no download bar', (
+    tester,
+  ) async {
+    final units = UnitsDto(
+      source: 'a',
+      item: 'a-1',
+      units: const [UnitDto(id: 'u1', number: 1, label: 'Episode 1')],
+    );
+    await show(tester, AsyncData(units), MediaKindDto.manga);
+    expect(find.byKey(const Key('open-download-picker')), findsNothing);
   });
 }

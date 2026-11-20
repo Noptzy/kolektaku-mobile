@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/sources.dart';
+import '../downloads/download_launch.dart';
 import '../profile/profile_request.dart';
 import 'characters_section.dart';
 import 'detail_actions.dart';
@@ -159,6 +160,7 @@ class DetailBody extends ConsumerWidget {
           onRetry: onRetryUnits,
           onPlay: onPlay,
           onWrong: onWrong,
+          onDownload: detailDownload(context, ref, request, info),
           unreleased: isUnreleased(info.status),
           releaseLabel: releaseDateLabel(info.startDate),
         ),

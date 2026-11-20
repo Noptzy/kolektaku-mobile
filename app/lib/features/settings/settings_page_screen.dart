@@ -5,6 +5,7 @@ import '../../data/providers/settings_providers.dart';
 import 'about_section.dart';
 import 'appearance_preview.dart';
 import 'appearance_section.dart';
+import 'download_section.dart';
 import 'player_section.dart';
 import 'notification_section.dart';
 import 'preference_section.dart';
@@ -31,6 +32,7 @@ class SettingsPageScreen extends ConsumerWidget {
     SettingsPage.subtitle => const SubtitleSection(),
     SettingsPage.player => const PlayerSection(),
     SettingsPage.reader => const ReaderSection(),
+    SettingsPage.downloads => const DownloadSection(),
     SettingsPage.notifications => const NotificationSection(),
     SettingsPage.sources => const SourceStatusSection(),
     SettingsPage.update => const UpdatePanelSection(),

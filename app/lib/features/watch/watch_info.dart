@@ -2,7 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
+import '../../src/rust/dto/downloads.dart';
 import '../../src/rust/dto/sources.dart';
+import '../downloads/download_playing_button.dart';
 import 'episode_loader.dart';
 import 'watch_heading.dart';
 
@@ -19,6 +21,7 @@ class WatchInfo extends StatelessWidget {
     this.onPrevious,
     this.onNext,
     this.onChangeServer,
+    this.downloadTarget,
   });
 
   final LoadedEpisode? loaded;
@@ -31,6 +34,7 @@ class WatchInfo extends StatelessWidget {
   final VoidCallback? onPrevious;
   final VoidCallback? onNext;
   final VoidCallback? onChangeServer;
+  final DownloadTargetDto? downloadTarget;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +83,13 @@ class WatchInfo extends StatelessWidget {
               onPressed: loaded == null ? null : onChangeServer,
             ),
           ),
+          if (downloadTarget != null)
+            Expanded(
+              child: DownloadPlayingButton(
+                target: downloadTarget!,
+                stream: loaded?.stream,
+              ),
+            ),
           Expanded(
             child: _NavButton(
               key: const Key('next-episode'),

@@ -14,4 +14,5 @@ abstract final class Routes {
   static const sceneSearch = '/cari-gambar';
   static const gate = '/gate';
   static const gallery = '/galeri';
+  static const downloads = '/unduhan';
 }

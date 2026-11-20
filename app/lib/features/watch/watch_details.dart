@@ -6,6 +6,7 @@ import '../../src/rust/dto/sources.dart';
 import '../detail/episode_info_map.dart';
 import '../detail/episode_row.dart';
 import '../detail/episode_window.dart';
+import '../downloads/download_playing_button.dart';
 import 'scene_estimate_bar.dart';
 import 'watch_scroll.dart';
 import 'watch_section_heading.dart';
@@ -145,6 +146,7 @@ class _WatchDetailsState extends State<WatchDetails> {
             onPrevious: () => _go(_controller.previous),
             onNext: () => _go(next),
             onChangeServer: _changeServer,
+            downloadTarget: playingTarget(_controller.request),
           ),
           ShortFilmGuard(controller: _controller),
           Expanded(
