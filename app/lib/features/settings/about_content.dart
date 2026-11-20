@@ -1,12 +1,12 @@
 const aboutNotes = (
-  version: '0.4.1',
+  version: '0.5.0',
   lines: [
-    'Sumber anime ke-3 sebagai cadangan, dan tombol cek koneksi semua sumber di Kelola sumber.',
-    'Coba notifikasi kini meminta izin dan menjelaskan bila gagal; ada tombol Periksa sekarang.',
-    'Pemutar lebih mirip YouTube: ketuk dua kali untuk lompat, tahan untuk 2x, geser bilah menampilkan waktu tujuan.',
-    'Zoom dua jari di komik berpusat di antara jari.',
-    'Film bersubjudul panjang kini ketemu di sumber yang tidak menjawab judul penuh.',
-    'Pencarian dari gambar punya tombol Coba dengan contoh.',
+    'Unduh episode anime: satu, beberapa, atau semua sekaligus, jadi satu file MKV dengan subtitle terjemahan di Movies/Kolektaku.',
+    'Tombol bulat dengan cincin progres muncul di atas navbar selama mengunduh; ketuk untuk membuka halaman Unduhan.',
+    'Pengaturan Unduhan: pilih kualitas dan subtitle yang ikut disimpan.',
+    'Riwayat kini berupa daftar dengan kotak cari, dan bisa digeser untuk menghapus satu riwayat.',
+    'Sumber anime ke-3 kini juga dicari untuk judul yang sudah pernah dibuka.',
+    'Subtitle yang kamu pilih sendiri tidak lagi diterjemahkan diam-diam.',
   ],
 );
 
