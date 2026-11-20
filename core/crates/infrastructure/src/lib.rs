@@ -1,6 +1,7 @@
 pub mod catalog;
 pub mod clock;
 pub mod config;
+pub mod download;
 pub mod http;
 pub mod scene;
 pub mod sources;
