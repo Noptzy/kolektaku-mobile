@@ -27,10 +27,19 @@ class SubtitleCues {
 
   List<CueDto> _original = const [];
   List<CueDto> _translated = const [];
+  SubtitleDto? _track;
+  List<HeaderDto> _headers = const [];
   int _request = 0;
   bool _closed = false;
 
   bool get canToggleOriginal => status.value == TranslationStatus.translated;
+
+  bool get canTranslate {
+    final track = _track;
+    return track != null &&
+        status.value == TranslationStatus.none &&
+        _wantsTranslation(track);
+  }
 
   void newEpisode() {
     notice.value = null;
@@ -38,6 +47,7 @@ class SubtitleCues {
 
   void clear() {
     _request++;
+    _track = null;
     _original = const [];
     _translated = const [];
     cues.value = const [];
@@ -45,23 +55,45 @@ class SubtitleCues {
     status.value = TranslationStatus.none;
   }
 
-  Future<void> load(SubtitleDto track, List<HeaderDto> headers) async {
+  bool _isCurrent(int request) => request == _request && !_closed;
+
+  Future<void> load(
+    SubtitleDto track,
+    List<HeaderDto> headers, {
+    bool translate = true,
+  }) async {
     clear();
+    _track = track;
+    _headers = headers;
     final request = _request;
-    bool current() => request == _request && !_closed;
     try {
       final plain = await loader(_ask(track, headers, translate: false));
-      if (!current()) return;
+      if (!_isCurrent(request)) return;
       _original = plain.cues;
       _publish();
-      if (!_wantsTranslation(track)) return;
-      status.value = TranslationStatus.working;
-      final plan = await loader(_ask(track, headers, translate: true));
-      if (!current()) return;
-      _settle(plan);
+      if (translate) await _translate(request);
     } on Object {
-      if (current()) clear();
+      if (_isCurrent(request)) clear();
     }
+  }
+
+  Future<void> translateNow() async {
+    if (!canTranslate) return;
+    final request = _request;
+    try {
+      await _translate(request);
+    } on Object {
+      if (_isCurrent(request)) status.value = TranslationStatus.none;
+    }
+  }
+
+  Future<void> _translate(int request) async {
+    final track = _track;
+    if (track == null || !_wantsTranslation(track)) return;
+    status.value = TranslationStatus.working;
+    final plan = await loader(_ask(track, _headers, translate: true));
+    if (!_isCurrent(request)) return;
+    _settle(plan);
   }
 
   CueRequest _ask(

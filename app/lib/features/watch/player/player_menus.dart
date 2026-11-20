@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/translation_labels.dart';
+import '../../../src/rust/dto/settings.dart';
 import '../../../src/rust/dto/stream.dart';
 import '../../../src/rust/dto/stream_extras.dart';
 import '../../../widgets/option_list.dart';
@@ -84,6 +86,23 @@ Widget originalTextToggle({
     onPressed: onPressed,
     child: Text(
       showingOriginal ? 'Tampilkan terjemahan' : 'Tampilkan teks asli',
+    ),
+  );
+}
+
+Widget translateNowButton({
+  required TranslationLanguageDto target,
+  required VoidCallback onPressed,
+}) {
+  return ShadButton.outline(
+    key: const Key('translate-subtitle-now'),
+    onPressed: onPressed,
+    child: Flexible(
+      child: Text(
+        'Terjemahkan ke ${translationLanguageNames[target]}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     ),
   );
 }

@@ -100,28 +100,43 @@ String _subtitleValue(PlayerSession session) {
   return _translationLabel(session) ?? subtitleTitle(current);
 }
 
-Widget _subtitlePage(
+Widget? _translationButton(
   PlayerSession session,
   VoidCallback onInteract,
   VoidCallback close,
 ) {
   final cues = session.extras.subtitleCues;
+  void after(VoidCallback action) {
+    action();
+    onInteract();
+    close();
+  }
+
+  if (cues.canToggleOriginal) {
+    return originalTextToggle(
+      showingOriginal: cues.showingOriginal.value,
+      onPressed: () => after(cues.toggleOriginal),
+    );
+  }
+  if (!cues.canTranslate) return null;
+  return translateNowButton(
+    target: session.settings.translation,
+    onPressed: () => after(() => cues.translateNow()),
+  );
+}
+
+Widget _subtitlePage(
+  PlayerSession session,
+  VoidCallback onInteract,
+  VoidCallback close,
+) {
   return subtitleOptions(
     tracks: session.extras.available,
     current: session.extras.subtitle.value,
     currentLabel: _translationLabel(session),
-    originalToggle: cues.canToggleOriginal
-        ? originalTextToggle(
-            showingOriginal: cues.showingOriginal.value,
-            onPressed: () {
-              cues.toggleOriginal();
-              onInteract();
-              close();
-            },
-          )
-        : null,
+    originalToggle: _translationButton(session, onInteract, close),
     onPicked: (track) {
-      session.extras.selectSubtitle(track);
+      session.extras.pickSubtitle(track);
       onInteract();
       close();
     },
