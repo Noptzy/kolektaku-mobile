@@ -1,5 +1,6 @@
 pub mod catalog;
 pub mod detail;
+pub mod downloads;
 mod greeting;
 pub mod library;
 pub mod matching;
