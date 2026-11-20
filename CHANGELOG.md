@@ -2,6 +2,18 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.5.0] — 2026-11-20
+
+### Ditambahkan
+- Unduh episode anime: satu episode dari halaman Tonton, atau beberapa sekaligus/semua dari halaman detail (pilih episode). Video HLS diunduh paralel, subtitle diterjemahkan saat diunduh, lalu disatukan menjadi satu file MKV (video, suara, subtitle terjemahan + subtitle asli yang bisa dipilih) di Movies/Kolektaku. Sumber yang memberi file MP4 langsung disimpan apa adanya.
+- Tombol bulat di kanan bawah (di atas navbar) selama ada unduhan, dengan cincin progres di tepinya dan panah beranimasi; diketuk membuka halaman Unduhan (batal, coba lagi, putar, hapus).
+- Pengaturan › Unduhan: kualitas unduhan dan pilihan subtitle (terjemahan + asli, asli saja, tanpa subtitle). Unduhan tetap berjalan di latar dengan notifikasi progres.
+- Riwayat di Koleksi berupa daftar dengan kotak cari, area gulir sendiri (sekitar 5 baris terlihat), waktu tonton sejajar dengan nomor episode, dan geser kiri/kanan untuk menghapus satu riwayat (bisa diurungkan).
+
+### Diperbaiki
+- Sumber anime ke-3 tidak muncul untuk judul yang sudah pernah dibuka sebelum sumber itu ditambahkan (tautan lama yang masih segar dipakai tanpa mencari di sumber baru). Kini sumber yang belum punya tautan ikut dicari, dan sumber yang memang tidak punya judulnya tidak dicari ulang setiap kali dibuka.
+- Subtitle yang dipilih sendiri di pemutar (misalnya Inggris) tidak lagi diam-diam diterjemahkan ke Indonesia begitu terjemahannya selesai; terjemahan tetap bisa diminta lewat tombol "Terjemahkan ke …".
+
 ## [0.4.1] — 2026-11-16
 
 ### Ditambahkan

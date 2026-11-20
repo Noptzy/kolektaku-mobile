@@ -11,6 +11,7 @@ import '../../widgets/skeleton.dart';
 import '../home/home_sections.dart';
 import '../home/resume_card.dart';
 import 'collection_logic.dart';
+import 'history_panel.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({super.key, required this.text, this.trailing});
@@ -43,14 +44,17 @@ class SectionTitle extends StatelessWidget {
 }
 
 class EmptyNote extends StatelessWidget {
-  const EmptyNote({super.key, required this.text});
+  const EmptyNote({super.key, required this.text, this.inset = true});
 
   final String text;
+  final bool inset;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.screenGutter),
+      padding: EdgeInsets.symmetric(
+        horizontal: inset ? Spacing.screenGutter : 0,
+      ),
       child: Text(text, style: ShadTheme.of(context).textTheme.muted),
     );
   }
@@ -119,14 +123,13 @@ List<Widget> historySection(
   ValueChanged<ProgressDto> onRemove,
   VoidCallback onClear,
 ) {
-  final cards = [for (final item in items) resumeCard(item)];
   return [
     SliverToBoxAdapter(
       child: SectionTitle(
         text: 'Riwayat',
         trailing: items.isEmpty
             ? null
-            : ShadButton.ghost(
+            : ShadButton.link(
                 key: const Key('clear-history'),
                 onPressed: onClear,
                 size: ShadButtonSize.sm,
@@ -134,15 +137,15 @@ List<Widget> historySection(
               ),
       ),
     ),
-    if (items.isEmpty)
-      SliverToBoxAdapter(child: EmptyNote(text: emptyHistory(kind)))
-    else
-      MediaGridSliver(
-        cards: cards,
-        unitLabel: unitLabelFor(kind),
-        progressOf: (card) => historyFraction(items[cards.indexOf(card)]),
-        onTap: (card) => onOpen(items[cards.indexOf(card)]),
-        onRemove: (card) => onRemove(items[cards.indexOf(card)]),
-      ),
+    SliverToBoxAdapter(
+      child: items.isEmpty
+          ? EmptyNote(text: emptyHistory(kind))
+          : HistoryPanel(
+              kind: kind,
+              items: items,
+              onOpen: onOpen,
+              onRemove: onRemove,
+            ),
+    ),
   ];
 }

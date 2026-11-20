@@ -1,16 +1,18 @@
 use std::path::Path;
 use std::sync::Arc;
 
+use application::downloads::{DownloadQueue, DownloadSettingsStore};
 use application::ports::{Clock, MetadataCatalog, SourceProvider, TranslationHealth, Translator};
 use application::settings::AppSettingsStore;
 use application::sources::{ResolveSources, SourceDirectory, SourceHealth, SourceSwitches};
 use domain::media::MediaKind;
-use infrastructure::http::{HttpClient, ResponseCache};
+use infrastructure::download::EpisodeDownloader;
+use infrastructure::http::{HttpClient, ReqwestClient, ResponseCache};
 use infrastructure::scene::trace_moe::TraceMoeSceneSearch;
 use infrastructure::sources::registry::SourceRegistry;
 use infrastructure::storage::{
-    Database, SqliteHighlightStore, SqliteLibraryRepository, SqliteSourceLinkStore,
-    SqliteUpdateLedger,
+    Database, SqliteDownloadLedger, SqliteHighlightStore, SqliteLibraryRepository,
+    SqliteSourceLinkStore, SqliteUpdateLedger,
 };
 
 use crate::error::BridgeError;
@@ -32,6 +34,8 @@ pub struct AppState<C: MetadataCatalog> {
     pub translation_health: Arc<dyn TranslationHealth>,
     pub http: Arc<dyn HttpClient>,
     pub response_cache: Option<Arc<ResponseCache>>,
+    pub downloads: Arc<DownloadQueue<SqliteDownloadLedger>>,
+    pub downloader: Arc<EpisodeDownloader>,
 }
 
 impl<C: MetadataCatalog + 'static> AppState<C> {
@@ -68,6 +72,21 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
             Arc::new(SourceDirectory::new(registry.all()).with_settings(settings.clone()));
         let health = Arc::new(SourceHealth::new(clock.clone()));
         let translation = translation_service(&database, &http, &clock);
+        let downloader = Arc::new(EpisodeDownloader::new(
+            http.clone(),
+            Arc::new(ReqwestClient::for_files()?),
+            translation.clone(),
+            std::env::temp_dir().join("kolektaku-downloads"),
+        ));
+        let language = settings.clone();
+        let downloads = DownloadQueue::load(
+            Arc::new(SqliteDownloadLedger::new(database.clone())),
+            downloader.clone(),
+            clock.clone(),
+            DownloadSettingsStore::load(library.as_ref()).await,
+            Arc::new(move || language.get().translation),
+        )
+        .await;
         Ok(Self {
             catalog,
             registry,
@@ -85,6 +104,8 @@ impl<C: MetadataCatalog + 'static> AppState<C> {
             translation_health: translation,
             http,
             response_cache: None,
+            downloads,
+            downloader,
         })
     }
 

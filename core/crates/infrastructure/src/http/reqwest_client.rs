@@ -7,6 +7,7 @@ use domain::error::SourceError;
 use super::{HttpClient, HttpMethod, HttpRequest, HttpResponse};
 
 pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(20);
+const FILE_READ_TIMEOUT: Duration = Duration::from_secs(60);
 const USER_AGENT: &str = "Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36";
 
 fn tls_config() -> Result<rustls::ClientConfig, SourceError> {
@@ -29,6 +30,17 @@ impl ReqwestClient {
         Self::new(DEFAULT_TIMEOUT)
     }
 
+    pub fn for_files() -> Result<Self, SourceError> {
+        let client = reqwest::Client::builder()
+            .connect_timeout(DEFAULT_TIMEOUT)
+            .read_timeout(FILE_READ_TIMEOUT)
+            .user_agent(USER_AGENT)
+            .use_preconfigured_tls(tls_config()?)
+            .build()
+            .map_err(network_error)?;
+        Ok(Self { client })
+    }
+
     pub fn new(timeout: Duration) -> Result<Self, SourceError> {
         let client = reqwest::Client::builder()
             .timeout(timeout)
@@ -39,7 +51,7 @@ impl ReqwestClient {
         Ok(Self { client })
     }
 
-    async fn execute(&self, request: HttpRequest) -> Result<HttpResponse, SourceError> {
+    fn builder(&self, request: HttpRequest) -> reqwest::RequestBuilder {
         let method = match request.method {
             HttpMethod::Get => reqwest::Method::GET,
             HttpMethod::Post => reqwest::Method::POST,
@@ -53,6 +65,15 @@ impl ReqwestClient {
         } else if let Some(body) = request.body {
             builder = builder.body(body);
         }
+        builder
+    }
+
+    pub async fn open(&self, request: HttpRequest) -> Result<reqwest::Response, SourceError> {
+        self.builder(request).send().await.map_err(network_error)
+    }
+
+    async fn execute(&self, request: HttpRequest) -> Result<HttpResponse, SourceError> {
+        let builder = self.builder(request);
         let response = builder.send().await.map_err(network_error)?;
         let status = response.status().as_u16();
         let url = response.url().to_string();
@@ -73,7 +94,7 @@ impl ReqwestClient {
     }
 }
 
-fn network_error(error: reqwest::Error) -> SourceError {
+pub(crate) fn network_error(error: reqwest::Error) -> SourceError {
     if error.is_timeout() {
         SourceError::Network("request timed out".into())
     } else {

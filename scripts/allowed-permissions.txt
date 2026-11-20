@@ -10,5 +10,7 @@ android.permission.WAKE_LOCK
 android.permission.VIBRATE
 android.permission.FOREGROUND_SERVICE
 android.permission.FOREGROUND_SERVICE_SHORT_SERVICE
+# unduhan episode tetap berjalan di latar (layanan latar jenis dataSync)
+android.permission.FOREGROUND_SERVICE_DATA_SYNC
 # dibawa AndroidX, bernama sesuai paket aplikasi
 app.kolektaku.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION

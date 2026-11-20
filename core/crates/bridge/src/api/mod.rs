@@ -1,5 +1,6 @@
 pub mod browse;
 pub mod detail;
+pub mod downloads;
 pub mod follow;
 pub mod foundation;
 pub mod highlights;

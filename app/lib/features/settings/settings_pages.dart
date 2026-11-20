@@ -58,6 +58,14 @@ enum SettingsPage {
     icon: LucideIcons.bookOpen,
     intro: 'Atur cara membaca komik dan novel.',
   ),
+  downloads(
+    slug: 'unduhan',
+    title: 'Unduhan',
+    icon: LucideIcons.download,
+    intro:
+        'Simpan episode ke HP untuk ditonton tanpa internet. Pilih kualitas '
+        'dan subtitle yang ikut disimpan di dalam file.',
+  ),
   notifications(
     slug: 'notifikasi',
     title: 'Notifikasi',

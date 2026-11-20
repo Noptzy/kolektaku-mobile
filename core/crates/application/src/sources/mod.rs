@@ -4,8 +4,10 @@ mod directory;
 mod find_link;
 mod health;
 mod merge;
+mod misses;
 mod next_source;
 mod rank;
+mod resolve_search;
 mod resolve_sources;
 mod resolved_sources;
 mod search_queries;
@@ -18,6 +20,8 @@ mod catalog_id_tests;
 mod reported_cases_tests;
 #[cfg(test)]
 mod resolve_manual_tests;
+#[cfg(test)]
+mod resolve_new_source_tests;
 #[cfg(test)]
 mod resolve_sources_tests;
 #[cfg(test)]

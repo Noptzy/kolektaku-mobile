@@ -9,6 +9,7 @@ import '../../src/rust/error.dart';
 import '../../widgets/error_state_view.dart';
 import '../../widgets/skeleton.dart';
 import '../../widgets/state_view.dart';
+import '../downloads/download_bar.dart';
 import 'episode_info_map.dart';
 import 'episode_section.dart';
 
@@ -25,6 +26,7 @@ class UnitsSliver extends StatelessWidget {
     required this.onRetry,
     required this.onPlay,
     this.onWrong,
+    this.onDownload,
     this.unreleased = false,
     this.releaseLabel,
   });
@@ -39,6 +41,7 @@ class UnitsSliver extends StatelessWidget {
   final VoidCallback onRetry;
   final ValueChanged<UnitDto> onPlay;
   final VoidCallback? onWrong;
+  final ValueChanged<List<UnitDto>>? onDownload;
   final bool unreleased;
   final String? releaseLabel;
 
@@ -90,17 +93,31 @@ class UnitsSliver extends StatelessWidget {
           SliverToBoxAdapter(child: _Roomy(child: _failure(error))),
       data: (data) => data.units.isEmpty
           ? SliverToBoxAdapter(child: _Roomy(child: _empty()))
-          : EpisodeSection(
-              units: data.units,
-              kind: kind,
-              progress: progress,
-              descending: descending,
-              focus: focus,
-              infos: episodeInfosOf(view),
-              art: artOf(view),
-              onToggleOrder: onToggleOrder,
-              onOpen: onPlay,
+          : _withDownload(
+              data.units,
+              EpisodeSection(
+                units: data.units,
+                kind: kind,
+                progress: progress,
+                descending: descending,
+                focus: focus,
+                infos: episodeInfosOf(view),
+                art: artOf(view),
+                onToggleOrder: onToggleOrder,
+                onOpen: onPlay,
+              ),
             ),
+    );
+  }
+
+  Widget _withDownload(List<UnitDto> list, Widget section) {
+    final download = onDownload;
+    if (download == null) return section;
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(child: DownloadBar(onTap: () => download(list))),
+        section,
+      ],
     );
   }
 }

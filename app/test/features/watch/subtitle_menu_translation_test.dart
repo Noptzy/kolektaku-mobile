@@ -7,7 +7,7 @@ import 'package:kolektaku/features/watch/player/player_settings.dart';
 import '../../widgets/widget_harness.dart';
 import 'fake_engine.dart';
 import 'player_extras_support.dart';
-import 'subtitle_translation_test.dart' show streamWith;
+import 'subtitle_translation_support.dart' show streamWith;
 
 Future<PlayerSession> openedSession({bool translated = true}) async {
   final stream = streamWith([sub('English', 'en')]);

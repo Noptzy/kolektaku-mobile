@@ -24,6 +24,7 @@ pub use pause::{Pause, SystemPause};
 pub use rate_limit::{RateLimitSettings, RateLimitedClient};
 pub use request::{HttpMethod, HttpRequest};
 pub use reqwest_client::ReqwestClient;
+pub(crate) use reqwest_client::network_error;
 pub use response::HttpResponse;
 pub use response_cache::{CacheHit, ResponseCache};
 

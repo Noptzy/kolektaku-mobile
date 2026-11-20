@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
+import '../../data/providers/download_providers.dart';
 import '../../data/providers/settings_providers.dart';
 import '../../data/providers/source_providers.dart';
 import '../../widgets/tab_title.dart';
 import '../update/update_controller.dart';
 import '../update/update_labels.dart';
+import 'download_section.dart';
 import 'settings_logic.dart';
 import 'settings_pages.dart';
 import 'settings_row.dart';
@@ -86,6 +88,13 @@ class SettingsScreen extends ConsumerWidget {
                         context,
                         SettingsPage.reader,
                         readerSummary(settings),
+                      ),
+                      _row(
+                        context,
+                        SettingsPage.downloads,
+                        downloadSummary(
+                          ref.watch(downloadSettingsProvider).value,
+                        ),
                       ),
                       _row(
                         context,

@@ -103,6 +103,7 @@ pub async fn build_production(data_dir: &Path) -> Result<AppState<AniListCatalog
         Arc::new(CachedHttp::new(limited, cache.clone(), catalog_ttl));
     let catalog = Arc::new(AniListCatalog::new(remembered, clock.clone()));
     let state = AppState::assemble_in(database, catalog, registry, clock, scene, plain).await?;
+    state.downloader.set_output(data_dir.join("downloads"));
     let migration = MigrateNovelEntries::new(state.library.clone(), state.catalog.clone());
     tokio::spawn(async move {
         migration.execute().await;

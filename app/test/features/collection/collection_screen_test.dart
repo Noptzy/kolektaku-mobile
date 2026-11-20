@@ -87,7 +87,7 @@ void main() {
     tester,
   ) async {
     final harness = await open(tester, history: [progress(1, title: 'Hapus')]);
-    await tester.tap(find.byKey(const Key('remove-card')));
+    await tester.drag(find.text('Hapus'), const Offset(-600, 0));
     await tester.pumpAndSettle();
     expect(find.text('Hapus'), findsNothing);
     expect(find.text('Dihapus dari riwayat.'), findsOneWidget);
@@ -99,7 +99,7 @@ void main() {
       tester,
       history: [progress(1, title: 'Kembali')],
     );
-    await tester.tap(find.byKey(const Key('remove-card')));
+    await tester.drag(find.text('Kembali'), const Offset(600, 0));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('undo')));
     await tester.pumpAndSettle();
@@ -157,9 +157,11 @@ void main() {
     expect(harness.library.historyResult.single.title, 'Manga Satu');
   });
 
-  testWidgets('a finished item shows no progress bar', (tester) async {
+  testWidgets('a finished item reads Selesai with a full bar', (tester) async {
     await open(tester, history: [progress(1, completed: true)]);
     expect(find.text('Episode 2'), findsOneWidget);
-    expect(find.byType(ShadProgress), findsNothing);
+    expect(find.text('Selesai'), findsOneWidget);
+    final bar = tester.widget<ShadProgress>(find.byType(ShadProgress));
+    expect(bar.value, 1);
   });
 }

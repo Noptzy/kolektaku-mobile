@@ -93,13 +93,21 @@ class PlayerExtras {
     }
   }
 
-  Future<void> selectSubtitle(SubtitleDto? track) async {
+  Future<void> selectSubtitle(
+    SubtitleDto? track, {
+    bool translate = true,
+  }) async {
     subtitle.value = track;
     if (track == null) {
       subtitleCues.clear();
       return;
     }
-    await subtitleCues.load(track, _headers);
+    await subtitleCues.load(track, _headers, translate: translate);
+  }
+
+  Future<void> pickSubtitle(SubtitleDto? track) async {
+    if (track != null && track == subtitle.value) return;
+    await selectSubtitle(track, translate: false);
   }
 
   void onPosition(Duration position) {

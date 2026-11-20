@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../core/theme/kolektaku_tokens.dart';
+import '../features/downloads/download_fab.dart';
 import 'app_bottom_bar.dart';
 
 const appDestinations = [
@@ -29,10 +31,21 @@ class AppShell extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: SafeArea(
-                top: shell.currentIndex != 0,
-                bottom: false,
-                child: shell,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: SafeArea(
+                      top: shell.currentIndex != 0,
+                      bottom: false,
+                      child: shell,
+                    ),
+                  ),
+                  const Positioned(
+                    right: Spacing.screenGutter,
+                    bottom: Spacing.lg,
+                    child: DownloadFab(),
+                  ),
+                ],
               ),
             ),
             AppBottomBar(

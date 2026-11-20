@@ -8,6 +8,7 @@
 
 import 'api/browse.dart';
 import 'api/detail.dart';
+import 'api/downloads.dart';
 import 'api/follow.dart';
 import 'api/foundation.dart';
 import 'api/highlights.dart';
@@ -30,6 +31,7 @@ import 'dto/covers.dart';
 import 'dto/credits.dart';
 import 'dto/cues.dart';
 import 'dto/discover.dart';
+import 'dto/downloads.dart';
 import 'dto/episodes.dart';
 import 'dto/follow.dart';
 import 'dto/highlight.dart';
@@ -92,6 +94,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DiscoverFilterDto dco_decode_box_autoadd_discover_filter_dto(dynamic raw);
 
   @protected
+  DownloadDto dco_decode_box_autoadd_download_dto(dynamic raw);
+
+  @protected
+  DownloadSettingsDto dco_decode_box_autoadd_download_settings_dto(dynamic raw);
+
+  @protected
+  DownloadTargetDto dco_decode_box_autoadd_download_target_dto(dynamic raw);
+
+  @protected
   double dco_decode_box_autoadd_f_32(dynamic raw);
 
   @protected
@@ -120,6 +131,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SiteDetailDto dco_decode_box_autoadd_site_detail_dto(dynamic raw);
+
+  @protected
+  StreamSetDto dco_decode_box_autoadd_stream_set_dto(dynamic raw);
 
   @protected
   TrailerDto dco_decode_box_autoadd_trailer_dto(dynamic raw);
@@ -179,6 +193,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DiscoverSortDto dco_decode_discover_sort_dto(dynamic raw);
 
   @protected
+  DownloadDto dco_decode_download_dto(dynamic raw);
+
+  @protected
+  DownloadPhaseDto dco_decode_download_phase_dto(dynamic raw);
+
+  @protected
+  DownloadSettingsDto dco_decode_download_settings_dto(dynamic raw);
+
+  @protected
+  DownloadSubtitlesDto dco_decode_download_subtitles_dto(dynamic raw);
+
+  @protected
+  DownloadTargetDto dco_decode_download_target_dto(dynamic raw);
+
+  @protected
   EpisodeInfoDto dco_decode_episode_info_dto(dynamic raw);
 
   @protected
@@ -234,6 +263,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<CueDto> dco_decode_list_cue_dto(dynamic raw);
+
+  @protected
+  List<DownloadDto> dco_decode_list_download_dto(dynamic raw);
 
   @protected
   List<EpisodeInfoDto> dco_decode_list_episode_info_dto(dynamic raw);
@@ -369,6 +401,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DetailReasonDto? dco_decode_opt_box_autoadd_detail_reason_dto(dynamic raw);
+
+  @protected
+  DownloadDto? dco_decode_opt_box_autoadd_download_dto(dynamic raw);
 
   @protected
   double? dco_decode_opt_box_autoadd_f_32(dynamic raw);
@@ -600,6 +635,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  DownloadDto sse_decode_box_autoadd_download_dto(SseDeserializer deserializer);
+
+  @protected
+  DownloadSettingsDto sse_decode_box_autoadd_download_settings_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  DownloadTargetDto sse_decode_box_autoadd_download_target_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer);
 
   @protected
@@ -636,6 +684,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SiteDetailDto sse_decode_box_autoadd_site_detail_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  StreamSetDto sse_decode_box_autoadd_stream_set_dto(
     SseDeserializer deserializer,
   );
 
@@ -701,6 +754,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DiscoverSortDto sse_decode_discover_sort_dto(SseDeserializer deserializer);
 
   @protected
+  DownloadDto sse_decode_download_dto(SseDeserializer deserializer);
+
+  @protected
+  DownloadPhaseDto sse_decode_download_phase_dto(SseDeserializer deserializer);
+
+  @protected
+  DownloadSettingsDto sse_decode_download_settings_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  DownloadSubtitlesDto sse_decode_download_subtitles_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  DownloadTargetDto sse_decode_download_target_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   EpisodeInfoDto sse_decode_episode_info_dto(SseDeserializer deserializer);
 
   @protected
@@ -762,6 +836,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<CueDto> sse_decode_list_cue_dto(SseDeserializer deserializer);
+
+  @protected
+  List<DownloadDto> sse_decode_list_download_dto(SseDeserializer deserializer);
 
   @protected
   List<EpisodeInfoDto> sse_decode_list_episode_info_dto(
@@ -937,6 +1014,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DetailReasonDto? sse_decode_opt_box_autoadd_detail_reason_dto(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  DownloadDto? sse_decode_opt_box_autoadd_download_dto(
     SseDeserializer deserializer,
   );
 
@@ -1209,6 +1291,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_box_autoadd_download_dto(
+    DownloadDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_download_settings_dto(
+    DownloadSettingsDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_download_target_dto(
+    DownloadTargetDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer);
 
   @protected
@@ -1259,6 +1359,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_site_detail_dto(
     SiteDetailDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_stream_set_dto(
+    StreamSetDto self,
     SseSerializer serializer,
   );
 
@@ -1344,6 +1450,33 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_download_dto(DownloadDto self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_download_phase_dto(
+    DownloadPhaseDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_download_settings_dto(
+    DownloadSettingsDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_download_subtitles_dto(
+    DownloadSubtitlesDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_download_target_dto(
+    DownloadTargetDto self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_episode_info_dto(
     EpisodeInfoDto self,
     SseSerializer serializer,
@@ -1417,6 +1550,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_cue_dto(List<CueDto> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_download_dto(
+    List<DownloadDto> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_episode_info_dto(
@@ -1646,6 +1785,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_detail_reason_dto(
     DetailReasonDto? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_download_dto(
+    DownloadDto? self,
     SseSerializer serializer,
   );
 

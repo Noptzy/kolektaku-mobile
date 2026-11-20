@@ -8,6 +8,7 @@ import '../features/dev/gate/gate_screen.dart';
 import '../features/collection/collection_screen.dart';
 import '../features/detail/detail_request.dart';
 import '../features/detail/detail_screen.dart';
+import '../features/downloads/downloads_screen.dart';
 import '../features/genre/genre_list_screen.dart';
 import '../features/genre/genre_titles_screen.dart';
 import '../features/home/home_screen.dart';
@@ -74,6 +75,7 @@ GoRouter createRouter({String initialLocation = startRoute}) {
       ),
       _route(Routes.gate, (state) => const GateScreen()),
       _route(Routes.gallery, (state) => const GalleryScreen()),
+      _route(Routes.downloads, (state) => const DownloadsScreen()),
       _route(
         Routes.settingsPage,
         (state) => SettingsPageScreen(
