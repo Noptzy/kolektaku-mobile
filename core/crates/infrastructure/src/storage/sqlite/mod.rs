@@ -1,5 +1,6 @@
 mod cache_store;
 mod database;
+mod downloads;
 mod favorites;
 mod highlights;
 mod history;
@@ -21,6 +22,7 @@ mod library_tests;
 
 pub use cache_store::CacheStore;
 pub use database::Database;
+pub use downloads::SqliteDownloadLedger;
 pub use highlights::SqliteHighlightStore;
 pub use import_json::{ImportReport, import_legacy};
 pub use library::SqliteLibraryRepository;

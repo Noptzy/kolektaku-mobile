@@ -1,0 +1,5 @@
+CREATE TABLE download (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL,
+    data TEXT NOT NULL
+);

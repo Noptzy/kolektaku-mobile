@@ -1,11 +1,12 @@
 use rusqlite::Connection;
 
-const MIGRATIONS: [&str; 5] = [
+const MIGRATIONS: [&str; 6] = [
     include_str!("migrations/0001_library.sql"),
     include_str!("migrations/0002_source_links.sql"),
     include_str!("migrations/0003_cache.sql"),
     include_str!("migrations/0004_updates.sql"),
     include_str!("migrations/0005_highlights.sql"),
+    include_str!("migrations/0006_downloads.sql"),
 ];
 
 #[cfg(test)]
