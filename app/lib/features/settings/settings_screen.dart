@@ -7,6 +7,7 @@ import '../../core/theme/kolektaku_tokens.dart';
 import '../../data/providers/download_providers.dart';
 import '../../data/providers/settings_providers.dart';
 import '../../data/providers/source_providers.dart';
+import '../../widgets/dock_inset.dart';
 import '../../widgets/tab_title.dart';
 import '../update/update_controller.dart';
 import '../update/update_labels.dart';
@@ -44,10 +45,12 @@ class SettingsScreen extends ConsumerWidget {
             const TabTitle('Pengaturan'),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.only(bottom: Spacing.xxl),
+                padding: EdgeInsets.only(
+                  bottom: Spacing.xxl + DockInset.of(context),
+                ),
                 children: [
                   SettingsGroup(
-                    title: 'Preferensi',
+                    title: 'Tampilan dan isi',
                     children: [
                       _row(
                         context,
@@ -67,7 +70,7 @@ class SettingsScreen extends ConsumerWidget {
                     ],
                   ),
                   SettingsGroup(
-                    title: 'Menonton',
+                    title: 'Menonton dan membaca',
                     children: [
                       _row(
                         context,
@@ -96,16 +99,16 @@ class SettingsScreen extends ConsumerWidget {
                           ref.watch(downloadSettingsProvider).value,
                         ),
                       ),
+                    ],
+                  ),
+                  SettingsGroup(
+                    title: 'Sistem',
+                    children: [
                       _row(
                         context,
                         SettingsPage.notifications,
                         'Episode dan chapter baru',
                       ),
-                    ],
-                  ),
-                  SettingsGroup(
-                    title: 'Aplikasi',
-                    children: [
                       _row(
                         context,
                         SettingsPage.sources,

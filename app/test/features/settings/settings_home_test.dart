@@ -57,7 +57,11 @@ void main() {
 
   testWidgets('rows are grouped under short labels', (tester) async {
     await open(tester, sources: [anime('a')]);
-    for (final label in ['Preferensi', 'Menonton', 'Aplikasi']) {
+    for (final label in [
+      'Tampilan dan isi',
+      'Menonton dan membaca',
+      'Sistem',
+    ]) {
       expect(find.text(label), findsOneWidget, reason: label);
     }
   });
