@@ -8,6 +8,7 @@ import 'core/theme/accent_palette.dart';
 import 'core/theme/accent_preview_provider.dart';
 import 'data/providers/settings_providers.dart';
 import 'features/scene_search/share_listener.dart';
+import 'widgets/swipe_toast_host.dart';
 import 'core/theme/kolektaku_theme.dart';
 
 class KolektakuApp extends ConsumerWidget {
@@ -24,8 +25,13 @@ class KolektakuApp extends ConsumerWidget {
       themeMode: ThemeMode.dark,
       darkTheme: kolektakuDarkTheme(accent: accent),
       routerConfig: kolektakuRouter,
-      builder: (context, child) =>
-          ShareListener(router: kolektakuRouter, child: child!),
+      builder: (context, child) => ShareListener(
+        router: kolektakuRouter,
+        child: SwipeToastHost(
+          dismissOn: kolektakuRouter.routerDelegate,
+          child: child!,
+        ),
+      ),
     );
   }
 }

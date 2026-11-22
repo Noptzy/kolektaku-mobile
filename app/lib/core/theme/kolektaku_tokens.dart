@@ -28,7 +28,6 @@ abstract final class Sizes {
   static const double heroMaxHeightFraction = 0.55;
   static const double heroCardAspect = 4 / 5;
   static const double railPosterWidth = 112;
-  static const double bottomBarHeight = 64;
 }
 
 abstract final class Motion {

@@ -5,9 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kolektaku/app_scope.dart';
 import 'package:kolektaku/core/router.dart';
+import 'package:kolektaku/core/theme/glass_tokens.dart';
 import 'package:kolektaku/core/theme/kolektaku_theme.dart';
 import 'package:kolektaku/data/providers/gateway_providers.dart';
-import 'package:kolektaku/widgets/app_bottom_bar.dart';
+import 'package:kolektaku/widgets/dock_inset.dart';
+import 'package:kolektaku/widgets/floating_dock.dart';
+import 'package:kolektaku/features/settings/settings_row.dart';
 import 'package:kolektaku/widgets/option_chip.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -42,10 +45,10 @@ Future<void> open(WidgetTester tester, {String at = '/beranda'}) async {
 }
 
 Finder bar(String label) =>
-    find.descendant(of: find.byType(AppBottomBar), matching: find.text(label));
+    find.descendant(of: find.byType(FloatingDock), matching: find.text(label));
 
 int currentTab(WidgetTester tester) =>
-    tester.widget<AppBottomBar>(find.byType(AppBottomBar)).currentIndex;
+    tester.widget<FloatingDock>(find.byType(FloatingDock)).currentIndex;
 
 void main() {
   testWidgets('starts on the home page with four destinations', (tester) async {
@@ -57,7 +60,7 @@ void main() {
     expect(bar('Pengaturan'), findsOneWidget);
     expect(
       tester
-          .widget<AppBottomBar>(find.byType(AppBottomBar))
+          .widget<FloatingDock>(find.byType(FloatingDock))
           .destinations
           .length,
       4,
@@ -136,6 +139,40 @@ void main() {
     );
     expect(selected.hasFlag(SemanticsFlag.isSelected), isTrue);
     expect(selected.hasFlag(SemanticsFlag.isButton), isTrue);
+  });
+
+  testWidgets('the dock floats with side margins above the bottom edge', (
+    tester,
+  ) async {
+    await open(tester);
+    final dock = tester.getRect(find.byType(FloatingDock));
+    expect(dock.height, DockMetrics.height);
+    expect(dock.left, DockMetrics.sideInset);
+    expect(phoneLarge.width - dock.right, DockMetrics.sideInset);
+    expect(phoneLarge.height - dock.bottom, DockMetrics.gapAboveSystem);
+  });
+
+  testWidgets('the last settings group can be scrolled clear of the dock', (
+    tester,
+  ) async {
+    await open(tester);
+    await tester.tap(bar('Pengaturan'));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(ListView).first, const Offset(0, -3000));
+    await tester.pumpAndSettle();
+    final dockTop = tester.getTopLeft(find.byType(FloatingDock)).dy;
+    final lastBottom = tester.getRect(find.byType(SettingsGroup).last).bottom;
+    expect(lastBottom, lessThanOrEqualTo(dockTop));
+  });
+
+  testWidgets('the home screen reserves room for the dock at its end', (
+    tester,
+  ) async {
+    await open(tester);
+    expect(
+      tester.getSize(find.byType(DockSpace).first).height,
+      DockMetrics.clearance(0),
+    );
   });
 
   testWidgets('the watch screen route is outside the shell', (tester) async {
