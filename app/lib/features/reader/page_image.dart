@@ -3,7 +3,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/pressable.dart';
-import '../watch/player/stream_spinner.dart';
+import '../../widgets/skeleton.dart';
 
 typedef PageImageFactory = ImageProvider Function(String url, int? decodeWidth);
 
@@ -118,10 +118,7 @@ class _Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: ShadTheme.of(context).colorScheme.card,
-      child: const Center(child: StreamSpinner(size: 32)),
-    );
+    return const Skeleton(radius: 0);
   }
 }
 
