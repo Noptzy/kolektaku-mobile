@@ -10,7 +10,7 @@ import 'new_badge.dart';
 import 'poster.dart';
 import 'pressable.dart';
 import 'remove_dot.dart';
-import 'score_badge.dart';
+import 'score_meta.dart';
 import 'tag_badge.dart';
 
 class MediaCard extends StatelessWidget {
@@ -22,6 +22,7 @@ class MediaCard extends StatelessWidget {
     this.isNew = false,
     this.unitLabel,
     this.tag,
+    this.tagDot = false,
     this.onRemove,
   });
 
@@ -31,6 +32,7 @@ class MediaCard extends StatelessWidget {
   final bool isNew;
   final String? unitLabel;
   final String? tag;
+  final bool tagDot;
   final VoidCallback? onRemove;
 
   @override
@@ -50,7 +52,15 @@ class MediaCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.cardTitle,
           ),
-          if (meta.isNotEmpty)
+          if (card.score != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: ScoreMeta(
+                score: card.score!,
+                rest: unitsMeta(card, unitLabel: unitLabel),
+              ),
+            )
+          else if (meta.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 2),
               child: Text(
@@ -73,14 +83,16 @@ class MediaCard extends StatelessWidget {
   }
 
   List<Widget> _overlays() {
-    final score = card.score;
     final fraction = progress;
     return [
       if (isNew) const Positioned(top: 6, left: 6, child: NewBadge()),
       if (tag != null)
-        Positioned(left: 6, bottom: 6, right: 6, child: TagBadge(label: tag!)),
-      if (score != null)
-        Positioned(top: 6, right: 6, child: ScoreBadge(score: score)),
+        Positioned(
+          left: 6,
+          bottom: 6,
+          right: 6,
+          child: TagBadge(label: tag!, dot: tagDot),
+        ),
       if (onRemove != null)
         Positioned(
           top: 2,

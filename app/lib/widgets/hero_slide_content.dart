@@ -110,26 +110,65 @@ class HeroSlideContent extends StatelessWidget {
   }
 
   Widget _actions() {
-    return Wrap(
+    return Row(
       spacing: Spacing.sm,
-      runSpacing: Spacing.sm,
       children: [
-        ShadButton(
-          onPressed: onWatch,
-          leading: const Icon(LucideIcons.play, size: 16),
-          child: Text(watchLabel),
+        Flexible(
+          child: ShadButton(
+            key: const Key('hero-watch'),
+            onPressed: onWatch,
+            leading: const Icon(LucideIcons.play, size: 16),
+            child: Flexible(
+              child: Text(
+                watchLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
         ),
-        ShadButton.secondary(
-          onPressed: onSave,
-          leading: const Icon(LucideIcons.plus, size: 16),
-          child: const Text('Simpan'),
+        _IconAction(
+          key: const Key('hero-save'),
+          label: 'Simpan',
+          icon: LucideIcons.bookmarkPlus,
+          onTap: onSave,
         ),
         if (slide.hasTrailer)
-          ShadButton.outline(
-            onPressed: onTrailer,
-            child: const Text('Trailer'),
+          _IconAction(
+            key: const Key('hero-trailer'),
+            label: 'Trailer',
+            icon: LucideIcons.circlePlay,
+            onTap: onTrailer,
           ),
       ],
+    );
+  }
+}
+
+class _IconAction extends StatelessWidget {
+  const _IconAction({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: label,
+      button: true,
+      excludeSemantics: true,
+      child: ShadIconButton.secondary(
+        width: Sizes.touchTarget,
+        height: Sizes.touchTarget,
+        icon: Icon(icon, size: 20),
+        onPressed: onTap,
+      ),
     );
   }
 }

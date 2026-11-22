@@ -40,11 +40,14 @@ class MediaRail extends StatelessWidget {
       itemCount: cards.length,
       itemBuilder: (context, index) {
         final card = cards[index];
+        final fresh = newOnly ? card.latestLabel : null;
         return SizedBox(
           width: cardWidth,
           child: MediaCard(
             card: card,
-            isNew: newOnly,
+            isNew: newOnly && fresh == null,
+            tag: fresh,
+            tagDot: fresh != null,
             unitLabel: unitLabel,
             progress: progressOf?.call(card),
             onTap: onTap == null ? null : () => onTap!(card),

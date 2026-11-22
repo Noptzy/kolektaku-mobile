@@ -14,6 +14,7 @@ import 'home_actions.dart';
 import 'home_mix.dart';
 import 'home_sections.dart';
 import 'resume_rail.dart';
+import 'top10_section.dart';
 import 'translated_hero.dart';
 
 class MixedHome extends StatelessWidget {
@@ -46,22 +47,50 @@ class MixedHome extends StatelessWidget {
     MediaKindDto.novel => novel,
   };
 
-  Widget _top(MediaKindDto kind) {
+  List<MediaCardDto> _trending(MediaKindDto kind) {
     final home = _home(kind);
-    final cards = home == null
-        ? const <MediaCardDto>[]
-        : cardsOf(home, 'trending');
-    if (cards.isEmpty) return const SizedBox.shrink();
-    return Top10Rail(
-      title: railTitle(kind, 'trending'),
-      cards: cards,
-      onTap: (card) => actions.onOpen(kind, card),
+    return home == null ? const [] : cardsOf(home, 'trending');
+  }
+
+  Widget _top(MediaKindDto favored, MediaKindDto other) {
+    return Top10Section(
+      cards: {favored: _trending(favored), other: _trending(other)},
+      onTap: actions.onOpen,
     );
   }
 
-  Widget _rail(MediaKindDto kind, String id, {bool fresh = false}) {
+  String _key(MediaKindDto kind, MediaCardDto card) =>
+      '${kind.name}:${card.reference.id}';
+
+  Set<String> _alreadyShown(
+    List<HeroEntry> hero,
+    MediaKindDto favored,
+    MediaKindDto other,
+  ) {
+    return {
+      for (final item in hero) _key(item.kind, item.card),
+      for (final kind in [favored, other]) ...[
+        for (final card in _trending(kind).take(topTenCount)) _key(kind, card),
+        for (final card in _cards(kind, 'latest')) _key(kind, card),
+      ],
+    };
+  }
+
+  List<MediaCardDto> _cards(MediaKindDto kind, String id) {
     final home = _home(kind);
-    final cards = home == null ? const <MediaCardDto>[] : cardsOf(home, id);
+    return home == null ? const [] : cardsOf(home, id);
+  }
+
+  Widget _rail(
+    MediaKindDto kind,
+    String id, {
+    bool fresh = false,
+    Set<String> skip = const {},
+  }) {
+    final cards = [
+      for (final card in _cards(kind, id))
+        if (!skip.contains(_key(kind, card))) card,
+    ];
     if (cards.isEmpty) return const SizedBox.shrink();
     return MediaRail(
       title: railTitle(kind, id),
@@ -124,11 +153,10 @@ class MixedHome extends StatelessWidget {
                 actions.onOpen(hero[index].kind, hero[index].card),
           ),
         if (resume.isNotEmpty) ResumeRail(items: resume, actions: actions),
-        _top(favored),
+        _top(favored, other),
         _rail(favored, 'latest', fresh: true),
-        _top(other),
         _genres(favored),
-        _rail(favored, 'seasonal'),
+        _rail(favored, 'seasonal', skip: _alreadyShown(hero, favored, other)),
         _rail(other, 'latest', fresh: true),
         _rail(favored, 'popular'),
         _rail(other, 'popular'),

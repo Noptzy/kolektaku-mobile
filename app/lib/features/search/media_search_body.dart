@@ -9,6 +9,7 @@ import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/media.dart';
 import '../../src/rust/error.dart';
 import '../../widgets/error_state_view.dart';
+import '../../widgets/dock_inset.dart';
 import '../../widgets/active_filter_chips.dart';
 import '../../widgets/infinite_footer.dart';
 import '../../widgets/infinite_scroll.dart';
@@ -84,6 +85,7 @@ class _MediaSearchBodyState extends ConsumerState<MediaSearchBody> {
           if (_kind == MediaKindDto.anime && !state.isIdle && !state.hasFacets)
             SliverToBoxAdapter(child: SearchMatches(query: state.ranQuery)),
           ..._body(state),
+          const SliverToBoxAdapter(child: DockSpace()),
         ],
       ),
     );

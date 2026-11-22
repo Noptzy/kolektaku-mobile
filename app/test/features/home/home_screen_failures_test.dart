@@ -36,7 +36,8 @@ void main() {
         return homeOf('A');
       },
     );
-    expect(find.text('Top 10 anime'), findsOneWidget);
+    expect(find.text('Top 10 hari ini'), findsOneWidget);
+    expect(find.byKey(const Key('top10-switch-manga')), findsNothing);
     expect(find.text('Coba lagi'), findsNothing);
     expect(find.text('Tonton'), findsOneWidget);
   });

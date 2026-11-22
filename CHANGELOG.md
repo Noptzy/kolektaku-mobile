@@ -2,6 +2,36 @@
 
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan versi mengikuti [SemVer](https://semver.org/lang/id/).
 
+## [0.6.0] — 2026-11-22
+
+Redesain tampilan. Tidak ada perubahan di inti Rust.
+
+### Ditambahkan
+- Dock navigasi melayang berbentuk pil berbahan kaca dengan indikator yang bergeser dan ikon yang bereaksi saat dipilih. Bila HP terasa berat, kaca otomatis turun menjadi permukaan solid sampai aplikasi dibuka lagi.
+- Kartu "Lanjutkan" yang lebih informatif: jenis (Anime, Komik, atau Novel), waktu terakhir, sisa waktu atau halaman, bilah progres, dan tombol putar.
+- Sambutan lima halaman saat pemasangan baru dengan dinding poster, tombol Lewati, dan hanya tampil sekali. Bisa dilihat lagi dari Pengaturan > Tentang.
+- Toast "Urungkan" di Koleksi melayang di atas dock, bisa digeser ke bawah atau ke samping untuk ditutup, dan penghitung waktunya berhenti selagi disentuh.
+- Getar ringan saat riwayat digeser melewati ambang hapus, dan saat terhapus.
+- Pemuat bergambar garis tipis untuk tunggu tanpa bentuk: persiapan stream, pencarian dari gambar, dan daftar genre.
+- Top 10 kini satu rail berjudul "Top 10 hari ini" dengan sakelar Anime dan Komik, angka peringkat solid, dan peringkat 1 berwarna aksen. Judul dan skor tampil di bawah tiap poster.
+- Mengetuk tab Beranda saat sudah di Beranda menggulir ke atas.
+- Gerbang rilis kini memeriksa bahwa bunyi notifikasi "tuturu" ada di APK.
+
+### Diubah
+- Skor di kartu kini berupa bintang emas di baris info, bukan lencana di pojok poster.
+- Tombol Simpan dan Trailer di hero kini tombol ikon.
+- Rail episode dan chapter baru memakai chip "Ep N" dari label terbaru, bukan lencana "Baru" (lencana tetap dipakai bila labelnya tidak ada).
+- Anime musim ini tidak lagi mengulang judul yang sudah tampil di hero, Top 10, atau Episode baru.
+- Filter jenis di rail Lanjutkan Beranda dihapus (pengalih jenis tetap ada di Koleksi).
+- Pengaturan dikelompokkan ulang menjadi Tampilan dan isi, Menonton dan membaca, dan Sistem.
+- Tombol filter pencarian kini berbingkai dengan lencana jumlah filter aktif; seksi filter yang pendek tampil sebagai daftar bercentang.
+- Sheet "Lanjutkan menonton?" menampilkan thumbnail, judul, dan menit terakhir.
+- Pembaca komik memberi tahu "Melanjutkan dari halaman N", dan halaman yang belum dimuat tampil sebagai kerangka seukuran halaman.
+
+### Diperbaiki
+- Beranda yang semua rail-nya kosong kini menampilkan pesan dan tombol coba lagi, tidak lagi layar kosong.
+- Penghitung slide unggulan tidak lagi menampilkan "01 / 01" untuk satu slide.
+
 ## [0.5.0] — 2026-11-20
 
 ### Ditambahkan

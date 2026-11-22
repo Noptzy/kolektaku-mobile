@@ -1,22 +1,21 @@
 import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter/widgets.dart';
 
-import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../src/rust/dto/stream.dart';
-import '../watch/episodes_sheet.dart';
 import 'chapter_loader.dart';
 import 'page_image.dart';
 import 'read_progress.dart';
 import 'read_request.dart';
+import 'reader_actions.dart';
 import 'reader_controller.dart';
 import 'reader_divider.dart';
 import 'reader_layers.dart';
+import 'reader_notices.dart';
 import 'reader_pages.dart';
 import 'reader_standby.dart';
 import 'reader_zoom.dart';
 import 'scroll_anchor.dart';
-import 'source_switch_notice.dart';
 import 'stack_metrics.dart';
 
 class ReaderScreen extends StatefulWidget {
@@ -88,7 +87,11 @@ class _ReaderScreenState extends State<ReaderScreen> {
       initialScrollOffset: _metrics.offsetOf(0, _controller.startPage, _width),
     );
     _bars = true;
-    announceSourceSwitch(context, first.switchedFrom);
+    announceReaderStart(
+      context,
+      switchedFrom: first.switchedFrom,
+      startPage: _controller.startPage,
+    );
   }
 
   void _onAspect(int chapter, int index, double aspect) {
@@ -118,23 +121,11 @@ class _ReaderScreenState extends State<ReaderScreen> {
     return false;
   }
 
-  void _showChapters() {
-    showEpisodesSheet(
-      context,
-      units: _controller.units,
-      current: _controller.current,
-      kind: MediaKindDto.manga,
-      infos: const {},
-      onPick: _controller.goTo,
-    );
-  }
-
   void _go(UnitDto? target) {
     if (target != null) _controller.goTo(target);
   }
 
-  String _title() =>
-      '${widget.request.title}  ·  ${episodeTag(MediaKindDto.manga, _controller.current)}';
+  String _title() => readerTitle(widget.request, _controller.current);
 
   void _back() => Navigator.of(context).maybePop();
 
@@ -176,7 +167,9 @@ class _ReaderScreenState extends State<ReaderScreen> {
       page: _controller.page,
       total: _controller.total,
       onBack: _back,
-      onChapters: _controller.units.isEmpty ? null : _showChapters,
+      onChapters: _controller.units.isEmpty
+          ? null
+          : () => showReaderChapters(context, _controller),
       onPrevious: _controller.previous == null
           ? null
           : () => _go(_controller.previous),

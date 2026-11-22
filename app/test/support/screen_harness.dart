@@ -8,6 +8,7 @@ import 'package:kolektaku/app_scope.dart';
 import 'package:kolektaku/core/routes.dart';
 import 'package:kolektaku/core/theme/kolektaku_theme.dart';
 import 'package:kolektaku/data/providers/download_providers.dart';
+import 'package:kolektaku/widgets/swipe_toast_host.dart';
 import 'package:kolektaku/data/providers/gateway_providers.dart';
 import 'package:kolektaku/features/home/hero_auto_play.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -65,6 +66,7 @@ class ScreenHarness {
     Routes.search,
     Routes.sceneSearch,
     Routes.downloads,
+    Routes.welcome,
   ];
 
   List<Override> get overrides => [
@@ -111,6 +113,8 @@ class ScreenHarness {
           darkTheme: kolektakuDarkTheme(),
           themeMode: ThemeMode.dark,
           routerConfig: router,
+          builder: (context, child) =>
+              SwipeToastHost(dismissOn: router.routerDelegate, child: child!),
         ),
       ),
     );

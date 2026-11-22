@@ -15,3 +15,9 @@ String mediaMeta(MediaCardDto card, {String? unitLabel}) {
   if (parts.isEmpty && latest != null) parts.add(latest);
   return parts.join(' · ');
 }
+
+String? unitsMeta(MediaCardDto card, {String? unitLabel}) {
+  final units = card.unitCount;
+  if (units == null) return null;
+  return '$units ${unitLabel ?? unitLabelOf(card)}';
+}

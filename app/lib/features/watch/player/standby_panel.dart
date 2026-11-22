@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/hairline/hairline_stage.dart';
 import '../../../core/theme/kolektaku_tokens.dart';
+import '../../../figures/gulungan.dart';
 import '../../../widgets/poster.dart';
-import 'stream_spinner.dart';
 
 const slowAfter = Duration(seconds: 10);
 
@@ -106,6 +107,8 @@ class _Bar extends StatelessWidget {
   }
 }
 
+const _figureHeight = 72.0;
+
 class _Content extends StatelessWidget {
   const _Content({
     required this.message,
@@ -129,7 +132,8 @@ class _Content extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: Spacing.sm,
           children: [
-            if (busy) const StreamSpinner(),
+            if (busy)
+              HairlineStage(create: Gulungan.new, height: _figureHeight),
             Text(message, style: theme.textTheme.large),
             if (busy) const _SlowHint(),
             if (detail != null)

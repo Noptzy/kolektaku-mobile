@@ -23,27 +23,6 @@ List<ProgressDto> mixed() => [
 ];
 
 void main() {
-  group('resumeOf', () {
-    test('no filter keeps everything in order', () {
-      expect(resumeOf(mixed(), null).map((item) => item.title), [
-        'Tontonan Satu',
-        'Bacaan Dua',
-        'Tontonan Tiga',
-        'Novel Empat',
-      ]);
-    });
-
-    test('a kind keeps only that kind', () {
-      expect(resumeOf(mixed(), MediaKindDto.manga).map((item) => item.title), [
-        'Bacaan Dua',
-      ]);
-      expect(resumeOf(mixed(), MediaKindDto.anime), hasLength(2));
-      expect(resumeOf(mixed(), MediaKindDto.novel).map((item) => item.title), [
-        'Novel Empat',
-      ]);
-    });
-  });
-
   group('ResumeRail', () {
     Future<List<ProgressDto>> show(WidgetTester tester) async {
       final opened = <ProgressDto>[];
@@ -57,56 +36,47 @@ void main() {
       return opened;
     }
 
-    testWidgets('has the title with a filter for each kind on its right', (
+    testWidgets('has the title and no kind filters beside it', (tester) async {
+      await show(tester);
+      expect(find.text('Lanjutkan'), findsOneWidget);
+      for (final kind in ['anime', 'manga', 'novel']) {
+        expect(find.byKey(Key('resume-filter-$kind')), findsNothing);
+      }
+    });
+
+    testWidgets('lists the cards side by side in the order given', (
       tester,
     ) async {
       await show(tester);
-      final title = tester.getTopLeft(find.text('Lanjutkan'));
-      final anime = tester.getTopLeft(
-        find.byKey(const Key('resume-filter-anime')),
-      );
-      final comic = tester.getTopLeft(
-        find.byKey(const Key('resume-filter-manga')),
-      );
-      final novel = tester.getTopRight(
-        find.byKey(const Key('resume-filter-novel')),
-      );
-      expect(anime.dx, greaterThan(title.dx));
-      expect(comic.dx, greaterThan(anime.dx));
-      expect(novel.dx, greaterThan(300));
-      expect((anime.dy - title.dy).abs(), lessThan(20));
+      final first = tester.getTopLeft(find.text('Tontonan Satu')).dx;
+      final second = tester.getTopLeft(find.text('Bacaan Dua')).dx;
+      expect(second, greaterThan(first));
     });
 
-    testWidgets(
-      'choosing a kind hides the other, choosing it again shows all',
-      (tester) async {
-        await show(tester);
-        expect(find.text('Bacaan Dua'), findsOneWidget);
-        await tester.tap(find.byKey(const Key('resume-filter-anime')));
-        await tester.pump();
-        expect(find.text('Bacaan Dua'), findsNothing);
-        expect(find.text('Tontonan Satu'), findsOneWidget);
-        await tester.tap(find.byKey(const Key('resume-filter-anime')));
-        await tester.pump();
-        expect(find.text('Bacaan Dua'), findsOneWidget);
-      },
-    );
-
-    testWidgets('the novel filter shows only novels', (tester) async {
+    testWidgets('scrolling reaches the cards further along', (tester) async {
       await show(tester);
-      await tester.tap(find.byKey(const Key('resume-filter-novel')));
-      await tester.pump();
+      expect(find.text('Novel Empat'), findsNothing);
+      await tester.drag(find.byType(ListView), const Offset(-900, 0));
+      await tester.pumpAndSettle();
       expect(find.text('Novel Empat'), findsOneWidget);
-      expect(find.text('Bacaan Dua'), findsNothing);
-      expect(find.text('Tontonan Satu'), findsNothing);
     });
 
     testWidgets('a card reports the progress it belongs to', (tester) async {
       final opened = await show(tester);
-      await tester.tap(find.byKey(const Key('resume-filter-manga')));
-      await tester.pump();
+      await tester.drag(find.byType(ListView), const Offset(-320, 0));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Bacaan Dua'));
       expect(opened.single.title, 'Bacaan Dua');
+      expect(opened.single.kind, MediaKindDto.manga);
+    });
+
+    testWidgets('each kind carries its own label on its card', (tester) async {
+      await show(tester);
+      expect(find.text('Anime'), findsOneWidget);
+      expect(find.text('Komik'), findsOneWidget);
+      await tester.drag(find.byType(ListView), const Offset(-900, 0));
+      await tester.pumpAndSettle();
+      expect(find.text('Novel'), findsOneWidget);
     });
   });
 }

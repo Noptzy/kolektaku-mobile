@@ -5,8 +5,12 @@ import 'package:kolektaku/src/rust/dto/cards.dart';
 import 'package:kolektaku/widgets/genre_card.dart';
 import 'package:kolektaku/widgets/media_card.dart';
 import 'package:kolektaku/widgets/media_rail.dart';
-import 'package:kolektaku/widgets/outlined_rank.dart';
+import 'package:kolektaku/widgets/rank_number.dart';
 import 'package:kolektaku/widgets/rail.dart';
+import 'package:kolektaku/core/theme/kolektaku_tokens.dart';
+import 'package:kolektaku/widgets/score_badge.dart';
+import 'package:kolektaku/widgets/score_meta.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:kolektaku/widgets/top10_rail.dart';
 
 import 'widget_harness.dart';
@@ -75,6 +79,43 @@ void main() {
       expect(find.text('2'), findsOneWidget);
     });
 
+    testWidgets('each poster has its title and star score underneath', (
+      tester,
+    ) async {
+      final cards = sampleCards(2);
+      await pumpAtSize(tester, Top10Rail(title: 'Top 10', cards: cards));
+      for (final card in cards) {
+        expect(find.text(card.title), findsOneWidget);
+      }
+      expect(
+        find.byType(ScoreMeta),
+        findsNWidgets(cards.where((card) => card.score != null).length),
+      );
+      expect(find.byType(ScoreBadge), findsNothing);
+    });
+
+    testWidgets('a card without a score has no score line', (tester) async {
+      final card = sampleCard(1, score: null);
+      await pumpAtSize(tester, Top10Rail(title: 'Top 10', cards: [card]));
+      expect(find.byType(ScoreMeta), findsNothing);
+      expect(find.text(card.title), findsOneWidget);
+    });
+
+    testWidgets('the rail is tall enough for a two line title and the score', (
+      tester,
+    ) async {
+      await pumpAtSize(
+        tester,
+        Top10Rail(title: 'Top 10', cards: sampleCards(2)),
+      );
+      expect(tester.takeException(), isNull);
+      final rail = tester.widget<Rail>(find.byType(Rail));
+      expect(
+        rail.height,
+        greaterThan(Sizes.railPosterWidth / Sizes.posterAspect + 40),
+      );
+    });
+
     testWidgets('a tap reports the card behind the rank', (tester) async {
       MediaCardDto? tapped;
       final cards = sampleCards(3);
@@ -86,8 +127,27 @@ void main() {
       expect(tapped, cards.first);
     });
 
+    testWidgets('only the first rank is gold', (tester) async {
+      await pumpAtSize(
+        tester,
+        const Row(children: [RankNumber(rank: 1), RankNumber(rank: 2)]),
+      );
+      Color colorOf(String text) =>
+          tester.widget<Text>(find.text(text)).style!.color!;
+      final primary = ShadTheme.of(tester.element(find.text('1')))
+          .colorScheme
+          .primary;
+      expect(colorOf('1'), primary);
+      expect(colorOf('2'), isNot(primary));
+    });
+
+    test('the rank is a solid number and only the first is highlighted', () {
+      expect(RankNumber.isTop(1), isTrue);
+      expect(RankNumber.isTop(2), isFalse);
+    });
+
     test('a two digit rank takes more room', () {
-      expect(OutlinedRank.widthFor(10), greaterThan(OutlinedRank.widthFor(9)));
+      expect(RankNumber.widthFor(10), greaterThan(RankNumber.widthFor(9)));
     });
   });
 

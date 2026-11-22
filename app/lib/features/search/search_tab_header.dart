@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../widgets/pressable.dart';
+import 'search_filter_button.dart';
 
 class SearchTabHeader extends StatelessWidget {
   const SearchTabHeader({
@@ -36,7 +37,7 @@ class SearchTabHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(
         Spacing.screenGutter,
         Spacing.md,
-        Spacing.sm,
+        Spacing.screenGutter,
         Spacing.sm,
       ),
       child: Row(
@@ -69,12 +70,10 @@ class SearchTabHeader extends StatelessWidget {
             onTap: onCamera,
           ),
           if (onFilter != null)
-            _HeaderIcon(
+            SearchFilterButton(
               key: const Key('open-filters'),
-              icon: LucideIcons.slidersHorizontal,
-              label: filterCount == 0 ? 'Filter' : 'Filter ($filterCount)',
+              count: filterCount,
               onTap: onFilter!,
-              badge: filterCount,
             ),
         ],
       ),
@@ -88,13 +87,11 @@ class _HeaderIcon extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
-    this.badge = 0,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-  final int badge;
 
   @override
   Widget build(BuildContext context) {
@@ -103,37 +100,7 @@ class _HeaderIcon extends StatelessWidget {
       onTap: onTap,
       label: label,
       minSize: Sizes.touchTarget,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Icon(icon, size: 22, color: scheme.foreground),
-          if (badge > 0)
-            Positioned(
-              top: 6,
-              right: 4,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: scheme.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: SizedBox.square(
-                  dimension: 16,
-                  child: Center(
-                    child: Text(
-                      '$badge',
-                      key: const Key('filter-badge'),
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        color: scheme.primaryForeground,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
+      child: Center(child: Icon(icon, size: 22, color: scheme.foreground)),
     );
   }
 }

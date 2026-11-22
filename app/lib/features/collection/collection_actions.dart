@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../data/providers/gateway_providers.dart';
 import '../../data/providers/home_providers.dart';
 import '../../data/providers/library_providers.dart';
+import '../../data/providers/toast_providers.dart';
 import '../../src/rust/dto/highlight.dart';
 import '../../src/rust/dto/library.dart';
 import '../../src/rust/dto/media.dart';
@@ -30,19 +30,16 @@ class CollectionActions {
 
   void _offerUndo(String message, Future<void> Function() undo) {
     if (!context.mounted) return;
-    ShadToaster.of(context).show(
-      ShadToast(
-        description: Text(message),
-        action: ShadButton.outline(
-          key: const Key('undo'),
-          onPressed: () async {
+    ref
+        .read(swipeToastProvider.notifier)
+        .show(
+          message: message,
+          actionLabel: 'Urungkan',
+          onAction: () async {
             await undo();
             _refresh();
           },
-          child: const Text('Urungkan'),
-        ),
-      ),
-    );
+        );
   }
 
   Future<void> removeHistory(ProgressDto progress) async {

@@ -13,6 +13,7 @@ import '../../src/rust/dto/sources.dart';
 import '../../src/rust/error.dart';
 import '../../widgets/error_state_view.dart';
 import '../../widgets/genre_card.dart';
+import '../../widgets/hairline_loader.dart';
 import '../../widgets/screen_header.dart';
 import '../../widgets/state_view.dart';
 import '../home/genre_cover.dart';
@@ -36,7 +37,12 @@ class GenreListScreen extends ConsumerWidget {
             const ScreenHeader(title: 'Genre'),
             Expanded(
               child: genres.when(
-                loading: () => const Center(child: Text('Memuat...')),
+                loading: () => const Center(
+                  child: HairlineLoader(
+                    kind: HairlineKind.tumpuk,
+                    message: 'Memuat...',
+                  ),
+                ),
                 error: (error, stack) => _failure(error, ref),
                 data: (items) => _grid(context, items, home, covers),
               ),

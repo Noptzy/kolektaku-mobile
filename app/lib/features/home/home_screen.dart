@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/routes.dart';
 import '../../data/providers/gateway_providers.dart';
 import '../../data/providers/home_providers.dart';
+import '../../data/providers/scroll_providers.dart';
 import '../../data/providers/settings_providers.dart';
 import '../../src/rust/dto/cards.dart';
 import '../../src/rust/dto/library.dart';
@@ -13,12 +14,15 @@ import '../../src/rust/dto/media.dart';
 import '../../src/rust/dto/sources.dart';
 import '../../src/rust/error.dart';
 import '../../widgets/error_state_view.dart';
+import '../../widgets/dock_inset.dart';
 import '../../widgets/refresh_on_visible.dart';
+import '../../widgets/scroll_to_top_host.dart';
 import '../../widgets/state_view.dart';
 import '../detail/detail_request.dart';
 import 'hero_auto_play.dart';
 import 'home_actions.dart';
 import 'home_mix.dart';
+import 'home_sections.dart';
 import 'home_skeleton.dart';
 import 'mixed_home.dart';
 
@@ -81,16 +85,28 @@ class HomeScreen extends ConsumerWidget {
     final novel = ref.watch(homeProvider(MediaKindDto.novel));
     return RefreshOnVisible(
       onVisible: () => _refreshLibrary(ref),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          CupertinoSliverRefreshControl(onRefresh: () => _refresh(ref)),
-          SliverToBoxAdapter(
-            child: _body(context, ref, anime, manga, novel.value, prefersAnime),
+      child: ScrollToTopHost(
+        signal: homeScrollToTopProvider,
+        builder: (context, controller) => CustomScrollView(
+          controller: controller,
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-        ],
+          slivers: [
+            CupertinoSliverRefreshControl(onRefresh: () => _refresh(ref)),
+            SliverToBoxAdapter(
+              child: _body(
+                context,
+                ref,
+                anime,
+                manga,
+                novel.value,
+                prefersAnime,
+              ),
+            ),
+            const SliverToBoxAdapter(child: DockSpace()),
+          ],
+        ),
       ),
     );
   }
@@ -108,15 +124,24 @@ class HomeScreen extends ConsumerWidget {
     if (anime.hasError && manga.hasError) {
       return _failure(context, anime.error!, ref);
     }
+    final resume = mergeResume([
+      for (final kind in MediaKindDto.values)
+        ref.watch(continueProvider(kind)).value ?? const [],
+    ]);
+    if (homeIsEmpty(
+      anime: anime.value,
+      manga: manga.value,
+      novel: novel,
+      hasResume: resume.isNotEmpty,
+    )) {
+      return _empty(context, ref);
+    }
     return MixedHome(
       anime: anime.value,
       manga: manga.value,
       novel: novel,
       prefersAnime: prefersAnime,
-      resume: mergeResume([
-        for (final kind in MediaKindDto.values)
-          ref.watch(continueProvider(kind)).value ?? const [],
-      ]),
+      resume: resume,
       genres: {
         for (final kind in _kinds)
           kind: ref.watch(genresProvider(kind)).value ?? const [],
@@ -127,6 +152,22 @@ class HomeScreen extends ConsumerWidget {
       },
       actions: _actions(context, ref),
       heroAutoPlay: ref.watch(heroAutoPlayProvider),
+    );
+  }
+
+  Widget _empty(BuildContext context, WidgetRef ref) {
+    final inset = MediaQuery.paddingOf(context).top;
+    return SizedBox(
+      height: 420 + inset,
+      child: Padding(
+        padding: EdgeInsets.only(top: inset),
+        child: StateView.empty(
+          title: 'Beranda masih kosong',
+          message: 'Belum ada judul yang bisa ditampilkan. Coba lagi sebentar.',
+          actionLabel: 'Coba lagi',
+          onAction: () => _refresh(ref),
+        ),
+      ),
     );
   }
 
