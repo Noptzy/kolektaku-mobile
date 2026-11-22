@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../core/routes.dart';
+import '../../widgets/dock_inset.dart';
 import '../../core/theme/kolektaku_tokens.dart';
 import '../../data/providers/home_providers.dart';
 import '../../data/providers/library_providers.dart';
@@ -126,7 +127,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
               ),
             ],
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: Spacing.xxl)),
+          const SliverToBoxAdapter(child: DockSpace(extra: Spacing.xxl)),
         ],
       ),
     );

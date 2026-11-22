@@ -101,7 +101,7 @@ void main() {
     );
     await tester.drag(find.text('Kembali'), const Offset(600, 0));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('undo')));
+    await tester.tap(find.byKey(const Key('toast-action')));
     await tester.pumpAndSettle();
     expect(harness.library.saved.single.title, 'Kembali');
   });
@@ -118,7 +118,7 @@ void main() {
     expect(find.text('Lepas'), findsNothing);
     expect(find.text('Dihapus dari favorit.'), findsOneWidget);
     expect(harness.library.favoriteResult, isEmpty);
-    await tester.tap(find.byKey(const Key('undo')));
+    await tester.tap(find.byKey(const Key('toast-action')));
     await tester.pumpAndSettle();
     expect(harness.library.favoriteResult.single.title, 'Lepas');
     expect(find.text('Lepas'), findsOneWidget);
