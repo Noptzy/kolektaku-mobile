@@ -4,6 +4,9 @@ param(
     [string]$AllowedPermissions = (Join-Path $PSScriptRoot "allowed-permissions.txt"),
     [string]$PermissionDump = "",
     [switch]$SkipPermissions,
+    [string]$ResourceDump = "",
+    [switch]$SkipResources,
+    [string[]]$RequiredResources = @("raw/tuturu"),
     [long]$MinBytes = 15000000,
     [long]$MaxBytes = 49999999,
     [string[]]$RequiredAbis = @("arm64-v8a", "armeabi-v7a")
@@ -48,6 +51,27 @@ function Get-RequestedPermissions($apk, $dump) {
     $lines = & $aapt dump permissions $apk 2>&1
     if ($LASTEXITCODE -ne 0) { throw "aapt2 gagal membaca izin: $($lines -join ' ')" }
     return $lines
+}
+
+function Get-ResourceDump($apk, $dump) {
+    if ($dump -ne "") { return Get-Content -LiteralPath $dump }
+    $aapt = Find-Aapt
+    if (-not $aapt) { throw "aapt2 tidak ditemukan; setel ANDROID_HOME ke folder Android SDK" }
+    $lines = & $aapt dump resources $apk 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "aapt2 gagal membaca resource: $($lines -join ' ')" }
+    return $lines
+}
+
+function Get-ResourceFile($lines, $name) {
+    $header = "resource 0x[0-9a-f]+ " + [regex]::Escape($name) + "\s*$"
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ([string]$lines[$i] -notmatch $header) { continue }
+        for ($j = $i + 1; $j -lt $lines.Count -and [string]$lines[$j] -notmatch "resource 0x"; $j++) {
+            if ([string]$lines[$j] -match "\(file\)\s+(\S+)") { return @{ Found = $true; Path = $Matches[1] } }
+        }
+        return @{ Found = $true; Path = $null }
+    }
+    return @{ Found = $false; Path = $null }
 }
 
 $allowed = Get-Content -LiteralPath $AllowedHosts |
@@ -96,6 +120,18 @@ foreach ($abi in $RequiredAbis) {
     if (-not $present.ContainsKey("lib/$abi/libbridge.so")) { $problems += "lib/$abi/libbridge.so tidak ada di APK" }
 }
 
+if (-not $SkipResources) {
+    $resourceLines = @(Get-ResourceDump (Resolve-Path -LiteralPath $Apk) $ResourceDump)
+    foreach ($name in $RequiredResources) {
+        $resource = Get-ResourceFile $resourceLines $name
+        if (-not $resource.Found) {
+            $problems += "resource wajib tidak ada di APK: $name (bunyi notifikasi hilang bila ini raw/tuturu)"
+        } elseif ($resource.Path -and -not $present.ContainsKey($resource.Path)) {
+            $problems += "resource $name menunjuk $($resource.Path) tetapi berkasnya tidak ada di APK"
+        }
+    }
+}
+
 if (-not $SkipPermissions) {
     $permitted = Get-Content -LiteralPath $AllowedPermissions |
         ForEach-Object { $_.Trim() } |
@@ -118,4 +154,4 @@ if ($problems.Count -gt 0) {
     Write-Error "check-apk gagal untuk $Apk"
     exit 1
 }
-Write-Output "check-apk: $Apk ($size byte) lolos: ukuran, inti Rust, izin, rahasia, dan berkas terlarang"
+Write-Output "check-apk: $Apk ($size byte) lolos: ukuran, inti Rust, resource wajib, izin, rahasia, dan berkas terlarang"

@@ -35,20 +35,32 @@ function Test-Case($label, $apk, $expectOk, $extra) {
 $failed = $false
 $good = New-Apk "good.apk" @("lib/arm64-v8a/libbridge.so", "lib/armeabi-v7a/libbridge.so", "classes.dex")
 $noCore = New-Apk "nocore.apk" @("lib/arm64-v8a/libbridge.so", "classes.dex")
-$limits = @("-MinBytes", "100", "-MaxBytes", "1000000", "-SkipPermissions")
+$limits = @("-MinBytes", "100", "-MaxBytes", "1000000", "-SkipPermissions", "-SkipResources")
 Test-Case "APK baik" $good $true $limits
 Test-Case "tanpa inti Rust untuk satu ABI" $noCore $false $limits
-Test-Case "terlalu besar" $good $false @("-MinBytes", "100", "-MaxBytes", "300", "-SkipPermissions")
-Test-Case "terlalu kecil" $good $false @("-MinBytes", "10000000", "-MaxBytes", "20000000", "-SkipPermissions")
+Test-Case "terlalu besar" $good $false @("-MinBytes", "100", "-MaxBytes", "300", "-SkipPermissions", "-SkipResources")
+Test-Case "terlalu kecil" $good $false @("-MinBytes", "10000000", "-MaxBytes", "20000000", "-SkipPermissions", "-SkipResources")
 $permissions = Join-Path $temp "permissions.txt"
 Set-Content -LiteralPath $permissions -Value @("android.permission.INTERNET", "# komentar")
 $onlyAllowed = Join-Path $temp "dump-ok.txt"
 Set-Content -LiteralPath $onlyAllowed -Value @("package: x", "uses-permission: name='android.permission.INTERNET'")
 $extra = Join-Path $temp "dump-extra.txt"
 Set-Content -LiteralPath $extra -Value @("package: x", "uses-permission: name='android.permission.INTERNET'", "uses-permission: name='android.permission.CAMERA'")
-$base = @("-MinBytes", "100", "-MaxBytes", "1000000", "-AllowedPermissions", $permissions)
+$base = @("-MinBytes", "100", "-MaxBytes", "1000000", "-AllowedPermissions", $permissions, "-SkipResources")
 Test-Case "izin sesuai daftar" $good $true ($base + @("-PermissionDump", $onlyAllowed))
 Test-Case "izin kamera di luar daftar" $good $false ($base + @("-PermissionDump", $extra))
+$withSound = New-Apk "sound.apk" @("lib/arm64-v8a/libbridge.so", "lib/armeabi-v7a/libbridge.so", "classes.dex", "res/N0.mp3")
+$soundDump = Join-Path $temp "res-ok.txt"
+Set-Content -LiteralPath $soundDump -Value @("  type raw id=0e entryCount=2", "    resource 0x7f0e0001 raw/tuturu", "      () (file) res/N0.mp3", "    resource 0x7f0e0002 raw/lain", "      () (file) res/N1.mp3")
+$noSoundDump = Join-Path $temp "res-missing.txt"
+Set-Content -LiteralPath $noSoundDump -Value @("  type string id=0f entryCount=34", "    resource 0x7f0f0001 string/app_name")
+$orphanDump = Join-Path $temp "res-orphan.txt"
+Set-Content -LiteralPath $orphanDump -Value @("    resource 0x7f0e0001 raw/tuturu", "      () (file) res/N9.mp3")
+$res = @("-MinBytes", "100", "-MaxBytes", "1000000", "-SkipPermissions")
+Test-Case "bunyi tuturu ada di APK" $withSound $true ($res + @("-ResourceDump", $soundDump))
+Test-Case "bunyi tuturu hilang dari APK" $withSound $false ($res + @("-ResourceDump", $noSoundDump))
+Test-Case "resource ada tetapi berkasnya tidak" $withSound $false ($res + @("-ResourceDump", $orphanDump))
+Test-Case "resource wajib lain yang hilang" $withSound $false ($res + @("-ResourceDump", $soundDump, "-RequiredResources", "raw/tidak-ada"))
 Remove-Item -Recurse -Force $temp
 if ($failed) { exit 1 }
 Write-Output "check-apk.tests: semua lulus"
