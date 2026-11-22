@@ -15,4 +15,5 @@ abstract final class Routes {
   static const gate = '/gate';
   static const gallery = '/galeri';
   static const downloads = '/unduhan';
+  static const welcome = '/sambutan';
 }

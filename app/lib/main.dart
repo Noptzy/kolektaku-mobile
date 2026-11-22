@@ -6,11 +6,14 @@ import 'app_scope.dart';
 import 'data/core_session.dart';
 import 'features/notifications/notification_boot.dart';
 import 'features/splash/kolektaku_boot.dart';
+import 'features/welcome/welcome_gate.dart';
+import 'features/welcome/welcome_providers.dart';
 
 Future<void> prepareCore() async {
   await RustLib.init();
   await startCore();
   await setUpNotifications();
+  await welcomeGate.load(defaultWelcomeStore);
 }
 
 void main() {

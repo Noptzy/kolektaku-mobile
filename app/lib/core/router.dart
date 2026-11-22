@@ -27,6 +27,8 @@ import '../features/search/search_tab_screen.dart';
 import '../features/update/update_host.dart';
 import '../features/watch/watch_request.dart';
 import '../features/watch/watch_route.dart';
+import '../features/welcome/welcome_gate.dart';
+import '../features/welcome/welcome_screen.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/fade_branches.dart';
 import 'page_transitions.dart';
@@ -56,9 +58,16 @@ GoRoute _route(
   );
 }
 
-GoRouter createRouter({String initialLocation = startRoute}) {
+GoRouter createRouter({
+  String initialLocation = startRoute,
+  WelcomeGate? gate,
+}) {
+  final welcome = gate ?? welcomeGate;
   return GoRouter(
     initialLocation: initialLocation,
+    refreshListenable: welcome,
+    redirect: (context, state) =>
+        welcomeRedirect(welcome, state.matchedLocation),
     routes: [
       GoRoute(path: '/', redirect: (context, state) => Routes.home),
       StatefulShellRoute(
@@ -72,6 +81,11 @@ GoRouter createRouter({String initialLocation = startRoute}) {
           _branch(Routes.collection, () => const CollectionScreen()),
           _branch(Routes.settings, () => const SettingsScreen()),
         ],
+      ),
+      _route(
+        Routes.welcome,
+        (state) => WelcomeScreen(gate: welcome),
+        motion: PageMotion.fade,
       ),
       _route(Routes.gate, (state) => const GateScreen()),
       _route(Routes.gallery, (state) => const GalleryScreen()),
