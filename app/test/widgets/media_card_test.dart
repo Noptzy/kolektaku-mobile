@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/dev/gallery/sample_media.dart';
 import 'package:kolektaku/widgets/media_card.dart';
 import 'package:kolektaku/widgets/media_meta.dart';
+import 'package:kolektaku/widgets/poster.dart';
 import 'package:kolektaku/widgets/score_badge.dart';
+import 'package:kolektaku/widgets/score_meta.dart';
 import 'package:kolektaku/widgets/tag_badge.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -59,8 +61,11 @@ void main() {
     testWidgets('shows title, meta and score', (tester) async {
       await show(tester, MediaCard(card: sampleCard(7, title: 'Judul')));
       expect(find.text('Judul'), findsOneWidget);
-      expect(find.text('2016 · 12 eps'), findsOneWidget);
       expect(find.text('8.6'), findsOneWidget);
+      expect(find.text(' · 12 eps'), findsOneWidget);
+      expect(find.textContaining('2016'), findsNothing);
+      expect(find.byType(ScoreBadge), findsNothing);
+      expect(find.byType(ScoreMeta), findsOneWidget);
       expect(find.text('Baru'), findsNothing);
       expect(find.text('Data terbatas'), findsNothing);
       expect(find.byType(ShadProgress), findsNothing);
@@ -79,6 +84,39 @@ void main() {
       expect(find.text('Data terbatas'), findsOneWidget);
       expect(find.byType(ShadProgress), findsOneWidget);
       expect(find.byType(ScoreBadge), findsNothing);
+    });
+
+    testWidgets('without a score the year stays in the meta line', (
+      tester,
+    ) async {
+      await show(
+        tester,
+        MediaCard(card: sampleCard(7, title: 'Judul', score: null)),
+      );
+      expect(find.text('2016 · 12 eps'), findsOneWidget);
+      expect(find.byType(ScoreMeta), findsNothing);
+    });
+
+    testWidgets('the poster carries no score badge any more', (tester) async {
+      await show(tester, MediaCard(card: sampleCard(7)));
+      expect(
+        find.descendant(
+          of: find.byType(Poster),
+          matching: find.byType(ScoreBadge),
+        ),
+        findsNothing,
+      );
+    });
+
+    testWidgets('a fresh label becomes a chip with a dot, not the Baru badge', (
+      tester,
+    ) async {
+      await show(
+        tester,
+        MediaCard(card: sampleCard(7), tag: 'Ep 8', tagDot: true),
+      );
+      expect(find.text('Ep 8'), findsOneWidget);
+      expect(find.text('Baru'), findsNothing);
     });
 
     testWidgets('shows the tag on the poster only when given', (tester) async {
@@ -105,7 +143,7 @@ void main() {
         ),
       );
       final node = tester.getSemantics(find.byType(MediaCard));
-      expect(node.label, 'Skor 8.6\nJudul\n2016 · 12 eps');
+      expect(node.label, 'Judul\nSkor 8.6, 12 eps');
       expect(node.hasFlag(SemanticsFlag.isButton), isTrue);
       expect(node.getSemanticsData().hasAction(SemanticsAction.tap), isTrue);
     });

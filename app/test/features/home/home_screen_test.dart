@@ -35,9 +35,8 @@ void main() {
   testWidgets('both kinds get their own rails', (tester) async {
     await openHome(tester);
     for (final title in [
-      'Top 10 anime',
+      'Top 10 hari ini',
       'Episode baru',
-      'Top 10 komik',
       'Chapter baru',
       'Anime musim ini',
       'Anime populer',
@@ -83,30 +82,74 @@ void main() {
       },
     );
     expect(find.text('Novel populer'), findsNothing);
-    expect(find.text('Top 10 anime'), findsOneWidget);
+    expect(find.text('Top 10 hari ini'), findsOneWidget);
     expect(find.text('Coba lagi'), findsNothing);
   });
 
-  testWidgets('liking anime puts the anime rails above the manga rails', (
+  testWidgets('liking anime ranks anime first and puts its rails higher', (
     tester,
   ) async {
     await openHome(tester);
-    final anime = tester.getTopLeft(find.text('Top 10 anime')).dy;
-    final manga = tester.getTopLeft(find.text('Top 10 komik')).dy;
-    expect(anime, lessThan(manga));
+    expect(find.text('A top 1'), findsOneWidget);
+    expect(find.text('M top 1'), findsNothing);
     final latestAnime = tester.getTopLeft(find.text('Episode baru')).dy;
-    expect(latestAnime, lessThan(manga));
+    final latestManga = tester.getTopLeft(find.text('Chapter baru')).dy;
+    expect(latestAnime, lessThan(latestManga));
   });
 
-  testWidgets('liking manga puts the manga rails above the anime rails', (
+  testWidgets('the switch ranks the other kind on the same rail', (
+    tester,
+  ) async {
+    await openHome(tester);
+    await tester.tap(find.byKey(const Key('top10-switch-manga')));
+    await tester.pumpAndSettle();
+    expect(find.text('M top 1'), findsOneWidget);
+    expect(find.text('A top 1'), findsNothing);
+    expect(find.text('Top 10 hari ini'), findsOneWidget);
+  });
+
+  testWidgets('liking manga ranks manga first and puts its rails higher', (
     tester,
   ) async {
     await openHome(tester, prefersAnime: false);
-    final anime = tester.getTopLeft(find.text('Top 10 anime')).dy;
-    final manga = tester.getTopLeft(find.text('Top 10 komik')).dy;
-    expect(manga, lessThan(anime));
+    expect(find.text('M top 1'), findsOneWidget);
+    expect(find.text('A top 1'), findsNothing);
+    final latestAnime = tester.getTopLeft(find.text('Episode baru')).dy;
+    final latestManga = tester.getTopLeft(find.text('Chapter baru')).dy;
+    expect(latestManga, lessThan(latestAnime));
     expect(find.text('Baca'), findsOneWidget);
     expect(find.text('Tonton'), findsNothing);
+  });
+
+  testWidgets('a title already on the home is not repeated in this season', (
+    tester,
+  ) async {
+    await openHome(
+      tester,
+      prepare: (harness) => harness.catalog.onHome = (kind) async {
+        final home = homeOf(kind == MediaKindDto.manga ? 'M' : 'A');
+        if (kind != MediaKindDto.anime) return home;
+        final latest = home.sections.firstWhere((s) => s.id == 'latest');
+        final seasonal = home.sections.firstWhere((s) => s.id == 'seasonal');
+        final shared = latest.cards.first;
+        return HomeDto(
+          sections: [
+            for (final section in home.sections)
+              if (section.id == 'seasonal')
+                HomeSectionDto(
+                  id: 'seasonal',
+                  cards: [shared, ...seasonal.cards],
+                )
+              else
+                section,
+          ],
+          notices: const [],
+        );
+      },
+    );
+    await scrollDown(tester, 1800);
+    expect(find.text('Anime musim ini'), findsOneWidget);
+    expect(find.text('A baru 1'), findsOneWidget);
   });
 
   testWidgets('the hero starts with the favored kind', (tester) async {

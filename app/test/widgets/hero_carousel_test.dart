@@ -109,8 +109,10 @@ void main() {
       await pumpAtSize(tester, HeroCarousel(slides: slides(8)));
       expect(find.text('01 / 08'), findsOneWidget);
       expect(find.text('Tonton'), findsOneWidget);
-      expect(find.text('Simpan'), findsOneWidget);
-      expect(find.text('Trailer'), findsOneWidget);
+      expect(find.byKey(const Key('hero-save')), findsOneWidget);
+      expect(find.byKey(const Key('hero-trailer')), findsOneWidget);
+      expect(find.bySemanticsLabel('Simpan'), findsOneWidget);
+      expect(find.bySemanticsLabel('Trailer'), findsOneWidget);
     });
 
     testWidgets('swiping moves the counter and hides a missing trailer', (
@@ -120,7 +122,7 @@ void main() {
       await tester.fling(find.byType(PageView), const Offset(-300, 0), 1000);
       await tester.pumpAndSettle();
       expect(find.text('02 / 03'), findsOneWidget);
-      expect(find.text('Trailer'), findsNothing);
+      expect(find.byKey(const Key('hero-trailer')), findsNothing);
     });
 
     testWidgets('buttons report the index of the visible slide', (
@@ -139,7 +141,7 @@ void main() {
       await tester.fling(find.byType(PageView), const Offset(-300, 0), 1000);
       await tester.pumpAndSettle();
       await tester.tap(find.text('Tonton'));
-      await tester.tap(find.text('Simpan'));
+      await tester.tap(find.byKey(const Key('hero-save')));
       expect(watched, [1]);
       expect(saved, [1]);
     });

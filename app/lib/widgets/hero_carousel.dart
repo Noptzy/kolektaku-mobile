@@ -28,6 +28,8 @@ class HeroCarousel extends StatefulWidget {
   final ValueChanged<int>? onTrailer;
   final Duration? autoPlay;
 
+  static bool showsCounter(int total) => total > 1;
+
   static String counter(int index, int total) {
     String two(int value) => value.toString().padLeft(2, '0');
     return '${two(index + 1)} / ${two(total)}';
@@ -129,11 +131,12 @@ class _HeroCarouselState extends State<HeroCarousel> {
                 );
               },
             ),
-            Positioned(
-              top: inset + Spacing.md + Spacing.md,
-              right: Spacing.screenGutter + Spacing.md,
-              child: HeroCounter(text: HeroCarousel.counter(_index, total)),
-            ),
+            if (HeroCarousel.showsCounter(total))
+              Positioned(
+                top: inset + Spacing.md + Spacing.md,
+                right: Spacing.screenGutter + Spacing.md,
+                child: HeroCounter(text: HeroCarousel.counter(_index, total)),
+              ),
           ],
         ),
       ),

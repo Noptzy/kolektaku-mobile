@@ -71,7 +71,9 @@ void main() {
     testWidgets('a single slide has nothing to turn to', (tester) async {
       await show(tester, count: 1);
       await tester.pump(const Duration(seconds: 30));
-      expect(find.text('01 / 01'), findsOneWidget);
+      expect(find.text('01 / 01'), findsNothing);
+      expect(find.text('Tonton'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('holding a finger on it pauses the turning', (tester) async {

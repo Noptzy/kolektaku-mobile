@@ -29,3 +29,17 @@ String? genreImage(String genreName, HomeDto home) {
   }
   return null;
 }
+
+bool homeIsEmpty({
+  required HomeDto? anime,
+  required HomeDto? manga,
+  required HomeDto? novel,
+  required bool hasResume,
+}) {
+  if (hasResume) return false;
+  for (final home in [anime, manga, novel]) {
+    if (home == null) continue;
+    if (home.sections.any((section) => section.cards.isNotEmpty)) return false;
+  }
+  return true;
+}
