@@ -2,30 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../core/theme/kolektaku_tokens.dart';
-import 'swipe_sheet.dart';
 import 'filter_links.dart';
-import 'option_chip.dart';
+import 'filter_model.dart';
+import 'filter_section_view.dart';
+import 'swipe_sheet.dart';
 
-typedef FilterChoice = Map<String, String>;
-
-class FilterOption {
-  const FilterOption(this.id, this.label);
-
-  final String id;
-  final String label;
-}
-
-class FilterSection {
-  const FilterSection({
-    required this.key,
-    required this.title,
-    required this.options,
-  });
-
-  final String key;
-  final String title;
-  final List<FilterOption> options;
-}
+export 'filter_model.dart';
 
 Future<FilterChoice?> showFilterSheet(
   BuildContext context, {
@@ -96,7 +78,7 @@ class _FilterSheetBodyState extends State<FilterSheetBody> {
                 spacing: Spacing.lg,
                 children: [
                   for (final section in widget.sections)
-                    _Section(
+                    FilterSectionView(
                       section: section,
                       selected: _draft[section.key],
                       onPick: (id) =>
@@ -144,43 +126,6 @@ class _FilterSheetBodyState extends State<FilterSheetBody> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Section extends StatelessWidget {
-  const _Section({
-    required this.section,
-    required this.selected,
-    required this.onPick,
-  });
-
-  final FilterSection section;
-  final String? selected;
-  final ValueChanged<String> onPick;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: Spacing.sm,
-      children: [
-        Text(section.title, style: theme.textTheme.large),
-        Wrap(
-          spacing: Spacing.sm,
-          runSpacing: Spacing.sm,
-          children: [
-            for (final option in section.options)
-              OptionChip(
-                key: Key('${section.key}-${option.id}'),
-                label: option.label,
-                selected: option.id == selected,
-                onTap: () => onPick(option.id),
-              ),
-          ],
-        ),
-      ],
     );
   }
 }
