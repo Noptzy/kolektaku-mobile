@@ -14,6 +14,7 @@ import '../../widgets/state_view.dart';
 import 'picture_buttons.dart';
 import 'quota_note.dart';
 import 'scene_candidate_row.dart';
+import '../../widgets/hairline_loader.dart';
 import 'scene_launch.dart';
 import 'scene_notifier.dart';
 import 'scene_start_view.dart';
@@ -128,15 +129,11 @@ class _SceneSearchScreenState extends ConsumerState<SceneSearchScreen> {
   }
 
   Widget _working(String message) {
-    final theme = ShadTheme.of(context);
     return Padding(
       padding: const EdgeInsets.all(Spacing.xl),
       child: Column(
         spacing: Spacing.md,
-        children: [
-          Text(message, style: theme.textTheme.p),
-          const ShadProgress(),
-        ],
+        children: [HairlineLoader(kind: HairlineKind.lupa, message: message)],
       ),
     );
   }

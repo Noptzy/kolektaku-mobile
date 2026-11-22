@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kolektaku/features/watch/player/standby_panel.dart';
-import 'package:kolektaku/features/watch/player/stream_spinner.dart';
+import 'package:kolektaku/core/hairline/hairline_stage.dart';
 import 'package:kolektaku/src/rust/dto/episodes.dart';
 
 import 'watch_harness.dart';
@@ -24,7 +24,7 @@ void main() {
     final hold = Completer<void>();
     await opening(tester, WatchHarness(hold: hold));
     expect(find.text('Menyiapkan video…'), findsOneWidget);
-    expect(find.byType(StreamSpinner), findsOneWidget);
+    expect(find.byType(HairlineStage), findsOneWidget);
     expect(find.byKey(const Key('back')), findsOneWidget);
     expect(
       find.descendant(
@@ -37,7 +37,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Menyiapkan video…'), findsNothing);
-    expect(find.byType(StreamSpinner), findsNothing);
+    expect(find.byType(HairlineStage), findsNothing);
   });
 
   testWidgets('the episode list is already there before the stream is', (
@@ -117,7 +117,7 @@ void main() {
     await opening(tester, harness);
     expect(find.text('Episode tidak bisa dibuka'), findsOneWidget);
     expect(find.byKey(const Key('retry')), findsOneWidget);
-    expect(find.byType(StreamSpinner), findsNothing);
+    expect(find.byType(HairlineStage), findsNothing);
     expect(find.text('Semua episode'), findsOneWidget);
   });
 
@@ -127,7 +127,7 @@ void main() {
         const FakeAccessibilityFeatures(disableAnimations: true);
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     await opening(tester, WatchHarness(hold: hold));
-    expect(find.byType(StreamSpinner), findsOneWidget);
+    expect(find.byType(HairlineStage), findsOneWidget);
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     hold.complete();
     await tester.pump();
