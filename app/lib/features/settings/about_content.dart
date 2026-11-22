@@ -1,12 +1,12 @@
 const aboutNotes = (
-  version: '0.5.0',
+  version: '0.6.0',
   lines: [
-    'Unduh episode anime: satu, beberapa, atau semua sekaligus, jadi satu file MKV dengan subtitle terjemahan di Movies/Kolektaku.',
-    'Tombol bulat dengan cincin progres muncul di atas navbar selama mengunduh; ketuk untuk membuka halaman Unduhan.',
-    'Pengaturan Unduhan: pilih kualitas dan subtitle yang ikut disimpan.',
-    'Riwayat kini berupa daftar dengan kotak cari, dan bisa digeser untuk menghapus satu riwayat.',
-    'Sumber anime ke-3 kini juga dicari untuk judul yang sudah pernah dibuka.',
-    'Subtitle yang kamu pilih sendiri tidak lagi diterjemahkan diam-diam.',
+    'Tampilan baru: dock navigasi melayang berbahan kaca, kartu Lanjutkan yang lebih informatif, dan bintang skor di baris info kartu.',
+    'Top 10 kini satu rail dengan sakelar Anime dan Komik, dan hero memakai tombol ikon untuk Simpan dan Trailer.',
+    'Sambutan lima halaman untuk pemasangan baru; bisa dilihat lagi dari Pengaturan > Tentang.',
+    'Toast Urungkan di Koleksi bisa digeser untuk ditutup, dan riwayat bergetar ringan saat digeser untuk dihapus.',
+    'Pemuat bergambar garis tipis untuk persiapan stream, pencarian dari gambar, dan daftar genre.',
+    'Mengetuk Beranda saat sudah di Beranda menggulir ke atas, dan Pengaturan dikelompokkan ulang.',
   ],
 );
 
